@@ -13,12 +13,12 @@ export default async function RegisterPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <AuthCard tab={t.landing.cardTab} tabShort={t.landing.cardTabShort} title={t.register.title} subtitle={t.register.subtitle} wide bare>
+      <AuthCard title={t.register.dialogTitle} subtitle={t.register.subtitle} wide bare>
         <RegisterForm />
       </AuthCard>
-      <p className="text-center text-sm text-ink-label">
+      <p className="text-center text-sm text-ink-soft">
         {t.register.haveAccount}{" "}
-        <Link href="/login" className="font-semibold text-press underline decoration-1 underline-offset-4 hover:decoration-2">
+        <Link href="/login" className="font-semibold text-leaf underline decoration-1 underline-offset-4 hover:decoration-2">
           {t.register.login}
         </Link>
       </p>

@@ -33,12 +33,10 @@
       "usernameRequired": "Enter your username.",
       "passwordRequired": "Enter your password.",
       "generic": "Something went wrong. Please try again."
-    }
+    },
+    "welcome": "Welcome back"
   },
   "landing": {
-    "cardTab": "Barangay Taysan Health Center · Prenatal appointment card",
-    "cardTabShort": "Prenatal appointment card",
-    "cardCenter": "Barangay Taysan Health Center",
     "nav": {
       "label": "Sections",
       "how": "How it works",
@@ -127,8 +125,18 @@
       "sms": {
         "label": "Sample text message",
         "sender": "Brgy. Taysan Health Center",
+        "meta": "Text message · Today",
+        "newBadge": "New reminder",
+        "greeting": "Hi Maria! This is a reminder from your health center.",
+        "apptTitle": "Prenatal checkup",
+        "apptWhen": "Fri, Nov 6 · 8:00 AM – 3:00 PM",
+        "apptWhere": "Brgy. 56 Taysan, Legazpi City",
+        "closing": "Please bring your booklet. See you!",
         "time": "8:00 AM",
-        "body": "Hi Maria! Reminder: your prenatal checkup is on Friday, Nov 6 at the Barangay Taysan Health Center. Please bring your booklet."
+        "facts": [
+          "Works on any phone, no internet needed",
+          "Sent in English or Filipino"
+        ]
       }
     },
     "services": {
@@ -200,7 +208,7 @@
         "Rest well, and avoid smoking and alcohol.",
         "Bring your card or booklet to every visit."
       ],
-      "dangerTitle": "Go to the health center or hospital right away if you have:",
+      "dangerTitle": "Get help right away if you have:",
       "danger": [
         "Bleeding from the vagina",
         "A severe headache or blurred vision",
@@ -208,21 +216,25 @@
         "A high fever",
         "Your baby moving less than usual",
         "Water breaking or strong pains before your due date"
-      ]
+      ],
+      "habitsTitle": "Healthy habits"
     },
     "closing": {
       "title": "Ready when you are",
       "body": "Sign up in a few minutes on your phone. No email needed."
     },
     "footer": {
+      "explore": "Explore",
+      "visit": "Visit us",
+      "account": "Your account",
       "privacy": "Your records can be seen only by you and authorized health center staff.",
-      "photos": "Photos: Justyn Abacajan and Ron Dichoso (Pexels).",
-      "staff": "Health center staff: log in with the account your admin gave you."
+      "staff": "Health center staff: log in with the account your admin gave you.",
+      "credits": "Photos: Justyn Abacajan and Ron Dichoso (Pexels). Illustration: Pixabay. Icons: Phosphor and Health Icons."
     }
   },
   "register": {
     "title": "Sign up",
-    "subtitle": "Make your prenatal card in five short steps.",
+    "subtitle": "Five short steps. No email needed.",
     "stepOf": "Step {current} of {total}",
     "steps": {
       "account": "Account",
@@ -263,8 +275,8 @@
     "buttons": {
       "next": "Next",
       "back": "Back",
-      "submit": "Create my card",
-      "submitting": "Creating your card…",
+      "submit": "Create my account",
+      "submitting": "Creating your account…",
       "edit": "Edit"
     },
     "review": {
@@ -288,7 +300,8 @@
       "generic": "We couldn't create your account. Please try again."
     },
     "haveAccount": "Already have an account?",
-    "login": "Log in"
+    "login": "Log in",
+    "dialogTitle": "Create your account"
   },
   "forgot": {
     "title": "Forgot your password?",

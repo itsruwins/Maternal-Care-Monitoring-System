@@ -31,7 +31,7 @@ import { IconCircle } from "@/components/ui/icon-circle";
 import { InsightCard, InsightRow } from "@/components/ui/insight-card";
 import { Input } from "@/components/ui/input";
 import { WeekStrip, type WeekDay } from "@/components/ui/week-strip";
-import { LoginDialog } from "@/features/auth/components/login-dialog";
+import { AuthDialogProvider, AuthDialogTrigger } from "@/features/auth/components/auth-dialog";
 
 export const metadata = { title: "Style preview", robots: { index: false } };
 
@@ -114,6 +114,7 @@ export default function DesignPreviewPage() {
   if (process.env.NODE_ENV === "production") notFound();
 
   return (
+    <AuthDialogProvider>
     <main className="flex-1 pb-20">
       <CurvedHero tone="rose" curve="lg" className="pb-16">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 pt-4 sm:px-6">
@@ -131,11 +132,11 @@ export default function DesignPreviewPage() {
               <Button size="lg">
                 Sign up <ArrowRightIcon weight="bold" />
               </Button>
-              <LoginDialog>
+              <AuthDialogTrigger mode="login">
                 <Button size="lg" variant="secondary">
                   Open the login sheet
                 </Button>
-              </LoginDialog>
+              </AuthDialogTrigger>
             </div>
           </div>
         </div>
@@ -291,5 +292,6 @@ export default function DesignPreviewPage() {
         </Section>
       </div>
     </main>
+    </AuthDialogProvider>
   );
 }

@@ -10,6 +10,7 @@ import { Services } from "@/features/landing/components/services";
 import { SiteFooter } from "@/features/landing/components/site-footer";
 import { SiteHeader } from "@/features/landing/components/site-header";
 import { Tips } from "@/features/landing/components/tips";
+import { AuthDialogProvider } from "@/features/auth/components/auth-dialog";
 import { getServerI18n } from "@/i18n/server";
 
 // The browser bar matches the top of the rose hero.
@@ -19,6 +20,7 @@ export default async function LandingPage() {
   const { t, locale } = await getServerI18n();
 
   return (
+    <AuthDialogProvider>
     <div className="relative">
       {/* The header sits on top of the rose hero */}
       <SiteHeader className="absolute inset-x-0 top-0 z-20" />
@@ -34,7 +36,8 @@ export default async function LandingPage() {
         <Tips t={t} />
         <ClosingCta />
       </main>
-      <SiteFooter t={t} />
+      <SiteFooter t={t} locale={locale} />
     </div>
+    </AuthDialogProvider>
   );
 }

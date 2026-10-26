@@ -1,10 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { BrandMark } from "@/components/shared/brand-mark";
 import { LanguageSwitch } from "@/components/shared/language-switch";
-import { LoginDialog } from "@/features/auth/components/login-dialog";
+import { AuthDialogTrigger } from "@/features/auth/components/auth-dialog";
 import { useDictionary } from "@/i18n/dictionary-provider";
 import { cn } from "@/lib/utils/cn";
 
@@ -37,14 +36,16 @@ export function SiteHeader({ className }: { className?: string }) {
 
         <div className="flex items-center gap-1.5 sm:gap-2.5">
           <LanguageSwitch />
-          <LoginDialog>
+          <AuthDialogTrigger mode="login">
             <Button variant="ghost" size="sm" className="h-10 px-3 text-[0.95rem] hover:bg-white/70 sm:px-4">
               {t.nav.login}
             </Button>
-          </LoginDialog>
-          <Button asChild size="sm" className="hidden h-10 px-5 text-[0.95rem] sm:inline-flex">
-            <Link href="/register">{t.nav.signup}</Link>
-          </Button>
+          </AuthDialogTrigger>
+          <AuthDialogTrigger mode="signup">
+            <Button size="sm" className="hidden h-10 px-5 text-[0.95rem] sm:inline-flex">
+              {t.nav.signup}
+            </Button>
+          </AuthDialogTrigger>
         </div>
       </div>
     </header>

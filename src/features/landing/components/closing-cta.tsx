@@ -1,9 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { ArrowRightIcon, HeartIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import { LoginDialog } from "@/features/auth/components/login-dialog";
+import { AuthDialogTrigger } from "@/features/auth/components/auth-dialog";
 import { useDictionary } from "@/i18n/dictionary-provider";
 
 // The page's close: one last, calm invitation to sign up.
@@ -19,22 +18,22 @@ export function ClosingCta() {
           className="pointer-events-none absolute -bottom-1/2 -left-1/4 aspect-square w-3/4 rounded-full border-[28px] border-white/35"
         />
         <HeartIcon weight="fill" aria-hidden className="relative size-9 text-rose" />
-        <h2 id="closing-title" className="text-title relative mt-4 font-bold">
+        <h2 id="closing-title" className="text-title relative mt-4 font-extrabold">
           {c.title}
         </h2>
         <p className="relative mt-3 max-w-[40ch] text-lg leading-7 text-ink-soft">{c.body}</p>
         <div className="relative mt-8 flex w-full flex-col justify-center gap-3 sm:w-auto sm:flex-row">
-          <Button asChild size="lg">
-            <Link href="/register">
+          <AuthDialogTrigger mode="signup">
+            <Button size="lg">
               {t.landing.signup}
               <ArrowRightIcon weight="bold" aria-hidden />
-            </Link>
-          </Button>
-          <LoginDialog>
+            </Button>
+          </AuthDialogTrigger>
+          <AuthDialogTrigger mode="login">
             <Button variant="secondary" size="lg">
               {t.landing.login}
             </Button>
-          </LoginDialog>
+          </AuthDialogTrigger>
         </div>
       </div>
     </section>

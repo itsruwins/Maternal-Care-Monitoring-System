@@ -11,7 +11,7 @@ export default async function ForgotPasswordPage() {
   const { t } = await getServerI18n();
 
   return (
-    <AuthCard tab={t.landing.cardCenter} title={t.forgot.title} subtitle={t.forgot.subtitle}>
+    <AuthCard title={t.forgot.title} subtitle={t.forgot.subtitle}>
       <ForgotPasswordForm />
     </AuthCard>
   );

@@ -1,9 +1,9 @@
 "use client";
 
 import { useId, useState } from "react";
-import Link from "next/link";
 import { ArrowRightIcon, PhoneIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
+import { AuthDialogTrigger } from "@/features/auth/components/auth-dialog";
 import { useDictionary } from "@/i18n/dictionary-provider";
 import { format } from "@/i18n/format";
 import { addDays, parseISODate, trimesterFromWeeks, type Trimester } from "@/lib/utils/pregnancy";
@@ -156,12 +156,12 @@ export function Hero() {
 
       {/* Sign up. Log in lives in the header only. */}
       <div className="[grid-area:actions]">
-        <Button asChild size="lg" className="mt-7 w-full sm:w-auto">
-          <Link href="/register">
+        <AuthDialogTrigger mode="signup">
+          <Button size="lg" className="mt-7 w-full sm:w-auto">
             {copy.signup}
             <ArrowRightIcon weight="bold" aria-hidden />
-          </Link>
-        </Button>
+          </Button>
+        </AuthDialogTrigger>
         <p className="mt-4 flex items-center gap-2 text-sm text-ink-soft">
           <PhoneIcon weight="regular" aria-hidden className="size-[1.125rem] shrink-0" />
           {copy.browserNote} {copy.noEmail}

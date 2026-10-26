@@ -3,10 +3,24 @@
 import { useEffect, useRef, useState, useTransition } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, ArrowRight, Check, LoaderCircle } from "lucide-react";
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  CallIcon,
+  CheckCircleIcon,
+  CheckIcon,
+  DangerIcon,
+  EmailIcon,
+  LockIcon,
+  PhoneIcon,
+  SpinnerIcon,
+  UserIcon,
+  type Icon,
+} from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
+import { InputIcon } from "@/components/ui/input-icon";
 import { useDictionary } from "@/i18n/dictionary-provider";
 import { addDays, dueDateFromLmp, isPlausibleLmp, parseISODate } from "@/lib/utils/pregnancy";
 import { useToday } from "@/lib/utils/use-today";
@@ -39,8 +53,9 @@ const EMPTY: RegisterInput = {
 
 type ErrorKey = keyof ReturnType<typeof useDictionary>["t"]["register"]["errors"];
 
-// Mother sign-up: 5 steps on one card. Each step is checked before moving on;
-// everything is checked again on the server.
+// Mother sign-up: 5 steps. Each step is checked before moving on; everything is
+// checked again on the server. Used in the auth dialog and on /register.
+// The footer (Back / Next) sticks to the bottom while the steps scroll.
 export function RegisterForm() {
   const { t } = useDictionary();
   const f = t.register.fields;
@@ -128,17 +143,19 @@ export function RegisterForm() {
   const isLast = step === REGISTER_STEPS.length - 1;
 
   // Builds the input for a FormField (which passes in its aria-describedby ids).
-  const text = (name: RegisterField, props: React.ComponentProps<typeof Input> = {}) =>
+  const text = (name: RegisterField, props: React.ComponentProps<typeof Input> = {}, icon?: Icon) =>
     function renderInput(describedBy?: string) {
-      return (
+      const input = (
         <Input
           id={`reg-${name}`}
           aria-invalid={Boolean(formState.errors[name])}
           aria-describedby={describedBy}
           {...props}
+          className={cn(icon && "pl-11", props.className)}
           {...register(name)}
         />
       );
+      return icon ? <InputIcon icon={icon}>{input}</InputIcon> : input;
     };
 
   return (
@@ -153,12 +170,12 @@ export function RegisterForm() {
     >
       <RegisterStepper current={step} />
 
-      <div className="px-6 pt-7 pb-8 sm:px-10">
-        <h2 ref={headingRef} tabIndex={-1} className="text-2xl font-bold tracking-[-0.02em] outline-none">
+      <div className="px-6 pt-2 pb-8 sm:px-8">
+        <h2 ref={headingRef} tabIndex={-1} className="text-xl font-bold tracking-[-0.015em] outline-none">
           {stepKey === "review" ? t.register.review.title : t.register.steps[stepKey]}
         </h2>
 
-        <div className="mt-6 grid gap-5 sm:grid-cols-2">
+        <div className="mt-5 grid gap-5 sm:grid-cols-2">
           {stepKey === "account" && (
             <>
               <FormField
@@ -169,18 +186,17 @@ export function RegisterForm() {
                 status={<UsernameBadge status={usernameStatus} />}
                 className="sm:col-span-2"
               >
-                {text("username", {
-                  autoComplete: "username",
-                  autoCapitalize: "none",
-                  autoCorrect: "off",
-                  spellCheck: false,
-                })}
+                {text(
+                  "username",
+                  { autoComplete: "username", autoCapitalize: "none", autoCorrect: "off", spellCheck: false },
+                  UserIcon,
+                )}
               </FormField>
               <FormField id="reg-password" label={f.password} hint={f.passwordHint} error={errorText("password")}>
-                {text("password", { type: "password", autoComplete: "new-password" })}
+                {text("password", { type: "password", autoComplete: "new-password" }, LockIcon)}
               </FormField>
               <FormField id="reg-confirmPassword" label={f.confirmPassword} error={errorText("confirmPassword")}>
-                {text("confirmPassword", { type: "password", autoComplete: "new-password" })}
+                {text("confirmPassword", { type: "password", autoComplete: "new-password" }, LockIcon)}
               </FormField>
               <FormField
                 id="reg-email"
@@ -189,7 +205,7 @@ export function RegisterForm() {
                 error={errorText("email")}
                 className="sm:col-span-2"
               >
-                {text("email", { type: "email", autoComplete: "email", inputMode: "email" })}
+                {text("email", { type: "email", autoComplete: "email", inputMode: "email" }, EmailIcon)}
               </FormField>
             </>
           )}
@@ -215,7 +231,7 @@ export function RegisterForm() {
                 error={errorText("contactNumber")}
                 className="sm:col-span-2"
               >
-                {text("contactNumber", { type: "tel", inputMode: "tel", autoComplete: "tel" })}
+                {text("contactNumber", { type: "tel", inputMode: "tel", autoComplete: "tel" }, PhoneIcon)}
               </FormField>
             </>
           )}
@@ -232,7 +248,7 @@ export function RegisterForm() {
                 {text("emergencyName")}
               </FormField>
               <FormField id="reg-emergencyNumber" label={f.emergencyNumber} error={errorText("emergencyNumber")}>
-                {text("emergencyNumber", { type: "tel", inputMode: "tel" })}
+                {text("emergencyNumber", { type: "tel", inputMode: "tel" }, CallIcon)}
               </FormField>
             </>
           )}
@@ -266,30 +282,31 @@ export function RegisterForm() {
         )}
 
         {submitError && (
-          <p role="alert" className="mt-6 rounded-md border border-brick/50 bg-brick/6 px-3 py-2.5 text-sm text-brick">
+          <p role="alert" className="mt-6 flex items-start gap-2.5 rounded-xl bg-blush px-4 py-3 text-sm leading-5 text-rose-deep">
+            <DangerIcon weight="fill" aria-hidden className="mt-px size-[1.125rem] shrink-0" />
             {submitError}
           </p>
         )}
       </div>
 
-      <div className="flex flex-col-reverse gap-3 border-t border-rule bg-folder/45 px-6 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-10">
+      <div className="sticky bottom-0 z-10 flex flex-col-reverse gap-2 border-t border-line bg-white px-6 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-8">
         {step > 0 ? (
           <Button type="button" variant="ghost" onClick={() => goTo(step - 1)} disabled={submitting}>
-            <ArrowLeft aria-hidden />
+            <ArrowLeftIcon weight="bold" aria-hidden />
             {t.register.buttons.back}
           </Button>
         ) : (
           <span />
         )}
         {isLast ? (
-          <Button type="button" size="lg" onClick={submit} disabled={submitting} aria-busy={submitting}>
-            {submitting ? <LoaderCircle className="animate-spin" aria-hidden /> : <Check aria-hidden />}
+          <Button type="button" size="lg" onClick={submit} disabled={submitting} aria-busy={submitting} className="w-full sm:w-auto">
+            {submitting ? <SpinnerIcon className="animate-spin" aria-hidden /> : <CheckCircleIcon weight="fill" aria-hidden />}
             {submitting ? t.register.buttons.submitting : t.register.buttons.submit}
           </Button>
         ) : (
-          <Button type="button" size="lg" onClick={next}>
+          <Button type="button" size="lg" onClick={next} className="w-full sm:w-auto">
             {t.register.buttons.next}
-            <ArrowRight aria-hidden />
+            <ArrowRightIcon weight="bold" aria-hidden />
           </Button>
         )}
       </div>
@@ -304,18 +321,18 @@ function UsernameBadge({ status }: { status: ReturnType<typeof useUsernameAvaila
     <span
       aria-live="polite"
       className={cn(
-        "label-print inline-flex items-center gap-1 text-[0.7rem]",
-        status === "available" ? "text-stamp" : "text-ink-label",
+        "inline-flex items-center gap-1 text-caption font-semibold",
+        status === "available" ? "text-leaf" : "text-ink-soft",
       )}
     >
       {status === "checking" ? (
         <>
-          <LoaderCircle className="size-3.5 animate-spin" aria-hidden />
+          <SpinnerIcon className="size-3.5 animate-spin" aria-hidden />
           {t.register.fields.usernameChecking}
         </>
       ) : (
         <>
-          <Check className="size-3.5" aria-hidden />
+          <CheckIcon weight="bold" className="size-3.5" aria-hidden />
           {t.register.fields.usernameAvailable}
         </>
       )}

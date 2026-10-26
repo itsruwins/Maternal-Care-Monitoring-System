@@ -12,14 +12,15 @@ const SERVICES: { icon: Icon; tile: string; circle: "fern" | "white" | "leaf" | 
   { icon: EducationIcon, tile: "bg-white", circle: "rose" },
 ];
 
-// What the health center reminds her about. Phones: a list; desktop: five soft tiles.
+// What the health center reminds her about. Phones: a list; desktop: five soft
+// tiles with icon, title and text top-aligned.
 export function Services({ t }: { t: Dictionary }) {
   const s = t.landing.services;
 
   return (
     <section id="services" aria-labelledby="services-title" className="scroll-mt-6 bg-cream px-4 py-16 sm:px-6 lg:py-24">
       <div className="mx-auto max-w-6xl">
-        <h2 id="services-title" className="text-title max-w-[22ch] font-bold">
+        <h2 id="services-title" className="text-title max-w-[22ch] font-extrabold">
           {s.title}
         </h2>
         <p className="mt-3 max-w-[52ch] text-lg leading-7 text-ink-soft">{s.intro}</p>
@@ -31,7 +32,7 @@ export function Services({ t }: { t: Dictionary }) {
               <li
                 key={item.name}
                 className={cn(
-                  "flex items-start gap-4 rounded-2xl p-5 lg:min-h-64 lg:flex-col lg:justify-between lg:gap-8 lg:p-6",
+                  "flex items-start gap-4 rounded-2xl p-5 lg:flex-col lg:gap-6 lg:p-6",
                   style.tile,
                   style.tile === "bg-white" && "shadow-[var(--shadow-soft)]"
                 )}
@@ -42,6 +43,8 @@ export function Services({ t }: { t: Dictionary }) {
                   size="md"
                   className={cn("lg:size-14 lg:[&_svg]:size-7", style.circle === "white" && "text-rose-deep")}
                 />
+                {/* Top-aligned: titles start on the same line in every tile, and
+                    each description follows its own title directly (no gaps). */}
                 <div>
                   <h3 className="text-[1.0625rem] leading-6 font-semibold">{item.name}</h3>
                   <p className="mt-1.5 text-[0.95rem] leading-6 text-ink-soft">{item.body}</p>

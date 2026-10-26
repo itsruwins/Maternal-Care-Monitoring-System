@@ -20,7 +20,7 @@ export default async function LoginPage() {
       <Suspense fallback={null}>
         <RedirectIfLoggedIn />
       </Suspense>
-      <AuthCard tab={t.landing.cardCenter} title={t.auth.loginTitle} subtitle={t.auth.loginSubtitle}>
+      <AuthCard title={t.auth.loginTitle} subtitle={t.auth.loginSubtitle}>
         <LoginForm />
       </AuthCard>
     </>

@@ -31,7 +31,7 @@ export function HealthCenter({ t, locale }: { t: Dictionary; locale: Locale }) {
         </div>
 
         <div className="p-6 sm:p-10 lg:p-12">
-          <h2 id="center-title" className="text-title max-w-[20ch] font-bold">
+          <h2 id="center-title" className="text-title max-w-[20ch] font-extrabold">
             {c.title}
           </h2>
           <p className="mt-3 max-w-[46ch] text-base leading-7 text-ink-soft">{c.body}</p>

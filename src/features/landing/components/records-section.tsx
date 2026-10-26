@@ -23,7 +23,7 @@ export function RecordsSection({ t }: { t: Dictionary }) {
         />
 
         <div>
-          <h2 id="records-title" className="text-title max-w-[18ch] font-bold">
+          <h2 id="records-title" className="text-title max-w-[18ch] font-extrabold">
             {r.title}
           </h2>
           <p className="mt-3 max-w-[48ch] text-lg leading-7 text-ink-soft">{r.body}</p>

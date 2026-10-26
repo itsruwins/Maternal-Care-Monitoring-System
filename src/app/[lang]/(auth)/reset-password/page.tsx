@@ -14,7 +14,7 @@ export default async function ResetPasswordPage() {
   const { t } = await getServerI18n();
 
   return (
-    <AuthCard tab={t.landing.cardCenter} title={t.reset.title} subtitle={t.reset.subtitle}>
+    <AuthCard title={t.reset.title} subtitle={t.reset.subtitle}>
       <Suspense fallback={<p className="text-ink-label">{t.common.loading}</p>}>
         <ResetGate />
       </Suspense>

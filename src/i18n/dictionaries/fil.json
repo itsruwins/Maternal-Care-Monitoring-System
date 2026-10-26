@@ -33,12 +33,10 @@
       "usernameRequired": "Ilagay ang iyong username.",
       "passwordRequired": "Ilagay ang iyong password.",
       "generic": "May nangyaring mali. Pakisubukang muli."
-    }
+    },
+    "welcome": "Maligayang pagbabalik"
   },
   "landing": {
-    "cardTab": "Barangay Taysan Health Center · Card ng prenatal na balik",
-    "cardTabShort": "Card ng prenatal na balik",
-    "cardCenter": "Barangay Taysan Health Center",
     "nav": {
       "label": "Mga bahagi",
       "how": "Paano gumagana",
@@ -127,8 +125,18 @@
       "sms": {
         "label": "Halimbawang text",
         "sender": "Brgy. Taysan Health Center",
+        "meta": "Text message · Ngayon",
+        "newBadge": "Bagong paalala",
+        "greeting": "Hi Maria! Paalala ito mula sa iyong health center.",
+        "apptTitle": "Prenatal checkup",
+        "apptWhen": "Biy, Nob 6 · 8:00 AM – 3:00 PM",
+        "apptWhere": "Brgy. 56 Taysan, Legazpi City",
+        "closing": "Pakidala ang booklet mo. Kita tayo!",
         "time": "8:00 AM",
-        "body": "Hi Maria! Paalala: ang prenatal checkup mo ay sa Biyernes, Nob 6 sa Barangay Taysan Health Center. Pakidala ang booklet mo."
+        "facts": [
+          "Gumagana sa kahit anong cellphone, kahit walang internet",
+          "Ipinapadala sa Ingles o Filipino"
+        ]
       }
     },
     "services": {
@@ -200,7 +208,7 @@
         "Magpahinga nang sapat, at iwasan ang paninigarilyo at alak.",
         "Dalhin ang card o booklet mo sa bawat balik."
       ],
-      "dangerTitle": "Pumunta agad sa health center o ospital kung may:",
+      "dangerTitle": "Magpatingin agad kung may:",
       "danger": [
         "Pagdurugo mula sa ari",
         "Matinding sakit ng ulo o paglabo ng paningin",
@@ -208,21 +216,25 @@
         "Mataas na lagnat",
         "Mas kaunting paggalaw ng baby kaysa dati",
         "Pagputok ng panubigan o matinding sakit bago ang kabuwanan"
-      ]
+      ],
+      "habitsTitle": "Mabubuting gawi"
     },
     "closing": {
       "title": "Handa ka na ba?",
       "body": "Mag-sign up sa loob ng ilang minuto gamit ang cellphone. Hindi kailangan ng email."
     },
     "footer": {
+      "explore": "Tingnan",
+      "visit": "Bisitahin kami",
+      "account": "Iyong account",
       "privacy": "Ikaw at ang mga awtorisadong staff ng health center lamang ang makakakita ng iyong records.",
-      "photos": "Mga larawan: Justyn Abacajan at Ron Dichoso (Pexels).",
-      "staff": "Staff ng health center: mag-log in gamit ang account na ibinigay ng admin."
+      "staff": "Staff ng health center: mag-log in gamit ang account na ibinigay ng admin.",
+      "credits": "Mga larawan: Justyn Abacajan at Ron Dichoso (Pexels). Ilustrasyon: Pixabay. Mga icon: Phosphor at Health Icons."
     }
   },
   "register": {
     "title": "Mag-sign up",
-    "subtitle": "Gawin ang iyong prenatal card sa limang maikling hakbang.",
+    "subtitle": "Limang maikling hakbang. Hindi kailangan ng email.",
     "stepOf": "Hakbang {current} sa {total}",
     "steps": {
       "account": "Account",
@@ -263,8 +275,8 @@
     "buttons": {
       "next": "Susunod",
       "back": "Bumalik",
-      "submit": "Gawin ang aking card",
-      "submitting": "Ginagawa ang card mo…",
+      "submit": "Gawin ang aking account",
+      "submitting": "Ginagawa ang account mo…",
       "edit": "Baguhin"
     },
     "review": {
@@ -288,7 +300,8 @@
       "generic": "Hindi namin nagawa ang account mo. Pakisubukang muli."
     },
     "haveAccount": "May account ka na?",
-    "login": "Mag-log in"
+    "login": "Mag-log in",
+    "dialogTitle": "Gumawa ng account"
   },
   "forgot": {
     "title": "Nakalimutan ang password?",

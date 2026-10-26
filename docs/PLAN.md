@@ -253,6 +253,7 @@ Only the look changes. Login, sign-up, password recovery, language switch, datab
    - Health center info and footer.
    - The two stock photos stay, with rounded corners.
 3. **Auth pages:** the login dialog, `/login`, the 5-step `/register` (stepper becomes rounded steps with icons), `/forgot-password` and `/reset-password` move to the new style.
+   - **Done 2026-10-27 (partly):** Log in and Sign up now open in **one shared dialog** on the landing page (bottom sheet on phones); "No account yet? Sign up" / "Already have an account? Log in" switch inside it. Login has a welcome header, icons in the fields and a soft error box. Sign-up keeps its 5 steps with a new icon stepper, field icons, a review step in cards and a Back/Next bar that stays visible while scrolling. `/login` and `/register` stay for direct links, in the new card style. Still to restyle: the forgot/reset password forms.
 4. **Review:** desktop + phone screenshots, accessibility contrast check, design review, then `DESIGN.md` rewritten for the new style.
 
 Done when: the landing page and all auth pages use the new style on phone and desktop, everything from Phase 1 still works, and you approve the look.

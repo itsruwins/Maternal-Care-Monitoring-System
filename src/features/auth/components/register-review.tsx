@@ -1,9 +1,10 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { IconCircle } from "@/components/ui/icon-circle";
 import { useDictionary } from "@/i18n/dictionary-provider";
 import { formatDate } from "@/lib/utils/pregnancy";
 import { REGISTER_STEPS, type RegisterInput } from "../schemas";
+import { STEP_ICONS } from "./register-stepper";
 
 // Step 5: everything she entered, grouped by step, each group editable.
 export function RegisterReview({ values, onEdit }: { values: RegisterInput; onEdit: (step: number) => void }) {
@@ -51,27 +52,37 @@ export function RegisterReview({ values, onEdit }: { values: RegisterInput; onEd
   ];
 
   return (
-    <div className="flex flex-col gap-6">
-      {groups.map((group) => (
-        <section key={group.step} aria-labelledby={`review-${group.step}`} className="rounded-md border border-rule bg-paper/60">
-          <div className="flex items-center justify-between gap-3 border-b border-rule px-4 py-2.5">
-            <h3 id={`review-${group.step}`} className="label-print text-[0.75rem]">
-              {t.register.steps[REGISTER_STEPS[group.step].key]}
-            </h3>
-            <Button type="button" variant="link" size="sm" onClick={() => onEdit(group.step)}>
-              {t.register.buttons.edit}
-            </Button>
-          </div>
-          <dl>
-            {group.rows.map(([label, value]) => (
-              <div key={label} className="grid gap-1 border-b border-rule/70 px-4 py-2.5 last:border-b-0 sm:grid-cols-[minmax(0,14rem)_1fr] sm:gap-4">
-                <dt className="text-sm text-ink-label">{label}</dt>
-                <dd className="hand tnum text-lg break-words">{value}</dd>
+    <div className="flex flex-col gap-4">
+      {groups.map((group) => {
+        const key = REGISTER_STEPS[group.step].key;
+        return (
+          <section key={group.step} aria-labelledby={`review-${group.step}`} className="rounded-2xl bg-cream/70 p-4 sm:p-5">
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <IconCircle icon={STEP_ICONS[key]} tone="white" size="sm" weight="duotone" />
+                <h3 id={`review-${group.step}`} className="text-base font-semibold">
+                  {t.register.steps[key]}
+                </h3>
               </div>
-            ))}
-          </dl>
-        </section>
-      ))}
+              <button
+                type="button"
+                onClick={() => onEdit(group.step)}
+                className="rounded-full px-3 py-1.5 text-sm font-semibold text-leaf transition-colors hover:bg-white"
+              >
+                {t.register.buttons.edit}
+              </button>
+            </div>
+            <dl className="mt-3 grid gap-x-6 gap-y-3 sm:grid-cols-2">
+              {group.rows.map(([label, value]) => (
+                <div key={label} className="min-w-0">
+                  <dt className="text-caption font-medium text-ink-soft">{label}</dt>
+                  <dd className="tnum mt-0.5 text-[0.95rem] font-semibold break-words">{value}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+        );
+      })}
     </div>
   );
 }

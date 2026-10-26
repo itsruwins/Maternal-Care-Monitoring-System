@@ -8,29 +8,19 @@ related_targets: []
 # Landing page (/) — surface brief
 
 ## Scope and mode
-Public landing page plus the login modal entry. Mode: Persuade. Mobile-first (mothers on modern phones); must hold at desktop widths.
+Public landing page plus the login entry (sheet on phones, dialog on desktop). Mode: Persuade. A responsive web page, not an app: real web layout on desktop (top nav with section links, two-column hero, wide grids), Flo-style softness at phone widths. Never implies an app download.
 
 ## Audience, job, action
-- Audience: pregnant women in Barangay Taysan. Staff only use "Log in".
-- Must understand within seconds: never miss a checkup (SMS reminders); easy to join (phone, no email needed); my records on my phone; run by our own health center.
-- Primary action: "Sign up" → /register (carries the last-period date if entered). Secondary: "Log in" (modal).
-- Content: 5 activity types, how it works (sign up → request → SMS reminder → visit), health center info (address, clinic days/hours, contact — PLACEHOLDERS until client provides), general maternal tips (not medical advice), footer with seal + full title.
-- Photos: free stock (verified, provenance recorded), no invented testimonials, numbers or claims.
-- Avoid: corporate/techy, cute/childish, cold/clinical, government/bureaucratic.
+- Audience: pregnant women in Barangay Taysan on modern phones. Staff only use "Log in".
+- Must understand within seconds: never miss a checkup (SMS reminders); easy to join (phone browser, no email needed); my pregnancy and records on my phone; run by our own health center.
+- Primary action: "Sign up" → /register (carries the last-period date when entered). Secondary: "Log in".
+- Content: due-date estimate (working), 5 activity types, how it works (sign up → request → SMS reminder → visit), sample of her records, health center info (placeholders until the client provides them), general tips + danger signs (not medical advice), footer with seal, full title, privacy line and credits.
+- Proof: no testimonials, numbers or invented claims. Sample data is labelled as sample.
 
 ## Direction contract
-THESIS: The page is the health center's prenatal appointment card, held in her hand: printed clinic labels, ruled rows, her values written in, each visit stamped, the next "Balik" date always in full ink. It refuses the category default of headline + phone mockup + feature cards.
-
-OWN-WORLD: Beige folder ground #E8DDC9; cream card stock #F3EFE3 with sage-gray ruled lines #C0C3B9; printed labels in deep green #4F6B5E condensed caps; body ink near-black green; filled-in values in a neat ballpoint hand; rubber stamps in sage #769382 (double rule, slight tilt); missed state only in muted brick. Tabbed card heads, punched-hole and perforation details, tabular lining numerals for every date and week. Raises: only the next Balik date at full ink strength; every visit state stays visible; one strict ruled grid; earlier cards sit beneath as you scroll.
-
-STORY: She arrives from a link or the clinic's QR, recognises her own card, types her last period date, watches her due date and current week get written in and a Balik slot stamped with "SMS reminder 1 day before", and taps Sign up to keep the card.
-
-FIRST VIEWPORT: Slim folder bar (seal in a cream disc + "Taysan MaternaCare", language toggle, Log in). One large card dominates: printed header carries the hook; working rows below (Last period [date input] → Due date, Week, Next Balik); the card's bottom row holds "Sign up — keep your card" as the primary button. Landscape card on desktop (header panel left, rows right), portrait on phones.
-
-FORM: The Balik Card (prenatal appointment card), position 3 of 7 on my ordered list; seed key 29ca0809. Code-led. Signature interaction: values are "written" left-to-right and the Balik stamp thumps down; reduced-motion shows the final state.
-
-FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
-
-## Unresolved
-- Health center address, clinic days/hours, contact number (placeholders).
-- Final Filipino copy review by a native speaker.
+THESIS: The page shows her own pregnancy on her phone before she signs up: she types her last period and the phone in the hero becomes her Today screen (her weeks, her due date, her trimester's fetus picture). It refuses the static "headline + screenshot + feature grid" by making the mock-up live.
+OWN-WORLD: Flo-inspired softness in the client palette. Milk ground; rose-to-beige curved hero (bottom edge bulges in an ellipse); white rounded cards (20–28px), pill buttons in leaf green; Phosphor icons in mint/fern/blush/beige circles; Inter at Flo's scale with bold numbers; one dusty-rose accent for hearts, danger signs and the selected card ring. Soft low shadows, no paper, no stamps.
+STORY: She lands, reads "Never miss a checkup again", enters her last period date, watches the phone switch to "her" weeks and due date, sees the services and how reminders work, checks the health center, and taps Sign up with the date carried over.
+FIRST VIEWPORT: Desktop: top nav (seal + name, section links, EN/FIL, Log in, Sign up); left column headline (display 48), lead, the due-date card (date input → due date + weeks) and the Sign up / Log in pills; right column the phone (browser address bar) showing the Today screen. Phone width: header, headline, lead, due-date card, Sign up full-width; the phone follows below.
+FORM: Pinned by the user (Flo-inspired, approved style preview 2026-10-27); no concept-seed roll. Signature interaction: the live phone updating from the due-date input.
+FINISH: unreviewed and undocumented until the finish reviewer returns ship and the documenter rewrites DESIGN.md.

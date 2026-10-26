@@ -1,58 +1,72 @@
 import Image from "next/image";
-import { FolderCard } from "@/components/ui/folder-card";
-import { Stamp } from "@/components/ui/stamp";
+import { CheckIcon, CheckupIcon, ReminderIcon, VaccineIcon, type Icon } from "@/components/icons";
+import { IconCircle } from "@/components/ui/icon-circle";
 import type { Dictionary } from "@/i18n/get-dictionary";
+import { cn } from "@/lib/utils/cn";
 
-// Your records on your phone: the photo beside a fragment of a (sample) card,
-// past visits stamped done and the next balik carrying the SMS stamp.
+const ROW_ICONS: Icon[] = [CheckupIcon, VaccineIcon, CheckupIcon];
+
+// Her records on her phone: a photo beside a sample of the "My visits" list.
 export function RecordsSection({ t }: { t: Dictionary }) {
   const r = t.landing.records;
 
   return (
-    <FolderCard tab={t.landing.tabs.records} labelledBy="records-title" stacked>
-      <div className="grid gap-8 px-6 pt-8 sm:px-10 sm:pt-10 md:grid-cols-[0.85fr_1.15fr] md:gap-12">
+    <section aria-labelledby="records-title" className="px-4 py-16 sm:px-6 lg:py-24">
+      <div className="mx-auto grid max-w-6xl items-center gap-10 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-16">
         <Image
           src="/photos/mother-smiling.jpg"
           alt={r.photoAlt}
           width={1400}
           height={1865}
-          sizes="(min-width: 768px) 38vw, 90vw"
-          className="aspect-[4/5] w-full rounded-md object-cover md:aspect-auto md:h-full md:max-h-[34rem]"
+          sizes="(min-width: 768px) 42vw, 92vw"
+          className="aspect-[4/5] w-full rounded-[2rem] object-cover md:max-h-[36rem]"
         />
 
-        <div className="flex flex-col">
-          <h2 id="records-title" className="display-print text-[clamp(2rem,4.4vw,3rem)] leading-[1]">
+        <div>
+          <h2 id="records-title" className="text-title max-w-[18ch] font-bold">
             {r.title}
           </h2>
-          <p className="mt-4 max-w-[46ch] text-[1.05rem] leading-relaxed text-ink/80">{r.body}</p>
+          <p className="mt-3 max-w-[48ch] text-lg leading-7 text-ink-soft">{r.body}</p>
 
-          <figure className="mt-8 rounded-md border border-rule bg-paper/70">
-            <figcaption className="label-print border-b border-rule px-4 py-2.5 text-[0.7rem]">{r.sampleLabel}</figcaption>
-            <ul>
-              {r.sampleRows.map((row) => (
-                <li key={row.activity} className="flex min-h-14 items-center justify-between gap-4 border-b border-rule px-4 py-2">
-                  <span className="text-[0.95rem] font-semibold">{row.activity}</span>
-                  <span className="flex items-center gap-3">
-                    <span className="hand tnum text-lg whitespace-nowrap text-ink-label">{row.date}</span>
-                    <Stamp tone="done" tilt={-6}>
-                      {t.landing.how.stampDone}
-                    </Stamp>
-                  </span>
-                </li>
-              ))}
-              <li className="flex min-h-14 flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 py-2">
-                <span className="label-print text-[0.72rem]">{t.landing.nextLabel}</span>
-                <span className="flex flex-wrap items-center justify-end gap-3">
-                  <span className="hand text-lg text-ink">{t.landing.nextValue}</span>
-                  <Stamp tone="upcoming" tilt={-5}>
-                    {t.landing.smsStamp}
-                  </Stamp>
-                </span>
-              </li>
+          <figure className="mt-8 rounded-3xl bg-white p-5 shadow-[var(--shadow-raised)] sm:p-6">
+            <figcaption className="flex items-center justify-between gap-3">
+              <span className="text-lg font-semibold">{r.listTitle}</span>
+              <span className="rounded-full bg-cream px-3 py-1 text-caption font-semibold text-ink-soft">{r.sample}</span>
+            </figcaption>
+            <ul className="mt-4 flex flex-col divide-y divide-line">
+              {r.rows.map((row, i) => {
+                const upcoming = i === r.rows.length - 1;
+                return (
+                  <li key={`${row.activity}-${row.date}`} className="flex min-h-16 items-center gap-3.5 py-3">
+                    <IconCircle icon={ROW_ICONS[i]} tone={upcoming ? "blush" : "mint"} size="sm" />
+                    <span className="flex min-w-0 flex-1 flex-col">
+                      <span className="text-[0.95rem] leading-5 font-semibold">{row.activity}</span>
+                      <span className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-sm text-ink-soft">
+                        <span className="tnum whitespace-nowrap">{row.date}</span>
+                        {upcoming && (
+                          <span className="flex items-center gap-1 text-caption font-medium text-rose-deep">
+                            <ReminderIcon weight="fill" aria-hidden className="size-3.5" />
+                            {r.reminder}
+                          </span>
+                        )}
+                      </span>
+                    </span>
+                    <span
+                      className={cn(
+                        "inline-flex h-7 items-center gap-1 rounded-full px-2.5 text-caption font-semibold whitespace-nowrap",
+                        upcoming ? "bg-leaf text-white" : "bg-mint text-leaf"
+                      )}
+                    >
+                      {!upcoming && <CheckIcon weight="bold" aria-hidden className="size-3" />}
+                      {row.status}
+                    </span>
+                  </li>
+                );
+              })}
             </ul>
           </figure>
         </div>
       </div>
-    </FolderCard>
+    </section>
   );
 }

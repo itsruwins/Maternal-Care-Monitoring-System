@@ -61,3 +61,20 @@ export function formatDate(iso: string, locale: string, style: "long" | "short" 
     day: "numeric",
   }).format(date);
 }
+
+export type Trimester = 1 | 2 | 3;
+
+/** Trimester from completed weeks: 1st up to week 13, 2nd weeks 14–27, 3rd from week 28. */
+export function trimesterFromWeeks(weeks: number): Trimester {
+  if (weeks < 14) return 1;
+  if (weeks < 28) return 2;
+  return 3;
+}
+
+/** The Sunday-to-Saturday week containing a date, as YYYY-MM-DD strings. */
+export function weekOf(iso: string): string[] {
+  const date = parseISODate(iso);
+  if (!date) return [];
+  const sunday = addDays(iso, -date.getUTCDay())!;
+  return Array.from({ length: 7 }, (_, i) => addDays(sunday, i)!);
+}

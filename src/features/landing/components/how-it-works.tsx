@@ -1,53 +1,53 @@
-import { FolderCard } from "@/components/ui/folder-card";
-import { Stamp } from "@/components/ui/stamp";
+import { AppointmentIcon, CheckupIcon, SmsIcon, UserIcon, type Icon } from "@/components/icons";
+import { IconCircle } from "@/components/ui/icon-circle";
 import type { Dictionary } from "@/i18n/get-dictionary";
-import { cn } from "@/lib/utils/cn";
 
-// Four slots on the card, in visit order. The first two are stamped done, the
-// third carries the SMS stamp, the fourth waits: every state stays visible.
+const STEP_ICONS: Icon[] = [UserIcon, AppointmentIcon, SmsIcon, CheckupIcon];
+
+// Four steps on a soft timeline, beside a sample of the reminder text she gets.
 export function HowItWorks({ t }: { t: Dictionary }) {
-  const steps = t.landing.how.steps;
+  const how = t.landing.how;
 
   return (
-    <FolderCard tab={t.landing.tabs.how} labelledBy="how-title">
-      <div className="px-6 pt-8 sm:px-10 sm:pt-10">
-        <h2 id="how-title" className="display-print text-[clamp(2rem,4.4vw,3rem)] leading-[1]">
-          {t.landing.how.title}
-        </h2>
-      </div>
-      <ol className="mt-8 grid border-y border-rule sm:grid-cols-2 lg:grid-cols-4">
-        {steps.map((step, index) => (
-          <li
-            key={step.title}
-            className={cn(
-              "flex min-h-52 flex-col gap-3 px-6 py-6 sm:px-8",
-              index > 0 && "border-t border-dashed border-rule sm:border-t-0",
-              index % 2 === 1 && "sm:border-l sm:border-dashed",
-              index >= 2 && "sm:border-t sm:border-dashed lg:border-t-0",
-              index === 2 && "lg:border-l lg:border-dashed"
-            )}
-          >
-            <span className="hand tnum text-4xl leading-none text-ink-label" aria-hidden>
-              {index + 1}
+    <section id="how" aria-labelledby="how-title" className="scroll-mt-6 px-4 py-16 sm:px-6 lg:py-24">
+      <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:gap-20">
+        <div>
+          <h2 id="how-title" className="text-title font-bold">
+            {how.title}
+          </h2>
+          <p className="mt-3 max-w-[46ch] text-lg leading-7 text-ink-soft">{how.intro}</p>
+
+          <ol className="mt-10 flex flex-col">
+            {how.steps.map((step, i) => (
+              <li key={step.title} className="relative flex gap-5 pb-8 last:pb-0">
+                {i < how.steps.length - 1 && (
+                  <span aria-hidden className="absolute top-14 bottom-2 left-6 w-0 border-l-2 border-dashed border-sage" />
+                )}
+                <IconCircle icon={STEP_ICONS[i]} tone={i === 2 ? "leaf" : "mint"} />
+                <div className="pt-1.5">
+                  <h3 className="text-lg leading-6 font-semibold">{step.title}</h3>
+                  <p className="mt-1.5 max-w-[48ch] text-base leading-6 text-ink-soft">{step.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        {/* A sample of the SMS reminder */}
+        <figure className="relative mx-auto w-full max-w-sm rounded-3xl bg-blush p-6 sm:p-8">
+          <figcaption className="text-caption font-semibold tracking-[0.02em] text-rose-deep uppercase">{how.sms.label}</figcaption>
+          <div className="mt-5 flex items-center gap-3">
+            <IconCircle icon={SmsIcon} tone="leaf" size="sm" />
+            <span className="flex flex-col">
+              <span className="text-[0.95rem] leading-5 font-semibold">{how.sms.sender}</span>
+              <span className="tnum text-caption text-ink-soft">{how.sms.time}</span>
             </span>
-            <h3 className="text-lg leading-snug font-bold">{step.title}</h3>
-            <p className="text-[0.95rem] leading-relaxed text-ink/80">{step.body}</p>
-            <div className="mt-auto pt-3">
-              {index < 2 && (
-                <Stamp tone="done" tilt={index === 0 ? -8 : -4}>
-                  {t.landing.how.stampDone}
-                </Stamp>
-              )}
-              {index === 2 && (
-                <Stamp tone="upcoming" tilt={-6}>
-                  {t.landing.smsStamp}
-                </Stamp>
-              )}
-              {index === 3 && <span className="block h-7 w-24 rounded-sm border-2 border-dashed border-rule" aria-hidden />}
-            </div>
-          </li>
-        ))}
-      </ol>
-    </FolderCard>
+          </div>
+          <p className="mt-4 rounded-2xl rounded-tl-md bg-white px-4 py-3.5 text-[0.95rem] leading-6 shadow-[var(--shadow-soft)]">
+            {how.sms.body}
+          </p>
+        </figure>
+      </div>
+    </section>
   );
 }

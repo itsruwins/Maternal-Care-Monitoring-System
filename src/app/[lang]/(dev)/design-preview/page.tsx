@@ -32,7 +32,6 @@ import { InsightCard, InsightRow } from "@/components/ui/insight-card";
 import { Input } from "@/components/ui/input";
 import { WeekStrip, type WeekDay } from "@/components/ui/week-strip";
 import { LoginDialog } from "@/features/auth/components/login-dialog";
-import { TodayPhone, type TodayPhoneCopy } from "@/features/landing/components/today-phone";
 
 export const metadata = { title: "Style preview", robots: { index: false } };
 
@@ -82,20 +81,6 @@ const ICONS: { name: string; meaning: string; icon: Icon; tone: "fern" | "leaf" 
   { name: "Heart", meaning: "care, favourite", icon: HeartIcon, tone: "blush" },
 ];
 
-const PHONE_COPY: TodayPhoneCopy = {
-  description: "Sample of the mother's Today screen: 24 weeks, 3 days pregnant, next visit on 6 November.",
-  date: "November 4",
-  weekdays: ["S", "M", "T", "W", "T", "F", "S"],
-  today: "Today",
-  weeks: "24 weeks, 3 days",
-  due: "Due date: Feb 12, 2027",
-  forYou: "For you today",
-  nextVisit: { title: "Next visit", date: "Nov 6" },
-  tip: { title: "Take your iron daily" },
-  danger: { title: "Danger signs to watch" },
-  request: { title: "Request a visit" },
-  tabs: { today: "Today", visits: "Visits", book: "Book", sms: "SMS", me: "Me" },
-};
 
 const WEEK: WeekDay[] = [
   { key: "1", weekday: "S", day: 1, label: "" },
@@ -140,7 +125,7 @@ export default function DesignPreviewPage() {
             <h1 className="text-display max-w-[14ch] font-bold">Style preview: soft, round, feminine</h1>
             <p className="mt-4 max-w-[48ch] text-lg text-ink-soft">
               Phase 1R step 1. Your palette with a dusty-rose accent, Inter at Flo&apos;s sizes, and Phosphor icons in
-              Flo&apos;s three styles. The phone shows how they come together on the mother&apos;s Today screen (sample data).
+              Flo&apos;s three styles. The landing page shows them together on the mother&apos;s Today screen.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Button size="lg">
@@ -153,7 +138,6 @@ export default function DesignPreviewPage() {
               </LoginDialog>
             </div>
           </div>
-          <TodayPhone copy={PHONE_COPY} className="mx-auto" />
         </div>
       </CurvedHero>
 

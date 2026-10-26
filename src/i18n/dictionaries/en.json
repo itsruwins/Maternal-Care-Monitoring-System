@@ -37,24 +37,75 @@
   },
   "landing": {
     "cardTab": "Barangay Taysan Health Center · Prenatal appointment card",
+    "cardTabShort": "Prenatal appointment card",
     "cardCenter": "Barangay Taysan Health Center",
+    "nav": {
+      "label": "Sections",
+      "how": "How it works",
+      "services": "Services",
+      "center": "Health center",
+      "tips": "Tips"
+    },
     "headline": "Never miss a checkup again.",
-    "lead": "Your health center's appointment card, now on your phone. We text you before every visit.",
-    "lmpLabel": "First day of your last period",
-    "lmpHint": "Try it. We'll fill in your card.",
-    "lmpInvalid": "Enter a date within the last 10 months.",
-    "dueLabel": "Due date",
-    "weekLabel": "Weeks pregnant",
-    "weekValue": "{weeks} weeks, {days} days",
-    "nextLabel": "Next balik",
-    "nextValue": "Set by your midwife",
-    "smsStamp": "SMS reminder",
-    "estimateNote": "Estimates only. Your midwife confirms your dates.",
-    "signup": "Sign up and keep your card",
-    "login": "I already have an account",
+    "lead": "Your prenatal records from the Barangay Taysan Health Center, on your phone. We text you before every visit.",
+    "browserNote": "Works in your phone's browser. No app to install.",
+    "estimate": {
+      "title": "How far along are you?",
+      "weeksValue": "{weeks} weeks",
+      "valueText": "{weeks} weeks, {trimester}",
+      "decrease": "One week less",
+      "increase": "One week more",
+      "trimesterShort": [
+        "1st",
+        "2nd",
+        "3rd"
+      ],
+      "trimesterNames": [
+        "1st trimester",
+        "2nd trimester",
+        "3rd trimester"
+      ],
+      "trimesterLabel": "Trimester",
+      "dueLabel": "Due around",
+      "note": "Estimates only. Your midwife confirms your dates."
+    },
+    "signup": "Sign up",
+    "login": "Log in",
     "noEmail": "No email needed.",
+    "facts": [
+      {
+        "title": "No email needed",
+        "body": "A username and password are enough."
+      },
+      {
+        "title": "Any phone browser",
+        "body": "Open the website. Nothing to install."
+      },
+      {
+        "title": "English and Filipino",
+        "body": "Switch the language anytime."
+      },
+      {
+        "title": "Private to you",
+        "body": "Only you and your health center see your records."
+      }
+    ],
+    "heroCards": {
+      "photoAlt": "Illustration of a pregnant mother gently holding her belly",
+      "description": "Example cards: weeks pregnant with the due date, a text reminder from the health center, and the next visit.",
+      "sample": "Sample",
+      "yours": "Your estimate",
+      "dueOn": "Due around {date}",
+      "sampleDue": "Feb 2027",
+      "smsSender": "Taysan Health Center",
+      "smsBody": "Reminder: your prenatal checkup is on Fri, Nov 6.",
+      "nextVisit": "Next visit",
+      "sampleNext": "Fri, Nov 6",
+      "nextVisitUnset": "Set by your midwife"
+    },
     "how": {
       "title": "How it works",
+      "intro": "Four simple steps, and the health center does the remembering.",
       "steps": [
         {
           "title": "Sign up on your phone",
@@ -69,11 +120,16 @@
           "body": "We text you before every checkup, vaccine, lab test or class."
         },
         {
-          "title": "Visit and get stamped",
-          "body": "Your midwife records the visit and your card updates. Nothing gets lost."
+          "title": "Visit the health center",
+          "body": "Your midwife records the visit and your records update. Nothing gets lost."
         }
       ],
-      "stampDone": "Done"
+      "sms": {
+        "label": "Sample text message",
+        "sender": "Brgy. Taysan Health Center",
+        "time": "8:00 AM",
+        "body": "Hi Maria! Reminder: your prenatal checkup is on Friday, Nov 6 at the Barangay Taysan Health Center. Please bring your booklet."
+      }
     },
     "services": {
       "title": "What we remind you about",
@@ -105,17 +161,26 @@
       "title": "Your records, on your phone",
       "body": "See your due date, how many weeks you are, your past visits and your next appointments anytime. Only you and your health center can see them.",
       "photoAlt": "A smiling pregnant woman standing outdoors",
-      "sampleLabel": "Sample card",
-      "sampleRows": [
+      "listTitle": "My visits",
+      "sample": "Sample",
+      "rows": [
         {
           "activity": "Prenatal checkup",
-          "date": "Aug 12"
+          "date": "Aug 12",
+          "status": "Done"
         },
         {
           "activity": "Tetanus toxoid vaccine",
-          "date": "Sep 9"
+          "date": "Sep 9",
+          "status": "Done"
+        },
+        {
+          "activity": "Prenatal checkup",
+          "date": "Nov 6",
+          "status": "Booked"
         }
-      ]
+      ],
+      "reminder": "SMS reminder"
     },
     "center": {
       "title": "Run by our own health center",
@@ -145,18 +210,15 @@
         "Water breaking or strong pains before your due date"
       ]
     },
+    "closing": {
+      "title": "Ready when you are",
+      "body": "Sign up in a few minutes on your phone. No email needed."
+    },
     "footer": {
       "privacy": "Your records can be seen only by you and authorized health center staff.",
-      "photos": "Photos: Justyn Abacajan and Ron Dichoso (Pexels)."
-    },
-    "tabs": {
-      "how": "4 steps",
-      "services": "5 activities",
-      "records": "Private to you",
-      "center": "Barangay Taysan",
-      "tips": "Health education"
-    },
-    "cardTabShort": "Prenatal appointment card"
+      "photos": "Photos: Justyn Abacajan and Ron Dichoso (Pexels).",
+      "staff": "Health center staff: log in with the account your admin gave you."
+    }
   },
   "register": {
     "title": "Sign up",

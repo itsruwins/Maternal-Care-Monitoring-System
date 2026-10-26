@@ -37,24 +37,75 @@
   },
   "landing": {
     "cardTab": "Barangay Taysan Health Center · Card ng prenatal na balik",
+    "cardTabShort": "Card ng prenatal na balik",
     "cardCenter": "Barangay Taysan Health Center",
+    "nav": {
+      "label": "Mga bahagi",
+      "how": "Paano gumagana",
+      "services": "Serbisyo",
+      "center": "Health center",
+      "tips": "Mga paalala"
+    },
     "headline": "Hindi ka na mahuhuli sa checkup.",
-    "lead": "Ang appointment card mo sa health center, nasa cellphone mo na. Ite-text ka namin bago ang bawat balik.",
-    "lmpLabel": "Unang araw ng huling regla",
-    "lmpHint": "Subukan mo. Pupunan namin ang card mo.",
-    "lmpInvalid": "Maglagay ng petsa sa loob ng huling 10 buwan.",
-    "dueLabel": "Kabuwanan",
-    "weekLabel": "Ilang linggo nang buntis",
-    "weekValue": "{weeks} linggo, {days} araw",
-    "nextLabel": "Susunod na balik",
-    "nextValue": "Itatakda ng iyong midwife",
-    "smsStamp": "SMS paalala",
-    "estimateNote": "Tantiya lamang. Ang iyong midwife ang magkukumpirma ng mga petsa.",
-    "signup": "Mag-sign up at itago ang card",
-    "login": "May account na ako",
+    "lead": "Ang prenatal records mo mula sa Barangay Taysan Health Center, nasa cellphone mo na. Ite-text ka namin bago ang bawat balik.",
+    "browserNote": "Gumagana sa browser ng cellphone mo. Walang app na ii-install.",
+    "estimate": {
+      "title": "Ilang linggo ka nang buntis?",
+      "weeksValue": "{weeks} linggo",
+      "valueText": "{weeks} linggo, {trimester}",
+      "decrease": "Bawasan ng isang linggo",
+      "increase": "Dagdagan ng isang linggo",
+      "trimesterShort": [
+        "Una",
+        "Ikalawa",
+        "Ikatlo"
+      ],
+      "trimesterNames": [
+        "Unang trimester",
+        "Ikalawang trimester",
+        "Ikatlong trimester"
+      ],
+      "trimesterLabel": "Trimester",
+      "dueLabel": "Tantiyang kabuwanan",
+      "note": "Tantiya lamang. Ang iyong midwife ang magkukumpirma ng mga petsa."
+    },
+    "signup": "Mag-sign up",
+    "login": "Mag-log in",
     "noEmail": "Hindi kailangan ng email.",
+    "facts": [
+      {
+        "title": "Hindi kailangan ng email",
+        "body": "Sapat na ang username at password."
+      },
+      {
+        "title": "Kahit anong browser",
+        "body": "Buksan lang ang website. Walang ii-install."
+      },
+      {
+        "title": "Ingles at Filipino",
+        "body": "Puwedeng palitan ang wika anumang oras."
+      },
+      {
+        "title": "Para sa iyo lang",
+        "body": "Ikaw at ang health center lang ang makakakita ng records mo."
+      }
+    ],
+    "heroCards": {
+      "photoAlt": "Larawan ng isang buntis na marahang hawak ang kanyang tiyan",
+      "description": "Mga halimbawang card: ilang linggo nang buntis at ang kabuwanan, text na paalala mula sa health center, at ang susunod na balik.",
+      "sample": "Halimbawa",
+      "yours": "Tantiya mo",
+      "dueOn": "Kabuwanan: mga {date}",
+      "sampleDue": "Peb 2027",
+      "smsSender": "Taysan Health Center",
+      "smsBody": "Paalala: ang prenatal checkup mo ay sa Biy, Nob 6.",
+      "nextVisit": "Susunod na balik",
+      "sampleNext": "Biy, Nob 6",
+      "nextVisitUnset": "Itatakda ng midwife"
+    },
     "how": {
       "title": "Paano ito gumagana",
+      "intro": "Apat na madaling hakbang, at ang health center na ang tatanda para sa iyo.",
       "steps": [
         {
           "title": "Mag-sign up sa cellphone",
@@ -69,11 +120,16 @@
           "body": "Ite-text ka namin bago ang bawat checkup, bakuna, lab test o klase."
         },
         {
-          "title": "Bumisita at matatakan",
-          "body": "Itatala ng midwife ang pagbisita at maa-update ang card mo. Walang mawawala."
+          "title": "Pumunta sa health center",
+          "body": "Itatala ng midwife ang pagbisita at maa-update ang records mo. Walang mawawala."
         }
       ],
-      "stampDone": "Tapos"
+      "sms": {
+        "label": "Halimbawang text",
+        "sender": "Brgy. Taysan Health Center",
+        "time": "8:00 AM",
+        "body": "Hi Maria! Paalala: ang prenatal checkup mo ay sa Biyernes, Nob 6 sa Barangay Taysan Health Center. Pakidala ang booklet mo."
+      }
     },
     "services": {
       "title": "Mga ipapaalala namin",
@@ -105,17 +161,26 @@
       "title": "Ang records mo, nasa cellphone mo",
       "body": "Makikita mo anumang oras ang kabuwanan mo, ilang linggo ka nang buntis, ang mga nakaraang balik at ang mga susunod na appointment. Ikaw at ang health center lang ang makakakita nito.",
       "photoAlt": "Isang nakangiting buntis na nakatayo sa labas",
-      "sampleLabel": "Halimbawang card",
-      "sampleRows": [
+      "listTitle": "Mga balik ko",
+      "sample": "Halimbawa",
+      "rows": [
         {
           "activity": "Prenatal checkup",
-          "date": "Ago 12"
+          "date": "Ago 12",
+          "status": "Tapos"
         },
         {
           "activity": "Bakuna laban sa tetano",
-          "date": "Set 9"
+          "date": "Set 9",
+          "status": "Tapos"
+        },
+        {
+          "activity": "Prenatal checkup",
+          "date": "Nob 6",
+          "status": "Naka-book"
         }
-      ]
+      ],
+      "reminder": "SMS paalala"
     },
     "center": {
       "title": "Pinapatakbo ng sarili nating health center",
@@ -145,18 +210,15 @@
         "Pagputok ng panubigan o matinding sakit bago ang kabuwanan"
       ]
     },
+    "closing": {
+      "title": "Handa ka na ba?",
+      "body": "Mag-sign up sa loob ng ilang minuto gamit ang cellphone. Hindi kailangan ng email."
+    },
     "footer": {
       "privacy": "Ikaw at ang mga awtorisadong staff ng health center lamang ang makakakita ng iyong records.",
-      "photos": "Mga larawan: Justyn Abacajan at Ron Dichoso (Pexels)."
-    },
-    "tabs": {
-      "how": "4 hakbang",
-      "services": "5 serbisyo",
-      "records": "Para sa iyo lang",
-      "center": "Barangay Taysan",
-      "tips": "Health education"
-    },
-    "cardTabShort": "Card ng prenatal na balik"
+      "photos": "Mga larawan: Justyn Abacajan at Ron Dichoso (Pexels).",
+      "staff": "Staff ng health center: mag-log in gamit ang account na ibinigay ng admin."
+    }
   },
   "register": {
     "title": "Mag-sign up",

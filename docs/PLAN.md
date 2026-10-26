@@ -2,7 +2,7 @@
 
 Barangay Taysan, Legazpi City · Next.js 16 + Supabase · Hosted on Vercel
 
-Status: **Phase 0 approved. Phase 1 built (2026-10-26). Redesign (Phase 1R, Flo-inspired): step 1 (style base) built 2026-10-27, waiting for your approval of the preview at `/design-preview`.** Each phase ends with a demo and your sign-off before the next starts.
+Status: **Phase 0 approved. Phase 1 built (2026-10-26). Redesign (Phase 1R, Flo-inspired): step 1 (style base) approved; step 2 (landing page) built 2026-10-27, waiting for your review.** Each phase ends with a demo and your sign-off before the next starts.
 
 ---
 
@@ -66,7 +66,9 @@ Changed 2026-10-27: the "Balik Card" look (paper card, stamps, handwriting) is r
   2. Feature icons: a white or filled icon inside a soft colored circle (green, sage, beige or rose).
   3. Actions: "+" and similar inside a filled circle.
   All icons come from one shared folder, so the same icon always means the same thing (for example: baby = pregnancy, calendar-heart = appointment, syringe = vaccine).
-- **Signature mobile pattern** (mother portal, from Flo's pregnancy screen): a week strip at the top with appointment days circled, a curved hero with "24 weeks, 3 days" in big bold type, then a sideways row of rounded insight cards (next visit, tip of the week, danger signs).
+- **A web app, not a mobile app.** It is one responsive website. Desktop and tablet get real web layouts (top menu or sidebar, wider grids). The Flo-style layout applies at phone widths. Nothing suggests an app download (no app-store badges, no "install the app").
+- **Signature phone layout** (mother portal, from Flo's pregnancy screen): a week strip at the top with appointment days circled, a curved hero with the fetus picture and "24 weeks, 3 days" in big bold type, then a sideways row of rounded insight cards (next visit, tip of the week, danger signs).
+- **Baby picture** (like Flo's "Your baby" icon): a soft baby-in-womb glyph in a rose circle, a little bigger each trimester (weeks 1–13, 14–27, 28–40+). Glyph from Health Icons (MIT), `src/components/icons/fetus-icon.tsx`; component `components/shared/fetus-picture.tsx`. Shown on the mother's Today screen, in the landing hero, and on the staff mother profile. (Realistic 3D renders were tried on 2026-10-27 and dropped as too harsh.)
 - **Design files:** `PRODUCT.md` (product facts, kept) and `DESIGN.md` (rewritten for the new style after the build).
 - **Logo:** the barangay seal shown small on a neutral circle, next to a clean text wordmark. Its bright colors are not used in the UI palette.
 - **Tools:** `/impeccable` to set the design system and review screens, `/apple-design` + `emil-design-eng` for motion and interaction polish.
@@ -242,7 +244,8 @@ Only the look changes. Login, sign-up, password recovery, language switch, datab
    - **Checkpoint:** a short preview of colors, type and icons for your approval before the pages are built.
 2. **Landing page (new layout):**
    - Header: seal + name, language switch, Log in, Sign up (pill).
-   - Hero: curved soft-tint background, big Inter headline, and a phone mock-up of the mother portal "Today" screen, built in code and not a picture. It shows the week strip, weeks pregnant and the next visit.
+   - Hero: curved soft-tint background, big extra-bold Inter headline, a **"How far along are you?" weeks slider** (4–42 weeks, −/+ buttons, trimester labels; shows the trimester and an estimated due month; replaced the last-period date box on 2026-10-27 because picking a date was a hassle), one Sign up button below it (Log in stays in the header), and the line "Works in your phone's browser, no app to install".
+   - Hero picture (changed 2026-10-27, replacing the phone mock-up): a soft illustration of a pregnant mother holding her belly ([Pixabay](https://pixabay.com/vectors/woman-pregnant-mother-mom-sofa-8524046/), free, no credit needed) in a rose arch, with a gently glowing baby glyph on her belly. Floating cards: her weeks with the baby picture (updates live from the weeks slider), the SMS reminder and the next visit on desktop; phones and tablets show only the weeks card so nothing covers her face or the baby.
    - Due-date estimate: the working LMP → due date feature, restyled as a rounded card.
    - Services: the 5 activity types, each with an icon circle.
    - How it works: 4 steps with icons (sign up → request → SMS reminder → visit).
@@ -256,11 +259,16 @@ Done when: the landing page and all auth pages use the new style on phone and de
 
 **Step 1 built (2026-10-27):** Phosphor 2.1.10 installed; Inter replaces Archivo; new tokens (milk, leaf, mint, rose, blush, rose deep, soft shadows, 8–36px radius, Inter scale); pill buttons, rounded inputs, the login dialog as a bottom sheet on phones; shared icon set `src/components/icons/`; new `icon-circle`, `week-strip`, `insight-card`, `curved-hero`; the Today phone mock-up `features/landing/components/today-phone.tsx`. Preview page `/design-preview` works only in development. Old card styles stay as aliases until steps 2–3 replace the pages.
 
+**Step 2 built (2026-10-27):** new landing page: header with section links (desktop), rose curved hero with the working due-date estimate driving the phone mock-up (sample data until she enters her last period, then her weeks, due date and trimester picture), quick facts, how it works with a sample SMS, services, a sample "My visits" list, health center, tips + danger signs, closing call to action, footer. English and Filipino text updated. Old landing components removed. The fetus picture is a placeholder (`components/shared/fetus-picture.tsx`) until the 3D renders exist. The phone mock-up (drawn as an iPhone 18 Pro Max in Burgundy) was later replaced by the mother + cards hero.
+
 **After this phase**, the Phase 1 testing checklist (log in, sign up, password reset) is done once, on the new design.
 
 ## Phase 2 — App shell + Admin
 
-- Dashboard layout: sidebar (staff), bottom navigation (mothers on mobile) in the Flo style (outline icons, filled when selected, small labels), top bar with language switch and profile menu.
+- Dashboard layout (responsive web):
+  - **Staff:** sidebar on desktop and tablet, collapsing to a menu button on phones.
+  - **Mothers:** a top menu on desktop and tablet; on phone screens only, a bottom tab bar in the Flo style (outline icons, filled when selected, small labels).
+  - Top bar with language switch and profile menu.
 - **Admin:**
   - User accounts: list and search, create Health Worker / Admin accounts with `health_worker` profiles, activate or deactivate, reset passwords
   - Activity types: edit names, descriptions and `reminder_days_before`
@@ -272,7 +280,8 @@ Done when: the landing page and all auth pages use the new style on phone and de
 - **Register a mother at the health center** (`user_id` empty, `registered_by` set), with an optional "create login for her" step later.
 - **Mother profile with tabs:** overview, pregnancy (current + history), visits, appointments, SMS log, follow-ups.
 - **Pregnancy management:** add past pregnancies (DELIVERED/ENDED with outcome); close the current one with an outcome. Rule enforced: only one ACTIVE pregnancy per mother.
-- **Mother portal:** view her own profile, pregnancy summary (AOG, EDD countdown) and history. The home ("Today") screen follows the Flo pregnancy screen: week strip with appointment days, curved hero with weeks pregnant, insight cards (next visit, tip of the week, danger signs).
+- **Mother portal:** view her own profile, pregnancy summary (AOG, EDD countdown) and history. The home ("Today") screen follows the Flo pregnancy screen: week strip with appointment days, curved hero with the trimester's 3D fetus picture and weeks pregnant, insight cards (next visit, tip of the week, danger signs). On desktop the same content sits in a wider two-column layout.
+- **Staff mother profile:** a small trimester fetus picture beside AOG and EDD on the pregnancy tab.
 
 ## Phase 4 — Appointments
 
@@ -325,7 +334,7 @@ Done when: the landing page and all auth pages use the new style on phone and de
 ## Open items
 
 1. `SUPABASE_SECRET_KEY` in `.env.local` (Phase 0).
-2. Health center details for the landing page (Phase 1).
+2. Health center contact number for the landing page (address and clinic hours received 2026-10-27).
 3. HTTPSMS phone + API key (Phase 7).
 4. Manuscript updates listed on ERD page 2 (scope, named activities, single health center) — outside the code, for you to handle.
 

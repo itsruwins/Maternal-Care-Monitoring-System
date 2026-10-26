@@ -60,7 +60,7 @@ export function SiteFooter({ t, locale }: { t: Dictionary; locale: Locale }) {
               {details.map(({ label, value, icon: DetailIcon }) => (
                 <li key={label} className="flex gap-2.5 text-[0.95rem] leading-6 text-ink-soft">
                   <DetailIcon weight="regular" aria-hidden className="mt-0.5 size-5 shrink-0 text-leaf" />
-                  <span>
+                  <span className="text-balance">
                     <span className="sr-only">{label}: </span>
                     {isPlaceholder(value) ? `${label}: ${t.common.tbd}` : value}
                   </span>

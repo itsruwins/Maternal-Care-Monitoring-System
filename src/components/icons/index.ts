@@ -55,6 +55,7 @@ export {
 
   // Actions & feedback
   PlusIcon,
+  MinusIcon,
   CheckIcon,
   CheckCircleIcon,
   XIcon as CloseIcon,

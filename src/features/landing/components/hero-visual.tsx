@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Image from "next/image";
 import { AppointmentIcon, SmsIcon } from "@/components/icons";
 import { FetusIcon } from "@/components/icons/fetus-icon";
@@ -40,7 +41,7 @@ export function HeroVisual({
           it, her head rising a little above the top. A soft glowing circle on
           her belly shows the baby (same glyph as the weeks card). */}
       <div className="relative aspect-[4/5]">
-        <div className="absolute inset-0 overflow-hidden rounded-t-[999px] rounded-b-[2.5rem] bg-[linear-gradient(180deg,#f2d9d2_0%,#efe2d3_60%,#e8ddc9_100%)] shadow-[var(--shadow-raised)]">
+        <div className="absolute inset-0 overflow-hidden rounded-t-[999px] rounded-b-[2.5rem] bg-[linear-gradient(180deg,#eac6be_0%,#f0dcd2_55%,#e8ddc9_100%)] shadow-[var(--shadow-raised)] ring-1 ring-white/70">
           <span className="absolute -bottom-1/4 left-1/2 aspect-square w-[130%] -translate-x-1/2 rounded-full border-[24px] border-white/40" />
         </div>
         <div className="absolute inset-x-0 -top-[6%] bottom-0 [clip-path:inset(0_round_0_0_2.5rem_2.5rem)]">
@@ -66,6 +67,7 @@ export function HeroVisual({
         aria-hidden
         className="absolute top-[50%] left-0 hidden w-[14rem] animate-float rounded-2xl bg-white p-4 shadow-[var(--shadow-raised)] [animation-delay:-2s] lg:block"
       >
+        <SampleBadge>{copy.sample}</SampleBadge>
         <div className="flex items-center gap-2.5">
           <IconCircle icon={SmsIcon} tone="leaf" size="sm" className="size-8 [&_svg]:size-4" />
           <span className="text-[0.8125rem] leading-4 font-semibold whitespace-nowrap">{copy.smsSender}</span>
@@ -80,9 +82,7 @@ export function HeroVisual({
           key={view.weeks}
           className="relative flex animate-in items-center gap-3 rounded-2xl bg-white py-3 pr-4 pl-3 shadow-[var(--shadow-float)] fade-in slide-in-from-bottom-2 duration-500 ease-[var(--ease-out-expo)]"
         >
-          <span className="absolute -top-2.5 left-3 rounded-full bg-leaf px-2 py-0.5 text-[0.6875rem] leading-4 font-semibold text-white">
-            {view.isEstimate ? copy.yours : copy.sample}
-          </span>
+          <SampleBadge>{view.isEstimate ? copy.yours : copy.sample}</SampleBadge>
           <FetusPicture trimester={view.trimester} className="w-12" />
           <span className="flex flex-col">
             <span className="tnum text-[1.0625rem] leading-6 font-bold tracking-[-0.01em] whitespace-nowrap">{view.weeks}</span>
@@ -96,6 +96,7 @@ export function HeroVisual({
         aria-hidden
         className="absolute right-1 bottom-2 hidden animate-float items-center gap-2.5 rounded-2xl bg-white py-3 pr-5 pl-3 shadow-[var(--shadow-raised)] [animation-delay:-4s] lg:flex"
       >
+        {view.nextVisit && <SampleBadge>{copy.sample}</SampleBadge>}
         <IconCircle icon={AppointmentIcon} tone="blush" size="sm" />
         <span className="flex flex-col">
           <span className="text-caption leading-4 text-ink-soft">{copy.nextVisit}</span>
@@ -105,5 +106,14 @@ export function HeroVisual({
         </span>
       </div>
     </figure>
+  );
+}
+
+// The small leaf pill on a floating card: "Sample" (or "Your estimate").
+function SampleBadge({ children }: { children: ReactNode }) {
+  return (
+    <span className="absolute -top-2.5 left-3 rounded-full bg-leaf px-2 py-0.5 text-[0.6875rem] leading-4 font-semibold text-white">
+      {children}
+    </span>
   );
 }

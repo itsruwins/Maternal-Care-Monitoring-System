@@ -7,7 +7,7 @@ import { UserBadge } from "@/features/auth/components/user-badge";
 export default function DashboardLayout({ children }: LayoutProps<"/[lang]">) {
   return (
     <div className="flex flex-1 flex-col">
-      <header className="border-b border-rule bg-card-stock/70 px-4 py-3 sm:px-6">
+      <header className="border-b border-line bg-white px-4 py-3 sm:px-6">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3">
           <BrandMark />
           <div className="flex items-center gap-3">

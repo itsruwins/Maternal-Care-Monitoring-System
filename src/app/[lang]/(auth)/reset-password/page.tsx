@@ -15,7 +15,7 @@ export default async function ResetPasswordPage() {
 
   return (
     <AuthCard title={t.reset.title} subtitle={t.reset.subtitle}>
-      <Suspense fallback={<p className="text-ink-label">{t.common.loading}</p>}>
+      <Suspense fallback={<p className="text-ink-soft">{t.common.loading}</p>}>
         <ResetGate />
       </Suspense>
     </AuthCard>

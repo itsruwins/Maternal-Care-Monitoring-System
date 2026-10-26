@@ -1,3 +1,5 @@
+import { UserIcon } from "@/components/icons";
+import { IconCircle } from "@/components/ui/icon-circle";
 import { format } from "@/i18n/format";
 import { getServerI18n } from "@/i18n/server";
 import { getCurrentUser } from "@/lib/auth/session";
@@ -11,7 +13,10 @@ export async function UserBadge() {
 
   return (
     <div className="flex items-center gap-3 text-sm">
-      <span className="hidden text-ink-label sm:inline">{format(t.dashboard.signedInAs, { username: user.username })}</span>
+      <span className="hidden items-center gap-2 text-ink-soft sm:inline-flex">
+        <IconCircle icon={UserIcon} tone="mint" size="sm" />
+        {format(t.dashboard.signedInAs, { username: user.username })}
+      </span>
       <LogoutButton />
     </div>
   );

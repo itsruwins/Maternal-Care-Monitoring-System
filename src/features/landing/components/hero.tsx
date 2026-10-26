@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
-import { ArrowRightIcon, PhoneIcon } from "@/components/icons";
+import { ArrowRightIcon, MinusIcon, PhoneIcon, PlusIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { AuthDialogTrigger } from "@/features/auth/components/auth-dialog";
 import { useDictionary } from "@/i18n/dictionary-provider";
@@ -96,9 +96,8 @@ export function Hero() {
             aria-label={est.decrease}
             disabled={weeks <= MIN_WEEKS}
             onClick={() => change(weeks - 1)}
-            className="text-xl font-bold"
           >
-            −
+            <MinusIcon weight="bold" aria-hidden />
           </Button>
           <div className="relative min-w-0 flex-1">
             <input
@@ -135,9 +134,8 @@ export function Hero() {
             aria-label={est.increase}
             disabled={weeks >= MAX_WEEKS}
             onClick={() => change(weeks + 1)}
-            className="text-xl font-bold"
           >
-            +
+            <PlusIcon weight="bold" aria-hidden />
           </Button>
         </div>
 

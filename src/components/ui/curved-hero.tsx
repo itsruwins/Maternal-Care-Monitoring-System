@@ -6,7 +6,8 @@ import { cn } from "@/lib/utils/cn"
 type Tone = "rose" | "green" | "beige"
 
 const toneClass: Record<Tone, string> = {
-  rose: "bg-[radial-gradient(120%_90%_at_50%_0%,#f6e6e1_0%,#f2dfd6_55%,#ead9c9_100%)]",
+  // ends at #eedfd2 so secondary text (ink soft) keeps 4.6:1 at the bottom
+  rose: "bg-[radial-gradient(120%_90%_at_50%_0%,#f6e6e1_0%,#f2dfd6_55%,#eedfd2_100%)]",
   green: "bg-[radial-gradient(120%_90%_at_50%_0%,#eef2ec_0%,#e3eae4_55%,#d6e0d8_100%)]",
   beige: "bg-[radial-gradient(120%_90%_at_50%_0%,#f7f1e6_0%,#efe6d6_55%,#e8ddc9_100%)]",
 }

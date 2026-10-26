@@ -62,16 +62,17 @@ export function HowItWorks({ t }: { t: Dictionary }) {
               aria-hidden
               className="pointer-events-none absolute -right-1/3 -bottom-1/3 aspect-square w-3/4 rounded-full border-[22px] border-white/35"
             />
-            <figcaption className="relative text-caption font-semibold tracking-[0.02em] text-rose-deep uppercase">
-              {how.sms.label}
-            </figcaption>
+            <figcaption className="sr-only">{how.sms.label}</figcaption>
 
             {/* thread header */}
-            <div className="relative mt-4 flex items-center gap-3 border-b border-rose/40 pb-4">
+            <div className="relative flex items-center gap-3 border-b border-rose/40 pb-4">
               <IconCircle icon={SmsIcon} tone="leaf" size="md" />
-              <span className="flex min-w-0 flex-col">
+              <span className="flex min-w-0 flex-1 flex-col">
                 <span className="truncate text-[0.95rem] leading-5 font-semibold">{how.sms.sender}</span>
                 <span className="text-caption text-ink-soft">{how.sms.meta}</span>
+              </span>
+              <span aria-hidden className="shrink-0 rounded-full bg-white px-3 py-1 text-caption font-semibold text-ink-soft">
+                {how.sms.sample}
               </span>
             </div>
 

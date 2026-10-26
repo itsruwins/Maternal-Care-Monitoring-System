@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Kalam } from "next/font/google";
+import { Inter } from "next/font/google";
 import { notFound } from "next/navigation";
 import { lang } from "next/root-params";
 import { Toaster } from "sonner";
@@ -14,13 +14,6 @@ const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin", "latin-ext"],
   axes: ["opsz"],
-});
-
-// Legacy: only the old landing card still uses it. Removed in Phase 1R step 2.
-const kalam = Kalam({
-  variable: "--font-kalam",
-  subsets: ["latin", "latin-ext"],
-  weight: ["400", "700"],
 });
 
 export const metadata: Metadata = {
@@ -50,7 +43,7 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
   const dictionary = await getDictionary(locale);
 
   return (
-    <html lang={locale} className={`${inter.variable} ${kalam.variable} h-full`}>
+    <html lang={locale} className={`${inter.variable} h-full`}>
       <body className="flex min-h-full flex-col">
         <DictionaryProvider locale={locale} dictionary={dictionary}>
           {children}

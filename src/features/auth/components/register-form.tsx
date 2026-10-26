@@ -171,11 +171,11 @@ export function RegisterForm() {
       <RegisterStepper current={step} />
 
       <div className="px-6 pt-2 pb-8 sm:px-8">
-        <h2 ref={headingRef} tabIndex={-1} className="text-xl font-bold tracking-[-0.015em] outline-none">
+        <h2 ref={headingRef} tabIndex={-1} className="sr-only">
           {stepKey === "review" ? t.register.review.title : t.register.steps[stepKey]}
         </h2>
 
-        <div className="mt-5 grid gap-5 sm:grid-cols-2">
+        <div className="grid gap-5 pt-1 sm:grid-cols-2">
           {stepKey === "account" && (
             <>
               <FormField

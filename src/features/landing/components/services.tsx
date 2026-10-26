@@ -4,12 +4,14 @@ import type { Dictionary } from "@/i18n/get-dictionary";
 import { cn } from "@/lib/utils/cn";
 
 // The five activity types, in the order of the dictionary list.
-const SERVICES: { icon: Icon; tile: string; circle: "fern" | "white" | "leaf" | "rose" }[] = [
-  { icon: CheckupIcon, tile: "bg-mint", circle: "leaf" },
-  { icon: VaccineIcon, tile: "bg-blush", circle: "white" },
-  { icon: SupplementIcon, tile: "bg-beige", circle: "white" },
-  { icon: LabTestIcon, tile: "bg-white", circle: "fern" },
-  { icon: EducationIcon, tile: "bg-white", circle: "rose" },
+// One rule for every tile: a soft tinted tile with a white icon circle; the
+// glyph takes the tile's own deep colour (green on mint/beige, rose on blush).
+const SERVICES: { icon: Icon; tile: string; glyph: string }[] = [
+  { icon: CheckupIcon, tile: "bg-mint", glyph: "text-leaf" },
+  { icon: VaccineIcon, tile: "bg-blush", glyph: "text-rose-deep" },
+  { icon: SupplementIcon, tile: "bg-beige", glyph: "text-leaf" },
+  { icon: LabTestIcon, tile: "bg-mint", glyph: "text-leaf" },
+  { icon: EducationIcon, tile: "bg-blush", glyph: "text-rose-deep" },
 ];
 
 // What the health center reminds her about. Phones: a list; desktop: five soft
@@ -33,16 +35,10 @@ export function Services({ t }: { t: Dictionary }) {
                 key={item.name}
                 className={cn(
                   "flex items-start gap-4 rounded-2xl p-5 lg:flex-col lg:gap-6 lg:p-6",
-                  style.tile,
-                  style.tile === "bg-white" && "shadow-[var(--shadow-soft)]"
+                  style.tile
                 )}
               >
-                <IconCircle
-                  icon={style.icon}
-                  tone={style.circle}
-                  size="md"
-                  className={cn("lg:size-14 lg:[&_svg]:size-7", style.circle === "white" && "text-rose-deep")}
-                />
+                <IconCircle icon={style.icon} tone="white" size="md" className={cn("lg:size-14 lg:[&_svg]:size-7", style.glyph)} />
                 {/* Top-aligned: titles start on the same line in every tile, and
                     each description follows its own title directly (no gaps). */}
                 <div>

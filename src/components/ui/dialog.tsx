@@ -59,11 +59,10 @@ function DialogContent({
         )}
         {...props}
       >
-        <span aria-hidden className="mx-auto mt-2.5 h-1.5 w-10 rounded-full bg-sage sm:hidden" />
         {children}
         <DialogPrimitive.Close
           data-slot="dialog-close"
-          className="absolute top-4 right-4 inline-flex size-10 items-center justify-center rounded-full bg-cream text-ink-soft transition-colors hover:bg-beige hover:text-ink focus-visible:outline-2 focus-visible:outline-leaf"
+          className="absolute top-3.5 right-3.5 inline-flex size-11 items-center justify-center rounded-full bg-cream text-ink-soft transition-colors hover:bg-beige hover:text-ink focus-visible:outline-2 focus-visible:outline-leaf"
         >
           <CloseIcon weight="bold" className="size-[1.125rem]" aria-hidden />
           <span className="sr-only">{closeLabel}</span>

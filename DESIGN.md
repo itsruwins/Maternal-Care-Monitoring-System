@@ -1,297 +1,355 @@
 ---
 name: Taysan MaternaCare
-description: The health center's prenatal appointment card, on her phone.
+description: A soft, Flo-like prenatal care web app for the Barangay Taysan Health Center; greens, beige and cream with one dusty-rose accent.
 colors:
-  press: "#3e584c"
-  press-deep: "#2f473c"
-  sage: "#769382"
-  stamp: "#4d6b5c"
-  brick: "#9a4a36"
+  leaf: "#3e5a4d"
+  leaf-deep: "#2f473c"
+  fern: "#769382"
+  mint: "#e3eae4"
+  sage: "#c0c3b9"
+  rose: "#d9a5a0"
+  rose-deep: "#9c4f4a"
+  blush: "#f6e6e1"
+  beige: "#e8ddc9"
+  cream: "#f3efe3"
+  milk: "#fbf8f3"
+  white: "#ffffff"
   ink: "#1f2d27"
-  ink-label: "#46604f"
-  folder: "#e8ddc9"
-  card-stock: "#f3efe3"
-  paper: "#fbf9f3"
-  rule: "#c0c3b9"
+  ink-soft: "#56665d"
+  line: "#e6e0d4"
+  field: "#879389"
 typography:
   display:
-    fontFamily: "Archivo, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "clamp(2.5rem, 7.2vw, 4.75rem)"
+    fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "clamp(2.5rem, 1.6rem + 3.6vw, 3.5rem)"
     fontWeight: 800
-    lineHeight: 0.95
-    letterSpacing: "-0.02em"
-    fontVariation: "\"wdth\" 82"
+    lineHeight: 1.04
+    letterSpacing: "-0.035em"
+    fontFeature: "\"cv11\""
   headline:
-    fontFamily: "Archivo, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "clamp(2rem, 4.4vw, 3rem)"
+    fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "clamp(1.75rem, 1.35rem + 1.4vw, 2rem)"
     fontWeight: 800
-    lineHeight: 1
-    letterSpacing: "-0.02em"
-    fontVariation: "\"wdth\" 82"
+    lineHeight: 1.2
+    letterSpacing: "-0.025em"
+    fontFeature: "\"cv11\""
   title:
-    fontFamily: "Archivo, ui-sans-serif, system-ui, sans-serif"
+    fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif"
     fontSize: "1.125rem"
-    fontWeight: 700
-    lineHeight: 1.375
+    fontWeight: 600
+    lineHeight: 1.5rem
+    fontFeature: "\"cv11\""
+  lead:
+    fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "1.125rem"
+    fontWeight: 400
+    lineHeight: 1.75rem
+    fontFeature: "\"cv11\""
   body:
-    fontFamily: "Archivo, ui-sans-serif, system-ui, sans-serif"
+    fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif"
     fontSize: "1rem"
     fontWeight: 400
-    lineHeight: 1.625
-    fontVariation: "\"wdth\" 100"
+    lineHeight: 1.5rem
+    fontFeature: "\"cv11\""
   label:
-    fontFamily: "Archivo, ui-sans-serif, system-ui, sans-serif"
+    fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "0.875rem"
+    fontWeight: 500
+    lineHeight: 1.25rem
+    fontFeature: "\"cv11\""
+  caption:
+    fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif"
     fontSize: "0.75rem"
-    fontWeight: 600
-    lineHeight: 1
-    letterSpacing: "0.06em"
-    fontVariation: "\"wdth\" 75"
-  hand:
-    fontFamily: "Kalam, ui-serif, cursive"
-    fontSize: "1.125rem"
-    fontWeight: 400
-    lineHeight: 1.15
-    fontFeature: "\"tnum\", \"lnum\""
+    fontWeight: 500
+    lineHeight: 1rem
+    fontFeature: "\"cv11\""
 rounded:
-  sm: "3px"
-  md: "5px"
-  lg: "8px"
+  sm: "8px"
+  md: "12px"
+  lg: "16px"
+  xl: "20px"
+  2xl: "28px"
+  3xl: "36px"
+  full: "9999px"
 spacing:
   gutter: "16px"
-  gutter-wide: "24px"
-  card-inset: "24px"
-  card-inset-wide: "40px"
-  card-foot: "48px"
-  tap: "44px"
-  row: "60px"
-  row-wide: "72px"
+  gutter-sm: "24px"
+  stack: "12px"
+  card: "20px"
+  card-lg: "32px"
+  section: "64px"
+  section-lg: "96px"
 components:
   button-primary:
-    backgroundColor: "{colors.press}"
-    textColor: "{colors.card-stock}"
-    rounded: "{rounded.md}"
-    padding: "0 20px"
+    backgroundColor: "{colors.leaf}"
+    textColor: "{colors.white}"
+    rounded: "{rounded.full}"
+    padding: "0 24px"
     height: "44px"
   button-primary-hover:
-    backgroundColor: "{colors.press-deep}"
-    textColor: "{colors.card-stock}"
+    backgroundColor: "{colors.leaf-deep}"
+  button-primary-lg:
+    backgroundColor: "{colors.leaf}"
+    textColor: "{colors.white}"
+    rounded: "{rounded.full}"
+    padding: "0 32px"
+    height: "52px"
+  button-secondary:
+    backgroundColor: "{colors.white}"
+    textColor: "{colors.leaf}"
+    rounded: "{rounded.full}"
+    padding: "0 24px"
+    height: "44px"
+  button-secondary-hover:
+    backgroundColor: "{colors.cream}"
+  button-soft:
+    backgroundColor: "{colors.mint}"
+    textColor: "{colors.leaf}"
+    rounded: "{rounded.full}"
+    height: "44px"
   button-outline:
     backgroundColor: "transparent"
     textColor: "{colors.ink}"
-    rounded: "{rounded.md}"
-    padding: "0 20px"
+    rounded: "{rounded.full}"
+    padding: "0 24px"
     height: "44px"
-  button-outline-hover:
-    backgroundColor: "{colors.card-stock}"
   button-ghost:
     backgroundColor: "transparent"
     textColor: "{colors.ink}"
-    rounded: "{rounded.md}"
-    height: "36px"
+    rounded: "{rounded.full}"
+    padding: "0 24px"
+    height: "44px"
   button-destructive:
-    backgroundColor: "transparent"
-    textColor: "{colors.brick}"
-    rounded: "{rounded.md}"
+    backgroundColor: "{colors.blush}"
+    textColor: "{colors.rose-deep}"
+    rounded: "{rounded.full}"
+    padding: "0 24px"
     height: "44px"
   input:
-    backgroundColor: "{colors.paper}"
+    backgroundColor: "{colors.white}"
     textColor: "{colors.ink}"
-    rounded: "0"
-    padding: "0 12px"
-    height: "44px"
-  field-label:
-    textColor: "{colors.ink-label}"
-    typography: "{typography.label}"
+    rounded: "{rounded.sm}"
+    padding: "0 16px"
+    height: "48px"
+  icon-circle-mint:
+    backgroundColor: "{colors.mint}"
+    textColor: "{colors.leaf}"
+    rounded: "{rounded.full}"
+    size: "48px"
+  icon-circle-blush:
+    backgroundColor: "{colors.blush}"
+    textColor: "{colors.rose-deep}"
+    rounded: "{rounded.full}"
+    size: "48px"
   card:
-    backgroundColor: "{colors.card-stock}"
+    backgroundColor: "{colors.white}"
     textColor: "{colors.ink}"
-    rounded: "{rounded.lg}"
-    padding: "{spacing.card-inset}"
-  card-tab:
-    backgroundColor: "{colors.card-stock}"
-    textColor: "{colors.ink-label}"
-    typography: "{typography.label}"
-    padding: "10px 16px 8px"
-  stamp-done:
-    textColor: "{colors.stamp}"
-    rounded: "{rounded.sm}"
-    padding: "4px 10px"
-  stamp-upcoming:
-    textColor: "{colors.press}"
-    rounded: "{rounded.sm}"
-    padding: "4px 10px"
-  stamp-missed:
-    textColor: "{colors.brick}"
-    rounded: "{rounded.sm}"
-    padding: "4px 10px"
-  language-switch-active:
-    backgroundColor: "{colors.press}"
-    textColor: "{colors.card-stock}"
-    typography: "{typography.label}"
-    height: "32px"
+    rounded: "{rounded.3xl}"
+    padding: "24px"
+  tile-tinted:
+    backgroundColor: "{colors.mint}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.2xl}"
+    padding: "20px"
+  dialog:
+    backgroundColor: "{colors.white}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.3xl}"
+    width: "448px"
+  chip-sample:
+    backgroundColor: "{colors.cream}"
+    textColor: "{colors.ink-soft}"
+    rounded: "{rounded.full}"
+    padding: "4px 12px"
+  chip-status:
+    backgroundColor: "{colors.mint}"
+    textColor: "{colors.leaf}"
+    rounded: "{rounded.full}"
+    padding: "0 10px"
+    height: "28px"
 ---
 
 # Design System: Taysan MaternaCare
 
 ## Overview
 
-**Creative North Star: "The Balik Card"**
+**Creative North Star: "The Gentle Checkup"**
 
-Every screen is the Barangay Taysan Health Center's prenatal appointment card, held in her hand. A beige folder is the ground; cream card stock sits on it with a tabbed head, a punched hole and a faint paper grain. Printed text is the clinic's voice: condensed green-black capitals for labels, extra-bold condensed headings. Her own values are written in a neat ballpoint hand. Visits are marked with rubber stamps that have a double rule, a slight tilt and uneven ink. Earlier cards sit beneath later ones as she scrolls.
+A soft, Flo-inspired world built around the mother rather than the clinic. The client's palette (leaf and fern greens, beige, sage, cream on a warm milk ground) carries almost everything; one dusty rose carries the few things meant to feel tender or urgent: hearts, the baby glyph, danger signs and soft tints. Surfaces are rounded white cards, pill buttons and circles for dates and icons, sitting on curved tinted panels with low, ink-tinted shadows. It is light only, made for daylight at home and at the health center.
 
-The world is light only. Mothers use it in daylight at home and at the health center, mostly on modern phones, so tap targets are 44px by default and the card turns portrait on narrow screens. Staff screens in later phases use the same card world on desktop, tablet and phone. It must never feel corporate or techy, cute, cold and clinical, or bureaucratic. It is the paper card she already knows, made legible.
+This is a web app, not a mobile app. Desktop gets a real web layout (header with section links, two-column sections, a 72rem container); phone widths borrow Flo's patterns (bottom sheets, full-width pill actions, stacked cards). Nothing imitates an app store, an install prompt or a device frame. Type is Inter alone, with extra-bold titles and a friendly single-storey "a". Motion is one slow float and short expo-out transitions, all stopped by reduced motion.
 
-Density is calm. Rows on a card are tall and evenly ruled, each holds one fact, and every visit state (done, upcoming, waiting, missed) stays visible at once.
+It refuses the generic SaaS hero (headline, device screenshot, feature grid) and clinical realism. Sample data is shown, but always labelled "Sample".
 
 **Key Characteristics:**
-- Beige folder ground, cream card stock, paper-white writable fields.
-- Two voices: printed Archivo (condensed via its width axis) and handwritten Kalam.
-- Rubber stamps for visit state, with a double rule, a tilt and uneven ink.
-- Tabbed cards that overlap as they stack, with soft resting shadows.
-- Hairline sage-gray rules, dashed internal dividers, perforated tear lines.
-- Tabular lining numerals on every date and week.
+- Greens do the work; rose is a small accent; text only in ink, ink-soft, leaf or rose-deep.
+- Inter only, extra-bold display and section titles, tabular numerals for every date and count.
+- Rounded white cards (20–36px), pill buttons, icons in soft colour circles.
+- Curved tinted hero panels with a faint white ring for depth.
+- Soft, low shadows tinted with ink; one gentle float.
+- Web layout on desktop, Flo patterns at phone width.
 
 ## Colors
 
-The client's four colors (green, beige, sage-gray, cream) set the world. Darker inks derived from the same green carry every piece of text.
+A warm, quiet green-and-cream palette with one dusty-rose accent; every text colour clears 4.5:1 on its ground.
 
 ### Primary
-- **Press Green** (#3e584c): fills primary buttons and the active language toggle, with cream text at 6.8:1. Also the ink for "upcoming" stamps, focus outlines and the caret. **Press Green Deep** (#2f473c) is its hover state only.
+- **Leaf Green** (leaf): primary buttons, links, the selected language pill, the current step, the "Sample" pill on floating hero cards. White on leaf is 7.6:1; leaf on mint is 6.2:1.
+- **Deep Leaf** (leaf-deep): hover state of primary buttons and links only.
+- **Fern** (fern): fill and decoration only: filled icon circles, completed stepper lines, habit check marks. Too light for text.
+- **Mint** (mint): the green tint: default icon circles, soft buttons (the slider −/+), done status chips, service tiles, the tips band (at 60%).
 
 ### Secondary
-- **Client Sage** (#769382): the client's own green. At 2.9:1 on cream it is too light for text, so it is used for decoration only: completed stepper segments, the focus ring tint, text selection (45% mix) and fills.
-- **Stamp Ink** (#4d6b5c): the "done" stamp and check icons. It is a step lighter than Label Ink, so completed visits read as quieter than upcoming ones, yet it still reaches 5.1:1 on cream and 5.6:1 on paper, passing AA at the 0.82rem bold stamp size. It is a stamp ink, not a body or label ink.
-
-### Tertiary
-- **Muted Brick** (#9a4a36): the only warm color, and the only alarm. Use it for missed visits, form errors, alert panels (6% fill, 50% border) and the urgent danger-signs list. Nothing decorative is ever brick.
+- **Dusty Rose** (rose): fill and decoration only: the slider fill, the closing heart, selection highlight (at 45%), SMS-thread dividers (at 40%). Never text.
+- **Blush** (blush): the rose tint: danger-sign card, SMS thread panel, blush icon circles, error notices, the destructive button, the top of the rose hero gradient.
+- **Rose Deep** (rose-deep): rose text and glyphs: danger signs, form errors, the baby glyph, reminder flags. 5.8:1 on white, 4.8:1 on blush.
 
 ### Neutral
-- **Folder Beige** (#e8ddc9): the page ground and browser theme color. At 45–60% it also tints the card foot, dialog head and stepper strip.
-- **Card Stock Cream** (#f3efe3): every card, tab, dialog and toast, with a 5% fractal-noise grain.
-- **Writing Paper** (#fbf9f3): writable input fields, and at 50–70% the working-rows panel of a card.
-- **Ink** (#1f2d27): body text and written values, 12.5:1 on cream. Running prose uses it at 80–85% opacity.
-- **Label Ink** (#46604f): printed labels, hints, secondary text and input base lines. 6.0:1 on cream, 5.1:1 on beige.
-- **Rule Sage-Gray** (#c0c3b9): the client's sage-gray. Used for hairline card borders, ruled rows, dashed dividers and perforation dots. It is decorative and never carries meaning alone.
+- **Milk** (milk): the page ground and the browser theme colour.
+- **White** (white): cards, dialogs, inputs, the footer.
+- **Cream** (cream): quiet fills: services band, info tiles inside cards, the dialog close button, sample chips.
+- **Beige** (beige): warm tiles and the "To be announced" chip; the end of the beige hero tone.
+- **Sage** (sage): soft borders (outline button, dashed timeline), scrollbar thumb. Not text.
+- **Ink** (ink): body and heading text, 14.4:1 on white; the dialog overlay at 40%.
+- **Ink Soft** (ink-soft): secondary text, placeholders, leading input icons. 6.1:1 on white, 5.3:1 on cream, 4.5:1 on beige, at least 4.67:1 across the rose hero.
+- **Line** (line): decorative hairlines and dividers only.
+- **Field** (field): input borders, 3:1 on white and milk.
+
+Tinted panels use radial gradients that stay inside the palette: rose (blush → #f2dfd6 → #eedfd2), green (#eef2ec → mint → #d6e0d8) and beige (#f7f1e6 → #efe6d6 → beige). The rose end was lightened to #eedfd2 so ink-soft keeps 4.5:1 at the bottom of the hero.
 
 ### Named Rules
-**The Ink-Not-Paint Rule.** The client's light green (#769382) and sage-gray (#c0c3b9) never carry text. Text is Ink, Label Ink, Press Green, Stamp Ink (on stamps) or Brick (for danger), so all text on cream reaches at least 5:1.
+**The Rose Is an Accent Rule.** Rose appears only on hearts, the baby glyph, danger signs, errors and soft tints. It never becomes a primary button, a section heading colour or a large flat fill beyond blush.
 
-**The Brick Means Danger Rule.** Brick is used for missed, error and urgent danger signs, and nothing else. If a screen shows brick, something needs action.
+**The Light Colours Don't Speak Rule.** Fern, sage and rose are fills and decoration only. Text and meaningful glyphs use ink, ink-soft, leaf or rose-deep.
 
-**The Full-Ink Rule.** The fact she needs most is the one value written in full Ink at the largest hand size (the due date until a Balik date exists, then the next Balik date). Other written values sit in Label Ink.
+**The One Tint Rule.** A tinted tile holds a white icon circle whose glyph takes the tile's own deep colour: leaf on mint or beige, rose-deep on blush.
+
+**The Danger Rule.** Danger signs and errors are rose-deep text with a filled warning icon, on white or blush. Colour never carries the message alone.
 
 ## Typography
 
-**Display Font:** Archivo, variable with a `wdth` axis (fallback ui-sans-serif, system-ui)
-**Body Font:** Archivo at normal width (`wdth` 100)
-**Hand Font:** Kalam 400/700 (fallback ui-serif, cursive)
+**Display Font:** Inter (with ui-sans-serif, system-ui), optical-size axis on
+**Body Font:** Inter (same family)
 
-**Character:** Archivo is the card's printing. Its width axis turns one family into three printed voices: condensed extra-bold headings, condensed small capitals for labels, and normal-width body text. Kalam is the midwife's ballpoint. It writes only values, never instructions.
+**Character:** One friendly grotesque. Extra-bold, tightly tracked titles give warmth and confidence; the `cv11` single-storey "a" softens every word; Inter's optical sizing tightens the large headings.
 
 ### Hierarchy
-- **Display** (800, `wdth` 82, clamp(2.5rem, 7.2vw, 4.75rem), line-height 0.95, max 12ch): the hero card's printed header only. Word spacing is opened slightly (0.12em) to balance the condensed face.
-- **Headline** (800, `wdth` 82, clamp(2rem, 4.4vw, 3rem), line-height 1): section card titles, and account card titles at clamp(2rem, 5.5vw, 2.75rem).
-- **Title** (700, 1.125rem, line-height 1.375): step and list headings inside a card. Dialog titles use 1.25rem bold.
-- **Body** (400, 1rem–1.075rem, line-height 1.625, 38–46ch): leads and explanations. Hints and notes use 0.875rem in Label Ink.
-- **Label** (600, `wdth` 75, uppercase, 0.06em tracking, 0.66–0.8rem, Label Ink): field labels, card tabs, row labels, the location line. Stamps reuse this voice at 700 with 0.1em tracking.
-- **Hand** (Kalam 400, 1.125rem–1.65rem, line-height 1.15, tabular): her values (dates, weeks, center details) and step numerals (2.25rem). The full-ink fact is set bold at 1.65rem.
+- **Display** (800, 40–56px fluid, 1.04, −0.035em): the hero headline only, capped near 13ch.
+- **Headline** (800, 28–32px fluid, 1.2, −0.025em): section titles, auth card titles, area titles. Dialog titles use the same weight at 24px.
+- **Title** (600, 18px, 24px line): card and step titles, the slider question. Small tile titles drop to 15–17px semibold.
+- **Lead** (400, 18px, 28px line): the paragraph under a display or section title, in ink-soft, 40–52ch.
+- **Body** (400, 16px, 24px line): running text, list items, 46–48ch. Dense UI text uses 15.2px (0.95rem).
+- **Label** (500, 14px, 20px line): form labels, hints, footer links, notes.
+- **Caption** (500, 12px, 16px line): chip text, meta lines, trimester ticks, weekday letters (the only uppercase, in the week strip).
 
 ### Named Rules
-**The Printed-vs-Written Rule.** The clinic speaks in Archivo and her values are written in Kalam. Never set an instruction, a label or a button in the hand face.
+**The Extra-Bold Title Rule.** Every display, section and dialog title is weight 800 with negative tracking. Body never goes above 600 except numbers and key values (700).
 
-**The Tabular Date Rule.** Every date, week count and step number uses tabular lining numerals so columns of visits line up.
+**The Tabular Numbers Rule.** Every date, week count and time uses tabular lining numerals so values never jitter as they change.
 
-**The No-Kicker Rule.** No small label sits above a heading. The tab on a card is the only printed label above the title, and it must say something the heading does not.
+**The Gentle Wrap Rule.** Headings h1–h3 balance their lines; paragraphs and list items wrap pretty. No orphaned last words.
 
 ## Layout
 
-Mobile-first. Content sits in one centered column with a maximum width of 72rem (`max-w-6xl`), with 16px gutters on phones and 24px from 640px up. Account pages narrow to 28rem, or 48rem for the multi-step sign-up.
+The page is a stack of full-width bands (milk, cream, mint at 60%, the curved rose hero) holding a centred container of 72rem with 16px gutters (24px from 640px). Sections breathe at 64px vertical padding, 96px from 1024px. Breakpoints follow Tailwind: 640px (dialog becomes a centred card, step labels appear), 768px, 1024px (desktop header navigation, two-column sections, all three hero cards).
 
-Inside a card, the inset is 24px on phones, 40px from 640px and 48px on the hero at 1024px. Cards keep 48–56px of empty card stock at the bottom so the next stacked card only ever overlaps blank paper.
+Desktop gets a real web layout: header with brand, section links, language switch, Log in and Sign up; two-column hero (text, slider card and Sign up on the left, illustration on the right); two-column sections with an intro column beside a sample artifact; a five-tile row for services. Phones stack the same content in reading order (hero: headline, lead, illustration, slider card, full-width Sign up), turn tiles into a list and make primary actions full width.
 
-Working rows are ruled with hairline Rule borders at a steady rhythm: at least 60px on phones, 72px from 640px, and 56–68px on reference lists. The label sits on the left and the written value is right-aligned. Divisions inside a card are dashed. Divisions between a card's parts (header to rows, rows to foot) are solid.
+### Named Rules
+**The Web, Not App Rule.** Desktop is a website, not a stretched phone. Phone-width layouts borrow Flo's patterns, but there are no app-store badges, install prompts or device frames; the product says it works in the phone's browser.
 
-Responsive shifts are structural, not just smaller. The hero card is portrait on phones (printed header above, rows below) and landscape from 1024px (header panel left, rows right, about 1.08 : 1). Step grids go from one column to two at 640px and four at 1024px. Tear lines run across on phones and down the side on wide screens. Card tabs swap to shorter text under 420px.
+**The Clear Face Rule.** Floating hero cards never cover the mother's face or the belly glyph. Phones and tablets show only the weeks card; the SMS and next-visit cards appear from 1024px.
 
-**The One Ruled Grid Rule.** Rows on a card share one ruled rhythm and one alignment (label left, value right). New rows join that grid rather than starting a new one.
+**The Shared Header Rule.** Paired cards share header height (icon circle plus title at a 48px minimum) so their lists start and run on the same lines; tile rows top-align their titles.
 
 ## Elevation & Depth
 
-Depth is physical: paper resting on paper. Cards cast soft, offset, blurred shadows tinted with Ink, never pure black. No shadow is hard-edged, colored or glowing. The dialog overlay dims with Ink at 35% and does not blur.
+A hybrid: tonal layering does most of the work (milk ground, cream and mint bands, white cards), and soft, low shadows tinted with ink lift cards a little. Shadows are never black and never hard-edged.
 
 ### Shadow Vocabulary
-- **Resting card** (`0 1px 1px rgb(31 45 39 / 0.06), 0 6px 18px -6px rgb(31 45 39 / 0.18)`): small objects on the folder, such as the seal disc, secondary buttons and toasts.
-- **Lifted card** (`0 2px 2px rgb(31 45 39 / 0.06), 0 18px 40px -12px rgb(31 45 39 / 0.28)`): a full card on the folder, such as the hero, account cards, dialogs and the first card in a stack.
-- **Stacked card** (`0 -10px 24px -16px rgb(31 45 39 / 0.35), 0 2px 2px …, 0 18px 40px -12px rgb(31 45 39 / 0.24)`): a card laid over the one before it. It casts shadow upward too, and it overlaps by 40px (48px from 640px).
-- **Punched hole** (`inset 0 1px 2px rgb(31 45 39 / 0.35)` on a folder-colored disc): the hole in the card, a cut-out rather than a raised object.
+- **Soft** (`0 1px 2px rgb(31 45 39 / 0.04), 0 4px 14px -4px rgb(31 45 39 / 0.08)`): resting white elements on a tinted ground: brand disc, language switch, secondary button, SMS bubbles, habit card.
+- **Raised** (`0 2px 4px rgb(31 45 39 / 0.04), 0 14px 32px -10px rgb(31 45 39 / 0.16)`): primary content cards: slider card, records card, health center card, auth card, floating hero cards, toasts, slider thumb.
+- **Float** (`0 4px 10px rgb(31 45 39 / 0.05), 0 28px 60px -18px rgb(31 45 39 / 0.28)`): the highest layer: dialogs and bottom sheets, the weeks card.
+- **Leaf glow** (`0 1px 2px rgb(31 45 39 / 0.12), 0 8px 18px -8px rgb(62 90 77 / 0.55)`): under the primary button only.
 
-**The Paper-On-Paper Rule.** Only paper objects cast shadows: cards, tabs, the seal disc and toasts. Rows, stamps and text never do.
+### Named Rules
+**The Ink-Tinted Shadow Rule.** All shadows use ink (31 45 39) at low alpha with negative spread. No black, no offset hard shadows.
+
+**The One Float Rule.** The only ambient motion is a 6s, 8px float on the hero cards and the "New reminder" badge, staggered by animation delay. Reduced motion stops it, along with every transition.
 
 ## Shapes
 
-Corners are small and cut, like card stock. Buttons use a gentle 5px radius, cards and dialogs 8px, and stamps 3px. Writable fields are square-cornered with a 2px base line, like a printed blank. A card's tab has rounded top corners and joins the card body, which drops its top-left radius under the tab. Only the seal disc, the punched hole and small dots are fully round. Card borders are 1px Rule hairlines. Blanks waiting for a value are a short 1px Label Ink line, and a slot not yet stamped is a dashed Rule rectangle. Motion follows the card's physics: values are written left to right with a 650ms clip reveal, stamps thump down from 1.35× scale over 320ms (both on an expo ease-out), and buttons press down 1px. With reduced motion, every animation resolves straight to its final state.
+Soft and round throughout. Radii step 8 / 12 / 16 / 20 / 28 / 36px: inputs 8px, tiles inside cards 12px, floating and slider cards 16px, service tiles 16px, large cards and dialogs 28px (the 3xl utility), photos and the health center card 32px, the closing panel 40px. Buttons, chips, the language switch and every icon, date and step indicator are full circles or pills.
+
+Hero panels curve: the bottom edge bulges down as an elliptical radius (50% wide by 28, 44 or 72px tall). The illustration sits in an arch (fully rounded top, 40px bottom corners) with a thin white ring. A large, faint white ring (22–28px border at 35–40% white) sits half off the corner of tinted panels for depth without content. SMS bubbles take one tighter corner on the speaker's side.
 
 ## Components
 
 ### Buttons
-Printed-ink rectangles, firm and plain.
-- **Shape:** gently curved (5px), with a 2px border matching the fill. The default height is 44px, small is 36px and large is 48px. Labels are 0.95rem semibold.
-- **Primary:** Press Green fill, cream text, a 1px ink edge below (`0 1px 0 rgb(31 45 39 / 0.25)`). One per card, in the card foot.
-- **Hover / Focus / Active:** hover deepens the fill to Press Green Deep. Focus is a 2px Press Green outline offset 2px. Active presses down 1px. Transitions run 150ms on the expo ease-out. Disabled buttons drop to 55% opacity.
-- **Outline:** a Label Ink border with Ink text that fills with card stock on hover. Used for the secondary action beside a primary.
-- **Ghost:** no border or fill, with a 6% Ink wash on hover. Used for header Log in and the dialog close.
-- **Destructive:** a brick border and brick text on a transparent fill, with an 8% brick wash on hover.
-- **Link:** Press Green text with a 1px underline offset 4px. On hover the underline thickens to 2px.
+Calm, round and tactile, with a small squeeze on press.
+- **Shape:** full pill (9999px); 44px tall by default, 36px small, 52px large; icon buttons are 44px circles.
+- **Primary:** leaf with white text, 15.2px semibold, 24px side padding, leaf glow underneath; hover to leaf-deep.
+- **Secondary:** white with leaf text and the soft shadow; hover to cream. Pairs with primary on tinted panels.
+- **Soft:** mint with leaf text; for in-card controls like the slider −/+.
+- **Outline / Ghost:** sage border or none, ink text; hover to white or 5% ink. Ghost is the header Log in.
+- **Destructive:** blush with rose-deep text, never a saturated red.
+- **Link:** leaf, 1px underline offset 4px, thickening to 2px on hover.
+- **Focus / Press:** 2px leaf outline offset 2px; scale to 0.97 on press with expo-out easing; trailing arrow icons in bold weight.
 
-### Cards / Containers (Folder Card)
-- **Corner Style:** 8px, square under the tab.
-- **Background:** card stock with grain. The working-rows panel uses paper at 50%, and the card foot uses folder at 45%.
-- **Shadow Strategy:** Lifted when alone, Stacked when laid over a previous card (see Elevation & Depth).
-- **Border:** a 1px Rule hairline.
-- **Tab:** a card-stock tab offset 20px (32px from 640px) from the left edge, in the label voice at 0.66–0.7rem. It names the card's kind or adds context the title lacks, and never repeats the heading.
-- **Internal Padding:** 24px / 40px / 48px (see Layout), with 48–56px of empty space at the bottom.
+### Chips
+- **Sample:** "Sample" in caption semibold. Inside a card header it is a cream pill with ink-soft text; on a floating hero card it is a small leaf pill with white text perched on the top edge.
+- **Status:** 28px pills with caption semibold: mint and leaf with a bold check for done, solid leaf with white for booked.
+- **To be announced:** beige pill, ink-soft text.
+
+### Cards / Containers
+- **Corner Style:** 16px for small floating and slider cards, 28px for content cards, 32–40px for photo cards and closing panels.
+- **Background:** white on milk or tinted bands; tinted tiles (mint, blush, beige, cream) inside or beside them.
+- **Shadow Strategy:** soft on tinted grounds, raised for primary cards, float for overlays (see Elevation).
+- **Border:** none; hairline line dividers between list rows.
+- **Internal Padding:** 20px on phones, 24–32px from 640px, up to 48px on the health center card.
 
 ### Inputs / Fields
-- **Style:** a paper fill with 1px Rule sides and a 2px Label Ink base line (the visible boundary, 6:1). Square corners, 44px tall, 1rem Ink text, tabular numerals. Placeholders use Label Ink at 75%.
-- **Focus:** the base line turns Press Green and thickens through a 2px Press Green underline shadow. There is no ring around the field.
-- **Error / Disabled:** errors turn the base line and underline brick, with a 0.875rem brick message below. Hints in Label Ink appear only when there is no error. Disabled fields drop to 55% opacity.
-- **Label:** printed label voice at 0.8rem, above the field. An optional status sits right-aligned on the same baseline.
+- **Style:** 48px tall, white, 1px field border, 8px radius, 16px text, ink-soft placeholder; optional leading icon (regular weight, ink-soft) with 44px left padding.
+- **Focus:** leaf border with a 4px fern glow at 25%.
+- **Error / Disabled:** rose-deep border with a 4px rose glow; the message below in rose-deep with a filled warning icon. Disabled at 50% opacity.
+- **Labels:** 14px medium ink above the field; hints in ink-soft below; an optional status link (Forgot password) aligned right of the label.
+- **Slider:** a 10px cream track with rose fill to the value, a white round thumb with a 3px leaf ring and raised shadow; trimester ticks underneath.
 
-### Stamps (signature)
-A rubber stamp: label voice at 700 with 0.1em tracking, a 3px double-rule border, a 3px radius, an uneven-ink mask and a tilt between −3° and −8°.
-- **Upcoming:** Press Green, used for the SMS reminder stamp and "to be decided" placeholders.
-- **Done:** Stamp Ink, the quietest tone (5.1:1 on cream at 0.82rem bold).
-- **Missed:** Brick.
-- **Waiting:** an empty dashed Rule rectangle where the stamp will land.
-- Only a stamp that has just been earned animates (the stamp thump).
+### Navigation
+- **Header:** sits on the rose hero: brand mark (seal on a white disc plus the bold wordmark), section links as 40px ghost pills in ink-soft (hover to 70% white and ink) from 1024px, the EN/FIL switch, ghost Log in and primary Sign up (hidden below 640px).
+- **Language switch:** a white pill with the soft shadow holding two pills; the active one is leaf with white text.
+- **Footer:** white, four columns from 768px, bold 14px column headings, ink-soft links that turn leaf and underline on hover, regular-weight leaf icons beside details.
+- **Icons:** navigation icons are regular-weight outlines; the selected item uses fill.
 
-### Navigation (Folder Bar)
-A slim bar above the cards, on the folder with no background of its own. On the left, the seal sits in a 40px cream disc with a resting shadow beside the bold wordmark (the location line in label voice appears from 420px). On the right are the EN/FIL toggle, a ghost Log in, and a small primary Sign up from 640px. The language toggle is a bordered card-stock pill whose active segment fills Press Green with cream label text.
+### Icon Circle
+The signature carrier for every feature icon: a round tile in mint, blush, beige, cream, white, fern, leaf or rose at 36, 48, 64 or 80px, glyph in fill or duotone weight, always at least 3:1 against its circle. Decorative unless given a label.
 
-### Dialog
-A card laid over the folder: card stock with grain, an 8px radius, a Rule border and the Lifted shadow, max 28rem wide. The head strip is folder at 60% over a Rule bottom border. The foot is separated by a Rule top border, with its actions stacking reversed on phones. It enters with a fade and a 12px rise over 300ms.
+### Dialog (Auth Sheet)
+One dialog serves Log in and Sign up and switches between them in place. On phones it is a bottom sheet (28px top corners, up to 92% of the viewport, safe-area padding, slides up with expo-out); from 640px it is a centred 448px card (672px for sign-up) with a float shadow over a 40% ink overlay. No fake drag handle. A 40px cream round close button sits top right. Log in leads with a blush heart circle and a centred title; sign-up shows a five-step icon-circle stepper (current step solid leaf, done steps mint with a check, later steps cream) with a sticky Back/Next bar at the bottom.
 
-### Stepper (multi-step sign-up)
-The card's tab row. From 640px, each step is a label-voice tab with a 3px bottom bar: Press Green for the current step, Sage for completed steps (with a Stamp Ink check), and transparent for later steps. On phones it collapses into 6px rounded segments in the same three colors, under a "Step n of N · name" label line.
+### Curved Hero and Fetus Picture
+The curved hero is a radial-gradient tinted panel (rose, green or beige) with a curved bottom edge and a faint corner ring. The fetus picture is the Health Icons baby-in-womb glyph in rose-deep on a blush circle; it grows by trimester (50%, 60%, 70% of the circle) with a 500ms expo-out transition, driven by the hero's weeks slider.
+
+### Week Strip and Insight Card
+Flo patterns ready for the mother's Today screen. The week strip shows seven 40px date circles whose fill tells the day's state (leaf for appointment, dashed leaf for requested, mint for done, blush for missed; today is white with a soft shadow). Insight cards are 144 × 176px tinted or white tiles with a title on top and a visual at the bottom, in a sideways snap-scrolling row.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** set every text color from Ink (#1f2d27), Label Ink (#46604f) or Press Green (#3e584c). Keep cream text on Press Green fills only.
-- **Do** keep 44px tap targets as the default for anything a mother touches.
-- **Do** write her values in Kalam with tabular numerals, and print everything else in Archivo.
-- **Do** show every visit state at once: done stamps, an upcoming stamp, an empty dashed slot, and a brick stamp only when a visit is missed.
-- **Do** stack section cards with the Stacked shadow and 40–48px overlap, and leave empty card stock at each card's foot.
-- **Do** keep the hand-written due date in full Ink until a midwife sets a Balik date. An estimate is never shown as a Balik date.
-- **Do** take all text from the EN/FIL dictionaries, and test layouts with the longer Filipino strings (tabs have short variants under 420px).
-- **Do** let reduced motion show the final written and stamped state immediately.
+- **Do** import every icon from the one icon index (Phosphor, plus the Health Icons fetus glyph). The same icon always means the same thing.
+- **Do** put feature icons in soft colour circles (fill or duotone weight); use regular-weight outlines for navigation, switching to fill for the selected item.
+- **Do** label every piece of sample data "Sample" (or "Your estimate" once she has entered her own weeks).
+- **Do** keep text in ink, ink-soft, leaf or rose-deep, and check 4.5:1 on any new tint.
+- **Do** set titles at weight 800 with negative tracking, and use tabular numerals for every date and count.
+- **Do** give paired cards the same header height so their lists align.
+- **Do** use expo-out easing (cubic-bezier(0.16, 1, 0.3, 1)) for transitions and keep the reduced-motion block intact.
+- **Do** make primary actions full-width pills at phone width and keep tap targets at 44px.
 
 ### Don't:
-- **Don't** set text in the client green (#769382) or sage-gray (#c0c3b9). They are decoration, fills and rules only.
-- **Don't** lighten stamp ink toward the client green to make a stamp look fainter. Every stamp's text must reach 4.5:1 at 0.82rem bold.
-- **Don't** use brick for anything that isn't missed, an error or an urgent danger sign.
-- **Don't** put a kicker or eyebrow label above a heading, or a card tab that restates its heading.
-- **Don't** add a dark mode. The card is a daylight object.
-- **Don't** use hard offset shadows, glows or blurred glass overlays. Depth is paper resting on paper.
-- **Don't** print day counts or timings on stamps that the health center hasn't confirmed (the reminder stamp reads "SMS reminder").
-- **Don't** fall back to the headline + phone mockup + feature cards layout. New surfaces are cards in the folder.
+- **Don't** set text in fern, sage or rose; they are too light.
+- **Don't** let rose spread beyond hearts, the baby glyph, danger signs, errors and tints.
+- **Don't** place floating cards over the mother's face or the belly glyph.
+- **Don't** add app-store badges, install prompts or device frames; this is a web app.
+- **Don't** use black or hard offset shadows; shadows are low and ink-tinted.
+- **Don't** add a second ambient motion or a fake sheet drag handle.
+- **Don't** add a second typeface, a dark theme or kicker labels above titles.

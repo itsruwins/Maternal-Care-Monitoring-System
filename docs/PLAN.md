@@ -2,7 +2,7 @@
 
 Barangay Taysan, Legazpi City · Next.js 16 + Supabase · Hosted on Vercel
 
-Status: **Phase 0 approved. Phase 1 built (2026-10-26). Redesign (Phase 1R, Flo-inspired): step 1 (style base) approved; step 2 (landing page) built 2026-10-27, waiting for your review.** Each phase ends with a demo and your sign-off before the next starts.
+Status: **Phase 0 approved. Phase 1 built (2026-10-26). Redesign (Phase 1R, Flo-inspired): built and reviewed 2026-10-27 (finish review: all fixes resolved; DESIGN.md rewritten). Waiting for your testing and sign-off.** Each phase ends with a demo and your sign-off before the next starts.
 
 ---
 
@@ -246,21 +246,26 @@ Only the look changes. Login, sign-up, password recovery, language switch, datab
    - Header: seal + name, language switch, Log in, Sign up (pill).
    - Hero: curved soft-tint background, big extra-bold Inter headline, a **"How far along are you?" weeks slider** (4–42 weeks, −/+ buttons, trimester labels; shows the trimester and an estimated due month; replaced the last-period date box on 2026-10-27 because picking a date was a hassle), one Sign up button below it (Log in stays in the header), and the line "Works in your phone's browser, no app to install".
    - Hero picture (changed 2026-10-27, replacing the phone mock-up): a soft illustration of a pregnant mother holding her belly ([Pixabay](https://pixabay.com/vectors/woman-pregnant-mother-mom-sofa-8524046/), free, no credit needed) in a rose arch, with a gently glowing baby glyph on her belly. Floating cards: her weeks with the baby picture (updates live from the weeks slider), the SMS reminder and the next visit on desktop; phones and tablets show only the weeks card so nothing covers her face or the baby.
-   - Due-date estimate: the working LMP → due date feature, restyled as a rounded card.
-   - Services: the 5 activity types, each with an icon circle.
-   - How it works: 4 steps with icons (sign up → request → SMS reminder → visit).
-   - Tips: a swipeable row of insight cards; danger signs stand out in rose.
-   - Health center info and footer.
-   - The two stock photos stay, with rounded corners.
+   - Quick facts row (no email needed, any phone browser, English and Filipino, private to you).
+   - How it works: 4 steps on a timeline, beside a sample SMS thread (greeting, appointment card, closing, "works on any phone" facts, floating "New reminder" badge).
+   - Services: the 5 activity types as soft tiles with icon circles, top-aligned.
+   - Your records: the mother photo beside a sample "My visits" list.
+   - Health center: Mayon photo with address, clinic hours and contact (contact still to be announced).
+   - Tips: "Healthy habits" and danger signs as two matching cards (same header height, one-column lists with icons).
+   - Closing call to action and a full footer (brand, section links, health center details, account actions, privacy and credits).
 3. **Auth pages:** the login dialog, `/login`, the 5-step `/register` (stepper becomes rounded steps with icons), `/forgot-password` and `/reset-password` move to the new style.
    - **Done 2026-10-27 (partly):** Log in and Sign up now open in **one shared dialog** on the landing page (bottom sheet on phones); "No account yet? Sign up" / "Already have an account? Log in" switch inside it. Login has a welcome header, icons in the fields and a soft error box. Sign-up keeps its 5 steps with a new icon stepper, field icons, a review step in cards and a Back/Next bar that stays visible while scrolling. `/login` and `/register` stay for direct links, in the new card style. Still to restyle: the forgot/reset password forms.
 4. **Review:** desktop + phone screenshots, accessibility contrast check, design review, then `DESIGN.md` rewritten for the new style.
 
 Done when: the landing page and all auth pages use the new style on phone and desktop, everything from Phase 1 still works, and you approve the look.
 
-**Step 1 built (2026-10-27):** Phosphor 2.1.10 installed; Inter replaces Archivo; new tokens (milk, leaf, mint, rose, blush, rose deep, soft shadows, 8–36px radius, Inter scale); pill buttons, rounded inputs, the login dialog as a bottom sheet on phones; shared icon set `src/components/icons/`; new `icon-circle`, `week-strip`, `insight-card`, `curved-hero`; the Today phone mock-up `features/landing/components/today-phone.tsx`. Preview page `/design-preview` works only in development. Old card styles stay as aliases until steps 2–3 replace the pages.
+**Step 1 built (2026-10-27):** Phosphor 2.1.10 installed; Inter replaces Archivo; new tokens (milk, leaf, mint, rose, blush, rose deep, soft shadows, 8–36px radius, Inter scale, float animation, soft slider); pill buttons, rounded inputs, dialog as a bottom sheet on phones; shared icon set `src/components/icons/` (plus the Health Icons fetus glyph); new `icon-circle`, `input-icon`, `week-strip`, `insight-card`, `curved-hero`. Dev-only preview at `/design-preview`.
 
-**Step 2 built (2026-10-27):** new landing page: header with section links (desktop), rose curved hero with the working due-date estimate driving the phone mock-up (sample data until she enters her last period, then her weeks, due date and trimester picture), quick facts, how it works with a sample SMS, services, a sample "My visits" list, health center, tips + danger signs, closing call to action, footer. English and Filipino text updated. Old landing components removed. The fetus picture is a placeholder (`components/shared/fetus-picture.tsx`) until the 3D renders exist. The phone mock-up (drawn as an iPhone 18 Pro Max in Burgundy) was later replaced by the mother + cards hero.
+**Step 2 built (2026-10-27):** the landing page as listed above, after several rounds of your feedback (phone mock-up → 3D renders → soft illustration; date box → weeks slider; bolder titles; alignment fixes). English and Filipino text updated.
+
+**Step 3 built (2026-10-27):** shared Log in / Sign up dialog; new-style `/login`, `/register`, `/forgot-password`, `/reset-password`; dashboard placeholders, user badge and log-out button restyled. Cleanup: the old card style is fully removed (Kalam font, stamps, folder cards, legacy colour names and classes), `lucide-react` uninstalled (all icons are Phosphor; shadcn set to Phosphor too).
+
+**Step 4 done (2026-10-27):** review screenshots in `.impeccable/review/`; contrast checked (hero gradient end lightened so secondary text stays ≥4.5:1); independent design review returned 8 fixes, all applied and confirmed (arch top, baby glyph colours, Sample labels on hero cards, one tint rule for service tiles, no duplicate step names, no fake sheet handle, no stray last-line words); `DESIGN.md` + `.impeccable/design.json` rewritten for the new style ("The Gentle Checkup"). Small follow-ups also fixed: −/+ use icons, dialog close button 44px, slider handle the same size in Firefox.
 
 **After this phase**, the Phase 1 testing checklist (log in, sign up, password reset) is done once, on the new design.
 

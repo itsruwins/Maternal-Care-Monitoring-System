@@ -15,8 +15,10 @@ export const loginSchema = z.object({
 
 export type LoginInput = z.input<typeof loginSchema>;
 
-// Same rule as the database (migration 0002).
-export const USERNAME_PATTERN = /^[a-z0-9][a-z0-9._]{1,28}[a-z0-9]$/;
+// Usernames for new accounts and renames: 8-30 characters (migration 0002 format
+// + 0007 minimum), so a username is always a valid default password. Login still
+// accepts older, shorter usernames.
+export const USERNAME_PATTERN = /^[a-z0-9][a-z0-9._]{6,28}[a-z0-9]$/;
 export const MIN_PASSWORD_LENGTH = 8;
 
 /** "0917 123-4567" / "+63 917 123 4567" → "09171234567" */

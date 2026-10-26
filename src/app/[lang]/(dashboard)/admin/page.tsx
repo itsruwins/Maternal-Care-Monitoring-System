@@ -1,10 +1,6 @@
-import { Suspense } from "react";
-import { AreaPlaceholder } from "@/components/shared/area-placeholder";
+import { redirect } from "next/navigation";
 
-export default function AdminHomePage() {
-  return (
-    <Suspense fallback={null}>
-      <AreaPlaceholder area="admin" />
-    </Suspense>
-  );
+// The admin tools live under /admin/...; the admin's home is the staff home.
+export default function AdminIndexPage() {
+  redirect("/admin/accounts");
 }

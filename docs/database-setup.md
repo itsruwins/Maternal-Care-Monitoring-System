@@ -10,6 +10,7 @@ Run these in **Supabase Dashboard → SQL Editor**, in order. Each file is safe 
 | 4 | `supabase/migrations/0004_mother_signup.sql` | Website sign-up creates `user_account` + `mother` + `pregnancy` together; username availability check |
 | 5 | `supabase/migrations/0005_mother_self_service.sql` | Mother can cancel her own REQUESTED appointment; protects `registered_by`, `user_id`, `registration_date` |
 | 6 | `supabase/migrations/0006_login_attempt.sql` | Table for the 5-failures → 15-minute lock |
+| 7 | `supabase/migrations/0007_phase2.sql` | Phase 2: usernames 8+ characters for new accounts and renames; renames the first admin login `admin` → `taysan.admin`; health workers may edit their own name and contact |
 | 7 | `supabase/seed/first-admin.sql` | First admin (follow the steps at the top of the file) |
 
 ## Rules

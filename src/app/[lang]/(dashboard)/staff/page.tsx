@@ -1,10 +1,12 @@
 import { Suspense } from "react";
-import { AreaPlaceholder } from "@/components/shared/area-placeholder";
+import { Welcome } from "@/features/shell/components/welcome";
+import { AREA_ROLES } from "@/lib/auth/roles";
+
 
 export default function StaffHomePage() {
   return (
     <Suspense fallback={null}>
-      <AreaPlaceholder area="staff" />
+      <Welcome roles={AREA_ROLES.staff} kind="staff" />
     </Suspense>
   );
 }

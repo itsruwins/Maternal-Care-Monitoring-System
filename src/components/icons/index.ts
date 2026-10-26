@@ -44,6 +44,11 @@ export {
   GearSixIcon as SettingsIcon,
   SignOutIcon as LogoutIcon,
   TranslateIcon as LanguageIcon,
+  ListIcon as MenuIcon,
+  ChartBarIcon as ReportsIcon,
+  UserGearIcon as AccountsIcon,
+  ListChecksIcon as ActivityTypesIcon,
+  HourglassMediumIcon as ComingSoonIcon,
 
   // Account
   UserIcon,

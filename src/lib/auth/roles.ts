@@ -1,8 +1,9 @@
 import type { UserRole } from "@/types/database";
 
-// Where each role lands after login.
+// Where each role lands after login. Admins use the staff app (with an extra
+// Admin group in the sidebar), so they land on the staff home too.
 export const ROLE_HOME: Record<UserRole, string> = {
-  ADMIN: "/admin",
+  ADMIN: "/staff",
   HEALTH_WORKER: "/staff",
   MOTHER: "/mother",
 };

@@ -246,7 +246,7 @@
     },
     "fields": {
       "username": "Username",
-      "usernameHint": "3 to 30 characters: small letters, numbers, dots or underscores.",
+      "usernameHint": "8 to 30 characters: small letters, numbers, dots or underscores. Example: ana.reyes",
       "usernameChecking": "Checking…",
       "usernameAvailable": "Available",
       "password": "Password",
@@ -285,7 +285,7 @@
     },
     "errors": {
       "required": "This is required.",
-      "usernameFormat": "Use 3 to 30 small letters, numbers, dots or underscores, starting and ending with a letter or number.",
+      "usernameFormat": "Use 8 to 30 small letters, numbers, dots or underscores, starting and ending with a letter or number.",
       "usernameTaken": "This username is taken. Try another.",
       "passwordShort": "Use at least 8 characters.",
       "passwordMismatch": "The passwords don't match.",
@@ -330,17 +330,42 @@
       "generic": "We couldn't save your password. Please try again."
     }
   },
-  "dashboard": {
-    "signedInAs": "Signed in as {username}",
-    "placeholder": "This area is being built.",
-    "admin": {
-      "title": "Admin"
+  "shell": {
+    "menu": "Open menu",
+    "closeMenu": "Close menu",
+    "mainNav": "Main menu",
+    "adminGroup": "Admin",
+    "accountMenu": "Account menu",
+    "signedInAs": "Signed in as",
+    "nav": {
+      "home": "Home",
+      "mothers": "Mothers",
+      "appointments": "Appointments",
+      "visits": "Visits",
+      "followUps": "Follow-ups",
+      "reports": "Reports",
+      "accounts": "Accounts",
+      "activityTypes": "Activity types",
+      "smsLog": "SMS log",
+      "profile": "Profile"
     },
-    "staff": {
-      "title": "Health worker"
+    "roles": {
+      "ADMIN": "Admin",
+      "HEALTH_WORKER": "Health worker",
+      "MOTHER": "Mother"
     },
-    "mother": {
-      "title": "My care"
+    "comingSoon": {
+      "badge": "Phase {phase}",
+      "title": "Coming soon",
+      "body": "This part of Taysan MaternaCare is planned and will be built in Phase {phase}."
+    },
+    "staffHome": {
+      "greeting": "Hello, {name}",
+      "body": "Your tools appear here as each phase is built. For now you can manage your profile, and admins can manage accounts and activity types."
+    },
+    "motherHome": {
+      "greeting": "Hello, {name}",
+      "body": "Your pregnancy summary, next visit and reminders will appear here soon."
     }
   }
 }

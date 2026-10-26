@@ -246,7 +246,7 @@
     },
     "fields": {
       "username": "Username",
-      "usernameHint": "3 hanggang 30 character: maliliit na titik, numero, tuldok o underscore.",
+      "usernameHint": "8 hanggang 30 character: maliliit na titik, numero, tuldok o underscore. Halimbawa: ana.reyes",
       "usernameChecking": "Sinusuri…",
       "usernameAvailable": "Puwede",
       "password": "Password",
@@ -285,7 +285,7 @@
     },
     "errors": {
       "required": "Kailangan ito.",
-      "usernameFormat": "Gumamit ng 3 hanggang 30 maliliit na titik, numero, tuldok o underscore, na nagsisimula at nagtatapos sa titik o numero.",
+      "usernameFormat": "Gumamit ng 8 hanggang 30 maliliit na titik, numero, tuldok o underscore, na nagsisimula at nagtatapos sa titik o numero.",
       "usernameTaken": "May gumagamit na ng username na ito. Subukan ang iba.",
       "passwordShort": "Gumamit ng hindi bababa sa 8 character.",
       "passwordMismatch": "Hindi magkapareho ang password.",
@@ -330,17 +330,42 @@
       "generic": "Hindi namin na-save ang password mo. Pakisubukang muli."
     }
   },
-  "dashboard": {
-    "signedInAs": "Naka-log in bilang {username}",
-    "placeholder": "Ginagawa pa ang bahaging ito.",
-    "admin": {
-      "title": "Admin"
+  "shell": {
+    "menu": "Buksan ang menu",
+    "closeMenu": "Isara ang menu",
+    "mainNav": "Pangunahing menu",
+    "adminGroup": "Admin",
+    "accountMenu": "Menu ng account",
+    "signedInAs": "Naka-log in bilang",
+    "nav": {
+      "home": "Home",
+      "mothers": "Mga nanay",
+      "appointments": "Mga appointment",
+      "visits": "Mga balik",
+      "followUps": "Mga follow-up",
+      "reports": "Mga ulat",
+      "accounts": "Mga account",
+      "activityTypes": "Mga serbisyo",
+      "smsLog": "SMS log",
+      "profile": "Profile"
     },
-    "staff": {
-      "title": "Health worker"
+    "roles": {
+      "ADMIN": "Admin",
+      "HEALTH_WORKER": "Health worker",
+      "MOTHER": "Nanay"
     },
-    "mother": {
-      "title": "Aking pangangalaga"
+    "comingSoon": {
+      "badge": "Phase {phase}",
+      "title": "Malapit na",
+      "body": "Nakaplano na ang bahaging ito ng Taysan MaternaCare at gagawin sa Phase {phase}."
+    },
+    "staffHome": {
+      "greeting": "Hello, {name}",
+      "body": "Lalabas dito ang mga gamit mo habang ginagawa ang bawat phase. Sa ngayon, maaari mong ayusin ang iyong profile, at ang mga admin ay maaaring mag-ayos ng mga account at serbisyo."
+    },
+    "motherHome": {
+      "greeting": "Hello, {name}",
+      "body": "Malapit nang lumabas dito ang buod ng iyong pagbubuntis, susunod na balik at mga paalala."
     }
   }
 }

@@ -271,14 +271,46 @@ Done when: the landing page and all auth pages use the new style on phone and de
 
 ## Phase 2 — App shell + Admin
 
-- Dashboard layout (responsive web):
-  - **Staff:** sidebar on desktop and tablet, collapsing to a menu button on phones.
-  - **Mothers:** a top menu on desktop and tablet; on phone screens only, a bottom tab bar in the Flo style (outline icons, filled when selected, small labels).
-  - Top bar with language switch and profile menu.
-- **Admin:**
-  - User accounts: list and search, create Health Worker / Admin accounts with `health_worker` profiles, activate or deactivate, reset passwords
-  - Activity types: edit names, descriptions and `reminder_days_before`
-- **Profile page** for every user: edit own details, change password, add or change recovery email.
+**Decisions (asked 2026-10-27):**
+
+| Topic | Decision |
+|---|---|
+| New staff accounts | Admin enters the username, name, position and contact. The **default password is the username**; at first login the person must set their own password before doing anything else. |
+| Usernames | **At least 8 characters for everyone** (staff and mothers), so the username is always a valid default password. Existing shorter usernames keep working. |
+| Password resets | Admin (any account) and health workers (mothers only; button in Phase 3) reset a password **back to the username**, which forces a change at the next login. |
+| Position | Fixed list: Midwife, Nurse, Barangay Health Worker (BHW), Barangay Nutrition Scholar (BNS), Admin staff, Other (type it). |
+| Admin navigation | **One staff app.** Admins see an extra "Admin" group (Accounts, Activity types) in the same sidebar. |
+| Activity types | Admin can **edit** (name, description, reminder days) and **add**. No delete (old appointments and visits point to them). |
+| Mother tabs | **Home, Appointments, Visits, Profile.** SMS reminders show inside each appointment. |
+
+**Database (migration `0007_phase2.sql`, run by you):**
+- Username rule raised to 8–30 characters for new or renamed accounts (existing rows are not re-checked).
+- Health workers may update their **own** name and contact number (today only admins can). Position stays admin-only.
+- "Must change password" is stored in the login's protected settings (Supabase `app_metadata`), so no new column is needed.
+
+**Build, in steps (each ends with screenshots for you):**
+1. **App shell:**
+   - Staff: sidebar on desktop and tablet (Home, then later Mothers, Appointments, Visits, Follow-ups, Reports; Admin group for admins), a menu button opening the sidebar as a sheet on phones, and a top bar (page title, language switch, profile menu with Profile and Log out).
+   - Mothers: a **floating bottom navigation** on every screen size (white pill, outline icons, the selected tab filled on a mint pill); slim top bar with brand, language and profile menu. (Changed 2026-10-27 from a desktop top menu, at your request.)
+   - Placeholder pages for links whose phase hasn't come yet ("Coming in Phase N").
+   - Admins are sent to the staff home; `/admin/...` holds the admin tools.
+2. **First-login password change:** a forced "Set your new password" screen. It blocks every other page until done, and also applies after a reset.
+3. **Admin, Accounts:**
+   - A list of all accounts with search, filter by role and status, and paging.
+   - **Create staff account** (Health Worker or Admin) with a `health_worker` profile.
+   - Activate or deactivate (never yourself), reset password (back to the username), and edit a staff member's profile and position.
+4. **Admin, Activity types:** list, edit (name, description, reminder days before, from 0 to 30) and add.
+5. **Profile page (everyone):**
+   - Edit your own details: mothers edit name, contact and address; staff edit name and contact.
+   - Change your password.
+   - Add or change your recovery email. People without an email can add one, so they can recover a password themselves.
+6. **Review:** phone and desktop screenshots, accessibility checks, design review, then your testing.
+
+Every create, update and reset runs on the server and checks the role first. Staff accounts are created with the secret key on the server, never in the browser.
+
+**Needs from you:** run `0007_phase2.sql` (it also renames the first admin login to **`taysan.admin`**; the password stays the same).
+
+**Step 1 built (2026-10-27):** migration `0007_phase2.sql`; username rule 8–30 in the app (sign-up hint and error updated); staff shell (sidebar from 1024px, menu sheet below, top bar with section title, EN/FIL and profile menu; Admin group for admins); mother shell (floating bottom navigation on all screen sizes); welcome home pages; "Coming in Phase N" pages for later sections; admins now land on `/staff`. Dev-only previews: `/design-preview/staff-shell`, `/design-preview/mother-shell`. Feature folder `src/features/shell/`.
 
 ## Phase 3 — Mothers & pregnancies (health worker)
 

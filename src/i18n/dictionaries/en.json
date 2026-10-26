@@ -367,5 +367,193 @@
       "greeting": "Hello, {name}",
       "body": "Your pregnancy summary, next visit and reminders will appear here soon."
     }
+  },
+  "newPassword": {
+    "title": "Set your new password",
+    "subtitle": "You logged in with a temporary password. Choose your own to continue.",
+    "password": "New password",
+    "confirm": "Confirm new password",
+    "submit": "Save and continue",
+    "submitting": "Saving…",
+    "note": "Your temporary password was your username. Pick something only you know.",
+    "errors": {
+      "passwordShort": "Use at least 8 characters.",
+      "passwordMismatch": "The passwords don't match.",
+      "sameAsUsername": "Your new password can't be the same as your username.",
+      "generic": "We couldn't save your password. Please try again."
+    }
+  },
+  "accounts": {
+    "title": "Accounts",
+    "intro": "Everyone who can log in: health workers, admins and mothers.",
+    "newStaff": "New staff account",
+    "search": {
+      "label": "Search",
+      "placeholder": "Name or username",
+      "role": "Role",
+      "status": "Status",
+      "all": "All",
+      "submit": "Search",
+      "clear": "Clear"
+    },
+    "statuses": {
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive"
+    },
+    "columns": {
+      "name": "Name",
+      "role": "Role",
+      "position": "Position",
+      "status": "Status",
+      "lastLogin": "Last login"
+    },
+    "never": "Never",
+    "empty": "No accounts match your search.",
+    "results": "{count} accounts",
+    "page": "Page {page} of {pages}",
+    "prev": "Previous",
+    "next": "Next",
+    "open": "Open {name}",
+    "positions": {
+      "midwife": "Midwife",
+      "nurse": "Nurse",
+      "bhw": "Barangay Health Worker (BHW)",
+      "bns": "Barangay Nutrition Scholar (BNS)",
+      "admin": "Admin staff",
+      "other": "Other"
+    },
+    "create": {
+      "title": "New staff account",
+      "subtitle": "Their username is also their temporary password. They set their own at first login.",
+      "role": "Account type",
+      "roleHealthWorker": "Health worker",
+      "roleAdmin": "Admin (also a health worker)",
+      "username": "Username",
+      "usernameHint": "8 to 30 small letters, numbers, dots or underscores. Example: maria.santos",
+      "firstName": "First name",
+      "middleName": "Middle name (optional)",
+      "lastName": "Last name",
+      "position": "Position",
+      "positionOther": "Position name",
+      "contact": "Mobile number",
+      "contactHint": "Example: 09171234567",
+      "email": "Email (optional)",
+      "emailHint": "Only used to recover a forgotten password.",
+      "submit": "Create account",
+      "submitting": "Creating…",
+      "cancel": "Cancel",
+      "done": "Account created. Temporary password: {username}"
+    },
+    "detail": {
+      "back": "All accounts",
+      "created": "Created",
+      "lastLogin": "Last login",
+      "email": "Recovery email",
+      "noEmail": "None. A health worker or admin resets the password.",
+      "security": "Login and security",
+      "reset": "Reset password",
+      "resetTitle": "Reset this password?",
+      "resetBody": "The password goes back to the username ({username}). They must choose a new one at their next login.",
+      "resetDone": "Password reset. Temporary password: {username}",
+      "deactivate": "Deactivate",
+      "deactivateTitle": "Deactivate this account?",
+      "deactivateBody": "They can no longer log in. Their records stay, and you can activate the account again anytime.",
+      "activate": "Activate",
+      "activateTitle": "Activate this account?",
+      "activateBody": "They can log in again with their current password.",
+      "statusDone": "Account updated.",
+      "self": "This is your own account. Use your Profile page to change your details or password.",
+      "profile": "Staff profile",
+      "save": "Save changes",
+      "saving": "Saving…",
+      "saved": "Profile saved.",
+      "motherNote": "Mother records (details and pregnancies) are managed in the Mothers section, coming in Phase 3.",
+      "pendingPassword": "Waiting for first password change"
+    },
+    "errors": {
+      "required": "This is required.",
+      "usernameFormat": "Use 8 to 30 small letters, numbers, dots or underscores, starting and ending with a letter or number.",
+      "usernameTaken": "This username is already taken.",
+      "phoneInvalid": "Enter an 11-digit number starting with 09.",
+      "emailInvalid": "Enter a valid email address.",
+      "emailTaken": "This email is already used by another account.",
+      "usernameTooShort": "This older username is shorter than 8 characters, so it can't be the temporary password.",
+      "self": "You can't change your own account here.",
+      "generic": "Something went wrong. Please try again."
+    }
+  },
+  "activityTypes": {
+    "title": "Activity types",
+    "intro": "The maternal-care services that can be booked. Each one gets its own SMS reminder.",
+    "add": "Add activity type",
+    "edit": "Edit",
+    "editName": "Edit {name}",
+    "reminderSameDay": "Reminder on the same day",
+    "reminderOneDay": "Reminder 1 day before",
+    "reminderDays": "Reminder {days} days before",
+    "noDescription": "No description",
+    "noDelete": "Activity types can't be deleted, because past appointments and visits use them.",
+    "dialog": {
+      "addTitle": "New activity type",
+      "editTitle": "Edit activity type",
+      "subtitle": "Staff and mothers see this name when booking.",
+      "name": "Name",
+      "description": "Description (optional)",
+      "reminder": "SMS reminder",
+      "reminderHint": "Days before the appointment: 0 = same day, up to 30.",
+      "save": "Save",
+      "saving": "Saving…",
+      "cancel": "Cancel",
+      "saved": "Activity type saved.",
+      "added": "Activity type added."
+    },
+    "errors": {
+      "required": "This is required.",
+      "tooLong": "This is too long.",
+      "daysInvalid": "Enter a whole number from 0 to 30.",
+      "nameTaken": "Another activity type already has this name.",
+      "generic": "Something went wrong. Please try again."
+    }
+  },
+  "profile": {
+    "title": "Your profile",
+    "details": {
+      "title": "Your details",
+      "position": "Position",
+      "positionNote": "Only an admin can change your position.",
+      "save": "Save details",
+      "saving": "Saving…",
+      "saved": "Your details were saved."
+    },
+    "password": {
+      "title": "Password",
+      "current": "Current password",
+      "next": "New password",
+      "confirm": "Confirm new password",
+      "submit": "Change password",
+      "submitting": "Changing…",
+      "done": "Your password was changed."
+    },
+    "email": {
+      "title": "Recovery email",
+      "current": "Your recovery email: {email}",
+      "none": "No recovery email yet. Add one so you can reset a forgotten password yourself.",
+      "label": "Email address",
+      "submit": "Save email",
+      "submitting": "Saving…",
+      "done": "Your recovery email was saved."
+    },
+    "errors": {
+      "required": "This is required.",
+      "phoneInvalid": "Enter an 11-digit number starting with 09.",
+      "emailInvalid": "Enter a valid email address.",
+      "emailTaken": "This email is already used by another account.",
+      "passwordShort": "Use at least 8 characters.",
+      "passwordMismatch": "The passwords don't match.",
+      "currentWrong": "Your current password is not correct.",
+      "sameAsUsername": "Your password can't be the same as your username.",
+      "samePassword": "Choose a password different from your current one.",
+      "generic": "Something went wrong. Please try again."
+    }
   }
 }

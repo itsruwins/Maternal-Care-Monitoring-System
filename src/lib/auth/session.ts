@@ -3,12 +3,15 @@ import { cache } from "react";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import type { UserRole } from "@/types/database";
+import { CHANGE_PASSWORD_PATH, mustChangePassword } from "./password-flag";
 import { ROLE_HOME } from "./roles";
 
 export type CurrentUser = {
   id: string;
   username: string;
   role: UserRole;
+  /** Logged in with a default password: must set a new one before anything else. */
+  mustChangePassword: boolean;
 };
 
 // The logged-in user, or null. INACTIVE accounts count as logged out.
@@ -28,14 +31,21 @@ export const getCurrentUser = cache(async (): Promise<CurrentUser | null> => {
 
   if (!account || account.account_status !== "ACTIVE") return null;
 
-  return { id: account.user_id, username: account.username, role: account.role };
+  return {
+    id: account.user_id,
+    username: account.username,
+    role: account.role,
+    mustChangePassword: mustChangePassword(data?.claims?.app_metadata),
+  };
 });
 
 // Use at the top of every protected page and Server Action.
-// Not logged in → /login. Wrong role → that user's own home page.
+// Not logged in → /login. Default password still in use → /change-password.
+// Wrong role → that user's own home page.
 export async function requireRole(allowed: readonly UserRole[]): Promise<CurrentUser> {
   const user = await getCurrentUser();
   if (!user) redirect("/login");
+  if (user.mustChangePassword) redirect(CHANGE_PASSWORD_PATH);
   if (!allowed.includes(user.role)) redirect(ROLE_HOME[user.role]);
   return user;
 }

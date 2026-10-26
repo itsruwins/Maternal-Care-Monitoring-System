@@ -367,5 +367,193 @@
       "greeting": "Hello, {name}",
       "body": "Malapit nang lumabas dito ang buod ng iyong pagbubuntis, susunod na balik at mga paalala."
     }
+  },
+  "newPassword": {
+    "title": "Gumawa ng bagong password",
+    "subtitle": "Pansamantalang password ang ginamit mo. Pumili ng sarili mong password para magpatuloy.",
+    "password": "Bagong password",
+    "confirm": "Ulitin ang bagong password",
+    "submit": "I-save at magpatuloy",
+    "submitting": "Sine-save…",
+    "note": "Ang pansamantala mong password ay ang iyong username. Pumili ng ikaw lang ang nakakaalam.",
+    "errors": {
+      "passwordShort": "Gumamit ng hindi bababa sa 8 character.",
+      "passwordMismatch": "Hindi magkapareho ang mga password.",
+      "sameAsUsername": "Hindi puwedeng kapareho ng username ang bagong password.",
+      "generic": "Hindi namin na-save ang password mo. Pakisubukang muli."
+    }
+  },
+  "accounts": {
+    "title": "Mga account",
+    "intro": "Lahat ng puwedeng mag-log in: mga health worker, admin at nanay.",
+    "newStaff": "Bagong staff account",
+    "search": {
+      "label": "Maghanap",
+      "placeholder": "Pangalan o username",
+      "role": "Tungkulin",
+      "status": "Status",
+      "all": "Lahat",
+      "submit": "Maghanap",
+      "clear": "I-clear"
+    },
+    "statuses": {
+      "ACTIVE": "Aktibo",
+      "INACTIVE": "Hindi aktibo"
+    },
+    "columns": {
+      "name": "Pangalan",
+      "role": "Tungkulin",
+      "position": "Posisyon",
+      "status": "Status",
+      "lastLogin": "Huling log in"
+    },
+    "never": "Hindi pa",
+    "empty": "Walang account na tumugma sa hinahanap mo.",
+    "results": "{count} account",
+    "page": "Pahina {page} sa {pages}",
+    "prev": "Nakaraan",
+    "next": "Susunod",
+    "open": "Buksan si {name}",
+    "positions": {
+      "midwife": "Midwife",
+      "nurse": "Nurse",
+      "bhw": "Barangay Health Worker (BHW)",
+      "bns": "Barangay Nutrition Scholar (BNS)",
+      "admin": "Admin staff",
+      "other": "Iba pa"
+    },
+    "create": {
+      "title": "Bagong staff account",
+      "subtitle": "Ang username nila ay siya ring pansamantalang password. Gagawa sila ng sarili nilang password sa unang log in.",
+      "role": "Uri ng account",
+      "roleHealthWorker": "Health worker",
+      "roleAdmin": "Admin (health worker din)",
+      "username": "Username",
+      "usernameHint": "8 hanggang 30 maliliit na titik, numero, tuldok o underscore. Halimbawa: maria.santos",
+      "firstName": "Pangalan",
+      "middleName": "Gitnang pangalan (hindi kailangan)",
+      "lastName": "Apelyido",
+      "position": "Posisyon",
+      "positionOther": "Pangalan ng posisyon",
+      "contact": "Numero ng cellphone",
+      "contactHint": "Halimbawa: 09171234567",
+      "email": "Email (hindi kailangan)",
+      "emailHint": "Gagamitin lang para mabawi ang nakalimutang password.",
+      "submit": "Gawin ang account",
+      "submitting": "Ginagawa…",
+      "cancel": "Kanselahin",
+      "done": "Nagawa na ang account. Pansamantalang password: {username}"
+    },
+    "detail": {
+      "back": "Lahat ng account",
+      "created": "Ginawa noong",
+      "lastLogin": "Huling log in",
+      "email": "Recovery email",
+      "noEmail": "Wala. Health worker o admin ang magre-reset ng password.",
+      "security": "Log in at seguridad",
+      "reset": "I-reset ang password",
+      "resetTitle": "I-reset ang password na ito?",
+      "resetBody": "Babalik ang password sa username ({username}). Kailangan nilang pumili ng bago sa susunod na log in.",
+      "resetDone": "Na-reset ang password. Pansamantalang password: {username}",
+      "deactivate": "I-deactivate",
+      "deactivateTitle": "I-deactivate ang account na ito?",
+      "deactivateBody": "Hindi na sila makakapag-log in. Mananatili ang kanilang records, at puwede mo itong i-activate muli anumang oras.",
+      "activate": "I-activate",
+      "activateTitle": "I-activate ang account na ito?",
+      "activateBody": "Makakapag-log in na ulit sila gamit ang kasalukuyan nilang password.",
+      "statusDone": "Na-update ang account.",
+      "self": "Ito ang sarili mong account. Gamitin ang iyong Profile para baguhin ang detalye o password.",
+      "profile": "Profile ng staff",
+      "save": "I-save",
+      "saving": "Sine-save…",
+      "saved": "Na-save ang profile.",
+      "motherNote": "Ang records ng nanay (detalye at pagbubuntis) ay inaayos sa bahaging Mga nanay, darating sa Phase 3.",
+      "pendingPassword": "Hinihintay ang unang pagpalit ng password"
+    },
+    "errors": {
+      "required": "Kailangan ito.",
+      "usernameFormat": "Gumamit ng 8 hanggang 30 maliliit na titik, numero, tuldok o underscore, na nagsisimula at nagtatapos sa titik o numero.",
+      "usernameTaken": "May gumagamit na ng username na ito.",
+      "phoneInvalid": "Maglagay ng 11-digit na numerong nagsisimula sa 09.",
+      "emailInvalid": "Maglagay ng tamang email address.",
+      "emailTaken": "Ginagamit na ng ibang account ang email na ito.",
+      "usernameTooShort": "Kulang sa 8 character ang lumang username na ito, kaya hindi ito puwedeng pansamantalang password.",
+      "self": "Hindi mo puwedeng baguhin dito ang sarili mong account.",
+      "generic": "May nangyaring mali. Pakisubukang muli."
+    }
+  },
+  "activityTypes": {
+    "title": "Mga serbisyo",
+    "intro": "Ang mga serbisyo para sa nanay na puwedeng i-book. May sariling SMS na paalala ang bawat isa.",
+    "add": "Magdagdag ng serbisyo",
+    "edit": "Baguhin",
+    "editName": "Baguhin ang {name}",
+    "reminderSameDay": "Paalala sa mismong araw",
+    "reminderOneDay": "Paalala 1 araw bago",
+    "reminderDays": "Paalala {days} araw bago",
+    "noDescription": "Walang paglalarawan",
+    "noDelete": "Hindi puwedeng burahin ang mga serbisyo, dahil ginagamit ito ng mga nakaraang appointment at balik.",
+    "dialog": {
+      "addTitle": "Bagong serbisyo",
+      "editTitle": "Baguhin ang serbisyo",
+      "subtitle": "Makikita ng staff at nanay ang pangalang ito kapag nagbu-book.",
+      "name": "Pangalan",
+      "description": "Paglalarawan (hindi kailangan)",
+      "reminder": "SMS na paalala",
+      "reminderHint": "Ilang araw bago ang appointment: 0 = sa mismong araw, hanggang 30.",
+      "save": "I-save",
+      "saving": "Sine-save…",
+      "cancel": "Kanselahin",
+      "saved": "Na-save ang serbisyo.",
+      "added": "Naidagdag ang serbisyo."
+    },
+    "errors": {
+      "required": "Kailangan ito.",
+      "tooLong": "Masyadong mahaba ito.",
+      "daysInvalid": "Maglagay ng buong numero mula 0 hanggang 30.",
+      "nameTaken": "May ibang serbisyo na may ganitong pangalan.",
+      "generic": "May nangyaring mali. Pakisubukang muli."
+    }
+  },
+  "profile": {
+    "title": "Iyong profile",
+    "details": {
+      "title": "Iyong detalye",
+      "position": "Posisyon",
+      "positionNote": "Admin lang ang puwedeng magpalit ng iyong posisyon.",
+      "save": "I-save ang detalye",
+      "saving": "Sine-save…",
+      "saved": "Na-save ang iyong detalye."
+    },
+    "password": {
+      "title": "Password",
+      "current": "Kasalukuyang password",
+      "next": "Bagong password",
+      "confirm": "Ulitin ang bagong password",
+      "submit": "Palitan ang password",
+      "submitting": "Pinapalitan…",
+      "done": "Napalitan ang iyong password."
+    },
+    "email": {
+      "title": "Recovery email",
+      "current": "Ang iyong recovery email: {email}",
+      "none": "Wala ka pang recovery email. Maglagay para ikaw mismo ang makapag-reset ng nakalimutang password.",
+      "label": "Email address",
+      "submit": "I-save ang email",
+      "submitting": "Sine-save…",
+      "done": "Na-save ang iyong recovery email."
+    },
+    "errors": {
+      "required": "Kailangan ito.",
+      "phoneInvalid": "Maglagay ng 11-digit na numerong nagsisimula sa 09.",
+      "emailInvalid": "Maglagay ng tamang email address.",
+      "emailTaken": "Ginagamit na ng ibang account ang email na ito.",
+      "passwordShort": "Gumamit ng hindi bababa sa 8 character.",
+      "passwordMismatch": "Hindi magkapareho ang mga password.",
+      "currentWrong": "Mali ang iyong kasalukuyang password.",
+      "sameAsUsername": "Hindi puwedeng kapareho ng username ang password.",
+      "samePassword": "Pumili ng password na iba sa kasalukuyan.",
+      "generic": "May nangyaring mali. Pakisubukang muli."
+    }
   }
 }

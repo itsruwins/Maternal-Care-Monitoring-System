@@ -1,12 +1,11 @@
 import { Suspense } from "react";
-import { ComingSoon } from "@/features/shell/components/coming-soon";
+import { ProfileScreen } from "@/features/profile/components/profile-screen";
 import { AREA_ROLES } from "@/lib/auth/roles";
-
 
 export default function MotherProfilePage() {
   return (
-    <Suspense fallback={null}>
-      <ComingSoon roles={AREA_ROLES.mother} navKey="profile" phase={2} />
+    <Suspense fallback={<div aria-hidden className="h-96 animate-pulse rounded-3xl bg-white/60" />}>
+      <ProfileScreen roles={AREA_ROLES.mother} />
     </Suspense>
   );
 }

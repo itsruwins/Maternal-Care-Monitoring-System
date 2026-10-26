@@ -5,7 +5,8 @@ import { requireEnv, SUPABASE_URL } from "./env";
 
 // Admin client: BYPASSES RLS. The only file that reads the secret key.
 // Use only in server code, only for: username → email lookup at login,
-// login lockout, creating staff accounts, and resetting passwords.
+// login lockout, creating staff accounts, resetting passwords (to the default),
+// clearing the "must change password" flag, and saving a user's own recovery email.
 // Always check the caller's role before using it.
 export function createAdminClient() {
   const secretKey = requireEnv(process.env.SUPABASE_SECRET_KEY, "SUPABASE_SECRET_KEY");

@@ -312,6 +312,13 @@ Every create, update and reset runs on the server and checks the role first. Sta
 
 **Step 1 built (2026-10-27):** migration `0007_phase2.sql`; username rule 8–30 in the app (sign-up hint and error updated); staff shell (sidebar from 1024px, menu sheet below, top bar with section title, EN/FIL and profile menu; Admin group for admins); mother shell (floating bottom navigation on all screen sizes); welcome home pages; "Coming in Phase N" pages for later sections; admins now land on `/staff`. Dev-only previews: `/design-preview/staff-shell`, `/design-preview/mother-shell`. Feature folder `src/features/shell/`.
 
+**Steps 2–5 built (2026-10-27):**
+- **First-login password:** the flag lives in `app_metadata.must_change_password`; the proxy and `requireRole` send flagged users to `/change-password`; login goes there directly; the new password can't equal the username; the flag is cleared and the session refreshed afterwards.
+- **Accounts** (`/admin/accounts`): search (name or username), role and status filters, 20 per page, table on desktop and cards on phones. **New staff account** dialog (Health worker / Admin, username = temporary password, name, position list + Other, mobile, optional email); creating it undoes itself if any part fails. Account page: login & security (created, last login, recovery email, "waiting for first password change"), **Reset password** (back to the username, plus forced change, clears login lockout) and **Activate / Deactivate** with confirmations (never your own account), and the staff profile editor. Shared reset helper `lib/auth/reset-to-default.ts` for Phase 3 (health workers resetting mothers).
+- **Activity types** (`/admin/activity-types`): cards with an icon, description and reminder timing; add/edit dialog (name, description, 0–30 days); no delete.
+- **Profile** (`/staff/profile`, `/mother/profile`): your details (staff: name and mobile, position read-only; mothers: name, mobile, address, emergency contact), change password (current password checked first), and add or change your recovery email.
+- Shared rules moved to `lib/validation/account-rules.ts`; new UI pieces `native-select`, `sheet`, `dropdown-menu`. Production build passes.
+
 ## Phase 3 — Mothers & pregnancies (health worker)
 
 - **Mother registry:** search and filter by purok, EDD month, active / delivered.

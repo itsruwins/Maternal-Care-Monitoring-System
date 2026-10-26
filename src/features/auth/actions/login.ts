@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { CHANGE_PASSWORD_PATH, mustChangePassword } from "@/lib/auth/password-flag";
 import { ROLE_HOME } from "@/lib/auth/roles";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
@@ -71,7 +72,7 @@ export async function login(_previous: LoginState, formData: FormData): Promise<
 
   // 3. Check the password (this also sets the session cookie).
   const supabase = await createClient();
-  const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+  const { data: signIn, error: signInError } = await supabase.auth.signInWithPassword({ email, password });
 
   if (signInError) {
     if (signInError.code === "invalid_credentials") {
@@ -96,7 +97,8 @@ export async function login(_previous: LoginState, formData: FormData): Promise<
       .eq("user_id", account.user_id),
   ]);
 
-  redirect(ROLE_HOME[account.role]);
+  // A default password (new staff account or a reset) must be changed first.
+  redirect(mustChangePassword(signIn.user?.app_metadata) ? CHANGE_PASSWORD_PATH : ROLE_HOME[account.role]);
 }
 
 export async function logout(): Promise<void> {

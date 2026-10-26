@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { daysBetween, isPlausibleLmp, parseISODate, todayISO } from "@/lib/utils/pregnancy";
+import { MIN_PASSWORD_LENGTH, MOBILE_PATTERN, normalizeMobile, USERNAME_PATTERN } from "@/lib/validation/account-rules";
 
 // Error messages are dictionary keys, translated in the UI:
 // auth.errors.* for login, register.errors.* for sign-up, reset.errors.* for passwords.
@@ -15,26 +16,15 @@ export const loginSchema = z.object({
 
 export type LoginInput = z.input<typeof loginSchema>;
 
-// Usernames for new accounts and renames: 8-30 characters (migration 0002 format
-// + 0007 minimum), so a username is always a valid default password. Login still
-// accepts older, shorter usernames.
-export const USERNAME_PATTERN = /^[a-z0-9][a-z0-9._]{6,28}[a-z0-9]$/;
-export const MIN_PASSWORD_LENGTH = 8;
-
-/** "0917 123-4567" / "+63 917 123 4567" → "09171234567" */
-export function normalizeMobile(value: string): string {
-  const digits = value.replace(/[^\d+]/g, "");
-  if (digits.startsWith("+63")) return `0${digits.slice(3)}`;
-  if (digits.startsWith("63") && digits.length === 12) return `0${digits.slice(2)}`;
-  return digits;
-}
+// Shared rules live in lib so other features can use them too.
+export { MIN_PASSWORD_LENGTH, normalizeMobile, USERNAME_PATTERN } from "@/lib/validation/account-rules";
 
 const required = z.string().trim().min(1, "required");
 const optionalText = z.string().trim();
 const mobile = z
   .string()
   .transform(normalizeMobile)
-  .pipe(z.string().regex(/^09\d{9}$/, "phoneInvalid"));
+  .pipe(z.string().regex(MOBILE_PATTERN, "phoneInvalid"));
 const count = (message: string, min: number) =>
   z
     .string()

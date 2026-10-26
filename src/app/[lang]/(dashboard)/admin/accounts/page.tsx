@@ -1,12 +1,10 @@
 import { Suspense } from "react";
-import { ComingSoon } from "@/features/shell/components/coming-soon";
-import { AREA_ROLES } from "@/lib/auth/roles";
+import { AccountsScreen } from "@/features/accounts/components/accounts-screen";
 
-
-export default function AdminAccountsPage() {
+export default function AdminAccountsPage({ searchParams }: PageProps<"/[lang]/admin/accounts">) {
   return (
-    <Suspense fallback={null}>
-      <ComingSoon roles={AREA_ROLES.admin} navKey="accounts" phase={2} />
+    <Suspense fallback={<div aria-hidden className="h-96 animate-pulse rounded-3xl bg-white/60" />}>
+      <AccountsScreen searchParams={searchParams} />
     </Suspense>
   );
 }

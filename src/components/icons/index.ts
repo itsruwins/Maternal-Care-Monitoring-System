@@ -60,6 +60,7 @@ export {
 
   // Actions & feedback
   PlusIcon,
+  PencilSimpleIcon as PencilIcon,
   MinusIcon,
   CheckIcon,
   CheckCircleIcon,

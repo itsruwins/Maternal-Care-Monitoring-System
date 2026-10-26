@@ -1,4 +1,5 @@
 import * as React from "react"
+import { DangerIcon } from "@/components/icons"
 import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils/cn"
 
@@ -33,12 +34,13 @@ function FormField({
       </div>
       {children(describedBy)}
       {error && (
-        <p id={errorId} className="text-sm text-brick">
+        <p id={errorId} className="flex items-start gap-1.5 text-sm text-rose-deep">
+          <DangerIcon weight="fill" aria-hidden className="mt-0.5 size-4 shrink-0" />
           {error}
         </p>
       )}
       {hint && !error && (
-        <p id={hintId} className="text-sm text-ink-label">
+        <p id={hintId} className="text-sm text-ink-soft">
           {hint}
         </p>
       )}

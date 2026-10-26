@@ -2,7 +2,7 @@
 
 Barangay Taysan, Legazpi City · Next.js 16 + Supabase · Hosted on Vercel
 
-Status: **Phase 0 approved. Phase 1 built and design-reviewed (2026-10-26), awaiting your testing and sign-off.** Each phase ends with a demo and your sign-off before the next starts.
+Status: **Phase 0 approved. Phase 1 built (2026-10-26). Redesign (Phase 1R, Flo-inspired): step 1 (style base) built 2026-10-27, waiting for your approval of the preview at `/design-preview`.** Each phase ends with a demo and your sign-off before the next starts.
 
 ---
 
@@ -48,18 +48,29 @@ Status: **Phase 0 approved. Phase 1 built and design-reviewed (2026-10-26), awai
 
 ## Design direction
 
-- **Feel:** calm, clinical-but-warm SaaS. Lots of whitespace, soft cards, clear status colors, smooth but quick motion. Mobile-first for mothers; dense, efficient tables for staff.
-- **Palette** (from your color scheme):
-  - Green `#769382` — accents, highlights, charts
-  - Deep green `~#4F6B5E` (new) — primary buttons and text links (the light green fails contrast on white)
-  - Beige `#E8DDC9` (the image label is a typo) — warm section backgrounds
-  - Sage `#C0C3B9` — borders, muted UI
-  - Cream `#F3EFE3` — page background
+Changed 2026-10-27: the "Balik Card" look (paper card, stamps, handwriting) is replaced by a soft, feminine, app-like style inspired by the **Flo** app. We copy Flo's style, not its assets: Flo's icons, illustrations and baby renders are its property and are not used.
+
+- **Feel:** soft, warm and caring, like a modern health app for mothers. Rounded shapes, gentle curves, roomy spacing, friendly icons. Mobile-first for mothers; clear, efficient tables for staff in the same style.
+- **Palette** (from your color scheme, plus one accent):
+  - Green `#769382`: accents, icon circles, charts
+  - Deep green `~#4F6B5E`: primary buttons and text links (the light green fails contrast on white)
+  - Beige `#E8DDC9` (the image label is a typo): warm section backgrounds
+  - Sage `#C0C3B9`: borders, muted UI
+  - Cream `#F3EFE3`: page background
+  - **Dusty rose `~#D9A5A0` (new, small touches only):** hero curve tint, hearts, some icon circles. It is too light for text, so any rose text uses a darker shade that passes contrast.
   - Plus muted status colors: requested, confirmed, completed, missed, cancelled
-- **Design files:** `PRODUCT.md` (product facts, done) and `DESIGN.md` (visual system, after you pick a direction).
+- **Font:** **Inter** everywhere, like Flo (Archivo and Kalam removed). Weights 400/500/600/700. Sizes follow Flo: 12, 14, **16 body**, 18, 20, 24, 32, 48 px hero; body line height 24 px; big numbers (weeks, days) in bold.
+- **Shapes:** cards with 16–20 px corners, pill-shaped buttons, circles for dates and icons, hero sections that end in a soft curve.
+- **Icons:** **Phosphor Icons** (`@phosphor-icons/react`), in Flo's three styles:
+  1. Navigation: thin rounded outline icons; the selected tab switches to the filled version.
+  2. Feature icons: a white or filled icon inside a soft colored circle (green, sage, beige or rose).
+  3. Actions: "+" and similar inside a filled circle.
+  All icons come from one shared folder, so the same icon always means the same thing (for example: baby = pregnancy, calendar-heart = appointment, syringe = vaccine).
+- **Signature mobile pattern** (mother portal, from Flo's pregnancy screen): a week strip at the top with appointment days circled, a curved hero with "24 weeks, 3 days" in big bold type, then a sideways row of rounded insight cards (next visit, tip of the week, danger signs).
+- **Design files:** `PRODUCT.md` (product facts, kept) and `DESIGN.md` (rewritten for the new style after the build).
 - **Logo:** the barangay seal shown small on a neutral circle, next to a clean text wordmark. Its bright colors are not used in the UI palette.
 - **Tools:** `/impeccable` to set the design system and review screens, `/apple-design` + `emil-design-eng` for motion and interaction polish.
-- **Stack:** Tailwind v4 (already installed), shadcn/ui (accessible components), Motion, React Hook Form + Zod (forms), Lucide icons, Sonner (toasts), a chart library for reports. Exact versions checked against Next 16 at install time.
+- **Stack:** Tailwind v4, shadcn/ui (accessible components, restyled), Motion, React Hook Form + Zod (forms), Phosphor icons (Lucide stays only inside shadcn internals), Sonner (toasts), a chart library for reports. Exact versions checked against Next 16 at install time.
 
 ## Folder structure & code conventions
 
@@ -219,9 +230,37 @@ Done when: a mother can sign up on a phone, log in, log out, and recover her pas
 - Supabase's built-in email sender only allows a few emails per hour. For real use, connect an email provider (Supabase → Authentication → SMTP).
 - A reset link must be opened in the same browser where it was requested.
 
+## Phase 1R — Redesign (Flo-inspired)
+
+Only the look changes. Login, sign-up, password recovery, language switch, database and folder structure stay exactly as built in Phase 1.
+
+1. **Style base:**
+   - Install `@phosphor-icons/react` and load Inter through `next/font`.
+   - Remove Archivo, Kalam and the Balik Card styles (paper grain, stamps, folder cards, handwriting).
+   - New tokens in `globals.css`: palette with dusty rose, radius, soft shadows, Inter type scale.
+   - Restyle the shadcn parts (button as a pill, input, label, dialog) and add shared pieces in `src/components/ui/`: icon circle, week strip, insight card, curved hero.
+   - **Checkpoint:** a short preview of colors, type and icons for your approval before the pages are built.
+2. **Landing page (new layout):**
+   - Header: seal + name, language switch, Log in, Sign up (pill).
+   - Hero: curved soft-tint background, big Inter headline, and a phone mock-up of the mother portal "Today" screen, built in code and not a picture. It shows the week strip, weeks pregnant and the next visit.
+   - Due-date estimate: the working LMP → due date feature, restyled as a rounded card.
+   - Services: the 5 activity types, each with an icon circle.
+   - How it works: 4 steps with icons (sign up → request → SMS reminder → visit).
+   - Tips: a swipeable row of insight cards; danger signs stand out in rose.
+   - Health center info and footer.
+   - The two stock photos stay, with rounded corners.
+3. **Auth pages:** the login dialog, `/login`, the 5-step `/register` (stepper becomes rounded steps with icons), `/forgot-password` and `/reset-password` move to the new style.
+4. **Review:** desktop + phone screenshots, accessibility contrast check, design review, then `DESIGN.md` rewritten for the new style.
+
+Done when: the landing page and all auth pages use the new style on phone and desktop, everything from Phase 1 still works, and you approve the look.
+
+**Step 1 built (2026-10-27):** Phosphor 2.1.10 installed; Inter replaces Archivo; new tokens (milk, leaf, mint, rose, blush, rose deep, soft shadows, 8–36px radius, Inter scale); pill buttons, rounded inputs, the login dialog as a bottom sheet on phones; shared icon set `src/components/icons/`; new `icon-circle`, `week-strip`, `insight-card`, `curved-hero`; the Today phone mock-up `features/landing/components/today-phone.tsx`. Preview page `/design-preview` works only in development. Old card styles stay as aliases until steps 2–3 replace the pages.
+
+**After this phase**, the Phase 1 testing checklist (log in, sign up, password reset) is done once, on the new design.
+
 ## Phase 2 — App shell + Admin
 
-- Dashboard layout: sidebar (staff), bottom navigation (mothers on mobile), top bar with language switch and profile menu.
+- Dashboard layout: sidebar (staff), bottom navigation (mothers on mobile) in the Flo style (outline icons, filled when selected, small labels), top bar with language switch and profile menu.
 - **Admin:**
   - User accounts: list and search, create Health Worker / Admin accounts with `health_worker` profiles, activate or deactivate, reset passwords
   - Activity types: edit names, descriptions and `reminder_days_before`
@@ -233,7 +272,7 @@ Done when: a mother can sign up on a phone, log in, log out, and recover her pas
 - **Register a mother at the health center** (`user_id` empty, `registered_by` set), with an optional "create login for her" step later.
 - **Mother profile with tabs:** overview, pregnancy (current + history), visits, appointments, SMS log, follow-ups.
 - **Pregnancy management:** add past pregnancies (DELIVERED/ENDED with outcome); close the current one with an outcome. Rule enforced: only one ACTIVE pregnancy per mother.
-- **Mother portal:** view her own profile, pregnancy summary (AOG, EDD countdown) and history.
+- **Mother portal:** view her own profile, pregnancy summary (AOG, EDD countdown) and history. The home ("Today") screen follows the Flo pregnancy screen: week strip with appointment days, curved hero with weeks pregnant, insight cards (next visit, tip of the week, danger signs).
 
 ## Phase 4 — Appointments
 

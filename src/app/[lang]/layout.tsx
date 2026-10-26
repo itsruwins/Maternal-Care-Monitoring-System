@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, Kalam } from "next/font/google";
+import { Inter, Kalam } from "next/font/google";
 import { notFound } from "next/navigation";
 import { lang } from "next/root-params";
 import { Toaster } from "sonner";
@@ -9,14 +9,14 @@ import { DictionaryProvider } from "@/i18n/dictionary-provider";
 import { getDictionary } from "@/i18n/get-dictionary";
 import "../globals.css";
 
-// Printed card text: Archivo with its width axis (condensed labels, normal body).
-const archivo = Archivo({
-  variable: "--font-archivo",
+// Inter, like Flo. The optical-size axis tightens large headings automatically.
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin", "latin-ext"],
-  axes: ["wdth"],
+  axes: ["opsz"],
 });
 
-// Values written in by hand on the card.
+// Legacy: only the old landing card still uses it. Removed in Phase 1R step 2.
 const kalam = Kalam({
   variable: "--font-kalam",
   subsets: ["latin", "latin-ext"],
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#e8ddc9",
+  themeColor: "#fbf8f3",
 };
 
 // Cache Components needs every root parameter value listed ahead of time.
@@ -50,7 +50,7 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
   const dictionary = await getDictionary(locale);
 
   return (
-    <html lang={locale} className={`${archivo.variable} ${kalam.variable} h-full`}>
+    <html lang={locale} className={`${inter.variable} ${kalam.variable} h-full`}>
       <body className="flex min-h-full flex-col">
         <DictionaryProvider locale={locale} dictionary={dictionary}>
           {children}
@@ -59,7 +59,7 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
           position="top-center"
           toastOptions={{
             classNames: {
-              toast: "!bg-card-stock !text-ink !border-rule !shadow-[var(--shadow-card)] !font-sans",
+              toast: "!bg-white !text-ink !border-line !rounded-2xl !shadow-[var(--shadow-raised)] !font-sans",
             },
           }}
         />

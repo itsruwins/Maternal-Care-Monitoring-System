@@ -3,64 +3,99 @@
 @import "shadcn/tailwind.css";
 
 /*
-  Taysan MaternaCare: "The Balik Card" visual world.
-  The health center's prenatal appointment card: beige folder ground, cream card
-  stock with sage ruled lines, printed labels in deep green, values written in a
-  ballpoint hand, visits marked with rubber stamps.
+  Taysan MaternaCare: soft, app-like style inspired by the Flo app.
+  Client palette (green, beige, sage, cream) plus one dusty-rose accent.
+  Rounded cards, pill buttons, circles for dates and icons, curved hero sections.
   Light only: used in daylight at home and at the health center.
 */
 
 @theme inline {
-  /* Client palette + accessible ink derived from it */
-  --color-folder: #e8ddc9; /* page ground (client beige) */
-  --color-card-stock: #f3efe3; /* card surface (client cream) */
-  --color-paper: #fbf9f3; /* writable fields */
-  --color-ink: #1f2d27; /* body text, 12.5:1 on cream */
-  --color-ink-label: #46604f; /* printed labels, secondary text, 6:1 on cream */
-  --color-press: #3e584c; /* primary buttons, cream text 6.8:1 */
-  --color-press-deep: #2f473c; /* primary hover */
-  --color-sage: #769382; /* client green: stamps fill, focus, decoration */
-  --color-stamp: #4d6b5c; /* stamp ink, 5.1:1 on cream / 5.6:1 on paper */
-  --color-rule: #c0c3b9; /* client sage-gray: ruled lines (decorative) */
-  --color-brick: #9a4a36; /* missed / errors only */
+  /* Client palette */
+  --color-fern: #769382; /* client green: icon circles, charts, decoration (not text) */
+  --color-sage: #c0c3b9; /* client sage-gray: soft borders, decoration (not text) */
+  --color-beige: #e8ddc9; /* client beige: warm sections */
+  --color-cream: #f3efe3; /* client cream: sections, quiet fills */
 
-  /* shadcn semantic tokens, mapped onto the card world */
-  --color-background: var(--color-folder);
+  /* Derived from the palette */
+  --color-milk: #fbf8f3; /* page ground */
+  --color-leaf: #3e5a4d; /* primary buttons and links: white text 7.6:1 */
+  --color-leaf-deep: #2f473c; /* primary hover */
+  --color-mint: #e3eae4; /* green tint: icon circles, soft buttons (leaf on mint 6.2:1) */
+  --color-ink: #1f2d27; /* body text: 14.4:1 on white */
+  --color-ink-soft: #56665d; /* secondary text: 6.1:1 on white, 4.5:1 on beige */
+  --color-line: #e6e0d4; /* hairline dividers (decorative) */
+  --color-field: #879389; /* input borders: 3:1 on white and milk */
+
+  /* Dusty rose accent: small touches only */
+  --color-rose: #d9a5a0; /* hearts, hero tint, decoration (not text) */
+  --color-blush: #f6e6e1; /* rose tint: danger-sign cards, icon circles */
+  --color-rose-deep: #9c4f4a; /* rose text, danger signs, errors: 5.8:1 on white */
+
+  /* shadcn semantic tokens */
+  --color-background: var(--color-milk);
   --color-foreground: var(--color-ink);
-  --color-card: var(--color-card-stock);
+  --color-card: #ffffff;
   --color-card-foreground: var(--color-ink);
-  --color-popover: var(--color-card-stock);
+  --color-popover: #ffffff;
   --color-popover-foreground: var(--color-ink);
-  --color-primary: var(--color-press);
-  --color-primary-foreground: var(--color-card-stock);
-  --color-secondary: var(--color-folder);
+  --color-primary: var(--color-leaf);
+  --color-primary-foreground: #ffffff;
+  --color-secondary: var(--color-cream);
   --color-secondary-foreground: var(--color-ink);
-  --color-muted: #ebe5d6;
-  --color-muted-foreground: var(--color-ink-label);
-  --color-accent: #e4e8df;
-  --color-accent-foreground: var(--color-ink);
-  --color-destructive: var(--color-brick);
-  --color-border: var(--color-rule);
-  --color-input: var(--color-ink-label);
-  --color-ring: var(--color-sage);
+  --color-muted: var(--color-cream);
+  --color-muted-foreground: var(--color-ink-soft);
+  --color-accent: var(--color-mint);
+  --color-accent-foreground: var(--color-leaf);
+  --color-destructive: var(--color-rose-deep);
+  --color-border: var(--color-line);
+  --color-input: var(--color-field);
+  --color-ring: var(--color-fern);
 
-  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
-  --font-heading: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  /* Legacy names from the old card style. Removed once every page has moved (Phase 1R steps 2-3). */
+  --color-folder: var(--color-beige);
+  --color-card-stock: var(--color-cream);
+  --color-paper: #ffffff;
+  --color-ink-label: var(--color-ink-soft);
+  --color-press: var(--color-leaf);
+  --color-press-deep: var(--color-leaf-deep);
+  --color-stamp: #4d6b5c;
+  --color-rule: var(--color-sage);
+  --color-brick: var(--color-rose-deep);
   --font-hand: var(--font-kalam), ui-serif, cursive;
 
-  --radius-sm: 3px;
-  --radius-md: 5px;
-  --radius-lg: 8px;
-  --radius-xl: 12px;
+  /* Type: Inter, Flo's scale (12 / 14 / 16 / 18 / 20 / 24 / 32 / 48) */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 
-  /* Card depth: a real card resting on a folder (offset + soft blur) */
-  --shadow-card: 0 1px 1px rgb(31 45 39 / 0.06), 0 6px 18px -6px rgb(31 45 39 / 0.18);
-  --shadow-card-lifted: 0 2px 2px rgb(31 45 39 / 0.06), 0 18px 40px -12px rgb(31 45 39 / 0.28);
-  /* A card laid over the one before it: casts a soft shadow upward too. */
-  --shadow-card-stacked: 0 -10px 24px -16px rgb(31 45 39 / 0.35), 0 2px 2px rgb(31 45 39 / 0.06), 0 18px 40px -12px rgb(31 45 39 / 0.24);
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1rem;
+  --text-title: clamp(1.75rem, 1.35rem + 1.4vw, 2rem);
+  --text-title--line-height: 1.2;
+  --text-title--letter-spacing: -0.02em;
+  --text-display: clamp(2.25rem, 1.5rem + 3vw, 3rem);
+  --text-display--line-height: 1.08;
+  --text-display--letter-spacing: -0.03em;
+
+  /* Shapes: soft and round */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 28px;
+  --radius-3xl: 36px;
+
+  /* Depth: soft, low shadows tinted with ink, never black */
+  --shadow-soft: 0 1px 2px rgb(31 45 39 / 0.04), 0 4px 14px -4px rgb(31 45 39 / 0.08);
+  --shadow-raised: 0 2px 4px rgb(31 45 39 / 0.04), 0 14px 32px -10px rgb(31 45 39 / 0.16);
+  --shadow-float: 0 4px 10px rgb(31 45 39 / 0.05), 0 28px 60px -18px rgb(31 45 39 / 0.28);
+  /* legacy */
+  --shadow-card: var(--shadow-soft);
+  --shadow-card-lifted: var(--shadow-raised);
+  --shadow-card-stacked: var(--shadow-raised);
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 
+  /* legacy animations (old landing card), removed in step 2 */
   --animate-write: write 650ms var(--ease-out-expo) both;
   --animate-stamp: stamp 320ms var(--ease-out-expo) both;
 
@@ -82,17 +117,18 @@
   html {
     @apply font-sans;
     -webkit-text-size-adjust: 100%;
-    scrollbar-color: var(--color-ink-label) var(--color-folder);
+    scrollbar-color: var(--color-sage) var(--color-milk);
   }
 
   body {
     @apply bg-background text-foreground antialiased;
-    caret-color: var(--color-press);
-    font-variation-settings: "wdth" 100;
+    caret-color: var(--color-leaf);
+    /* Inter's single-storey "a": a softer, friendlier letter */
+    font-feature-settings: "cv11";
   }
 
   ::selection {
-    background: color-mix(in srgb, var(--color-sage) 45%, transparent);
+    background: color-mix(in srgb, var(--color-rose) 45%, transparent);
     color: var(--color-ink);
   }
 
@@ -102,7 +138,7 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-press);
+    outline: 2px solid var(--color-leaf);
     outline-offset: 2px;
   }
 
@@ -112,59 +148,42 @@
 
   input[type="date"]::-webkit-calendar-picker-indicator {
     cursor: pointer;
-    opacity: 0.7;
+    opacity: 0.6;
   }
 }
 
 @layer components {
-  /* Printed form labels: condensed caps, like the card's pre-printed text */
-  .label-print {
-    font-variation-settings: "wdth" 75;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--color-ink-label);
+  /* Every date, week and count: tabular lining numerals */
+  .tnum {
+    font-variant-numeric: tabular-nums lining-nums;
   }
 
-  /* Display headings: the card's printed voice (condensed, extra bold). */
+  /* Legacy card-style classes, removed once every page has moved (steps 2-3) */
+  .label-print {
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+  }
   .display-print {
-    font-variation-settings: "wdth" 82;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    word-spacing: 0.12em;
+    font-weight: 700;
+    letter-spacing: -0.03em;
     color: var(--color-ink);
   }
-
-  /* Values written in by hand (ballpoint) */
   .hand {
     font-family: var(--font-hand);
     color: var(--color-ink);
     line-height: 1.15;
   }
-
-  /* Every date and week: tabular lining numerals */
-  .tnum {
-    font-variant-numeric: tabular-nums lining-nums;
-  }
-
-  /* Card stock with a faint paper grain */
   .card-stock {
-    background-color: var(--color-card-stock);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .12 0 0 0 0 .18 0 0 0 0 .15 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-color: #ffffff;
   }
-
-  /* Perforated tear line */
   .perforation {
-    height: 2px;
-    background-image: radial-gradient(circle, var(--color-rule) 1px, transparent 1.5px);
-    background-size: 8px 2px;
-    background-repeat: repeat-x;
+    height: 1px;
+    background: var(--color-line);
   }
-
-  /* Rubber stamp ink: uneven coverage */
   .stamp-ink {
-    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.55' numOctaves='3' seed='4'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='0 1 1 1 1 1 1 1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23s)'/%3E%3C/svg%3E");
-    mask-size: 120px 120px;
+    mask-image: none;
   }
 }
 

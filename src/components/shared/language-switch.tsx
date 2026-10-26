@@ -20,7 +20,7 @@ export function LanguageSwitch({ className }: { className?: string }) {
     <div
       role="group"
       aria-label={t.common.language}
-      className={cn("inline-flex rounded-md border border-ink-label/40 bg-card-stock p-0.5", className)}
+      className={cn("inline-flex rounded-full bg-white p-1 shadow-[var(--shadow-soft)]", className)}
     >
       {LOCALES.map((option) => {
         const active = option === locale;
@@ -39,8 +39,8 @@ export function LanguageSwitch({ className }: { className?: string }) {
               });
             }}
             className={cn(
-              "label-print h-8 min-w-9 rounded-[4px] px-1.5 text-[0.72rem] transition-colors duration-150 sm:min-w-11 sm:px-2",
-              active ? "bg-press text-card-stock" : "text-ink-label hover:bg-ink/6 hover:text-ink",
+              "h-8 min-w-10 rounded-full px-2.5 text-[0.8125rem] font-semibold transition-colors duration-200 sm:min-w-11",
+              active ? "bg-leaf text-white" : "text-ink-soft hover:bg-cream hover:text-ink",
               pending && "cursor-progress"
             )}
           >

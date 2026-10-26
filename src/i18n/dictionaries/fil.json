@@ -3,7 +3,15 @@
     "loading": "Naglo-load…",
     "language": "Wika",
     "english": "English",
-    "filipino": "Filipino"
+    "filipino": "Filipino",
+    "close": "Isara",
+    "notSet": "Wala pa",
+    "tbd": "Iaanunsyo pa"
+  },
+  "nav": {
+    "login": "Mag-log in",
+    "signup": "Mag-sign up",
+    "home": "Home"
   },
   "auth": {
     "loginTitle": "Mag-log in",
@@ -15,6 +23,9 @@
     "submit": "Mag-log in",
     "submitting": "Nagla-log in…",
     "logout": "Mag-log out",
+    "forgot": "Nakalimutan ang password?",
+    "noAccount": "Wala ka pang account?",
+    "signupLink": "Mag-sign up",
     "errors": {
       "invalid": "Mali ang username o password.",
       "locked": "Masyadong maraming maling subok. Subukang muli pagkalipas ng {minutes} minuto.",
@@ -24,15 +35,236 @@
       "generic": "May nangyaring mali. Pakisubukang muli."
     }
   },
+  "landing": {
+    "cardTab": "Barangay Taysan Health Center · Card ng prenatal na balik",
+    "cardCenter": "Barangay Taysan Health Center",
+    "headline": "Hindi ka na mahuhuli sa checkup.",
+    "lead": "Ang appointment card mo sa health center, nasa cellphone mo na. Ite-text ka namin bago ang bawat balik.",
+    "lmpLabel": "Unang araw ng huling regla",
+    "lmpHint": "Subukan mo. Pupunan namin ang card mo.",
+    "lmpInvalid": "Maglagay ng petsa sa loob ng huling 10 buwan.",
+    "dueLabel": "Kabuwanan",
+    "weekLabel": "Ilang linggo nang buntis",
+    "weekValue": "{weeks} linggo, {days} araw",
+    "nextLabel": "Susunod na balik",
+    "nextValue": "Itatakda ng iyong midwife",
+    "smsStamp": "SMS paalala",
+    "estimateNote": "Tantiya lamang. Ang iyong midwife ang magkukumpirma ng mga petsa.",
+    "signup": "Mag-sign up at itago ang card",
+    "login": "May account na ako",
+    "noEmail": "Hindi kailangan ng email.",
+    "how": {
+      "title": "Paano ito gumagana",
+      "steps": [
+        {
+          "title": "Mag-sign up sa cellphone",
+          "body": "Ilang minuto lang. Username at password lang ang kailangan; hindi kailangan ang email."
+        },
+        {
+          "title": "Mag-request ng balik",
+          "body": "Piliin ang serbisyo at araw na gusto mo. Kukumpirmahin ito ng health worker."
+        },
+        {
+          "title": "Makatanggap ng text",
+          "body": "Ite-text ka namin bago ang bawat checkup, bakuna, lab test o klase."
+        },
+        {
+          "title": "Bumisita at matatakan",
+          "body": "Itatala ng midwife ang pagbisita at maa-update ang card mo. Walang mawawala."
+        }
+      ],
+      "stampDone": "Tapos"
+    },
+    "services": {
+      "title": "Mga ipapaalala namin",
+      "intro": "Bawat serbisyo para sa nanay sa health center ay may sariling text na paalala.",
+      "items": [
+        {
+          "name": "Prenatal checkup",
+          "body": "Regular na pagsusuri sa iyo at sa iyong baby."
+        },
+        {
+          "name": "Bakuna laban sa tetano",
+          "body": "Proteksyon mo at ng iyong bagong silang laban sa tetano."
+        },
+        {
+          "name": "Iron at folic acid",
+          "body": "Mga bitaminang ibinibigay ng health center para sa malusog na pagbubuntis."
+        },
+        {
+          "name": "Laboratory tests",
+          "body": "Mga pagsusuring ipinagagawa ng iyong midwife."
+        },
+        {
+          "name": "Klase sa kalusugan",
+          "body": "Mga sesyon tungkol sa pagbubuntis, panganganak at pag-aalaga ng baby."
+        }
+      ]
+    },
+    "records": {
+      "title": "Ang records mo, nasa cellphone mo",
+      "body": "Makikita mo anumang oras ang kabuwanan mo, ilang linggo ka nang buntis, ang mga nakaraang balik at ang mga susunod na appointment. Ikaw at ang health center lang ang makakakita nito.",
+      "photoAlt": "Isang nakangiting buntis na nakatayo sa labas",
+      "sampleLabel": "Halimbawang card",
+      "sampleRows": [
+        {
+          "activity": "Prenatal checkup",
+          "date": "Ago 12"
+        },
+        {
+          "activity": "Bakuna laban sa tetano",
+          "date": "Set 9"
+        }
+      ]
+    },
+    "center": {
+      "title": "Pinapatakbo ng sarili nating health center",
+      "body": "Ang Taysan MaternaCare ay pinapatakbo ng mga midwife at barangay health worker ng Barangay Taysan Health Center, ang mga taong nag-aalaga na sa iyo.",
+      "addressLabel": "Address",
+      "hoursLabel": "Araw at oras ng klinika",
+      "contactLabel": "Numero ng telepono",
+      "photoAlt": "Ang Bulkang Mayon sa itaas ng luntiang palayan sa Albay"
+    },
+    "tips": {
+      "title": "Mga paalala para sa malusog na pagbubuntis",
+      "note": "Pangkalahatang impormasyon lamang. Laging sundin ang payo ng iyong midwife.",
+      "items": [
+        "Pumunta sa lahat ng prenatal checkup, kahit maayos ang pakiramdam mo.",
+        "Inumin ang iron at folic acid na bigay ng health center.",
+        "Kumain ng iba't ibang pagkain, gaya ng malunggay at ibang gulay, isda, itlog at monggo, at uminom ng malinis na tubig.",
+        "Magpahinga nang sapat, at iwasan ang paninigarilyo at alak.",
+        "Dalhin ang card o booklet mo sa bawat balik."
+      ],
+      "dangerTitle": "Pumunta agad sa health center o ospital kung may:",
+      "danger": [
+        "Pagdurugo mula sa ari",
+        "Matinding sakit ng ulo o paglabo ng paningin",
+        "Pamamaga ng mukha o kamay",
+        "Mataas na lagnat",
+        "Mas kaunting paggalaw ng baby kaysa dati",
+        "Pagputok ng panubigan o matinding sakit bago ang kabuwanan"
+      ]
+    },
+    "footer": {
+      "privacy": "Ikaw at ang mga awtorisadong staff ng health center lamang ang makakakita ng iyong records.",
+      "photos": "Mga larawan: Justyn Abacajan at Ron Dichoso (Pexels)."
+    },
+    "tabs": {
+      "how": "4 hakbang",
+      "services": "5 serbisyo",
+      "records": "Para sa iyo lang",
+      "center": "Barangay Taysan",
+      "tips": "Health education"
+    },
+    "cardTabShort": "Card ng prenatal na balik"
+  },
+  "register": {
+    "title": "Mag-sign up",
+    "subtitle": "Gawin ang iyong prenatal card sa limang maikling hakbang.",
+    "stepOf": "Hakbang {current} sa {total}",
+    "steps": {
+      "account": "Account",
+      "personal": "Tungkol sa iyo",
+      "address": "Tirahan",
+      "pregnancy": "Pagbubuntis",
+      "review": "Suriin"
+    },
+    "fields": {
+      "username": "Username",
+      "usernameHint": "3 hanggang 30 character: maliliit na titik, numero, tuldok o underscore.",
+      "usernameChecking": "Sinusuri…",
+      "usernameAvailable": "Puwede",
+      "password": "Password",
+      "passwordHint": "Hindi bababa sa 8 character.",
+      "confirmPassword": "Ulitin ang password",
+      "email": "Email (hindi kailangan)",
+      "emailHint": "Gagamitin lang kung makalimutan mo ang password. Walang email? Puwedeng i-reset ito ng health worker.",
+      "firstName": "Pangalan",
+      "middleName": "Gitnang pangalan (hindi kailangan)",
+      "lastName": "Apelyido",
+      "dateOfBirth": "Petsa ng kapanganakan",
+      "contactNumber": "Numero ng cellphone",
+      "contactHint": "Dito ite-text ang mga paalala. Halimbawa: 09171234567",
+      "purok": "Purok / Sitio",
+      "street": "Numero ng bahay at kalye",
+      "emergencyName": "Pangalan ng emergency contact",
+      "emergencyNumber": "Numero ng emergency contact",
+      "gravida": "Ilang beses nang nabuntis, kasama ang ngayon",
+      "gravidaHint": "Gravida (G)",
+      "para": "Ilang beses nang nanganak",
+      "paraHint": "Para (P)",
+      "lmp": "Unang araw ng huling regla (hindi kailangan)",
+      "lmpHint": "Kung natatandaan mo, tatantiyahin namin ang kabuwanan mo.",
+      "edd": "Inaasahang kabuwanan",
+      "eddHint": "Galing sa huling regla mo. Palitan kung iba ang petsang ibinigay ng midwife."
+    },
+    "buttons": {
+      "next": "Susunod",
+      "back": "Bumalik",
+      "submit": "Gawin ang aking card",
+      "submitting": "Ginagawa ang card mo…",
+      "edit": "Baguhin"
+    },
+    "review": {
+      "title": "Suriin ang iyong detalye"
+    },
+    "errors": {
+      "required": "Kailangan ito.",
+      "usernameFormat": "Gumamit ng 3 hanggang 30 maliliit na titik, numero, tuldok o underscore, na nagsisimula at nagtatapos sa titik o numero.",
+      "usernameTaken": "May gumagamit na ng username na ito. Subukan ang iba.",
+      "passwordShort": "Gumamit ng hindi bababa sa 8 character.",
+      "passwordMismatch": "Hindi magkapareho ang password.",
+      "emailInvalid": "Maglagay ng tamang email, o iwanang blangko.",
+      "emailTaken": "Ginagamit na ng ibang account ang email na ito.",
+      "phoneInvalid": "Maglagay ng 11-digit na numero na nagsisimula sa 09.",
+      "dobInvalid": "Maglagay ng tamang petsa ng kapanganakan.",
+      "lmpInvalid": "Maglagay ng petsa sa loob ng huling 10 buwan.",
+      "eddInvalid": "Maglagay ng kabuwanan sa loob ng susunod na 10 buwan.",
+      "gravidaInvalid": "Maglagay ng 1 o higit pa.",
+      "paraInvalid": "Maglagay ng 0 o higit pa.",
+      "paraTooHigh": "Hindi puwedeng mas marami ang panganganak kaysa sa pagbubuntis.",
+      "generic": "Hindi namin nagawa ang account mo. Pakisubukang muli."
+    },
+    "haveAccount": "May account ka na?",
+    "login": "Mag-log in"
+  },
+  "forgot": {
+    "title": "Nakalimutan ang password?",
+    "subtitle": "Ilagay ang iyong username o email.",
+    "identifier": "Username o email",
+    "submit": "Ipadala ang reset link",
+    "submitting": "Ipinapadala…",
+    "sentTitle": "Tingnan ang iyong email",
+    "sent": "Kung may email ang account na ito, nagpadala kami ng link para mapalitan ang password. Walang email ang account mo? Magpa-reset sa health worker sa health center.",
+    "back": "Bumalik sa log in",
+    "required": "Ilagay ang iyong username o email."
+  },
+  "reset": {
+    "title": "Gumawa ng bagong password",
+    "subtitle": "Pumili ng password na matatandaan mo.",
+    "password": "Bagong password",
+    "confirm": "Ulitin ang bagong password",
+    "submit": "I-save ang bagong password",
+    "submitting": "Sine-save…",
+    "expired": "Expired na o nagamit na ang reset link na ito.",
+    "requestNew": "Humingi ng bagong link",
+    "errors": {
+      "passwordShort": "Gumamit ng hindi bababa sa 8 character.",
+      "passwordMismatch": "Hindi magkapareho ang password.",
+      "generic": "Hindi namin na-save ang password mo. Pakisubukang muli."
+    }
+  },
   "dashboard": {
     "signedInAs": "Naka-log in bilang {username}",
     "placeholder": "Ginagawa pa ang bahaging ito.",
-    "admin": { "title": "Admin" },
-    "staff": { "title": "Health worker" },
-    "mother": { "title": "Aking pangangalaga" }
-  },
-  "landing": {
-    "placeholder": "Darating ang landing page sa Phase 1.",
-    "login": "Mag-log in"
+    "admin": {
+      "title": "Admin"
+    },
+    "staff": {
+      "title": "Health worker"
+    },
+    "mother": {
+      "title": "Aking pangangalaga"
+    }
   }
 }

@@ -5,8 +5,8 @@ import { z } from "zod";
 import { ROLE_HOME } from "@/lib/auth/roles";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
-import { loginSchema } from "./schemas";
-import type { LoginFieldErrorCode, LoginState } from "./types";
+import { loginSchema } from "../schemas";
+import type { LoginFieldErrorCode, LoginState } from "../types";
 
 const MAX_FAILED_ATTEMPTS = 5;
 const LOCK_MINUTES = 15;

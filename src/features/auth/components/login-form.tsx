@@ -1,15 +1,18 @@
 "use client";
 
 import { useActionState, useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import Link from "next/link";
+import { Eye, EyeOff, LoaderCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useDictionary } from "@/i18n/dictionary-provider";
 import { format } from "@/i18n/format";
-import { login } from "../actions";
+import { login } from "../actions/login";
 import type { LoginState } from "../types";
 
-// Phase 0 test form: works end-to-end, but is unstyled on purpose.
-// The designed login modal replaces it in Phase 1.
-export function LoginForm() {
+// Username + password form. Used in the login dialog and on /login.
+export function LoginForm({ onNavigate }: { onNavigate?: () => void }) {
   const { t } = useDictionary();
   const [state, formAction, pending] = useActionState<LoginState, FormData>(login, {});
   const [showPassword, setShowPassword] = useState(false);
@@ -19,71 +22,86 @@ export function LoginForm() {
     : null;
 
   return (
-    <form action={formAction} className="flex w-full max-w-sm flex-col gap-4" noValidate>
-      <div className="flex flex-col gap-1">
-        <label htmlFor="username" className="text-sm font-medium">
-          {t.auth.username}
-        </label>
-        <input
-          id="username"
+    <form action={formAction} className="flex flex-col gap-5" noValidate>
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="login-username">{t.auth.username}</Label>
+        <Input
+          id="login-username"
           name="username"
           autoComplete="username"
           autoCapitalize="none"
+          autoCorrect="off"
+          spellCheck={false}
           defaultValue={state.username}
           aria-invalid={Boolean(state.fieldErrors?.username)}
-          aria-describedby={state.fieldErrors?.username ? "username-error" : undefined}
-          className="rounded-md border px-3 py-2"
+          aria-describedby={state.fieldErrors?.username ? "login-username-error" : undefined}
         />
         {state.fieldErrors?.username && (
-          <p id="username-error" className="text-sm text-red-700">
+          <p id="login-username-error" className="text-sm text-brick">
             {t.auth.errors[state.fieldErrors.username]}
           </p>
         )}
       </div>
 
-      <div className="flex flex-col gap-1">
-        <label htmlFor="password" className="text-sm font-medium">
-          {t.auth.password}
-        </label>
+      <div className="flex flex-col gap-2">
+        <div className="flex items-baseline justify-between gap-3">
+          <Label htmlFor="login-password">{t.auth.password}</Label>
+          <Link
+            href="/forgot-password"
+            onClick={onNavigate}
+            className="text-sm text-press underline decoration-1 underline-offset-4 hover:decoration-2"
+          >
+            {t.auth.forgot}
+          </Link>
+        </div>
         <div className="relative">
-          <input
-            id="password"
+          <Input
+            id="login-password"
             name="password"
             type={showPassword ? "text" : "password"}
             autoComplete="current-password"
+            className="pr-12"
             aria-invalid={Boolean(state.fieldErrors?.password)}
-            aria-describedby={state.fieldErrors?.password ? "password-error" : undefined}
-            className="w-full rounded-md border px-3 py-2 pr-10"
+            aria-describedby={state.fieldErrors?.password ? "login-password-error" : undefined}
           />
           <button
             type="button"
             onClick={() => setShowPassword((v) => !v)}
             aria-label={showPassword ? t.auth.hidePassword : t.auth.showPassword}
-            className="absolute inset-y-0 right-0 flex w-10 items-center justify-center"
+            aria-pressed={showPassword}
+            className="absolute inset-y-0 right-0 flex w-11 items-center justify-center rounded-md text-ink-label hover:text-ink"
           >
-            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            {showPassword ? <EyeOff className="size-5" /> : <Eye className="size-5" />}
           </button>
         </div>
         {state.fieldErrors?.password && (
-          <p id="password-error" className="text-sm text-red-700">
+          <p id="login-password-error" className="text-sm text-brick">
             {t.auth.errors[state.fieldErrors.password]}
           </p>
         )}
       </div>
 
       {errorMessage && (
-        <p role="alert" className="text-sm text-red-700">
+        <p role="alert" className="rounded-md border border-brick/50 bg-brick/6 px-3 py-2.5 text-sm text-brick">
           {errorMessage}
         </p>
       )}
 
-      <button
-        type="submit"
-        disabled={pending}
-        className="rounded-md bg-neutral-900 px-4 py-2 text-white disabled:opacity-60"
-      >
+      <Button type="submit" size="lg" disabled={pending} aria-busy={pending} className="w-full">
+        {pending && <LoaderCircle className="animate-spin" aria-hidden />}
         {pending ? t.auth.submitting : t.auth.submit}
-      </button>
+      </Button>
+
+      <p className="text-center text-sm text-ink-label">
+        {t.auth.noAccount}{" "}
+        <Link
+          href="/register"
+          onClick={onNavigate}
+          className="font-semibold text-press underline decoration-1 underline-offset-4 hover:decoration-2"
+        >
+          {t.auth.signupLink}
+        </Link>
+      </p>
     </form>
   );
 }

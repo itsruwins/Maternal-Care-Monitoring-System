@@ -3,7 +3,15 @@
     "loading": "Loading…",
     "language": "Language",
     "english": "English",
-    "filipino": "Filipino"
+    "filipino": "Filipino",
+    "close": "Close",
+    "notSet": "Not set",
+    "tbd": "To be announced"
+  },
+  "nav": {
+    "login": "Log in",
+    "signup": "Sign up",
+    "home": "Home"
   },
   "auth": {
     "loginTitle": "Log in",
@@ -15,6 +23,9 @@
     "submit": "Log in",
     "submitting": "Logging in…",
     "logout": "Log out",
+    "forgot": "Forgot password?",
+    "noAccount": "No account yet?",
+    "signupLink": "Sign up",
     "errors": {
       "invalid": "Wrong username or password.",
       "locked": "Too many failed attempts. Try again in {minutes} minutes.",
@@ -24,15 +35,236 @@
       "generic": "Something went wrong. Please try again."
     }
   },
+  "landing": {
+    "cardTab": "Barangay Taysan Health Center · Prenatal appointment card",
+    "cardCenter": "Barangay Taysan Health Center",
+    "headline": "Never miss a checkup again.",
+    "lead": "Your health center's appointment card, now on your phone. We text you before every visit.",
+    "lmpLabel": "First day of your last period",
+    "lmpHint": "Try it. We'll fill in your card.",
+    "lmpInvalid": "Enter a date within the last 10 months.",
+    "dueLabel": "Due date",
+    "weekLabel": "Weeks pregnant",
+    "weekValue": "{weeks} weeks, {days} days",
+    "nextLabel": "Next balik",
+    "nextValue": "Set by your midwife",
+    "smsStamp": "SMS reminder",
+    "estimateNote": "Estimates only. Your midwife confirms your dates.",
+    "signup": "Sign up and keep your card",
+    "login": "I already have an account",
+    "noEmail": "No email needed.",
+    "how": {
+      "title": "How it works",
+      "steps": [
+        {
+          "title": "Sign up on your phone",
+          "body": "It takes a few minutes. You only need a username and password; email is optional."
+        },
+        {
+          "title": "Request a visit",
+          "body": "Choose the service and a day that suits you. A health worker confirms it."
+        },
+        {
+          "title": "Get a text reminder",
+          "body": "We text you before every checkup, vaccine, lab test or class."
+        },
+        {
+          "title": "Visit and get stamped",
+          "body": "Your midwife records the visit and your card updates. Nothing gets lost."
+        }
+      ],
+      "stampDone": "Done"
+    },
+    "services": {
+      "title": "What we remind you about",
+      "intro": "Every maternal-care activity at the health center gets its own text reminder.",
+      "items": [
+        {
+          "name": "Prenatal checkup",
+          "body": "Regular visits to check on you and your baby."
+        },
+        {
+          "name": "Tetanus toxoid vaccine",
+          "body": "Shots that protect you and your newborn from tetanus."
+        },
+        {
+          "name": "Iron and folic acid",
+          "body": "Supplements given at the health center for a healthy pregnancy."
+        },
+        {
+          "name": "Laboratory tests",
+          "body": "Tests your midwife requests for you."
+        },
+        {
+          "name": "Health education classes",
+          "body": "Group sessions on pregnancy, birth and caring for your baby."
+        }
+      ]
+    },
+    "records": {
+      "title": "Your records, on your phone",
+      "body": "See your due date, how many weeks you are, your past visits and your next appointments anytime. Only you and your health center can see them.",
+      "photoAlt": "A smiling pregnant woman standing outdoors",
+      "sampleLabel": "Sample card",
+      "sampleRows": [
+        {
+          "activity": "Prenatal checkup",
+          "date": "Aug 12"
+        },
+        {
+          "activity": "Tetanus toxoid vaccine",
+          "date": "Sep 9"
+        }
+      ]
+    },
+    "center": {
+      "title": "Run by our own health center",
+      "body": "Taysan MaternaCare is run by the midwives and barangay health workers of the Barangay Taysan Health Center, the same people who already care for you.",
+      "addressLabel": "Address",
+      "hoursLabel": "Clinic days and hours",
+      "contactLabel": "Contact number",
+      "photoAlt": "Mayon Volcano above green rice fields in Albay"
+    },
+    "tips": {
+      "title": "Reminders for a healthy pregnancy",
+      "note": "General information only. Always follow your midwife's advice.",
+      "items": [
+        "Go to all your prenatal checkups, even when you feel well.",
+        "Take the iron and folic acid tablets from your health center.",
+        "Eat a variety of food, like malunggay and other vegetables, fish, eggs and beans, and drink clean water.",
+        "Rest well, and avoid smoking and alcohol.",
+        "Bring your card or booklet to every visit."
+      ],
+      "dangerTitle": "Go to the health center or hospital right away if you have:",
+      "danger": [
+        "Bleeding from the vagina",
+        "A severe headache or blurred vision",
+        "Swelling of the face or hands",
+        "A high fever",
+        "Your baby moving less than usual",
+        "Water breaking or strong pains before your due date"
+      ]
+    },
+    "footer": {
+      "privacy": "Your records can be seen only by you and authorized health center staff.",
+      "photos": "Photos: Justyn Abacajan and Ron Dichoso (Pexels)."
+    },
+    "tabs": {
+      "how": "4 steps",
+      "services": "5 activities",
+      "records": "Private to you",
+      "center": "Barangay Taysan",
+      "tips": "Health education"
+    },
+    "cardTabShort": "Prenatal appointment card"
+  },
+  "register": {
+    "title": "Sign up",
+    "subtitle": "Make your prenatal card in five short steps.",
+    "stepOf": "Step {current} of {total}",
+    "steps": {
+      "account": "Account",
+      "personal": "About you",
+      "address": "Address",
+      "pregnancy": "Pregnancy",
+      "review": "Review"
+    },
+    "fields": {
+      "username": "Username",
+      "usernameHint": "3 to 30 characters: small letters, numbers, dots or underscores.",
+      "usernameChecking": "Checking…",
+      "usernameAvailable": "Available",
+      "password": "Password",
+      "passwordHint": "At least 8 characters.",
+      "confirmPassword": "Confirm password",
+      "email": "Email (optional)",
+      "emailHint": "Only used if you forget your password. No email? A health worker can reset it for you.",
+      "firstName": "First name",
+      "middleName": "Middle name (optional)",
+      "lastName": "Last name",
+      "dateOfBirth": "Date of birth",
+      "contactNumber": "Mobile number",
+      "contactHint": "Your reminders are texted here. Example: 09171234567",
+      "purok": "Purok / Sitio",
+      "street": "House number and street",
+      "emergencyName": "Emergency contact name",
+      "emergencyNumber": "Emergency contact number",
+      "gravida": "Number of pregnancies, including this one",
+      "gravidaHint": "Gravida (G)",
+      "para": "Number of past births",
+      "paraHint": "Para (P)",
+      "lmp": "First day of your last period (optional)",
+      "lmpHint": "If you remember it, we estimate your due date.",
+      "edd": "Expected due date",
+      "eddHint": "Filled in from your last period. Change it if your midwife gave you a different date."
+    },
+    "buttons": {
+      "next": "Next",
+      "back": "Back",
+      "submit": "Create my card",
+      "submitting": "Creating your card…",
+      "edit": "Edit"
+    },
+    "review": {
+      "title": "Check your details"
+    },
+    "errors": {
+      "required": "This is required.",
+      "usernameFormat": "Use 3 to 30 small letters, numbers, dots or underscores, starting and ending with a letter or number.",
+      "usernameTaken": "This username is taken. Try another.",
+      "passwordShort": "Use at least 8 characters.",
+      "passwordMismatch": "The passwords don't match.",
+      "emailInvalid": "Enter a valid email, or leave it blank.",
+      "emailTaken": "This email is already used by another account.",
+      "phoneInvalid": "Enter an 11-digit mobile number starting with 09.",
+      "dobInvalid": "Enter a valid date of birth.",
+      "lmpInvalid": "Enter a date within the last 10 months.",
+      "eddInvalid": "Enter a due date within the next 10 months.",
+      "gravidaInvalid": "Enter 1 or more.",
+      "paraInvalid": "Enter 0 or more.",
+      "paraTooHigh": "Past births can't be more than your number of pregnancies.",
+      "generic": "We couldn't create your account. Please try again."
+    },
+    "haveAccount": "Already have an account?",
+    "login": "Log in"
+  },
+  "forgot": {
+    "title": "Forgot your password?",
+    "subtitle": "Enter your username or email.",
+    "identifier": "Username or email",
+    "submit": "Send reset link",
+    "submitting": "Sending…",
+    "sentTitle": "Check your email",
+    "sent": "If this account has an email on file, we sent a link to reset your password. No email on your account? Ask a health worker at the health center to reset it.",
+    "back": "Back to log in",
+    "required": "Enter your username or email."
+  },
+  "reset": {
+    "title": "Set a new password",
+    "subtitle": "Choose a password you'll remember.",
+    "password": "New password",
+    "confirm": "Confirm new password",
+    "submit": "Save new password",
+    "submitting": "Saving…",
+    "expired": "This reset link has expired or was already used.",
+    "requestNew": "Request a new link",
+    "errors": {
+      "passwordShort": "Use at least 8 characters.",
+      "passwordMismatch": "The passwords don't match.",
+      "generic": "We couldn't save your password. Please try again."
+    }
+  },
   "dashboard": {
     "signedInAs": "Signed in as {username}",
     "placeholder": "This area is being built.",
-    "admin": { "title": "Admin" },
-    "staff": { "title": "Health worker" },
-    "mother": { "title": "My care" }
-  },
-  "landing": {
-    "placeholder": "The landing page is coming in Phase 1.",
-    "login": "Log in"
+    "admin": {
+      "title": "Admin"
+    },
+    "staff": {
+      "title": "Health worker"
+    },
+    "mother": {
+      "title": "My care"
+    }
   }
 }

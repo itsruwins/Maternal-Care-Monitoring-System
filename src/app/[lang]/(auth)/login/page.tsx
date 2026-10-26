@@ -1,30 +1,29 @@
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
-import { lang } from "next/root-params";
-import { LanguageSwitch } from "@/components/shared/language-switch";
+import { AuthCard } from "@/features/auth/components/auth-card";
 import { LoginForm } from "@/features/auth/components/login-form";
+import { getServerI18n } from "@/i18n/server";
 import { getCurrentUser } from "@/lib/auth/session";
 import { ROLE_HOME } from "@/lib/auth/roles";
-import { DEFAULT_LOCALE, isLocale } from "@/i18n/config";
-import { getDictionary } from "@/i18n/get-dictionary";
 
-// Phase 0 test login page. Phase 1 adds the designed login modal.
+export async function generateMetadata() {
+  const { t } = await getServerI18n();
+  return { title: t.auth.loginTitle };
+}
+
+// Direct /login address (the landing page uses the login dialog instead).
 export default async function LoginPage() {
-  const locale = await lang();
-  const t = await getDictionary(isLocale(locale) ? locale : DEFAULT_LOCALE);
+  const { t } = await getServerI18n();
 
   return (
-    <main className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center gap-6 p-6">
+    <>
       <Suspense fallback={null}>
         <RedirectIfLoggedIn />
       </Suspense>
-      <LanguageSwitch />
-      <div>
-        <h1 className="text-2xl font-semibold">{t.auth.loginTitle}</h1>
-        <p className="text-neutral-600">{t.auth.loginSubtitle}</p>
-      </div>
-      <LoginForm />
-    </main>
+      <AuthCard tab={t.landing.cardCenter} title={t.auth.loginTitle} subtitle={t.auth.loginSubtitle}>
+        <LoginForm />
+      </AuthCard>
+    </>
   );
 }
 

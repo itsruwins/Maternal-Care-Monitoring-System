@@ -1,0 +1,403 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-26T11:15:07+00:00",
+  "title": "Design System: Taysan MaternaCare",
+  "extensions": {
+    "colorMeta": {
+      "press": {
+        "role": "primary",
+        "displayName": "Press Green",
+        "tonalRamp": [
+          "#00170d",
+          "#183127",
+          "#354e43",
+          "#526d61",
+          "#728e80",
+          "#93b0a2",
+          "#b5d3c4",
+          "#d9f7e8"
+        ]
+      },
+      "press-deep": {
+        "role": "primary",
+        "displayName": "Press Green Deep",
+        "tonalRamp": [
+          "#01160d",
+          "#1a3127",
+          "#364e43",
+          "#546d61",
+          "#738d81",
+          "#94afa2",
+          "#b6d2c5",
+          "#daf6e8"
+        ]
+      },
+      "sage": {
+        "role": "secondary",
+        "displayName": "Client Sage",
+        "tonalRamp": [
+          "#00170b",
+          "#183224",
+          "#344f40",
+          "#526e5e",
+          "#718e7d",
+          "#92b09e",
+          "#b5d3c1",
+          "#d8f8e5"
+        ]
+      },
+      "stamp": {
+        "role": "secondary",
+        "displayName": "Stamp Ink",
+        "tonalRamp": [
+          "#00170c",
+          "#163126",
+          "#334e42",
+          "#4d6b5c",
+          "#6f8f7f",
+          "#90b1a0",
+          "#b2d4c3",
+          "#d6f8e7"
+        ]
+      },
+      "brick": {
+        "role": "tertiary",
+        "displayName": "Muted Brick",
+        "tonalRamp": [
+          "#340000",
+          "#560800",
+          "#782b18",
+          "#9b4b37",
+          "#c06c56",
+          "#e58d77",
+          "#ffb099",
+          "#ffd4bb"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "tonalRamp": [
+          "#08150f",
+          "#212f29",
+          "#3d4c45",
+          "#5b6a63",
+          "#7a8b83",
+          "#9baca5",
+          "#becfc7",
+          "#e1f3eb"
+        ]
+      },
+      "ink-label": {
+        "role": "neutral",
+        "displayName": "Label Ink",
+        "tonalRamp": [
+          "#011709",
+          "#193222",
+          "#354f3e",
+          "#536d5c",
+          "#738e7c",
+          "#94b09d",
+          "#b6d3bf",
+          "#d9f7e3"
+        ]
+      },
+      "folder": {
+        "role": "neutral",
+        "displayName": "Folder Beige",
+        "tonalRamp": [
+          "#181003",
+          "#332a1a",
+          "#504636",
+          "#6e6553",
+          "#8f8573",
+          "#b1a693",
+          "#d4c9b6",
+          "#f8edd9"
+        ]
+      },
+      "card-stock": {
+        "role": "neutral",
+        "displayName": "Card Stock Cream",
+        "tonalRamp": [
+          "#141109",
+          "#2e2b22",
+          "#4b483e",
+          "#69665c",
+          "#8a867b",
+          "#aba89c",
+          "#cecabf",
+          "#f2eee2"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Writing Paper",
+        "tonalRamp": [
+          "#13120e",
+          "#2d2b27",
+          "#494843",
+          "#686661",
+          "#888681",
+          "#a9a8a2",
+          "#cccac5",
+          "#f0eee8"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Rule Sage-Gray",
+        "tonalRamp": [
+          "#11130c",
+          "#2a2c25",
+          "#464940",
+          "#65675e",
+          "#85887e",
+          "#a6a99f",
+          "#c9ccc2",
+          "#edf0e6"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero card printed header only."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section and account card titles."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Step and list headings inside a card."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Leads and explanations, 38-46ch."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Printed labels: fields, card tabs, row labels, stamps (700, 0.1em)."
+      },
+      "hand": {
+        "displayName": "Hand",
+        "purpose": "Her written values (dates, weeks, details) and step numerals. Never instructions."
+      }
+    },
+    "shadows": [
+      {
+        "name": "card",
+        "value": "0 1px 1px rgb(31 45 39 / 0.06), 0 6px 18px -6px rgb(31 45 39 / 0.18)",
+        "purpose": "Small paper objects resting on the folder: seal disc, secondary button, toasts."
+      },
+      {
+        "name": "card-lifted",
+        "value": "0 2px 2px rgb(31 45 39 / 0.06), 0 18px 40px -12px rgb(31 45 39 / 0.28)",
+        "purpose": "A full card on the folder: hero, account cards, dialogs, first card in a stack."
+      },
+      {
+        "name": "card-stacked",
+        "value": "0 -10px 24px -16px rgb(31 45 39 / 0.35), 0 2px 2px rgb(31 45 39 / 0.06), 0 18px 40px -12px rgb(31 45 39 / 0.24)",
+        "purpose": "A card laid over the previous one (40-48px overlap); casts shadow upward too."
+      },
+      {
+        "name": "punched-hole",
+        "value": "inset 0 1px 2px rgb(31 45 39 / 0.35)",
+        "purpose": "The card's punched hole, on a folder-colored disc."
+      },
+      {
+        "name": "button-edge",
+        "value": "0 1px 0 rgb(31 45 39 / 0.25)",
+        "purpose": "Printed edge under the primary button."
+      },
+      {
+        "name": "field-focus",
+        "value": "0 2px 0 var(--color-press)",
+        "purpose": "Thickened base line on a focused field (brick when invalid)."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out-expo",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "All state transitions, write and stamp."
+      },
+      {
+        "name": "write",
+        "value": "650ms clip-path inset(0 100% 0 0) -> inset(0)",
+        "purpose": "A value being written onto the card, left to right."
+      },
+      {
+        "name": "stamp",
+        "value": "320ms scale 1.35 -> 1 at the stamp's tilt, fade in",
+        "purpose": "A stamp thumping down, only when newly earned."
+      },
+      {
+        "name": "state",
+        "value": "150ms",
+        "purpose": "Button and field color/border/shadow changes; 1px press on active."
+      },
+      {
+        "name": "dialog",
+        "value": "300ms fade + 12px rise in, 150ms fade out",
+        "purpose": "Dialog card entering over the folder."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "all animations and transitions 1ms",
+        "purpose": "Final written and stamped state shown immediately."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "narrow",
+        "value": "420px"
+      },
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one main action per card, in the card foot.",
+      "html": "<button class=\"ds-btn ds-btn-primary\">Sign up and keep your card <svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></button>",
+      "css": ":host{--color-folder:#e8ddc9;--color-card-stock:#f3efe3;--color-paper:#fbf9f3;--color-ink:#1f2d27;--color-ink-label:#46604f;--color-press:#3e584c;--color-press-deep:#2f473c;--color-sage:#769382;--color-stamp:#4d6b5c;--color-rule:#c0c3b9;--color-brick:#9a4a36;--ease-out-expo:cubic-bezier(0.16,1,0.3,1);--shadow-card:0 1px 1px rgb(31 45 39 / 0.06),0 6px 18px -6px rgb(31 45 39 / 0.18);--shadow-card-lifted:0 2px 2px rgb(31 45 39 / 0.06),0 18px 40px -12px rgb(31 45 39 / 0.28)} .ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 20px;border-radius:5px;border:2px solid transparent;font-family:var(--font-archivo,Archivo),ui-sans-serif,system-ui,sans-serif;font-size:0.95rem;font-weight:600;cursor:pointer;transition:background-color 150ms var(--ease-out-expo),border-color 150ms var(--ease-out-expo),transform 150ms var(--ease-out-expo)} .ds-btn:focus-visible{outline:2px solid var(--color-press,#3e584c);outline-offset:2px} .ds-btn:active{transform:translateY(1px)} .ds-btn-primary{background:var(--color-press,#3e584c);border-color:var(--color-press,#3e584c);color:var(--color-card-stock,#f3efe3);box-shadow:0 1px 0 rgb(31 45 39 / 0.25)} .ds-btn-primary:hover{background:var(--color-press-deep,#2f473c);border-color:var(--color-press-deep,#2f473c)}"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Secondary action beside a primary (e.g. I already have an account).",
+      "html": "<button class=\"ds-btn ds-btn-outline\">I already have an account</button>",
+      "css": ":host{--color-folder:#e8ddc9;--color-card-stock:#f3efe3;--color-paper:#fbf9f3;--color-ink:#1f2d27;--color-ink-label:#46604f;--color-press:#3e584c;--color-press-deep:#2f473c;--color-sage:#769382;--color-stamp:#4d6b5c;--color-rule:#c0c3b9;--color-brick:#9a4a36;--ease-out-expo:cubic-bezier(0.16,1,0.3,1);--shadow-card:0 1px 1px rgb(31 45 39 / 0.06),0 6px 18px -6px rgb(31 45 39 / 0.18);--shadow-card-lifted:0 2px 2px rgb(31 45 39 / 0.06),0 18px 40px -12px rgb(31 45 39 / 0.28)} .ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 20px;border-radius:5px;border:2px solid transparent;font-family:var(--font-archivo,Archivo),ui-sans-serif,system-ui,sans-serif;font-size:0.95rem;font-weight:600;cursor:pointer;transition:background-color 150ms var(--ease-out-expo),border-color 150ms var(--ease-out-expo),transform 150ms var(--ease-out-expo)} .ds-btn:focus-visible{outline:2px solid var(--color-press,#3e584c);outline-offset:2px} .ds-btn:active{transform:translateY(1px)} .ds-btn-outline{background:transparent;border-color:var(--color-ink-label,#46604f);color:var(--color-ink,#1f2d27)} .ds-btn-outline:hover{background:var(--color-card-stock,#f3efe3)}"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Quiet header and dialog actions (Log in, close).",
+      "html": "<button class=\"ds-btn ds-btn-ghost\">Log in</button>",
+      "css": ":host{--color-folder:#e8ddc9;--color-card-stock:#f3efe3;--color-paper:#fbf9f3;--color-ink:#1f2d27;--color-ink-label:#46604f;--color-press:#3e584c;--color-press-deep:#2f473c;--color-sage:#769382;--color-stamp:#4d6b5c;--color-rule:#c0c3b9;--color-brick:#9a4a36;--ease-out-expo:cubic-bezier(0.16,1,0.3,1);--shadow-card:0 1px 1px rgb(31 45 39 / 0.06),0 6px 18px -6px rgb(31 45 39 / 0.18);--shadow-card-lifted:0 2px 2px rgb(31 45 39 / 0.06),0 18px 40px -12px rgb(31 45 39 / 0.28)} .ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 20px;border-radius:5px;border:2px solid transparent;font-family:var(--font-archivo,Archivo),ui-sans-serif,system-ui,sans-serif;font-size:0.95rem;font-weight:600;cursor:pointer;transition:background-color 150ms var(--ease-out-expo),border-color 150ms var(--ease-out-expo),transform 150ms var(--ease-out-expo)} .ds-btn:focus-visible{outline:2px solid var(--color-press,#3e584c);outline-offset:2px} .ds-btn:active{transform:translateY(1px)} .ds-btn-ghost{height:36px;padding:0 14px;background:transparent;color:var(--color-ink,#1f2d27)} .ds-btn-ghost:hover{background:rgb(31 45 39 / 0.06)}"
+    },
+    {
+      "name": "Card Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "A writable blank on the card: paper fill, printed label, 2px base line.",
+      "html": "<div class=\"ds-field\"><label class=\"ds-label\" for=\"ds-u\">Username</label><input id=\"ds-u\" class=\"ds-input\" placeholder=\"maria.santos\"><p class=\"ds-hint\">Letters and numbers only.</p></div>",
+      "css": ":host{--color-folder:#e8ddc9;--color-card-stock:#f3efe3;--color-paper:#fbf9f3;--color-ink:#1f2d27;--color-ink-label:#46604f;--color-press:#3e584c;--color-press-deep:#2f473c;--color-sage:#769382;--color-stamp:#4d6b5c;--color-rule:#c0c3b9;--color-brick:#9a4a36;--ease-out-expo:cubic-bezier(0.16,1,0.3,1);--shadow-card:0 1px 1px rgb(31 45 39 / 0.06),0 6px 18px -6px rgb(31 45 39 / 0.18);--shadow-card-lifted:0 2px 2px rgb(31 45 39 / 0.06),0 18px 40px -12px rgb(31 45 39 / 0.28)} .ds-field{display:flex;flex-direction:column;gap:8px;max-width:320px;font-family:var(--font-archivo,Archivo),ui-sans-serif,system-ui,sans-serif;} .ds-label{font-variation-settings:'wdth' 75;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-ink-label,#46604f);font-size:0.8rem;line-height:1} .ds-input{height:44px;padding:0 12px;border:1px solid var(--color-rule,#c0c3b9);border-bottom:2px solid var(--color-ink-label,#46604f);border-radius:0;background:var(--color-paper,#fbf9f3);color:var(--color-ink,#1f2d27);font:inherit;font-size:1rem;font-variant-numeric:tabular-nums lining-nums;outline:none;transition:border-color 150ms,box-shadow 150ms} .ds-input::placeholder{color:rgb(70 96 79 / 0.75)} .ds-input:focus-visible{border-bottom-color:var(--color-press,#3e584c);box-shadow:0 2px 0 var(--color-press,#3e584c)} .ds-input[aria-invalid=true]{border-bottom-color:var(--color-brick,#9a4a36);box-shadow:0 2px 0 var(--color-brick,#9a4a36)} .ds-hint{margin:0;font-size:0.875rem;color:var(--color-ink-label,#46604f)}"
+    },
+    {
+      "name": "Folder Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Tabbed card stock resting on the folder; the container for every surface.",
+      "html": "<section class=\"ds-card-wrap\"><div class=\"ds-tab\">Prenatal appointment card</div><div class=\"ds-card\"><h2 class=\"ds-headline\">How it works</h2><div class=\"ds-row\"><span class=\"ds-row-label\">Due date</span><span class=\"ds-hand\">March 14, 2027</span></div><div class=\"ds-row\"><span class=\"ds-row-label\">Weeks pregnant</span><span class=\"ds-hand ds-quiet\">14 weeks, 2 days</span></div></div></section>",
+      "css": ":host{--color-folder:#e8ddc9;--color-card-stock:#f3efe3;--color-paper:#fbf9f3;--color-ink:#1f2d27;--color-ink-label:#46604f;--color-press:#3e584c;--color-press-deep:#2f473c;--color-sage:#769382;--color-stamp:#4d6b5c;--color-rule:#c0c3b9;--color-brick:#9a4a36;--ease-out-expo:cubic-bezier(0.16,1,0.3,1);--shadow-card:0 1px 1px rgb(31 45 39 / 0.06),0 6px 18px -6px rgb(31 45 39 / 0.18);--shadow-card-lifted:0 2px 2px rgb(31 45 39 / 0.06),0 18px 40px -12px rgb(31 45 39 / 0.28)} .ds-card-wrap{font-family:var(--font-archivo,Archivo),ui-sans-serif,system-ui,sans-serif;background:var(--color-folder,#e8ddc9);padding:24px} .ds-tab{display:inline-flex;margin-left:20px;padding:10px 16px 8px;border:1px solid var(--color-rule,#c0c3b9);border-bottom:0;border-radius:8px 8px 0 0;background:var(--color-card-stock,#f3efe3);font-variation-settings:'wdth' 75;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-ink-label,#46604f);font-size:0.7rem} .ds-card{background:var(--color-card-stock,#f3efe3);border:1px solid var(--color-rule,#c0c3b9);border-radius:0 8px 8px 8px;box-shadow:var(--shadow-card-lifted);padding:32px 24px 48px;color:var(--color-ink,#1f2d27)} .ds-headline{margin:0 0 16px;font-variation-settings:'wdth' 82;font-weight:800;letter-spacing:-0.02em;font-size:2rem;line-height:1} .ds-row{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:60px;border-bottom:1px solid var(--color-rule,#c0c3b9)} .ds-row-label{font-variation-settings:'wdth' 75;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-ink-label,#46604f);font-size:0.75rem} .ds-hand{font-family:var(--font-kalam,Kalam),ui-serif,cursive;font-size:1.65rem;font-weight:700;line-height:1.15;font-variant-numeric:tabular-nums lining-nums;color:var(--color-ink,#1f2d27)} .ds-quiet{font-size:1.25rem;font-weight:400;color:var(--color-ink-label,#46604f)}"
+    },
+    {
+      "name": "Rubber Stamp",
+      "kind": "custom",
+      "refersTo": "stamp-upcoming",
+      "description": "Visit state mark: double rule, condensed caps, tilt. Done (stamp ink), upcoming (press), missed (brick), and the empty waiting slot.",
+      "html": "<div class=\"ds-stamps\"><span class=\"ds-stamp ds-stamp-done\" style=\"--tilt:-5deg\">Done</span><span class=\"ds-stamp ds-stamp-upcoming\" style=\"--tilt:-7deg\">SMS reminder</span><span class=\"ds-stamp ds-stamp-missed\" style=\"--tilt:-4deg\">Missed</span><span class=\"ds-slot\" aria-hidden=\"true\"></span></div>",
+      "css": ":host{--color-folder:#e8ddc9;--color-card-stock:#f3efe3;--color-paper:#fbf9f3;--color-ink:#1f2d27;--color-ink-label:#46604f;--color-press:#3e584c;--color-press-deep:#2f473c;--color-sage:#769382;--color-stamp:#4d6b5c;--color-rule:#c0c3b9;--color-brick:#9a4a36;--ease-out-expo:cubic-bezier(0.16,1,0.3,1);--shadow-card:0 1px 1px rgb(31 45 39 / 0.06),0 6px 18px -6px rgb(31 45 39 / 0.18);--shadow-card-lifted:0 2px 2px rgb(31 45 39 / 0.06),0 18px 40px -12px rgb(31 45 39 / 0.28)} .ds-stamps{display:flex;gap:20px;align-items:center;padding:16px;background:var(--color-card-stock,#f3efe3);font-family:var(--font-archivo,Archivo),ui-sans-serif,system-ui,sans-serif;} .ds-stamp{display:inline-flex;align-items:center;padding:4px 10px;border:3px double currentColor;border-radius:3px;font-variation-settings:'wdth' 75;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;font-size:0.82rem;line-height:1;transform:rotate(var(--tilt,-6deg));animation:ds-stamp 320ms var(--ease-out-expo) both} .ds-stamp-done{color:var(--color-stamp,#4d6b5c)} .ds-stamp-upcoming{color:var(--color-press,#3e584c)} .ds-stamp-missed{color:var(--color-brick,#9a4a36)} .ds-slot{display:block;width:96px;height:28px;border:2px dashed var(--color-rule,#c0c3b9);border-radius:3px} @keyframes ds-stamp{0%{opacity:0;transform:scale(1.35) rotate(var(--tilt,-6deg))}100%{opacity:1;transform:scale(1) rotate(var(--tilt,-6deg))}} @media (prefers-reduced-motion:reduce){.ds-stamp{animation:none}}"
+    },
+    {
+      "name": "Language Toggle",
+      "kind": "nav",
+      "refersTo": "language-switch-active",
+      "description": "EN/FIL toggle in the folder bar; active segment in Press Green.",
+      "html": "<div class=\"ds-lang\" role=\"group\" aria-label=\"Language\"><button class=\"ds-lang-btn\" aria-pressed=\"true\">EN</button><button class=\"ds-lang-btn\" aria-pressed=\"false\">FIL</button></div>",
+      "css": ":host{--color-folder:#e8ddc9;--color-card-stock:#f3efe3;--color-paper:#fbf9f3;--color-ink:#1f2d27;--color-ink-label:#46604f;--color-press:#3e584c;--color-press-deep:#2f473c;--color-sage:#769382;--color-stamp:#4d6b5c;--color-rule:#c0c3b9;--color-brick:#9a4a36;--ease-out-expo:cubic-bezier(0.16,1,0.3,1);--shadow-card:0 1px 1px rgb(31 45 39 / 0.06),0 6px 18px -6px rgb(31 45 39 / 0.18);--shadow-card-lifted:0 2px 2px rgb(31 45 39 / 0.06),0 18px 40px -12px rgb(31 45 39 / 0.28)} .ds-lang{display:inline-flex;padding:2px;border:1px solid rgb(70 96 79 / 0.4);border-radius:5px;background:var(--color-card-stock,#f3efe3);font-family:var(--font-archivo,Archivo),ui-sans-serif,system-ui,sans-serif;} .ds-lang-btn{height:32px;min-width:44px;padding:0 8px;border:0;border-radius:4px;background:transparent;cursor:pointer;font-variation-settings:'wdth' 75;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-ink-label,#46604f);font-size:0.72rem;transition:background-color 150ms} .ds-lang-btn[aria-pressed=true]{background:var(--color-press,#3e584c);color:var(--color-card-stock,#f3efe3)} .ds-lang-btn[aria-pressed=false]:hover{background:rgb(31 45 39 / 0.06);color:var(--color-ink,#1f2d27)} .ds-lang-btn:focus-visible{outline:2px solid var(--color-press,#3e584c);outline-offset:2px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Balik Card",
+    "overview": "Every screen is the Barangay Taysan Health Center's prenatal appointment card, held in her hand. A beige folder is the ground; cream card stock sits on it with a tabbed head, a punched hole and a faint paper grain. Printed text is the clinic's voice: condensed green-black capitals for labels, extra-bold condensed headings. Her own values are written in a neat ballpoint hand. Visits are marked with rubber stamps that have a double rule, a slight tilt and uneven ink. Earlier cards sit beneath later ones as she scrolls.\n\nThe world is light only. Mothers use it in daylight at home and at the health center, mostly on modern phones, so tap targets are 44px by default and the card turns portrait on narrow screens. Staff screens in later phases use the same card world on desktop, tablet and phone. It must never feel corporate or techy, cute, cold and clinical, or bureaucratic. It is the paper card she already knows, made legible.\n\nDensity is calm. Rows on a card are tall and evenly ruled, each holds one fact, and every visit state (done, upcoming, waiting, missed) stays visible at once.",
+    "keyCharacteristics": [
+      "Beige folder ground, cream card stock, paper-white writable fields.",
+      "Two voices: printed Archivo (condensed via its width axis) and handwritten Kalam.",
+      "Rubber stamps for visit state, with a double rule, a tilt and uneven ink.",
+      "Tabbed cards that overlap as they stack, with soft resting shadows.",
+      "Hairline sage-gray rules, dashed internal dividers, perforated tear lines.",
+      "Tabular lining numerals on every date and week."
+    ],
+    "rules": [
+      {
+        "name": "The Ink-Not-Paint Rule",
+        "body": "The client's light green (#769382) and sage-gray (#c0c3b9) never carry text. Text is Ink, Label Ink, Press Green, Stamp Ink (on stamps) or Brick (for danger), so all text on cream reaches at least 5:1.",
+        "section": "colors"
+      },
+      {
+        "name": "The Brick Means Danger Rule",
+        "body": "Brick is used for missed, error and urgent danger signs, and nothing else. If a screen shows brick, something needs action.",
+        "section": "colors"
+      },
+      {
+        "name": "The Full-Ink Rule",
+        "body": "The fact she needs most is the one value written in full Ink at the largest hand size (the due date until a Balik date exists, then the next Balik date). Other written values sit in Label Ink.",
+        "section": "colors"
+      },
+      {
+        "name": "The Printed-vs-Written Rule",
+        "body": "The clinic speaks in Archivo and her values are written in Kalam. Never set an instruction, a label or a button in the hand face.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Date Rule",
+        "body": "Every date, week count and step number uses tabular lining numerals so columns of visits line up.",
+        "section": "typography"
+      },
+      {
+        "name": "The No-Kicker Rule",
+        "body": "No small label sits above a heading. The tab on a card is the only printed label above the title, and it must say something the heading does not.",
+        "section": "typography"
+      },
+      {
+        "name": "The One Ruled Grid Rule",
+        "body": "Rows on a card share one ruled rhythm and one alignment (label left, value right). New rows join that grid rather than starting a new one.",
+        "section": "layout"
+      },
+      {
+        "name": "The Paper-On-Paper Rule",
+        "body": "Only paper objects cast shadows: cards, tabs, the seal disc and toasts. Rows, stamps and text never do.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** set every text color from Ink (#1f2d27), Label Ink (#46604f) or Press Green (#3e584c). Keep cream text on Press Green fills only.",
+      "**Do** keep 44px tap targets as the default for anything a mother touches.",
+      "**Do** write her values in Kalam with tabular numerals, and print everything else in Archivo.",
+      "**Do** show every visit state at once: done stamps, an upcoming stamp, an empty dashed slot, and a brick stamp only when a visit is missed.",
+      "**Do** stack section cards with the Stacked shadow and 40–48px overlap, and leave empty card stock at each card's foot.",
+      "**Do** keep the hand-written due date in full Ink until a midwife sets a Balik date. An estimate is never shown as a Balik date.",
+      "**Do** take all text from the EN/FIL dictionaries, and test layouts with the longer Filipino strings (tabs have short variants under 420px).",
+      "**Do** let reduced motion show the final written and stamped state immediately."
+    ],
+    "donts": [
+      "**Don't** set text in the client green (#769382) or sage-gray (#c0c3b9). They are decoration, fills and rules only.",
+      "**Don't** lighten stamp ink toward the client green to make a stamp look fainter. Every stamp's text must reach 4.5:1 at 0.82rem bold.",
+      "**Don't** use brick for anything that isn't missed, an error or an urgent danger sign.",
+      "**Don't** put a kicker or eyebrow label above a heading, or a card tab that restates its heading.",
+      "**Don't** add a dark mode. The card is a daylight object.",
+      "**Don't** use hard offset shadows, glows or blurred glass overlays. Depth is paper resting on paper.",
+      "**Don't** print day counts or timings on stamps that the health center hasn't confirmed (the reminder stamp reads \"SMS reminder\").",
+      "**Don't** fall back to the headline + phone mockup + feature cards layout. New surfaces are cards in the folder."
+    ]
+  }
+}

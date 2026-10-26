@@ -1,26 +1,31 @@
-import Link from "next/link";
-import { lang } from "next/root-params";
-import { LanguageSwitch } from "@/components/shared/language-switch";
-import { SITE } from "@/config/site";
-import { isLocale, DEFAULT_LOCALE } from "@/i18n/config";
-import { getDictionary } from "@/i18n/get-dictionary";
+import { BalikCard } from "@/features/landing/components/balik-card";
+import { HealthCenter } from "@/features/landing/components/health-center";
+import { HowItWorks } from "@/features/landing/components/how-it-works";
+import { RecordsSection } from "@/features/landing/components/records-section";
+import { ServicesSchedule } from "@/features/landing/components/services-schedule";
+import { SiteFooter } from "@/features/landing/components/site-footer";
+import { SiteHeader } from "@/features/landing/components/site-header";
+import { TipsSlip } from "@/features/landing/components/tips-slip";
+import { getServerI18n } from "@/i18n/server";
 
-// Phase 0 placeholder. The real landing page is built in Phase 1.
 export default async function LandingPage() {
-  const locale = await lang();
-  const t = await getDictionary(isLocale(locale) ? locale : DEFAULT_LOCALE);
+  const { t } = await getServerI18n();
 
   return (
-    <main className="mx-auto flex w-full max-w-xl flex-1 flex-col items-start justify-center gap-4 p-6">
-      <LanguageSwitch />
-      <h1 className="text-2xl font-semibold">{SITE.name}</h1>
-      <p>
-        {SITE.fullTitle}, {SITE.location}
-      </p>
-      <p className="text-neutral-600">{t.landing.placeholder}</p>
-      <Link href="/login" className="rounded-md border px-4 py-2">
-        {t.landing.login}
-      </Link>
-    </main>
+    <>
+      <SiteHeader />
+      <main className="flex-1">
+        <BalikCard />
+        {/* The rest of the folder: tabbed cards, each laid over the one before. */}
+        <div className="mx-auto flex max-w-6xl flex-col px-4 pb-16 sm:px-6 sm:pb-24">
+          <HowItWorks t={t} />
+          <ServicesSchedule t={t} />
+          <RecordsSection t={t} />
+          <HealthCenter t={t} />
+          <TipsSlip t={t} />
+        </div>
+      </main>
+      <SiteFooter t={t} />
+    </>
   );
 }

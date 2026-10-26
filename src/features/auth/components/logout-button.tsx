@@ -1,15 +1,18 @@
 "use client";
 
+import { LogOut } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { useDictionary } from "@/i18n/dictionary-provider";
-import { logout } from "../actions";
+import { logout } from "../actions/login";
 
 export function LogoutButton() {
   const { t } = useDictionary();
   return (
     <form action={logout}>
-      <button type="submit" className="rounded-md border px-3 py-1.5 text-sm">
+      <Button type="submit" variant="outline" size="sm">
+        <LogOut aria-hidden />
         {t.auth.logout}
-      </button>
+      </Button>
     </form>
   );
 }

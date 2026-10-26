@@ -2,7 +2,7 @@
 
 Barangay Taysan, Legazpi City · Next.js 16 + Supabase · Hosted on Vercel
 
-Status: **Phase 0 complete (verified 2026-10-26), awaiting your sign-off**. Each phase ends with a demo and your sign-off before the next starts.
+Status: **Phase 0 approved. Phase 1 built and design-reviewed (2026-10-26), awaiting your testing and sign-off.** Each phase ends with a demo and your sign-off before the next starts.
 
 ---
 
@@ -132,7 +132,7 @@ A file that grows too big (around 300 lines) becomes a folder, e.g. `actions/con
 
 **Rules:**
 1. **Pages stay thin.** Files in `app/` only load data from `queries.ts` and render feature components. No business logic in pages.
-2. **Features don't reach into each other's internals.** Anything used by two or more features moves to `components/shared` or `lib`.
+2. **Features don't reach into each other's internals.** A feature may use another feature's `components/` (e.g. the landing page opens the auth feature's login dialog), but never its `actions`, `queries` or `schemas` directly. Anything else used by two or more features moves to `components/shared` or `lib`.
 3. **Server-only code is marked** with `import 'server-only'` so it can never be bundled into the browser.
 4. **Every permission check happens on the server** (`requireRole()` in layouts and actions), on top of the database RLS. `proxy.ts` only does quick redirects.
 5. **No hard-coded UI text.** All text comes from `i18n/en.json` and `fil.json`.
@@ -207,7 +207,17 @@ Known limit: a deactivated mother keeps read access to **her own** records until
 
 Done when: a mother can sign up on a phone, log in, log out, and recover her password; staff log in with seeded accounts.
 
-**Needs from you:** health center address, clinic days and hours, contact number (placeholders until then).
+**Needs from you:**
+- Health center address, clinic days and hours, contact number (shown as "To be announced" until then; edit `src/config/site.ts`).
+- Supabase Dashboard → Authentication → URL Configuration: set **Site URL** and add **Redirect URLs** `http://localhost:3000/**` (and the Vercel URL later), so password-reset links work.
+- On Vercel later: set `NEXT_PUBLIC_SITE_URL` to the live address.
+
+**Built in Phase 1 (2026-10-26):** visual direction "The Balik Card" (chosen on the decision page); design tokens, Archivo + Kalam fonts, restyled shadcn components (button, input, label, dialog) plus stamp and form field; landing page (hero card with working due-date estimate, how it works, services, records, health center, tips, footer); login dialog + `/login`; 5-step `/register` with live username check and due-date auto-fill; `/forgot-password`, `/auth/callback`, `/reset-password`. Stock photos and credits: `docs/assets.md`.
+
+**Known limits:**
+- Logins and sign-ups go through our server, so Supabase's per-address rate limit counts all users together. If the health center signs up many mothers at once, raise it in Supabase → Authentication → Rate Limits.
+- Supabase's built-in email sender only allows a few emails per hour. For real use, connect an email provider (Supabase → Authentication → SMTP).
+- A reset link must be opened in the same browser where it was requested.
 
 ## Phase 2 — App shell + Admin
 

@@ -1,0 +1,38 @@
+{
+  "common": {
+    "loading": "Loading…",
+    "language": "Language",
+    "english": "English",
+    "filipino": "Filipino"
+  },
+  "auth": {
+    "loginTitle": "Log in",
+    "loginSubtitle": "Use your username and password.",
+    "username": "Username",
+    "password": "Password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "submit": "Log in",
+    "submitting": "Logging in…",
+    "logout": "Log out",
+    "errors": {
+      "invalid": "Wrong username or password.",
+      "locked": "Too many failed attempts. Try again in {minutes} minutes.",
+      "inactive": "This account is inactive. Please contact the health center.",
+      "usernameRequired": "Enter your username.",
+      "passwordRequired": "Enter your password.",
+      "generic": "Something went wrong. Please try again."
+    }
+  },
+  "dashboard": {
+    "signedInAs": "Signed in as {username}",
+    "placeholder": "This area is being built.",
+    "admin": { "title": "Admin" },
+    "staff": { "title": "Health worker" },
+    "mother": { "title": "My care" }
+  },
+  "landing": {
+    "placeholder": "The landing page is coming in Phase 1.",
+    "login": "Log in"
+  }
+}

@@ -2,7 +2,7 @@
 
 Barangay Taysan, Legazpi City · Next.js 16 + Supabase · Hosted on Vercel
 
-Status: **planning — not started**. Each phase ends with a demo and your sign-off before the next starts.
+Status: **Phase 0 complete (verified 2026-10-26), awaiting your sign-off**. Each phase ends with a demo and your sign-off before the next starts.
 
 ---
 
@@ -16,7 +16,9 @@ Status: **planning — not started**. Each phase ends with a demo and your sign-
 | Mother sign-up | Self sign-up, account ACTIVE immediately (email confirmation is off in Supabase). |
 | Staff accounts | Created by an admin only. No public staff sign-up. |
 | First admin | You add the user in Supabase Dashboard → Authentication → Add user, then run a seed SQL that gives it ADMIN role, a username and a health worker profile. |
-| Language | English + Filipino toggle (UI and SMS). The choice is saved in a cookie; web addresses stay the same (no `/en` or `/fil`). |
+| Name | **Taysan MaternaCare** (short); full title on the landing page. |
+| Language | English + Filipino toggle (UI and SMS). The choice is saved in a cookie; web addresses stay the same (no `/en` or `/fil`). Built with simple JSON dictionaries (`src/i18n/`), no translation library. |
+| Next.js Cache Components | Kept on (Next 16 default): pages are pre-built and load instantly; anything that reads the login loads inside a `<Suspense>` boundary. |
 | Secrets | All in `.env.local` (git-ignored); on Vercel, set as environment variables. No Edge Functions. |
 | Hosting | Vercel for the app. Scheduled jobs run with Supabase `pg_cron`. |
 | SMS | HTTPSMS. Built last, with a test mode that logs messages without sending. |
@@ -54,6 +56,7 @@ Status: **planning — not started**. Each phase ends with a demo and your sign-
   - Sage `#C0C3B9` — borders, muted UI
   - Cream `#F3EFE3` — page background
   - Plus muted status colors: requested, confirmed, completed, missed, cancelled
+- **Design files:** `PRODUCT.md` (product facts, done) and `DESIGN.md` (visual system, after you pick a direction).
 - **Logo:** the barangay seal shown small on a neutral circle, next to a clean text wordmark. Its bright colors are not used in the UI palette.
 - **Tools:** `/impeccable` to set the design system and review screens, `/apple-design` + `emil-design-eng` for motion and interaction polish.
 - **Stack:** Tailwind v4 (already installed), shadcn/ui (accessible components), Motion, React Hook Form + Zod (forms), Lucide icons, Sonner (toasts), a chart library for reports. Exact versions checked against Next 16 at install time.
@@ -66,13 +69,14 @@ The code is grouped by **feature**: everything about one feature (e.g. appointme
 maternal-care-monitoring-system/
 ├── src/
 │   ├── app/                        # Routes only: thin pages that call features
-│   │   ├── (public)/               # Landing page (public layout)
-│   │   ├── (auth)/                 # login, register, forgot-password, reset-password
-│   │   ├── (dashboard)/            # Shared app shell (sidebar, top bar)
-│   │   │   ├── admin/              # Admin screens
-│   │   │   ├── staff/              # Health worker screens
-│   │   │   └── mother/             # Mother portal
-│   │   ├── layout.tsx
+│   │   ├── [lang]/                 # Hidden language level (en / fil); proxy.ts adds it, URLs never show it
+│   │   │   ├── layout.tsx          # Root layout
+│   │   │   ├── (public)/           # Landing page (public layout)
+│   │   │   ├── (auth)/             # login, register, forgot-password, reset-password
+│   │   │   └── (dashboard)/        # Shared app shell (sidebar, top bar)
+│   │   │       ├── admin/          # Admin screens
+│   │   │       ├── staff/          # Health worker screens
+│   │   │       └── mother/         # Mother portal
 │   │   └── globals.css             # Design tokens (colors, fonts, spacing)
 │   │
 │   ├── features/                   # One folder per feature
@@ -98,7 +102,7 @@ maternal-care-monitoring-system/
 │   │   ├── auth/                   # getCurrentUser(), requireRole()
 │   │   └── utils/                  # Dates (AOG, EDD), formatting, helpers
 │   │
-│   ├── i18n/                       # en.json, fil.json + setup
+│   ├── i18n/                       # dictionaries/en.json + fil.json, config, provider, language action
 │   ├── config/                     # Health center info, navigation menus
 │   ├── types/                      # Database types
 │   └── proxy.ts                    # Session refresh + role redirects
@@ -140,7 +144,7 @@ A file that grows too big (around 300 lines) becomes a folder, e.g. `actions/con
 Supabase Auth only signs in with email, and no username login exists in the database yet (confirmed), so:
 
 1. **Sign up:** the Auth user is created with the mother's real email, or a hidden placeholder email if she has none. Her details are sent along with the sign-up, marked as a website mother registration, and a database trigger creates `user_account` (MOTHER, ACTIVE) + `mother` + ACTIVE `pregnancy` in the same step. If any insert fails, the whole sign-up fails, so there are no half-created accounts. The username is saved in `user_account.username` (unique, case-insensitive).
-2. **Placeholder email:** mothers without email get `<username>@` + a fixed, non-deliverable domain (exact domain confirmed by a test sign-up in Phase 0). It is never shown, and no email is ever sent to it.
+2. **Placeholder email:** mothers without email get `<username>@no-email.taysan-maternacare.invalid` (`.invalid` is reserved and can never receive mail; confirmed working with Supabase in Phase 0). It is never shown, and no email is ever sent to it.
 3. **Log in:** a server action checks the attempt limit → looks up the username → email with the server-only admin client → signs in and sets the session cookie. INACTIVE accounts are refused. Errors are always generic ("wrong username or password"). Emails are never sent to the browser.
 4. **Forgot password:** the user enters username or email. If a real email is on file, Supabase sends a reset link to `/reset-password`. If only a placeholder exists, nothing is sent and the screen says to ask a health worker. The message is the same either way, so it doesn't reveal whether an account exists.
 5. **Staff reset:** a health worker or admin sets a temporary password (server action); the user is asked to change it on next login.
@@ -162,7 +166,7 @@ Supabase Auth only signs in with email, and no username login exists in the data
 Goal: everything later phases depend on.
 
 - Move `app/` into `src/` and set up the folder structure above.
-- Install and configure the stack; design tokens in `globals.css`; fonts; base components (button, input, select, dialog, sheet, table, badge, card, toast, stepper).
+- Install and configure the stack (Supabase, forms, validation, icons, motion). Design tokens, fonts and base components move to the start of Phase 1, chosen together with the landing page.
 - Supabase clients: browser and server (publishable key), plus the server-only admin client (secret key). TypeScript types written from the confirmed schema.
 - `proxy.ts` (Next 16's renamed middleware) to refresh the session and do quick role redirects; real permission checks on the server in each layout and action.
 - Translations setup (EN/FIL) with a language switch saved in a cookie.
@@ -180,8 +184,15 @@ Goal: everything later phases depend on.
 
 Done when: the app runs, the first admin can log in with a username and land on an empty page for their role, a test mother can't see another mother's data, an INACTIVE account can't log in, and 5 wrong passwords lock the username for 15 minutes.
 
+### Phase 0 verification (2026-10-26): 32/32 checks passed
+
+Sign-up step (creates the records, rejects bad or incomplete data with nothing left behind, ignores a requested ADMIN role, ignores logins made other ways), username check, mothers isolated from each other, field guard, cancelling own request, one active pregnancy, inactive health worker loses access, and on the real login page: login by username (any letter case) → role page, inactive refused, unknown username → generic error, 5 wrong passwords → 15-minute lock. All test accounts deleted afterwards.
+
+Known limit: a deactivated mother keeps read access to **her own** records until her current session expires (about 1 hour); she can't log in again. Staff lose access immediately.
+
 ## Phase 1 — Landing page + authentication
 
+- **Visual direction first:** you choose a visual direction for the landing page (design skill process). It becomes the whole app's design system: tokens in `globals.css`, fonts, base components (button, input, select, dialog, sheet, table, badge, card, toast, stepper). `DESIGN.md` is written from the finished build.
 - **Landing page:** hero, services (the 5 activity types), how it works (sign up → request → SMS reminder → visit), health center info (address, clinic days and hours, contact, map), maternal health tips (general, not medical advice), footer. Fully bilingual and responsive.
 - **Login modal:** username + password, show/hide password, "forgot password" link, loading and error states. Also reachable as `/login` so links work directly.
 - **Sign-up page (`/register`), multi-step:**

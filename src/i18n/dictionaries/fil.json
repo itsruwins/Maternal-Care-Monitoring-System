@@ -1,0 +1,38 @@
+{
+  "common": {
+    "loading": "Naglo-load…",
+    "language": "Wika",
+    "english": "English",
+    "filipino": "Filipino"
+  },
+  "auth": {
+    "loginTitle": "Mag-log in",
+    "loginSubtitle": "Gamitin ang iyong username at password.",
+    "username": "Username",
+    "password": "Password",
+    "showPassword": "Ipakita ang password",
+    "hidePassword": "Itago ang password",
+    "submit": "Mag-log in",
+    "submitting": "Nagla-log in…",
+    "logout": "Mag-log out",
+    "errors": {
+      "invalid": "Mali ang username o password.",
+      "locked": "Masyadong maraming maling subok. Subukang muli pagkalipas ng {minutes} minuto.",
+      "inactive": "Hindi aktibo ang account na ito. Makipag-ugnayan sa health center.",
+      "usernameRequired": "Ilagay ang iyong username.",
+      "passwordRequired": "Ilagay ang iyong password.",
+      "generic": "May nangyaring mali. Pakisubukang muli."
+    }
+  },
+  "dashboard": {
+    "signedInAs": "Naka-log in bilang {username}",
+    "placeholder": "Ginagawa pa ang bahaging ito.",
+    "admin": { "title": "Admin" },
+    "staff": { "title": "Health worker" },
+    "mother": { "title": "Aking pangangalaga" }
+  },
+  "landing": {
+    "placeholder": "Darating ang landing page sa Phase 1.",
+    "login": "Mag-log in"
+  }
+}

@@ -6,8 +6,7 @@ import { requireRole } from "@/lib/auth/session";
 import type { UserRole } from "@/types/database";
 import { getShellUser } from "../queries/get-shell-user";
 
-// Home page greeting until each area's real home is built (staff: Phase 8
-// dashboard; mother: Phase 3 pregnancy summary). Reads the session.
+// Staff home greeting until the Phase 8 dashboard is built. Reads the session.
 export async function Welcome({ roles, kind }: { roles: readonly UserRole[]; kind: "staff" | "mother" }) {
   const user = await requireRole(roles);
   const { firstName } = await getShellUser(user);

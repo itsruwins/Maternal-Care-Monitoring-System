@@ -1,11 +1,10 @@
 import Image from "next/image";
 import { CallIcon, ClockIcon, LocationIcon, type Icon } from "@/components/icons";
 import { IconCircle } from "@/components/ui/icon-circle";
-import { SITE } from "@/config/site";
+import { isPlaceholder, SITE } from "@/config/site";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
 
-const isPlaceholder = (value: string) => value.startsWith("PLACEHOLDER");
 
 // Our own health center: the Mayon view every Taysan mother knows, beside the
 // center's details (a detail not yet provided shows "To be announced").

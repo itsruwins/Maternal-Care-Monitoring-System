@@ -1,12 +1,10 @@
 import { Suspense } from "react";
-import { Welcome } from "@/features/shell/components/welcome";
-import { AREA_ROLES } from "@/lib/auth/roles";
-
+import { TodayScreen } from "@/features/mother-home/components/today-screen";
 
 export default function MotherHomePage() {
   return (
-    <Suspense fallback={null}>
-      <Welcome roles={AREA_ROLES.mother} kind="mother" />
+    <Suspense fallback={<div aria-hidden className="h-[32rem] animate-pulse rounded-3xl bg-white/60" />}>
+      <TodayScreen />
     </Suspense>
   );
 }

@@ -14,3 +14,6 @@ export const SITE = {
     contactNumber: "PLACEHOLDER: contact number",
   },
 } as const;
+
+/** True for a value that hasn't been provided yet (shown as "To be announced"). */
+export const isPlaceholder = (value: string) => value.startsWith("PLACEHOLDER");

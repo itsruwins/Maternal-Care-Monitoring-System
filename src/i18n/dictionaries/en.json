@@ -762,6 +762,64 @@
       }
     }
   },
+  "today": {
+    "greeting": "Hello, {name}",
+    "weekLabel": "This week",
+    "todayShort": "Today",
+    "week": "Week {weeks}",
+    "weeksDays": "{weeks} weeks and {days} days",
+    "weeksOnly": "{weeks} weeks exactly",
+    "weeksDayOne": "{weeks} weeks and 1 day",
+    "trimesters": [
+      "1st trimester",
+      "2nd trimester",
+      "3rd trimester"
+    ],
+    "dueIn": "{days} days to go",
+    "dueInOne": "1 day to go",
+    "dueToday": "Your due date is today",
+    "overdue": "{days} days past your due date",
+    "dueOn": "Due date: {date}",
+    "countedFromLmp": "Counted from the first day of your last period.",
+    "countedFromEdd": "Counted from your due date.",
+    "cards": {
+      "nextVisit": "Next visit",
+      "nextVisitNone": "None booked yet",
+      "tip": "Tip of the week",
+      "danger": "Danger signs"
+    },
+    "tipTitle": "Tip for week {weeks}",
+    "tips": [
+      "Go to every prenatal checkup, even when you feel well.",
+      "Take your iron and folic acid tablets every day.",
+      "Drink plenty of clean water through the day.",
+      "Eat small, frequent meals with vegetables like malunggay, fish, eggs and beans.",
+      "Rest when you can. Later in pregnancy, sleeping on your left side is best.",
+      "Walk or move gently every day, unless your midwife tells you otherwise.",
+      "Stay away from smoking, second-hand smoke and alcohol.",
+      "Ask the health center before taking any medicine or herbal remedy.",
+      "Keep your mother's booklet safe and bring it to every visit.",
+      "Get your tetanus vaccine on time. Ask the midwife when it's due.",
+      "Plan where you will give birth and how you will get there.",
+      "From the middle of pregnancy, notice your baby's movements every day."
+    ],
+    "tipNote": "General information only. Always follow your midwife's advice.",
+    "dangerTitle": "Get help right away if you have:",
+    "dangerAction": "Go to the health center or the nearest hospital, or call for help.",
+    "history": "Your past pregnancies",
+    "outcomes": {
+      "LIVE_BIRTH": "Delivered",
+      "STILLBIRTH": "Stillbirth",
+      "MISCARRIAGE": "Miscarriage",
+      "OTHER": "Ended"
+    },
+    "noPregnancy": "No current pregnancy on record",
+    "noPregnancyBody": "If you're pregnant, visit the health center so a midwife can start your pregnancy record.",
+    "center": "Health center",
+    "address": "Address",
+    "hours": "Clinic hours",
+    "contact": "Contact number"
+  },
   "profile": {
     "title": "Your profile",
     "details": {

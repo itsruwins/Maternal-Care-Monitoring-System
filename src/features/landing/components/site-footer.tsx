@@ -1,12 +1,11 @@
 import Image from "next/image";
 import { CallIcon, ClockIcon, LocationIcon, LockIcon, type Icon } from "@/components/icons";
-import { SITE } from "@/config/site";
+import { isPlaceholder, SITE } from "@/config/site";
 import { AuthDialogTrigger } from "@/features/auth/components/auth-dialog";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
 
 const SECTIONS = ["how", "services", "center", "tips"] as const;
-const isPlaceholder = (value: string) => value.startsWith("PLACEHOLDER");
 
 const linkClass =
   "text-[0.95rem] text-ink-soft no-underline transition-colors hover:text-leaf hover:underline hover:underline-offset-4";

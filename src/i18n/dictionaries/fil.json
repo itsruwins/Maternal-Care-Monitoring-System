@@ -762,6 +762,64 @@
       }
     }
   },
+  "today": {
+    "greeting": "Kumusta, {name}",
+    "weekLabel": "Ngayong linggo",
+    "todayShort": "Ngayon",
+    "week": "Ika-{weeks} linggo",
+    "weeksDays": "{weeks} linggo at {days} araw",
+    "weeksOnly": "Eksaktong {weeks} linggo",
+    "weeksDayOne": "{weeks} linggo at 1 araw",
+    "trimesters": [
+      "Unang trimester",
+      "Ikalawang trimester",
+      "Ikatlong trimester"
+    ],
+    "dueIn": "{days} araw pa",
+    "dueInOne": "1 araw pa",
+    "dueToday": "Ngayon ang kabuwanan mo",
+    "overdue": "{days} araw nang lampas sa kabuwanan mo",
+    "dueOn": "Kabuwanan: {date}",
+    "countedFromLmp": "Binilang mula sa unang araw ng huli mong regla.",
+    "countedFromEdd": "Binilang mula sa kabuwanan mo.",
+    "cards": {
+      "nextVisit": "Susunod na bisita",
+      "nextVisitNone": "Wala pang naka-book",
+      "tip": "Payo ngayong linggo",
+      "danger": "Mga senyales ng panganib"
+    },
+    "tipTitle": "Payo para sa ika-{weeks} linggo",
+    "tips": [
+      "Pumunta sa bawat prenatal checkup, kahit maayos ang pakiramdam mo.",
+      "Inumin araw-araw ang iron at folic acid tablets mo.",
+      "Uminom ng maraming malinis na tubig sa buong araw.",
+      "Kumain nang paunti-unti pero madalas, kasama ang gulay tulad ng malunggay, isda, itlog at munggo.",
+      "Magpahinga kapag kaya. Sa huling bahagi ng pagbubuntis, pinakamainam ang matulog nang nakatagilid sa kaliwa.",
+      "Maglakad o kumilos nang marahan araw-araw, maliban kung iba ang sabi ng midwife mo.",
+      "Umiwas sa paninigarilyo, usok ng sigarilyo ng iba, at alak.",
+      "Magtanong muna sa health center bago uminom ng anumang gamot o halamang-gamot.",
+      "Ingatan ang booklet mo at dalhin ito sa bawat bisita.",
+      "Magpabakuna ng tetanus sa tamang oras. Itanong sa midwife kung kailan.",
+      "Planuhin kung saan ka manganganak at paano ka makakarating doon.",
+      "Mula sa kalagitnaan ng pagbubuntis, pansinin araw-araw ang galaw ng baby mo."
+    ],
+    "tipNote": "Pangkalahatang impormasyon lamang. Laging sundin ang payo ng midwife mo.",
+    "dangerTitle": "Humingi agad ng tulong kung mayroon kang:",
+    "dangerAction": "Pumunta sa health center o sa pinakamalapit na ospital, o tumawag ng tulong.",
+    "history": "Mga nakaraan mong pagbubuntis",
+    "outcomes": {
+      "LIVE_BIRTH": "Nanganak",
+      "STILLBIRTH": "Patay nang ipinanganak",
+      "MISCARRIAGE": "Nakunan",
+      "OTHER": "Natapos"
+    },
+    "noPregnancy": "Walang nakatalang kasalukuyang pagbubuntis",
+    "noPregnancyBody": "Kung buntis ka, pumunta sa health center para masimulan ng midwife ang tala ng pagbubuntis mo.",
+    "center": "Health center",
+    "address": "Address",
+    "hours": "Oras ng klinika",
+    "contact": "Numero ng telepono"
+  },
   "profile": {
     "title": "Iyong profile",
     "details": {

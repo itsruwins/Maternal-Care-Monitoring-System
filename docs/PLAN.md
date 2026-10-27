@@ -414,6 +414,15 @@ Every create, update and reset runs on the server and checks the role first. Sta
 
 **Step 5 done (2026-10-27):** you generated the three pictures from my prompts (originals in `Files/`). All three are cropped with the same 1100px window, so the baby visibly grows, and saved as 640px WebP (`public/fetus/trimester-1/2/3.webp`, 5–8 KB each). `TrimesterPicture` shows them in a circle (decorative; the week and trimester are always written beside it). Used on the staff Pregnancy tab now, and on the mother home in step 6. Credits in `docs/assets.md`. Dev preview: `/design-preview/mother-record?tab=pregnancy&lmp=YYYY-MM-DD` to see each trimester.
 
+**Step 6 built (2026-10-27):** the mother home (`/mother`, feature `features/mother-home`) is the "Today" screen.
+- **Top:** today's date and "Hello, {name}".
+- **Hero:** a rose curved panel with this week's strip (today marked; appointment days in Phase 4), the large trimester picture, "Week N", trimester and exact weeks and days, days to go (or past due), due date, and whether it was counted from the LMP or the due date.
+- **Insight cards:** Next visit (links to Appointments; "None booked yet" until Phase 4), Tip of the week (jumps to the tip; 12 general tips picked by week) and Danger signs (jumps to the list).
+- **Below:** the tip, danger signs (with what to do) and her past pregnancies.
+- **Layout:** two columns from 1024px, with the hero kept in view while scrolling.
+- **No active pregnancy:** a calm message with the health center's address, hours and contact (still "To be announced"), plus history and danger signs.
+- The placeholder check moved to `config/site.ts` (shared with the landing page). Dev preview: `/design-preview/mother-today` (`?lmp=`, `?none=1`).
+
 ## Phase 4 — Appointments
 
 - **Mother:** request an appointment (activity type, preferred date and time) → REQUESTED; see status updates; cancel her own request.

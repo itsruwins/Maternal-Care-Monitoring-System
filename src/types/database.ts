@@ -1,5 +1,5 @@
 // Database types, written from the confirmed schema (inspect-schema.sql, 2026-10-26)
-// plus migrations 0001-0008. Update this file whenever a migration changes a table.
+// plus migrations 0001-0009. Update this file whenever a migration changes a table.
 
 type NullableKeys<T> = { [K in keyof T]: null extends T[K] ? K : never }[keyof T];
 
@@ -163,6 +163,12 @@ export type PurokRow = {
   created_at: string;
 };
 
+export type ClosedDayRow = {
+  closed_date: string;
+  reason: string;
+  created_at: string;
+};
+
 export type LoginAttemptRow = {
   login_attempt_id: number;
   username: string;
@@ -184,13 +190,22 @@ export type Database = {
       >;
       pregnancy: TableDef<PregnancyRow, "pregnancy_id", [Relation<"pregnancy_mother_id_fkey", "mother_id", "mother", "mother_id">]>;
       activity_type: TableDef<ActivityTypeRow, "activity_type_id">;
-      appointment: TableDef<AppointmentRow, "appointment_id" | "created_at" | "updated_at">;
+      appointment: TableDef<
+        AppointmentRow,
+        "appointment_id" | "created_at" | "updated_at",
+        [
+          Relation<"appointment_pregnancy_id_fkey", "pregnancy_id", "pregnancy", "pregnancy_id">,
+          Relation<"appointment_activity_type_id_fkey", "activity_type_id", "activity_type", "activity_type_id">,
+          Relation<"appointment_reviewed_by_fkey", "reviewed_by", "health_worker", "health_worker_id">,
+        ]
+      >;
       prenatal_visit: TableDef<PrenatalVisitRow, "visit_id">;
       visit_service: TableDef<VisitServiceRow, "service_id">;
-      sms_reminder: TableDef<SmsReminderRow, "reminder_id">;
+      sms_reminder: TableDef<SmsReminderRow, "reminder_id", [Relation<"sms_reminder_appointment_id_fkey", "appointment_id", "appointment", "appointment_id">]>;
       follow_up: TableDef<FollowUpRow, "follow_up_id">;
       login_attempt: TableDef<LoginAttemptRow, "login_attempt_id" | "attempted_at">;
       purok: TableDef<PurokRow, "purok_id" | "sort_order" | "is_active" | "created_at">;
+      closed_day: TableDef<ClosedDayRow, "created_at">;
     };
     Views: { [_ in never]: never };
     Functions: {
@@ -199,6 +214,9 @@ export type Database = {
       current_health_worker_id: { Args: never; Returns: number | null };
       is_username_available: { Args: { p_username: string }; Returns: boolean };
       cancel_my_appointment: { Args: { p_appointment_id: number }; Returns: undefined };
+      respond_to_new_time: { Args: { p_appointment_id: number; p_accept: boolean }; Returns: undefined };
+      taken_slots: { Args: { p_from: string; p_to: string }; Returns: string[] };
+      slot_problem: { Args: { p_slot: string }; Returns: string | null };
     };
     Enums: {
       user_role: UserRole;

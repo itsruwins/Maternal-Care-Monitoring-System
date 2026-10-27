@@ -12,6 +12,7 @@ Run these in **Supabase Dashboard → SQL Editor**, in order. Each file is safe 
 | 6 | `supabase/migrations/0006_login_attempt.sql` | Table for the 5-failures → 15-minute lock |
 | 7 | `supabase/migrations/0007_phase2.sql` | Phase 2: usernames 8+ characters for new accounts and renames; renames the first admin login `admin` → `taysan.admin`; health workers may edit their own name and contact |
 | 8 | `supabase/migrations/0008_phase3.sql` | Phase 3: admin-managed purok list (Purok 1–10 to start) and `mother.purok_id` (existing typed puroks matched where clear); sign-up saves the chosen purok; past pregnancies allowed (EDD only required while active, outcome date checked against the LMP) |
+| 9 | `supabase/migrations/0009_phase4.sql` | Phase 4: closed days; appointment slot rules (30-minute weekday slots 8–12 and 1–3, Manila time, not closed, not past; mothers from tomorrow up to 3 months); one appointment per slot; mother cancel / accept / decline functions; `taken_slots()`; SMS reminder queue kept in step with each appointment |
 | — | `supabase/seed/first-admin.sql` | First admin (follow the steps at the top of the file) |
 
 ## Rules

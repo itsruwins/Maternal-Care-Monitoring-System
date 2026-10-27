@@ -4,6 +4,7 @@ import {
   AppointmentIcon,
   CallIcon,
   CheckupIcon,
+  ClosedDayIcon,
   HomeIcon,
   LocationIcon,
   MothersIcon,
@@ -41,6 +42,7 @@ export const ADMIN_NAV: NavItem[] = [
   { key: "accounts", href: "/admin/accounts", icon: AccountsIcon },
   { key: "activityTypes", href: "/admin/activity-types", icon: ActivityTypesIcon },
   { key: "puroks", href: "/admin/puroks", icon: LocationIcon },
+  { key: "closedDays", href: "/admin/closed-days", icon: ClosedDayIcon },
   { key: "smsLog", href: "/admin/sms", icon: SmsIcon },
 ];
 

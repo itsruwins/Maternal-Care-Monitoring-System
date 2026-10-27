@@ -348,6 +348,7 @@
       "accounts": "Mga account",
       "activityTypes": "Mga serbisyo",
       "puroks": "Mga Purok",
+      "closedDays": "Sarado na araw",
       "smsLog": "SMS log",
       "profile": "Profile"
     },
@@ -550,6 +551,39 @@
       "required": "Kailangan ito.",
       "tooLong": "Gumamit ng 60 titik o mas kaunti.",
       "nameTaken": "May ibang purok nang may ganitong pangalan.",
+      "generic": "May nangyaring mali. Pakisubukan ulit."
+    }
+  },
+  "closedDays": {
+    "title": "Mga araw na sarado",
+    "intro": "Mga araw na sarado ang health center, tulad ng holiday at training. Walang makakahiling o makakapag-book sa mga araw na ito. Laging sarado tuwing Sabado at Linggo.",
+    "add": "Magdagdag ng sarado na araw",
+    "upcoming": "Paparating",
+    "past": "Kamakailan",
+    "empty": "Walang paparating na sarado na araw.",
+    "booked": "May {count} appointment pang naka-book. Ilipat sila sa ibang araw.",
+    "bookedOne": "May 1 appointment pang naka-book. Ilipat ito sa ibang araw.",
+    "remove": "Alisin",
+    "removeName": "Alisin ang {date}",
+    "removed": "Bukas na ulit ang {date}.",
+    "dialog": {
+      "title": "Magdagdag ng sarado na araw",
+      "subtitle": "Makikitang sarado ang health center sa petsang ito.",
+      "date": "Petsa",
+      "reason": "Dahilan",
+      "reasonHint": "Halimbawa: Araw ng Kalayaan, o training ng staff.",
+      "save": "Idagdag",
+      "saving": "Idinadagdag…",
+      "cancel": "Kanselahin",
+      "added": "Minarkahang sarado ang {date}."
+    },
+    "errors": {
+      "required": "Kailangan ito.",
+      "tooLong": "Gumamit ng 120 titik o mas kaunti.",
+      "dateInvalid": "Maglagay ng tamang petsa.",
+      "pastDate": "Pumili ng ngayon o mas huling petsa.",
+      "weekend": "Sarado na tuwing Sabado at Linggo.",
+      "taken": "Sarado na ang araw na ito.",
       "generic": "May nangyaring mali. Pakisubukan ulit."
     }
   },

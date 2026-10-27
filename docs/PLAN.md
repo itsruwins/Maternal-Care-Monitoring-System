@@ -446,6 +446,55 @@ Every create, update and reset runs on the server and checks the role first. Sta
   - Calendar view and list view
 - **SMS queue rows** are created here in test mode: an UPCOMING reminder on confirm, replaced on reschedule, removed on cancel.
 
+**Decisions (asked 2026-10-27):**
+
+| Topic | Decision |
+|---|---|
+| Time slots | **Exact times, 30 minutes each**, Monday to Friday: 8:00–11:30 and 1:00–2:30 (lunch 12–1 stays free), so **12 slots a day**. |
+| One per slot | **A date and time can hold only one appointment, whatever the service.** No daily limit beyond the open slots. |
+| Requests hold slots | **First come, first served.** A waiting request already holds its slot; cancelling frees it. |
+| Booking window (mothers) | **From tomorrow, up to 3 months ahead.** Staff can book any open slot, including today. |
+| New time from staff | Picking a different time, for a request or a confirmed visit, is a **proposed new time (RESCHEDULED)**. **The mother must accept it** (it becomes CONFIRMED) or decline it (it is **cancelled**). Mothers without a login can't answer in the app, so for them a new time is confirmed directly (staff arranged it by phone). |
+| Mother cancelling | Her **requests any time**, and **confirmed visits until the day before** (11:59 PM). On the day itself she contacts the health center. |
+| Closed days | **Admins mark closed dates** with a reason (holidays, trainings). Nobody can request or book them; existing bookings on a newly closed day are flagged for staff. |
+| SMS reminders | **Taglish**, one message for everyone, kept short. Sent at **8:00 AM, N days before** (N = the activity type's "reminder days before"; 0 = the same morning). Phase 4 only queues them; sending starts in Phase 7. |
+
+Sample reminder (about 140 characters, one SMS):
+> Hi Ana! Paalala: Prenatal Checkup mo sa Thu, Nov 5, 9:00 AM sa Taysan Health Center. Dalhin ang booklet mo. Salamat! -Taysan MaternaCare
+
+**Database (migration `0009_phase4.sql`, run by you):**
+- `closed_day` table (date, reason): everyone logged in can read it; admins manage it.
+- **Slot rules**, checked by the database whenever a time is set or changed: on a 30-minute slot, Monday to Friday, inside 8–12 or 1–3 (Manila time), not on a closed day. For mothers, also from tomorrow up to 3 months ahead.
+- **One appointment per slot:** a unique rule on the slot an appointment holds (its scheduled time, or its requested time while waiting), for everything except cancelled ones.
+- **Mother actions** as safe database functions: cancel (requests any time; confirmed visits until the day before), accept or decline a proposed time.
+- **`taken_slots(from, to)`**: lets mothers see which slots are taken, without seeing whose they are.
+- **SMS queue kept in step automatically:** confirming (or accepting a new time) queues the reminder, replacing any earlier one that hasn't been sent; cancelling or proposing a new time removes it.
+
+**Build, in steps (each ends with screenshots for you):**
+1. **Database:** migration `0009` and the matching app types.
+2. **Admin, Closed days:** list, add (date and reason), remove a future one.
+3. **Mother, Appointments page:**
+   - **Request a visit:** choose the service, then a date (weekends, closed days and full days greyed out), then an open time; add an optional note.
+   - **Her list:** upcoming (waiting, confirmed, or "new time proposed" with Accept / Decline) and past.
+   - Cancel within the rules.
+   - The Today screen's week strip and "Next visit" card now show her appointments.
+4. **Staff, Appointments:**
+   - **Review queue:** waiting requests, with Confirm as requested, Propose another time or Cancel (with remarks).
+   - **Book an appointment** directly for a mother with a current pregnancy (it starts CONFIRMED).
+   - **List view** (filters: status, service, date range) and **calendar view** (month, with a count on each day; the day's appointments beside it).
+   - The mother record's **Appointments tab** shows her appointments, with Book.
+   - Each appointment shows its reminder status (e.g. "Reminder queued for Nov 4, 8:00 AM").
+5. **Review:** phone and desktop screenshots, accessibility checks, design review, then your testing.
+
+**Step 1 done (2026-10-27):** migration `0009_phase4.sql` written and run by you. The app types now include `closed_day`, the new functions (`taken_slots`, `respond_to_new_time`, `slot_problem`) and the appointment / SMS reminder links.
+
+**Step 2 built (2026-10-27):** Admin → **Closed days** (`/admin/closed-days`, feature `features/closed-days`).
+- **Upcoming list:** long dates and reasons. A rose warning shows when appointments are still booked on a closed day.
+- **Recent past:** the last 10 closed days, shown quietly.
+- **Add:** date (today or later; weekends refused, since they're always closed) and reason.
+- **Remove:** future days only.
+- Dev preview: `/design-preview/closed-days`.
+
 ## Phase 5 — Prenatal visits & services
 
 - **Record a visit:**

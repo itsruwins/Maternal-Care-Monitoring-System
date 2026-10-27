@@ -348,6 +348,7 @@
       "accounts": "Accounts",
       "activityTypes": "Activity types",
       "puroks": "Puroks",
+      "closedDays": "Closed days",
       "smsLog": "SMS log",
       "profile": "Profile"
     },
@@ -550,6 +551,39 @@
       "required": "This is required.",
       "tooLong": "Use 60 characters or fewer.",
       "nameTaken": "Another purok already has this name.",
+      "generic": "Something went wrong. Please try again."
+    }
+  },
+  "closedDays": {
+    "title": "Closed days",
+    "intro": "Days the health center is closed, like holidays and trainings. Nobody can request or book these days. Weekends are always closed.",
+    "add": "Add closed day",
+    "upcoming": "Coming up",
+    "past": "Recent past",
+    "empty": "No closed days coming up.",
+    "booked": "{count} appointments still booked. Move them to another day.",
+    "bookedOne": "1 appointment still booked. Move it to another day.",
+    "remove": "Remove",
+    "removeName": "Remove {date}",
+    "removed": "{date} is open again.",
+    "dialog": {
+      "title": "Add a closed day",
+      "subtitle": "The health center will show as closed on this date.",
+      "date": "Date",
+      "reason": "Reason",
+      "reasonHint": "For example: Independence Day, or staff training.",
+      "save": "Add",
+      "saving": "Adding…",
+      "cancel": "Cancel",
+      "added": "{date} is marked closed."
+    },
+    "errors": {
+      "required": "This is required.",
+      "tooLong": "Use 120 characters or fewer.",
+      "dateInvalid": "Enter a valid date.",
+      "pastDate": "Choose today or a later date.",
+      "weekend": "Weekends are already closed.",
+      "taken": "This day is already marked closed.",
       "generic": "Something went wrong. Please try again."
     }
   },

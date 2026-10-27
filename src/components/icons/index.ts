@@ -15,6 +15,7 @@ export {
   HeartbeatIcon,
   CalendarHeartIcon as AppointmentIcon,
   CalendarDotsIcon as CalendarIcon,
+  CalendarXIcon as ClosedDayIcon,
   ClockIcon,
   WarningCircleIcon as DangerIcon,
   HandHeartIcon as CareIcon,
@@ -61,6 +62,7 @@ export {
   // Actions & feedback
   PlusIcon,
   PencilSimpleIcon as PencilIcon,
+  TrashIcon,
   MinusIcon,
   CheckIcon,
   CheckCircleIcon,

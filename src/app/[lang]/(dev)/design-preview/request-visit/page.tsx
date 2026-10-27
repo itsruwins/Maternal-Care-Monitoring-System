@@ -15,7 +15,7 @@ export default async function RequestVisitPreview() {
   const { first, last } = bookingWindow(TODAY);
   const full = ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "13:00", "13:30", "14:00", "14:30"].map((time) => `2026-11-06T${time}`);
   return (
-    <MotherShell user={{ username: "ana.reyes", role: "MOTHER", firstName: "Ana", fullName: "Ana Reyes" }}>
+    <MotherShell previewPath="/mother/appointments" user={{ username: "ana.reyes", role: "MOTHER", firstName: "Ana", fullName: "Ana Reyes" }}>
       <RequestVisitView
         t={t}
         data={{

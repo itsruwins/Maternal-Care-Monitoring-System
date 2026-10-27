@@ -10,7 +10,7 @@ export default async function MotherProfilePreview() {
   if (process.env.NODE_ENV === "production") notFound();
   const { t } = await getServerI18n();
   return (
-    <MotherShell user={{ username: "ana.reyes", role: "MOTHER", firstName: "Ana", fullName: "Ana Reyes" }}>
+    <MotherShell previewPath="/mother/profile" user={{ username: "ana.reyes", role: "MOTHER", firstName: "Ana", fullName: "Ana Reyes" }}>
       <ProfileView
         t={t}
         role="MOTHER"

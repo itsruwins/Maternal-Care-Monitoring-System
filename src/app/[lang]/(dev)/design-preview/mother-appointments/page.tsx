@@ -11,7 +11,7 @@ export default async function MotherAppointmentsPreview() {
   if (process.env.NODE_ENV === "production") notFound();
   const { t, locale } = await getServerI18n();
   return (
-    <MotherShell user={{ username: "ana.reyes", role: "MOTHER", firstName: "Ana", fullName: "Ana Reyes" }}>
+    <MotherShell previewPath="/mother/appointments" user={{ username: "ana.reyes", role: "MOTHER", firstName: "Ana", fullName: "Ana Reyes" }}>
       <MyAppointmentsView
         t={t}
         locale={locale}

@@ -532,6 +532,7 @@ Sample reminder (about 140 characters, one SMS):
 - **Staff:** booking uses the compact service tiles and the same day strip; "Other time" uses the day strip too. Activity types cards show the service art.
 - **People illustrations (your request):** the big service tiles (mother request, staff booking) show 12 flat illustrations you generated from my prompts (originals in `Files/Services/`, web copies in `public/services/`, 146 KB total, all with the same crop window). One matches each icon key, so whatever icon an admin picks also picks the tile picture. Small spots (the chosen-service chip, summary bar, Activity types cards and the admin picker) keep the icon art.
 - **More services (your request):** migration `0011_more_services.sql` adds Nutrition Counseling, Prenatal Dental Checkup, Fetal Heartbeat Check and Birth Plan Counseling (1-day reminder; they use the nutrition, dental, heartbeat and counseling pictures). That makes 9 services. Postpartum and newborn services are left out: appointments need a current pregnancy, and the MVP excludes newborn care.
+- **Mother bottom navigation (your request):** a snug pill that is only as wide as its buttons. Tabs show only their icon; the current tab opens into a mint pill with its icon and name. When she switches tabs, the name slides open (its grid column eases from 0fr to 1fr over 420 ms with the padding and colour), and it switches off for "reduce motion". Previews pass `previewPath` to mark the current tab.
 
 ## Phase 5 — Prenatal visits & services
 

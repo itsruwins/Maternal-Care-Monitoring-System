@@ -37,7 +37,7 @@ async function Preview({ searchParams }: { searchParams: Promise<Record<string, 
     nextVisit: { at: "2026-10-29T01:00:00Z", service: "Prenatal Checkup", status: "CONFIRMED" },
   };
   return (
-    <MotherShell user={{ username: "ana.reyes", role: "MOTHER", firstName: "Ana", fullName: "Ana Reyes" }}>
+    <MotherShell previewPath="/mother" user={{ username: "ana.reyes", role: "MOTHER", firstName: "Ana", fullName: "Ana Reyes" }}>
       <TodayView t={t} locale={locale} data={data} today={TODAY} />
     </MotherShell>
   );

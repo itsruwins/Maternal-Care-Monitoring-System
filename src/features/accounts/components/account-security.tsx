@@ -51,7 +51,7 @@ export function AccountSecurity({
   return (
     <>
       <div className="flex flex-col gap-2 sm:flex-row">
-        <Button type="button" variant="secondary" onClick={() => setConfirm("reset")}>
+        <Button type="button" variant="outline" onClick={() => setConfirm("reset")}>
           <LockIcon weight="bold" aria-hidden />
           {d.reset}
         </Button>

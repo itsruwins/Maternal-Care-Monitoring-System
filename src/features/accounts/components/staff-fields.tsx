@@ -53,7 +53,7 @@ export function StaffFields({
           <Input id={id("lastName")} name="lastName" defaultValue={defaults.lastName} autoComplete="off" aria-invalid={Boolean(errors.lastName)} aria-describedby={describedBy} />
         )}
       </FormField>
-      <FormField id={id("position")} label={c.position} error={err("position")}>
+      <FormField id={id("position")} label={c.position} error={err("position")} className="sm:col-span-2">
         {(describedBy) => (
           <NativeSelect id={id("position")} name="position" value={position} onChange={(e) => setPosition(e.target.value)} aria-describedby={describedBy}>
             {POSITION_KEYS.map((key) => (
@@ -66,7 +66,7 @@ export function StaffFields({
         )}
       </FormField>
       {position === "other" ? (
-        <FormField id={id("positionOther")} label={c.positionOther} error={err("positionOther")}>
+        <FormField id={id("positionOther")} label={c.positionOther} error={err("positionOther")} className="sm:col-span-2">
           {(describedBy) => (
             <Input
               id={id("positionOther")}

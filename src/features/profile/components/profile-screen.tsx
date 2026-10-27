@@ -1,9 +1,11 @@
 import { EmailIcon, LockIcon, PregnancyIcon, UserIcon } from "@/components/icons";
 import { IconCircle } from "@/components/ui/icon-circle";
+import type { Dictionary } from "@/i18n/get-dictionary";
 import { getServerI18n } from "@/i18n/server";
 import { requireRole } from "@/lib/auth/session";
 import type { UserRole } from "@/types/database";
 import { getMyProfile } from "../queries/get-my-profile";
+import type { MyProfile } from "../types";
 import { DetailsForm, EmailForm, PasswordForm } from "./profile-forms";
 
 // Your profile (staff and mothers): who you are, then your details, password
@@ -12,6 +14,11 @@ export async function ProfileScreen({ roles }: { roles: readonly UserRole[] }) {
   const user = await requireRole(roles);
   const { t } = await getServerI18n();
   const profile = await getMyProfile(user);
+  return <ProfileView t={t} profile={profile} role={user.role} />;
+}
+
+// The page layout, without data loading (also used by the dev preview).
+export function ProfileView({ t, profile, role }: { t: Dictionary; profile: MyProfile; role: UserRole }) {
   const p = t.profile;
   const name = [profile.details.firstName, profile.details.lastName].filter(Boolean).join(" ") || profile.username;
 
@@ -22,7 +29,7 @@ export async function ProfileScreen({ roles }: { roles: readonly UserRole[] }) {
         <div className="min-w-0">
           <h1 className="text-title font-extrabold break-words">{name}</h1>
           <p className="mt-1 text-ink-soft">
-            {t.shell.roles[user.role]} · @{profile.username}
+            {t.shell.roles[role]} · @{profile.username}
           </p>
         </div>
       </section>

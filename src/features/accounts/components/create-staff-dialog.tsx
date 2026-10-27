@@ -122,10 +122,10 @@ export function CreateStaffDialog() {
           )}
 
           <div className="flex flex-col-reverse gap-2 pt-1 sm:flex-row sm:justify-end">
-            <Button type="button" variant="ghost" onClick={() => setOpen(false)}>
+            <Button type="button" variant="ghost" onClick={() => setOpen(false)} className="w-full sm:w-auto">
               {c.cancel}
             </Button>
-            <Button type="submit" disabled={pending} aria-busy={pending}>
+            <Button type="submit" disabled={pending} aria-busy={pending} className="w-full sm:w-auto">
               {pending && <SpinnerIcon className="animate-spin" aria-hidden />}
               {pending ? c.submitting : c.submit}
             </Button>

@@ -319,6 +319,18 @@ Every create, update and reset runs on the server and checks the role first. Sta
 - **Profile** (`/staff/profile`, `/mother/profile`): your details (staff: name and mobile, position read-only; mothers: name, mobile, address, emergency contact), change password (current password checked first), and add or change your recovery email.
 - Shared rules moved to `lib/validation/account-rules.ts`; new UI pieces `native-select`, `sheet`, `dropdown-menu`. Production build passes.
 
+**Step 6 done (2026-10-27):** you tested manually. Desktop and phone screenshots of every Phase 2 screen were reviewed (not kept in the repo). The independent design review returned 8 fixes; all were applied and confirmed in a second pass (verdict "ship"):
+- Small text sizes no longer get lost when combined with a colour (`lib/utils/cn.ts`).
+- Table heads and the "Admin" label are in sentence case.
+- Staff accounts show a person icon.
+- Form buttons are full width on phones.
+- Position spans the full form width.
+- "Log out" is on the change-password page.
+- The mother top bar has a compact brand at phone width, and the bottom-nav labels use the caption size.
+- Reset password is an outline button.
+
+`DESIGN.md` was updated with the shell and admin patterns.
+
 ## Phase 3 — Mothers & pregnancies (health worker)
 
 - **Mother registry:** search and filter by purok, EDD month, active / delivered.

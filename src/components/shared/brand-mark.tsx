@@ -4,7 +4,17 @@ import { SITE } from "@/config/site"
 import { cn } from "@/lib/utils/cn"
 
 // The barangay seal, small on a white disc, beside the text wordmark.
-export function BrandMark({ className, href = "/" }: { className?: string; href?: string }) {
+// `compact` is for crowded top bars: a smaller wordmark at phone width and
+// the location line only from 640px.
+export function BrandMark({
+  className,
+  href = "/",
+  compact = false,
+}: {
+  className?: string
+  href?: string
+  compact?: boolean
+}) {
   return (
     <Link
       href={href}
@@ -14,8 +24,22 @@ export function BrandMark({ className, href = "/" }: { className?: string; href?
         <Image src="/brand/seal-96.png" alt="" width={32} height={32} className="size-8 rounded-full" priority />
       </span>
       <span className="flex flex-col leading-none">
-        <span className="text-[1.0625rem] font-bold tracking-[-0.015em]">{SITE.name}</span>
-        <span className="mt-1 hidden text-caption text-ink-soft min-[420px]:block">{SITE.location}</span>
+        <span
+          className={cn(
+            "font-bold tracking-[-0.015em] whitespace-nowrap",
+            compact ? "text-[0.95rem] sm:text-[1.0625rem]" : "text-[1.0625rem]"
+          )}
+        >
+          {SITE.name}
+        </span>
+        <span
+          className={cn(
+            "mt-1 hidden text-caption text-ink-soft",
+            compact ? "sm:block" : "min-[420px]:block"
+          )}
+        >
+          {SITE.location}
+        </span>
       </span>
     </Link>
   )

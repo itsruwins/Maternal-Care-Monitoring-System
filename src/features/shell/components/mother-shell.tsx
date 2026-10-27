@@ -24,7 +24,7 @@ export function MotherShell({ user, children }: { user: ShellUser; children: Rea
     <div className="flex min-h-dvh flex-col bg-milk">
       <header className="sticky top-0 z-30 border-b border-line bg-white">
         <div className="mx-auto flex h-16 max-w-5xl items-center gap-4 px-4 sm:px-6">
-          <BrandMark href="/mother" />
+          <BrandMark href="/mother" compact />
 
           <div className="ml-auto flex items-center gap-2 sm:gap-3">
             <LanguageSwitch />
@@ -51,7 +51,7 @@ export function MotherShell({ user, children }: { user: ShellUser; children: Rea
                   href={item.href}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "flex h-14 flex-col items-center justify-center gap-0.5 rounded-full text-[0.6875rem] no-underline transition-colors duration-200",
+                    "flex h-14 flex-col items-center justify-center gap-0.5 rounded-full text-caption no-underline transition-colors duration-200",
                     active ? "bg-mint font-semibold text-leaf" : "font-medium text-ink-soft hover:bg-cream hover:text-ink"
                   )}
                 >

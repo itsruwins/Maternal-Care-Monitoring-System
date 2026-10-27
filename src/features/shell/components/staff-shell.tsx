@@ -31,7 +31,7 @@ export function StaffShell({ user, children }: { user: ShellUser; children: Reac
       <NavGroup items={STAFF_NAV} pathname={pathname} onNavigate={onNavigate} />
       {isAdmin && (
         <div>
-          <p className="px-3 pb-2 text-caption font-semibold tracking-[0.02em] text-ink-soft uppercase">
+          <p className="px-3 pb-2 text-caption font-semibold text-ink-soft">
             {t.shell.adminGroup}
           </p>
           <NavGroup items={ADMIN_NAV} pathname={pathname} onNavigate={onNavigate} />

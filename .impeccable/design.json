@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-26T20:16:04+00:00",
+  "generatedAt": "2026-10-27T00:00:00+00:00",
   "title": "Design System: Taysan MaternaCare",
   "extensions": {
     "colorMeta": {
@@ -266,13 +266,17 @@
         "displayName": "Body",
         "purpose": "Running text and list items, 46–48ch."
       },
+      "ui": {
+        "displayName": "UI",
+        "purpose": "Dense 0.95rem step: buttons, nav items, menu rows, table body, the compact wordmark at phone width."
+      },
       "label": {
         "displayName": "Label",
         "purpose": "Form labels, hints, footer links, notes."
       },
       "caption": {
         "displayName": "Caption",
-        "purpose": "Chips, meta lines, trimester ticks, week-strip weekdays."
+        "purpose": "Chips, badges, meta lines, sidebar group label, table heads, bottom-nav labels, week-strip weekdays."
       }
     },
     "shadows": [
@@ -327,6 +331,11 @@
         "name": "reduced-motion",
         "value": "animation and transition durations 1ms, one iteration",
         "purpose": "Stops float and all transitions under prefers-reduced-motion."
+      },
+      {
+        "name": "side-sheet",
+        "value": "slide-in-from-left 300ms ease-out-expo; out 200ms",
+        "purpose": "Staff menu sheet below 1024px."
       }
     ],
     "breakpoints": [
@@ -416,18 +425,43 @@
       "description": "Hero card with the fetus picture and a leaf Sample pill; floats gently, stopped by reduced motion.",
       "html": "<div class=\"ds-float\"><span class=\"ds-float-badge\">Sample</span><span class=\"ds-fetus\"><svg width=\"30\" height=\"30\" viewBox=\"0 0 48 48\" fill=\"currentColor\" aria-hidden=\"true\"><path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M28.758 25.612a2.25 2.25 0 0 1 2.399 1.342c.482 1.13.393 2.357.086 3.377c-.319 1.056-.926 2.095-1.77 2.996c-1.722 1.836-4.457 3.135-8 2.957a2.25 2.25 0 0 1-1.95-1.347l-1.762-4.04l-2.061.674a2.25 2.25 0 0 1-1.4-4.277l4.005-1.31a2.25 2.25 0 0 1 2.762 1.238l1.973 4.522c1.242-.156 2.153-.62 2.783-1.148l-.053.008a2.25 2.25 0 0 1-2.47-1.528l-1.446-4.434a2.25 2.25 0 0 1 4.279-1.396l.857 2.628z\"/><path d=\"M37 21.5a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0\"/><path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M17.244 38.504A16 16 0 1 0 30.756 9.496a16 16 0 0 0-13.512 29.008l-.844 1.813A18 18 0 1 1 31.6 7.683a18 18 0 0 1-15.2 32.634z\"/><path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M15.986 17.842c-.027.839-.397 1.596-1.128 2.198l-.748.615c-.262.215-.337.407-.355.53a.57.57 0 0 0 .106.41c.19.28.684.576 1.44.375c.5-.134 1.163-.281 1.765.045c.298.162.493.391.627.58c.118.167.23.366.328.54l.02.035l.022.039l1.636 3.626l-1.824.823l-1.598-3.544a9 9 0 0 0-.163-.28a4 4 0 0 0-.298.068c-1.494.398-2.893-.132-3.607-1.18a2.57 2.57 0 0 1-.432-1.837c.102-.675.473-1.29 1.063-1.775l.747-.614c.314-.259.393-.489.4-.719c.01-.287-.095-.684-.368-1.213c-.269-.52-.652-1.08-1.094-1.68a75 75 0 0 0-.5-.669a45 45 0 0 1-.842-1.138l1.634-1.154c.244.346.5.685.77 1.042q.266.35.548.732c.454.617.917 1.282 1.261 1.95c.34.658.615 1.413.59 2.194\"/></svg></span><span class=\"ds-float-text\"><strong>24 weeks</strong><span>Due around Feb 2027</span></span></div>",
       "css": "@keyframes ds-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}.ds-float{position:relative;display:inline-flex;align-items:center;gap:12px;margin-top:12px;padding:12px 16px 12px 12px;border-radius:16px;background:#fff;font-family:Inter,ui-sans-serif,system-ui,sans-serif;color:#1f2d27;box-shadow:0 4px 10px rgb(31 45 39/.05),0 28px 60px -18px rgb(31 45 39/.28);animation:ds-float 6s ease-in-out infinite}.ds-float-badge{position:absolute;top:-10px;left:12px;padding:2px 8px;border-radius:9999px;background:#3e5a4d;color:#fff;font-size:.6875rem;line-height:1rem;font-weight:600}.ds-fetus{display:grid;place-items:center;width:48px;height:48px;border-radius:9999px;background:#f6e6e1;color:#9c4f4a}.ds-float-text{display:flex;flex-direction:column;font-variant-numeric:tabular-nums lining-nums}.ds-float-text strong{font-size:1.0625rem;line-height:1.5rem;font-weight:700}.ds-float-text span{font-size:.8125rem;line-height:1.25rem;color:#56665d}@media (prefers-reduced-motion:reduce){.ds-float{animation:none}}"
+    },
+    {
+      "name": "Staff Sidebar Nav",
+      "kind": "nav",
+      "refersTo": "nav-item-active",
+      "description": "White sidebar rows: current item a mint pill with leaf semibold and a filled icon; sentence-case Admin group label.",
+      "html": "<nav class=\"ds-side\"><a class=\"ds-side-item\" aria-current=\"page\" href=\"#\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 256 256\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M224 115.55V208a16 16 0 0 1-16 16h-40a16 16 0 0 1-16-16v-40a8 8 0 0 0-8-8h-32a8 8 0 0 0-8 8v40a16 16 0 0 1-16 16H48a16 16 0 0 1-16-16v-92.45a16 16 0 0 1 5.17-11.78l80-75.48.11-.11a16 16 0 0 1 21.53 0 1.14 1.14 0 0 0 .11.11l80 75.48a16 16 0 0 1 5.08 11.78z\"/></svg>Home</a><a class=\"ds-side-item\" href=\"#\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 256 256\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"16\" aria-hidden=\"true\"><circle cx=\"128\" cy=\"128\" r=\"88\"/></svg>Mothers</a><p class=\"ds-side-group\">Admin</p><a class=\"ds-side-item\" href=\"#\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 256 256\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"16\" aria-hidden=\"true\"><circle cx=\"128\" cy=\"128\" r=\"88\"/></svg>Accounts</a></nav>",
+      "css": ".ds-side{display:flex;flex-direction:column;gap:4px;width:264px;padding:12px;background:#fff;font-family:Inter,ui-sans-serif,system-ui,sans-serif}.ds-side-item{display:flex;align-items:center;gap:12px;height:44px;padding:0 12px;border-radius:20px;color:#56665d;font-size:.95rem;font-weight:500;text-decoration:none;transition:background-color .2s,color .2s}.ds-side-item:hover{background:#f3efe3;color:#1f2d27}.ds-side-item[aria-current=page]{background:#e3eae4;color:#3e5a4d;font-weight:600}.ds-side-item:focus-visible{outline:2px solid #3e5a4d;outline-offset:2px}.ds-side-group{margin:20px 0 4px;padding:0 12px;font-size:.75rem;line-height:1rem;font-weight:600;color:#56665d}"
+    },
+    {
+      "name": "Mother Bottom Nav",
+      "kind": "nav",
+      "refersTo": "bottom-nav",
+      "description": "Floating white pill on every screen size; current tab a mint pill with a filled icon and caption label.",
+      "html": "<nav class=\"ds-bnav\"><a class=\"ds-bnav-item\" aria-current=\"page\" href=\"#\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 256 256\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M224 115.55V208a16 16 0 0 1-16 16h-40a16 16 0 0 1-16-16v-40a8 8 0 0 0-8-8h-32a8 8 0 0 0-8 8v40a16 16 0 0 1-16 16H48a16 16 0 0 1-16-16v-92.45a16 16 0 0 1 5.17-11.78l80-75.48.11-.11a16 16 0 0 1 21.53 0 1.14 1.14 0 0 0 .11.11l80 75.48a16 16 0 0 1 5.08 11.78z\"/></svg>Home</a><a class=\"ds-bnav-item\" href=\"#\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 256 256\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"16\" aria-hidden=\"true\"><circle cx=\"128\" cy=\"128\" r=\"88\"/></svg>Appointments</a><a class=\"ds-bnav-item\" href=\"#\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 256 256\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"16\" aria-hidden=\"true\"><circle cx=\"128\" cy=\"128\" r=\"88\"/></svg>Visits</a><a class=\"ds-bnav-item\" href=\"#\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 256 256\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"16\" aria-hidden=\"true\"><circle cx=\"128\" cy=\"128\" r=\"88\"/></svg>Profile</a></nav>",
+      "css": ".ds-bnav{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;max-width:448px;padding:6px;border:1px solid #e6e0d4;border-radius:9999px;background:#fff;box-shadow:0 4px 10px rgb(31 45 39/.05),0 28px 60px -18px rgb(31 45 39/.28);font-family:Inter,ui-sans-serif,system-ui,sans-serif}.ds-bnav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;height:56px;border-radius:9999px;color:#56665d;font-size:.75rem;line-height:1rem;font-weight:500;text-decoration:none;transition:background-color .2s,color .2s}.ds-bnav-item:hover{background:#f3efe3;color:#1f2d27}.ds-bnav-item[aria-current=page]{background:#e3eae4;color:#3e5a4d;font-weight:600}.ds-bnav-item:focus-visible{outline:2px solid #3e5a4d;outline-offset:2px}"
+    },
+    {
+      "name": "Role and Status Badges",
+      "kind": "chip",
+      "refersTo": "badge-role-admin",
+      "description": "28px caption pills by role tint; status leads with a 6px dot.",
+      "html": "<span class=\"ds-badge ds-badge--admin\">Admin</span><span class=\"ds-badge ds-badge--hw\">Health worker</span><span class=\"ds-badge ds-badge--mother\">Mother</span><span class=\"ds-badge ds-badge--hw\"><i class=\"ds-dot\"></i>Active</span><span class=\"ds-badge ds-badge--off\"><i class=\"ds-dot\"></i>Inactive</span>",
+      "css": ".ds-badge{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;margin-right:8px;border-radius:9999px;font:600 .75rem/1rem Inter,ui-sans-serif,system-ui,sans-serif;white-space:nowrap}.ds-badge--admin{background:#e8ddc9;color:#1f2d27}.ds-badge--hw{background:#e3eae4;color:#3e5a4d}.ds-badge--mother{background:#f6e6e1;color:#9c4f4a}.ds-badge--off{background:#f3efe3;color:#56665d}.ds-dot{width:6px;height:6px;border-radius:9999px;background:currentColor}"
     }
   ],
   "narrative": {
     "northStar": "The Gentle Checkup",
-    "overview": "A soft, Flo-inspired world built around the mother rather than the clinic. The client's palette (leaf and fern greens, beige, sage, cream on a warm milk ground) carries almost everything; one dusty rose carries the few things meant to feel tender or urgent: hearts, the baby glyph, danger signs and soft tints. Surfaces are rounded white cards, pill buttons and circles for dates and icons, sitting on curved tinted panels with low, ink-tinted shadows. It is light only, made for daylight at home and at the health center.\n\nThis is a web app, not a mobile app. Desktop gets a real web layout (header with section links, two-column sections, a 72rem container); phone widths borrow Flo's patterns (bottom sheets, full-width pill actions, stacked cards). Nothing imitates an app store, an install prompt or a device frame. Type is Inter alone, with extra-bold titles and a friendly single-storey \"a\". Motion is one slow float and short expo-out transitions, all stopped by reduced motion.\n\nIt refuses the generic SaaS hero (headline, device screenshot, feature grid) and clinical realism. Sample data is shown, but always labelled \"Sample\".",
+    "overview": "A soft, Flo-inspired world built around the mother rather than the clinic. The client's palette (leaf and fern greens, beige, sage, cream on a warm milk ground) carries almost everything; one dusty rose carries the few things meant to feel tender or urgent: hearts, the baby glyph, danger signs and soft tints. Surfaces are rounded white cards, pill buttons and circles for dates and icons, sitting on curved tinted panels with low, ink-tinted shadows. It is light only, made for daylight at home and at the health center.\n\nThis is a web app, not a mobile app. Desktop gets a real web layout (header with section links, two-column sections, a 72rem container); phone widths borrow Flo's patterns (bottom sheets, full-width pill actions, stacked cards). Nothing imitates an app store, an install prompt or a device frame. Type is Inter alone, with extra-bold titles and a friendly single-storey \"a\". Motion is one slow float and short expo-out transitions, all stopped by reduced motion.\n\nIt refuses the generic SaaS hero (headline, device screenshot, feature grid) and clinical realism. Sample data is shown, but always labelled \"Sample\".\n\nBehind the login the same world turns into a quiet working app. Staff (health workers and admins) get a white sidebar and top bar on the milk ground; mothers get a slim top bar and a floating bottom-nav pill. Content sits in white cards with the soft shadow, the selected place is always a mint pill with a filled icon, and roles are told apart by tint (beige admin, mint health worker, blush mother), never by a new colour.",
     "keyCharacteristics": [
       "Greens do the work; rose is a small accent; text only in ink, ink-soft, leaf or rose-deep.",
       "Inter only, extra-bold display and section titles, tabular numerals for every date and count.",
       "Rounded white cards (20–36px), pill buttons, icons in soft colour circles.",
       "Curved tinted hero panels with a faint white ring for depth.",
       "Soft, low shadows tinted with ink; one gentle float.",
-      "Web layout on desktop, Flo patterns at phone width."
+      "Web layout on desktop, Flo patterns at phone width.",
+      "Signed-in app: white sidebar or floating bottom nav, mint active pill with a filled icon, sentence-case labels."
     ],
     "rules": [
       {
@@ -451,6 +485,11 @@
         "section": "colors"
       },
       {
+        "name": "The Role Tint Rule",
+        "body": "A person's role is shown by tint pairs already in the palette: Admin beige with ink, Health worker mint with leaf, Mother blush with rose-deep. Status pairs mint and leaf (Active) or cream and ink-soft (Inactive), always with a small dot and a word.",
+        "section": "colors"
+      },
+      {
         "name": "The Extra-Bold Title Rule",
         "body": "Every display, section and dialog title is weight 800 with negative tracking. Body never goes above 600 except numbers and key values (700).",
         "section": "typography"
@@ -466,6 +505,11 @@
         "section": "typography"
       },
       {
+        "name": "The Sentence Case Label Rule",
+        "body": "Small labels stay in sentence case at normal tracking: sidebar group labels, table column heads, badges, form labels and bottom-nav labels. No uppercase or letter-spaced micro-labels; the week strip's weekday letters are the one exception.",
+        "section": "typography"
+      },
+      {
         "name": "The Web, Not App Rule",
         "body": "Desktop is a website, not a stretched phone. Phone-width layouts borrow Flo's patterns, but there are no app-store badges, install prompts or device frames; the product says it works in the phone's browser.",
         "section": "layout"
@@ -478,6 +522,11 @@
       {
         "name": "The Shared Header Rule",
         "body": "Paired cards share header height (icon circle plus title at a 48px minimum) so their lists start and run on the same lines; tile rows top-align their titles.",
+        "section": "layout"
+      },
+      {
+        "name": "The One Place Rule",
+        "body": "The current place in either shell is a mint pill with leaf text and a filled icon; every other item is ink-soft with a regular-weight icon and a cream hover. Nothing else marks position.",
         "section": "layout"
       },
       {
@@ -499,7 +548,10 @@
       "Do set titles at weight 800 with negative tracking, and use tabular numerals for every date and count.",
       "Do give paired cards the same header height so their lists align.",
       "Do use expo-out easing (cubic-bezier(0.16, 1, 0.3, 1)) for transitions and keep the reduced-motion block intact.",
-      "Do make primary actions full-width pills at phone width and keep tap targets at 44px."
+      "Do make primary actions full-width pills at phone width and keep tap targets at 44px.",
+      "Do mark the current place in a shell with a mint pill, leaf text and a filled icon.",
+      "Do keep small labels, table heads and badges in sentence case.",
+      "Do register any new custom text-size token with the class merger so it isn't dropped next to a colour class."
     ],
     "donts": [
       "Don't set text in fern, sage or rose; they are too light.",
@@ -508,7 +560,9 @@
       "Don't add app-store badges, install prompts or device frames; this is a web app.",
       "Don't use black or hard offset shadows; shadows are low and ink-tinted.",
       "Don't add a second ambient motion or a fake sheet drag handle.",
-      "Don't add a second typeface, a dark theme or kicker labels above titles."
+      "Don't add a second typeface, a dark theme or kicker labels above titles.",
+      "Don't set uppercase or letter-spaced micro-labels; the week strip's weekday letters are the only uppercase.",
+      "Don't introduce a new colour for roles or statuses; use the existing tint pairs."
     ]
   }
 }

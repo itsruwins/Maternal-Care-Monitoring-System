@@ -53,7 +53,7 @@ export function AccountsList({
       {/* Table (768px and up) */}
       <div className="hidden overflow-hidden rounded-2xl bg-white shadow-[var(--shadow-soft)] md:block">
         <table className="w-full text-left text-[0.95rem]">
-          <thead className="border-b border-line text-caption font-semibold tracking-[0.02em] text-ink-soft uppercase">
+          <thead className="border-b border-line text-caption font-semibold text-ink-soft">
             <tr>
               <th scope="col" className="px-5 py-3.5 font-semibold">{a.columns.name}</th>
               <th scope="col" className="px-3 py-3.5 font-semibold">{a.columns.role}</th>

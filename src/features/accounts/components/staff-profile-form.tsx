@@ -29,7 +29,7 @@ export function StaffProfileForm({ userId, defaults }: { userId: string; default
         </p>
       )}
       <div>
-        <Button type="submit" disabled={pending} aria-busy={pending}>
+        <Button type="submit" disabled={pending} aria-busy={pending} className="w-full sm:w-auto">
           {pending && <SpinnerIcon className="animate-spin" aria-hidden />}
           {pending ? d.saving : d.save}
         </Button>

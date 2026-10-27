@@ -11,9 +11,11 @@ import {
 } from "@/components/icons";
 import { IconCircle } from "@/components/ui/icon-circle";
 import { format } from "@/i18n/format";
+import type { Dictionary } from "@/i18n/get-dictionary";
 import { getServerI18n } from "@/i18n/server";
 import { requireRole } from "@/lib/auth/session";
 import { listActivityTypes } from "../queries/list-activity-types";
+import type { ActivityType } from "../types";
 import { ActivityTypeDialog } from "./activity-type-dialog";
 
 // An icon that fits the service name (the same icons as the landing page).
@@ -33,8 +35,13 @@ const TONES = ["mint", "blush", "beige"] as const;
 export async function ActivityTypesScreen() {
   await requireRole(["ADMIN"]);
   const { t } = await getServerI18n();
-  const a = t.activityTypes;
   const types = await listActivityTypes();
+  return <ActivityTypesView t={t} types={types} />;
+}
+
+// The page layout, without data loading (also used by the dev preview).
+export function ActivityTypesView({ t, types }: { t: Dictionary; types: ActivityType[] }) {
+  const a = t.activityTypes;
   const reminder = (days: number) =>
     days === 0 ? a.reminderSameDay : days === 1 ? a.reminderOneDay : format(a.reminderDays, { days });
 

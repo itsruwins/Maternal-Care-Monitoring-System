@@ -27,7 +27,7 @@ function FormError({ error }: { error?: ProfileErrorKey }) {
 function SubmitButton({ pending, label, pendingLabel }: { pending: boolean; label: string; pendingLabel: string }) {
   return (
     <div>
-      <Button type="submit" disabled={pending} aria-busy={pending}>
+      <Button type="submit" disabled={pending} aria-busy={pending} className="w-full sm:w-auto">
         {pending && <SpinnerIcon className="animate-spin" aria-hidden />}
         {pending ? pendingLabel : label}
       </Button>

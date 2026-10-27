@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { AuthCard } from "@/features/auth/components/auth-card";
+import { LogoutButton } from "@/features/auth/components/logout-button";
 import { NewPasswordForm } from "@/features/auth/components/new-password-form";
 import { getServerI18n } from "@/i18n/server";
 import { ROLE_HOME } from "@/lib/auth/roles";
@@ -28,5 +29,10 @@ async function Gate() {
   const user = await getCurrentUser();
   if (!user) redirect("/login");
   if (!user.mustChangePassword) redirect(ROLE_HOME[user.role]);
-  return <NewPasswordForm />;
+  return (
+    <div className="flex flex-col gap-4">
+      <NewPasswordForm />
+      <LogoutButton />
+    </div>
+  );
 }

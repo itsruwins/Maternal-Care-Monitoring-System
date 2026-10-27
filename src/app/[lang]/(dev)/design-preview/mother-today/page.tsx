@@ -29,6 +29,12 @@ async function Preview({ searchParams }: { searchParams: Promise<Record<string, 
     firstName: "Ana",
     current: query.none ? null : { lmp, edd: dueDateFromLmp(lmp) },
     past: [{ id: 1, outcome: "LIVE_BIRTH", outcomeDate: "2023-11-14" }],
+    visits: [
+      { at: "2026-10-26T01:00:00Z", service: "Iron / Folic Acid Supplementation", status: "COMPLETED" },
+      { at: "2026-10-29T01:00:00Z", service: "Prenatal Checkup", status: "CONFIRMED" },
+      { at: "2026-10-30T05:30:00Z", service: "Laboratory Test", status: "REQUESTED" },
+    ],
+    nextVisit: { at: "2026-10-29T01:00:00Z", service: "Prenatal Checkup", status: "CONFIRMED" },
   };
   return (
     <MotherShell user={{ username: "ana.reyes", role: "MOTHER", firstName: "Ana", fullName: "Ana Reyes" }}>

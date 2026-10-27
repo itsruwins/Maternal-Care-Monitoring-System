@@ -495,6 +495,20 @@ Sample reminder (about 140 characters, one SMS):
 - **Remove:** future days only.
 - Dev preview: `/design-preview/closed-days`.
 
+**Step 3 built (2026-10-27):** mother appointments (feature `features/mother-appointments`; shared slot rules and formatting in `lib/appointments/`).
+- **`/mother/appointments`:**
+  - Proposals come first, in a blush card with the new time, what she asked for, and Accept / Decline (decline asks for confirmation, then cancels).
+  - Then Upcoming: a date tile, service, day and time, a status chip, her note, and Cancel. Requests can be cancelled any time; confirmed visits until the day before, otherwise "contact the health center".
+  - Then Past.
+  - Without a current pregnancy there's no Request button, only a short explanation.
+- **`/mother/appointments/new`:**
+  - Choose the service (option cards), a day on a month calendar (weekends, closed days, full days and dates outside tomorrow…3 months can't be picked), then an open time (taken times are shown crossed out).
+  - An optional note, then a summary line before sending.
+  - If someone takes the time first, she's told and the times refresh.
+- **Today screen:** the week strip marks her visit days (booked, waiting, done, missed), and "Next visit" shows the next confirmed (or else waiting) visit.
+- Database error codes map to friendly messages (`appointmentErrors`).
+- Dev previews: `/design-preview/mother-appointments`, `/design-preview/request-visit`, `/design-preview/mother-today`.
+
 ## Phase 5 — Prenatal visits & services
 
 - **Record a visit:**

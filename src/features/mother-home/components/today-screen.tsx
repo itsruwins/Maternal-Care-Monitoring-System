@@ -15,7 +15,7 @@ import {
 import { CurvedHero } from "@/components/ui/curved-hero";
 import { IconCircle } from "@/components/ui/icon-circle";
 import { InsightCard } from "@/components/ui/insight-card";
-import { WeekStrip, type WeekDay } from "@/components/ui/week-strip";
+import { WeekStrip, type WeekDay, type WeekDayState } from "@/components/ui/week-strip";
 import { isPlaceholder, SITE } from "@/config/site";
 import { TrimesterPicture } from "@/features/mothers/components/trimester-picture";
 import type { Locale } from "@/i18n/config";
@@ -24,11 +24,14 @@ import type { Dictionary } from "@/i18n/get-dictionary";
 import { getServerI18n } from "@/i18n/server";
 import { AREA_ROLES } from "@/lib/auth/roles";
 import { requireRole } from "@/lib/auth/session";
+import { formatSlot, formatSlotClock } from "@/lib/appointments/format";
+import { manilaSlot } from "@/lib/appointments/slots";
 import { manilaTodayISO } from "@/lib/utils/manila-date";
 import { addDays, daysBetween, formatDate, gestationalAge, parseISODate, PREGNANCY_DAYS, trimesterFromWeeks, weekOf } from "@/lib/utils/pregnancy";
 import { cn } from "@/lib/utils/cn";
 import { getMyToday } from "../queries/get-my-today";
-import type { MyToday } from "../types";
+import type { AppointmentStatus } from "@/types/database";
+import type { MyToday, MyVisit } from "../types";
 
 // The mother's home ("Today"), after Flo's pregnancy screen: this week's
 // dates, a soft hero with her baby's picture and week, insight cards, then the
@@ -66,7 +69,7 @@ export function TodayView({ t, locale, data, today }: { t: Dictionary; locale: L
           {/* Left: the hero */}
           <CurvedHero tone="rose" curve="lg" className="rounded-t-3xl px-4 pt-5 pb-14 sm:px-8 lg:sticky lg:top-24">
             <h2 className="sr-only">{d.weekLabel}</h2>
-            <WeekStrip days={weekDays(today, intlLocale, d.todayShort)} aria-label={d.weekLabel} className="mx-auto max-w-md" />
+            <WeekStrip days={weekDays(t, today, intlLocale, data.visits)} aria-label={d.weekLabel} className="mx-auto max-w-md" />
             <div className="mt-8 flex flex-col items-center text-center">
               {trimester && (
                 <TrimesterPicture
@@ -105,7 +108,7 @@ export function TodayView({ t, locale, data, today }: { t: Dictionary; locale: L
 
           {/* Right: cards, tip, danger signs, history */}
           <div className="flex flex-col gap-6">
-            <Insights t={t} weeks={age.weeks} />
+            <Insights t={t} locale={locale} weeks={age.weeks} next={data.nextVisit} />
             <TipCard t={t} weeks={age.weeks} />
             <DangerCard t={t} />
             <History t={t} locale={locale} data={data} />
@@ -124,25 +127,47 @@ export function TodayView({ t, locale, data, today }: { t: Dictionary; locale: L
   );
 }
 
-/** This week, Sunday to Saturday, with today marked. Appointment days come in Phase 4. */
-function weekDays(today: string, intlLocale: string, todayLabel: string): WeekDay[] {
+// Which week-strip style a visit gives its day (a booked visit wins over a
+// waiting one if a day has both).
+const VISIT_STATE: Record<AppointmentStatus, WeekDayState | null> = {
+  CONFIRMED: "appointment",
+  REQUESTED: "requested",
+  RESCHEDULED: "requested",
+  COMPLETED: "done",
+  MISSED: "missed",
+  CANCELLED: null,
+};
+const STATE_RANK: WeekDayState[] = ["appointment", "requested", "done", "missed", "none"];
+
+/** This week, Sunday to Saturday, with today and her visit days marked. */
+function weekDays(t: Dictionary, today: string, intlLocale: string, visits: MyVisit[]): WeekDay[] {
   const narrow = new Intl.DateTimeFormat(intlLocale, { timeZone: "UTC", weekday: "narrow" });
   const full = new Intl.DateTimeFormat(intlLocale, { timeZone: "UTC", weekday: "long", month: "long", day: "numeric" });
+  const todayLabel = t.today.todayShort;
   return weekOf(today).map((iso) => {
     const date = parseISODate(iso)!;
     const isToday = iso === today;
+    const onDay = visits.filter((visit) => manilaSlot(visit.at).date === iso);
+    const states = onDay.map((visit) => VISIT_STATE[visit.status]).filter((state): state is WeekDayState => state !== null);
+    const state = STATE_RANK.find((rank) => states.includes(rank)) ?? "none";
+    const dayLabel = isToday ? `${todayLabel}, ${full.format(date)}` : full.format(date);
+    const visitLabel = onDay.map((visit) => `${visit.service} ${formatSlotClock(visit.at, intlLocale.startsWith("fil") ? "fil" : "en")}, ${t.myAppointments.statuses[visit.status]}`).join("; ");
     return {
       key: iso,
       weekday: isToday ? todayLabel : narrow.format(date),
       day: date.getUTCDate(),
       isToday,
-      label: isToday ? `${todayLabel}, ${full.format(date)}` : full.format(date),
+      state,
+      label: visitLabel ? `${dayLabel}: ${visitLabel}` : dayLabel,
     };
   });
 }
 
-function Insights({ t, weeks }: { t: Dictionary; weeks: number }) {
+function Insights({ t, locale, weeks, next }: { t: Dictionary; locale: Locale; weeks: number; next: MyVisit | null }) {
   const c = t.today.cards;
+  const nextBody = next
+    ? `${formatSlot(next.at, locale, "short")}${next.status === "CONFIRMED" ? "" : ` (${t.myAppointments.statuses[next.status]})`}`
+    : c.nextVisitNone;
   const card = (href: string, title: string, tone: "white" | "mint" | "blush", visual: ReactNode, body?: string) => (
     <Link href={href} className="block h-full rounded-xl no-underline outline-offset-4 focus-visible:outline-2 focus-visible:outline-leaf">
       <InsightCard title={title} tone={tone} visual={visual} className="h-full min-h-40 w-full gap-3 transition-transform hover:-translate-y-0.5">
@@ -152,7 +177,7 @@ function Insights({ t, weeks }: { t: Dictionary; weeks: number }) {
   );
   return (
     <div className="grid grid-cols-3 gap-3">
-      {card("/mother/appointments", c.nextVisit, "white", <IconCircle icon={AppointmentIcon} tone="leaf" size="sm" />, c.nextVisitNone)}
+      {card("/mother/appointments", c.nextVisit, "white", <IconCircle icon={AppointmentIcon} tone="leaf" size="sm" />, nextBody)}
       {card("#tip", c.tip, "mint", <IconCircle icon={WellbeingIcon} tone="fern" size="sm" />, t.today.tips[weeks % t.today.tips.length])}
       {card("#danger", c.danger, "blush", <IconCircle icon={DangerIcon} tone="white" size="sm" className="text-rose-deep" />, c.dangerBody)}
     </div>

@@ -21,7 +21,8 @@ export type MyProfile = {
     /** Staff only. */
     position?: string;
     /** Mothers only. */
-    purok?: string;
+    /** Purok id as text ("" when not set yet). */
+    purokId?: string;
     street?: string;
     emergencyName?: string;
     emergencyNumber?: string;

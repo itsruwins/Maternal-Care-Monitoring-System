@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { purokIdField } from "@/lib/puroks/purok-field";
 import { MIN_PASSWORD_LENGTH, MOBILE_PATTERN, normalizeMobile } from "@/lib/validation/account-rules";
 
 // Error messages are dictionary keys (profile.errors.*).
@@ -15,7 +16,7 @@ export const staffDetailsSchema = z.object({
 });
 
 export const motherDetailsSchema = staffDetailsSchema.extend({
-  purok: required,
+  purokId: purokIdField,
   street: required,
   emergencyName: required,
   emergencyNumber: mobile,

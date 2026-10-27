@@ -1,14 +1,23 @@
 // Database types, written from the confirmed schema (inspect-schema.sql, 2026-10-26)
-// plus migrations 0001-0006. Update this file whenever a migration changes a table.
+// plus migrations 0001-0008. Update this file whenever a migration changes a table.
 
 type NullableKeys<T> = { [K in keyof T]: null extends T[K] ? K : never }[keyof T];
 
-type TableDef<Row, DefaultedKeys extends keyof Row = never> = {
+// A foreign key, so Supabase can type nested selects like `purok:purok_id(name)`.
+type Relation<Name extends string, Column extends string, Target extends string, TargetColumn extends string> = {
+  foreignKeyName: Name;
+  columns: [Column];
+  isOneToOne: false;
+  referencedRelation: Target;
+  referencedColumns: [TargetColumn];
+};
+
+type TableDef<Row, DefaultedKeys extends keyof Row = never, Relationships extends unknown[] = []> = {
   Row: Row;
   Insert: Omit<Row, DefaultedKeys | NullableKeys<Row>> &
     Partial<Pick<Row, DefaultedKeys | NullableKeys<Row>>>;
   Update: Partial<Row>;
-  Relationships: [];
+  Relationships: Relationships;
 };
 
 export type UserRole = "ADMIN" | "HEALTH_WORKER" | "MOTHER";
@@ -53,7 +62,9 @@ export type MotherRow = {
   middle_name: string | null;
   last_name: string;
   date_of_birth: string;
-  purok_sitio: string;
+  /** Legacy typed purok (before migration 0008); empty for new records. */
+  purok_sitio: string | null;
+  purok_id: number | null;
   street_address: string;
   contact_number: string;
   emergency_contact_name: string;
@@ -67,7 +78,8 @@ export type PregnancyRow = {
   gravida: number;
   para: number;
   lmp_date: string | null;
-  expected_delivery_date: string;
+  /** Required while ACTIVE; may be unknown for past pregnancies (0008). */
+  expected_delivery_date: string | null;
   pregnancy_status: PregnancyStatus;
   outcome: PregnancyOutcome | null;
   outcome_date: string | null;
@@ -143,6 +155,14 @@ export type FollowUpRow = {
   outcome_notes: string;
 };
 
+export type PurokRow = {
+  purok_id: number;
+  name: string;
+  sort_order: number;
+  is_active: boolean;
+  created_at: string;
+};
+
 export type LoginAttemptRow = {
   login_attempt_id: number;
   username: string;
@@ -154,8 +174,15 @@ export type Database = {
     Tables: {
       user_account: TableDef<UserAccountRow, "created_at">;
       health_worker: TableDef<HealthWorkerRow, "health_worker_id">;
-      mother: TableDef<MotherRow, "mother_id">;
-      pregnancy: TableDef<PregnancyRow, "pregnancy_id">;
+      mother: TableDef<
+        MotherRow,
+        "mother_id",
+        [
+          Relation<"mother_purok_id_fkey", "purok_id", "purok", "purok_id">,
+          Relation<"mother_registered_by_fkey", "registered_by", "health_worker", "health_worker_id">,
+        ]
+      >;
+      pregnancy: TableDef<PregnancyRow, "pregnancy_id", [Relation<"pregnancy_mother_id_fkey", "mother_id", "mother", "mother_id">]>;
       activity_type: TableDef<ActivityTypeRow, "activity_type_id">;
       appointment: TableDef<AppointmentRow, "appointment_id" | "created_at" | "updated_at">;
       prenatal_visit: TableDef<PrenatalVisitRow, "visit_id">;
@@ -163,6 +190,7 @@ export type Database = {
       sms_reminder: TableDef<SmsReminderRow, "reminder_id">;
       follow_up: TableDef<FollowUpRow, "follow_up_id">;
       login_attempt: TableDef<LoginAttemptRow, "login_attempt_id" | "attempted_at">;
+      purok: TableDef<PurokRow, "purok_id" | "sort_order" | "is_active" | "created_at">;
     };
     Views: { [_ in never]: never };
     Functions: {

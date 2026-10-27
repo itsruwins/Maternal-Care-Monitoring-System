@@ -340,6 +340,52 @@ Every create, update and reset runs on the server and checks the role first. Sta
 - **Mother portal:** view her own profile, pregnancy summary (AOG, EDD countdown) and history. The home ("Today") screen follows the Flo pregnancy screen: week strip with appointment days, curved hero with the trimester's 3D fetus picture and weeks pregnant, insight cards (next visit, tip of the week, danger signs). On desktop the same content sits in a wider two-column layout.
 - **Staff mother profile:** a small trimester fetus picture beside AOG and EDD on the pregnancy tab.
 
+**Decisions (asked 2026-10-27):**
+
+| Topic | Decision |
+|---|---|
+| Purok list | No official list was found online (a 2014 study only says Taysan has 10 puroks). An **admin-managed list** starts as Purok 1 to Purok 10. Admins can rename, add or hide puroks. Sign-up, registration and the registry filter all use it. |
+| EDD | **From the LMP** (LMP + 280 days), filled in automatically and editable (e.g. to match an ultrasound). Same as sign-up. |
+| Login for mothers registered at the center | **Optional "Create a login for her" checkbox** on the form: username = temporary password, forced change at first login. It can also be added later from her profile. |
+| Fetus picture | Flo-style soft, warm 3D look, **AI-generated** (one per trimester). You approve them before they go in. Flo's own art is not used. |
+| Gravida / para | **Entered by the health worker**, as on the paper record (past pregnancies are often not in the system). |
+| Who edits mothers | **Any health worker or admin** can update any mother and her pregnancies. The record keeps who registered her. |
+
+**Database (migration `0008_phase3.sql`, run by you):**
+- New `purok` table (name, order, shown/hidden), starting with Purok 1–10. Everyone can read shown puroks (sign-up needs them), and only admins change them.
+- `mother.purok_id` points to the list. Existing mothers are matched from their typed purok where the text clearly says a number (e.g. "Purok 3", "Prk. 3"). The rest are listed for a health worker to fix. The old text column stays but is no longer shown.
+- The sign-up step saves the chosen purok.
+- The access rules for health workers registering and updating mothers and pregnancies get checked and fixed where needed.
+
+**Build, in steps (each ends with screenshots for you):**
+1. **Database + puroks:** migration `0008`. Admin **Puroks** page (list, add, rename, hide). The sign-up address step uses a purok dropdown.
+2. **Mother registry** (`/staff/mothers`):
+   - Search by name or contact number.
+   - Filter by purok, EDD month and status (active pregnancy, delivered or ended, none).
+   - 20 per page; table on desktop, cards on phones.
+3. **Register a mother at the health center:**
+   - Personal and address details, plus the current pregnancy: gravida, para, LMP → EDD (editable).
+   - Optional "Create a login for her" (username, plus an optional email).
+4. **Staff mother profile** (`/staff/mothers/[id]`):
+   - **Overview:** details (editable), emergency contact, who registered her and when.
+   - **Pregnancy:**
+     - The current pregnancy with weeks pregnant (AOG), EDD countdown and the trimester picture.
+     - Edit it, or close it with an outcome (live birth, stillbirth, miscarriage, other) and a date.
+     - Start a new one (only when none is active).
+     - Add past pregnancies.
+   - **Login:** create a login later; reset her password back to her username; activate or deactivate.
+   - **Visits, Appointments, SMS log, Follow-ups:** "Coming in Phase N" until those phases.
+5. **Fetus pictures:** three AI-generated images (1st, 2nd and 3rd trimester). You approve them, then they go in.
+6. **Mother portal home ("Today"):**
+   - A week strip.
+   - A soft curved hero with the trimester picture, "Week N" and the days until her EDD.
+   - Insight cards: next visit (empty until Phase 4), tip of the week, danger signs.
+   - Her pregnancy history.
+   - Two columns on desktop. If she has no active pregnancy, a calm message with the health center's contact details.
+7. **Review:** phone and desktop screenshots, accessibility checks, design review, then your testing.
+
+**Step 1 built (2026-10-27):** migration `0008_phase3.sql` (already run). Shown puroks are read from a shared cached lookup (`lib/puroks`), which is refreshed as soon as an admin changes a purok. The admin **Puroks** page (`/admin/puroks`) can add, rename, hide and show puroks; there is no delete. Sign-up (step 3) and the mother's own profile now use a purok dropdown. The admin account page shows the purok name. Database types gained the purok table and join info. Dev preview: `/design-preview/puroks`.
+
 ## Phase 4 — Appointments
 
 - **Mother:** request an appointment (activity type, preferred date and time) → REQUESTED; see status updates; cancel her own request.

@@ -14,6 +14,7 @@ export default async function MotherProfilePreview() {
       <ProfileView
         t={t}
         role="MOTHER"
+        puroks={Array.from({ length: 10 }, (_, i) => ({ id: i + 1, name: `Purok ${i + 1}` }))}
         profile={{
           username: "ana.reyes",
           kind: "mother",
@@ -23,7 +24,7 @@ export default async function MotherProfilePreview() {
             middleName: "",
             lastName: "Reyes",
             contactNumber: "09181234567",
-            purok: "Purok 3",
+            purokId: "3",
             street: "12 Rizal St.",
             emergencyName: "Jose Reyes",
             emergencyNumber: "09191234567",

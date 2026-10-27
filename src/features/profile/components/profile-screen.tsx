@@ -3,6 +3,8 @@ import { IconCircle } from "@/components/ui/icon-circle";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import { getServerI18n } from "@/i18n/server";
 import { requireRole } from "@/lib/auth/session";
+import { getShownPuroks } from "@/lib/puroks/shown-puroks";
+import type { PurokOption } from "@/lib/puroks/types";
 import type { UserRole } from "@/types/database";
 import { getMyProfile } from "../queries/get-my-profile";
 import type { MyProfile } from "../types";
@@ -13,12 +15,26 @@ import { DetailsForm, EmailForm, PasswordForm } from "./profile-forms";
 export async function ProfileScreen({ roles }: { roles: readonly UserRole[] }) {
   const user = await requireRole(roles);
   const { t } = await getServerI18n();
-  const profile = await getMyProfile(user);
-  return <ProfileView t={t} profile={profile} role={user.role} />;
+  const [profile, puroks] = await Promise.all([
+    getMyProfile(user),
+    user.role === "MOTHER" ? getShownPuroks() : Promise.resolve([]),
+  ]);
+  return <ProfileView t={t} profile={profile} role={user.role} puroks={puroks} />;
 }
 
 // The page layout, without data loading (also used by the dev preview).
-export function ProfileView({ t, profile, role }: { t: Dictionary; profile: MyProfile; role: UserRole }) {
+export function ProfileView({
+  t,
+  profile,
+  role,
+  puroks,
+}: {
+  t: Dictionary;
+  profile: MyProfile;
+  role: UserRole;
+  /** Mothers only: the purok choices. */
+  puroks: PurokOption[];
+}) {
   const p = t.profile;
   const name = [profile.details.firstName, profile.details.lastName].filter(Boolean).join(" ") || profile.username;
 
@@ -38,7 +54,7 @@ export function ProfileView({ t, profile, role }: { t: Dictionary; profile: MyPr
         <section aria-labelledby="details-title" className="rounded-3xl bg-white p-6 shadow-[var(--shadow-soft)] sm:p-8">
           <h2 id="details-title" className="text-xl font-bold">{p.details.title}</h2>
           <div className="mt-5">
-            <DetailsForm profile={profile} />
+            <DetailsForm profile={profile} puroks={puroks} />
           </div>
         </section>
 

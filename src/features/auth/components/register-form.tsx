@@ -21,8 +21,10 @@ import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
 import { InputIcon } from "@/components/ui/input-icon";
+import { PurokSelect } from "@/components/shared/purok-select";
 import { useDictionary } from "@/i18n/dictionary-provider";
 import { addDays, dueDateFromLmp, isPlausibleLmp, parseISODate } from "@/lib/utils/pregnancy";
+import type { PurokOption } from "@/lib/puroks/types";
 import { useToday } from "@/lib/utils/use-today";
 import { cn } from "@/lib/utils/cn";
 import { registerMother } from "../actions/register";
@@ -41,7 +43,7 @@ const EMPTY: RegisterInput = {
   lastName: "",
   dateOfBirth: "",
   contactNumber: "",
-  purok: "",
+  purokId: "",
   street: "",
   emergencyName: "",
   emergencyNumber: "",
@@ -56,7 +58,7 @@ type ErrorKey = keyof ReturnType<typeof useDictionary>["t"]["register"]["errors"
 // Mother sign-up: 5 steps. Each step is checked before moving on; everything is
 // checked again on the server. Used in the auth dialog and on /register.
 // The footer (Back / Next) sticks to the bottom while the steps scroll.
-export function RegisterForm() {
+export function RegisterForm({ puroks }: { puroks: PurokOption[] }) {
   const { t } = useDictionary();
   const f = t.register.fields;
   const today = useToday();
@@ -238,8 +240,17 @@ export function RegisterForm() {
 
           {stepKey === "address" && (
             <>
-              <FormField id="reg-purok" label={f.purok} error={errorText("purok")}>
-                {text("purok")}
+              <FormField id="reg-purokId" label={f.purok} error={errorText("purokId")}>
+                {(describedBy) => (
+                  <PurokSelect
+                    id="reg-purokId"
+                    puroks={puroks}
+                    placeholder={f.choosePurok}
+                    aria-invalid={Boolean(formState.errors.purokId)}
+                    aria-describedby={describedBy}
+                    {...register("purokId")}
+                  />
+                )}
               </FormField>
               <FormField id="reg-street" label={f.street} error={errorText("street")}>
                 {text("street", { autoComplete: "address-line1" })}
@@ -277,7 +288,7 @@ export function RegisterForm() {
 
         {stepKey === "review" && (
           <div className="mt-2">
-            <RegisterReview values={getValues()} onEdit={goTo} />
+            <RegisterReview values={getValues()} puroks={puroks} onEdit={goTo} />
           </div>
         )}
 

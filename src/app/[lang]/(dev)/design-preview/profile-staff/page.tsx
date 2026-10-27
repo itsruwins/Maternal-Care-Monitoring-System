@@ -13,6 +13,7 @@ export default async function StaffProfilePreview() {
     <StaffShell user={{ username: "taysan.admin", role: "ADMIN", firstName: "Maria", fullName: "Maria Santos" }}>
       <ProfileView
         t={t}
+        puroks={[]}
         role="HEALTH_WORKER"
         profile={{
           username: "joy.dela.cruz",

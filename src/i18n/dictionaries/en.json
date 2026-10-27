@@ -260,7 +260,8 @@
       "dateOfBirth": "Date of birth",
       "contactNumber": "Mobile number",
       "contactHint": "Your reminders are texted here. Example: 09171234567",
-      "purok": "Purok / Sitio",
+      "purok": "Purok",
+      "choosePurok": "Choose your purok",
       "street": "House number and street",
       "emergencyName": "Emergency contact name",
       "emergencyNumber": "Emergency contact number",
@@ -346,6 +347,7 @@
       "reports": "Reports",
       "accounts": "Accounts",
       "activityTypes": "Activity types",
+      "puroks": "Puroks",
       "smsLog": "SMS log",
       "profile": "Profile"
     },
@@ -512,6 +514,42 @@
       "tooLong": "This is too long.",
       "daysInvalid": "Enter a whole number from 0 to 30.",
       "nameTaken": "Another activity type already has this name.",
+      "generic": "Something went wrong. Please try again."
+    }
+  },
+  "puroks": {
+    "title": "Puroks",
+    "intro": "The puroks mothers choose from when they sign up or are registered. Rename them to match the barangay's list.",
+    "add": "Add purok",
+    "rename": "Rename",
+    "renameName": "Rename {name}",
+    "hide": "Hide",
+    "hideName": "Hide {name}",
+    "show": "Show",
+    "showName": "Show {name}",
+    "shown": "Shown",
+    "hidden": "Hidden",
+    "hiddenNote": "Hidden puroks can't be chosen anymore. Mothers already in them keep them.",
+    "hiddenToast": "{name} is hidden.",
+    "shownToast": "{name} is shown again.",
+    "count": "{count} puroks",
+    "empty": "No puroks yet. Add the first one.",
+    "noDelete": "Puroks can't be deleted, because mothers' records use them. Hide one instead.",
+    "dialog": {
+      "addTitle": "New purok",
+      "renameTitle": "Rename purok",
+      "subtitle": "Use the name people know, for example “Purok 4” or “Sitio Tico-tico”.",
+      "name": "Name",
+      "save": "Save",
+      "saving": "Saving…",
+      "cancel": "Cancel",
+      "saved": "Purok renamed.",
+      "added": "Purok added."
+    },
+    "errors": {
+      "required": "This is required.",
+      "tooLong": "Use 60 characters or fewer.",
+      "nameTaken": "Another purok already has this name.",
       "generic": "Something went wrong. Please try again."
     }
   },

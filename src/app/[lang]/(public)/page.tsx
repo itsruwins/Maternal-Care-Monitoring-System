@@ -12,15 +12,16 @@ import { SiteHeader } from "@/features/landing/components/site-header";
 import { Tips } from "@/features/landing/components/tips";
 import { AuthDialogProvider } from "@/features/auth/components/auth-dialog";
 import { getServerI18n } from "@/i18n/server";
+import { getShownPuroks } from "@/lib/puroks/shown-puroks";
 
 // The browser bar matches the top of the rose hero.
 export const viewport: Viewport = { themeColor: "#f6e6e1" };
 
 export default async function LandingPage() {
-  const { t, locale } = await getServerI18n();
+  const [{ t, locale }, puroks] = await Promise.all([getServerI18n(), getShownPuroks()]);
 
   return (
-    <AuthDialogProvider>
+    <AuthDialogProvider puroks={puroks}>
     <div className="relative">
       {/* The header sits on top of the rose hero */}
       <SiteHeader className="absolute inset-x-0 top-0 z-20" />

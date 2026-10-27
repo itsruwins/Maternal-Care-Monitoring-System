@@ -27,7 +27,7 @@ export async function registerMother(input: RegisterInput): Promise<RegisterResu
         middle_name: data.middleName,
         last_name: data.lastName,
         date_of_birth: data.dateOfBirth,
-        purok_sitio: data.purok,
+        purok_id: data.purokId,
         street_address: data.street,
         contact_number: data.contactNumber,
         emergency_contact_name: data.emergencyName,

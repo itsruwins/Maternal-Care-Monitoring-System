@@ -6,6 +6,7 @@ import { HeartIcon } from "@/components/icons";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { IconCircle } from "@/components/ui/icon-circle";
 import { useDictionary } from "@/i18n/dictionary-provider";
+import type { PurokOption } from "@/lib/puroks/types";
 import { cn } from "@/lib/utils/cn";
 import { LoginForm } from "./login-form";
 import { RegisterForm } from "./register-form";
@@ -17,9 +18,9 @@ const AuthDialogContext = createContext<((mode: Mode) => void) | null>(null);
 // One dialog for both Log in and Sign up. "No account yet? Sign up" (and back)
 // switches the form inside the same dialog. On phones it is a bottom sheet;
 // the longer sign-up scrolls with its Back / Next bar pinned at the bottom.
-// Wrap a page in <AuthDialogProvider>, then use <AuthDialogTrigger mode="...">.
+// Wrap a page in <AuthDialogProvider puroks={...}> (the sign-up purok list), then use <AuthDialogTrigger mode="...">.
 // The /login and /register pages stay for direct links.
-export function AuthDialogProvider({ children }: { children: ReactNode }) {
+export function AuthDialogProvider({ children, puroks }: { children: ReactNode; puroks: PurokOption[] }) {
   const { t } = useDictionary();
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<Mode>("login");
@@ -83,7 +84,7 @@ export function AuthDialogProvider({ children }: { children: ReactNode }) {
                 </DialogDescription>
               </DialogHeader>
               <div className="pt-3">
-                <RegisterForm />
+                <RegisterForm puroks={puroks} />
               </div>
             </>
           )}

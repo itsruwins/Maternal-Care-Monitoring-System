@@ -11,7 +11,8 @@ Run these in **Supabase Dashboard → SQL Editor**, in order. Each file is safe 
 | 5 | `supabase/migrations/0005_mother_self_service.sql` | Mother can cancel her own REQUESTED appointment; protects `registered_by`, `user_id`, `registration_date` |
 | 6 | `supabase/migrations/0006_login_attempt.sql` | Table for the 5-failures → 15-minute lock |
 | 7 | `supabase/migrations/0007_phase2.sql` | Phase 2: usernames 8+ characters for new accounts and renames; renames the first admin login `admin` → `taysan.admin`; health workers may edit their own name and contact |
-| 7 | `supabase/seed/first-admin.sql` | First admin (follow the steps at the top of the file) |
+| 8 | `supabase/migrations/0008_phase3.sql` | Phase 3: admin-managed purok list (Purok 1–10 to start) and `mother.purok_id` (existing typed puroks matched where clear); sign-up saves the chosen purok; past pregnancies allowed (EDD only required while active, outcome date checked against the LMP) |
+| — | `supabase/seed/first-admin.sql` | First admin (follow the steps at the top of the file) |
 
 ## Rules
 

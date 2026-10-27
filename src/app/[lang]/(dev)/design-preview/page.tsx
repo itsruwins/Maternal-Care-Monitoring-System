@@ -114,7 +114,7 @@ export default function DesignPreviewPage() {
   if (process.env.NODE_ENV === "production") notFound();
 
   return (
-    <AuthDialogProvider>
+    <AuthDialogProvider puroks={Array.from({ length: 10 }, (_, i) => ({ id: i + 1, name: `Purok ${i + 1}` }))}>
     <main className="flex-1 pb-20">
       <CurvedHero tone="rose" curve="lg" className="pb-16">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 pt-4 sm:px-6">

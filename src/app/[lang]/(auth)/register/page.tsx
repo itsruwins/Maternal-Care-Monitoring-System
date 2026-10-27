@@ -2,6 +2,7 @@ import Link from "next/link";
 import { AuthCard } from "@/features/auth/components/auth-card";
 import { RegisterForm } from "@/features/auth/components/register-form";
 import { getServerI18n } from "@/i18n/server";
+import { getShownPuroks } from "@/lib/puroks/shown-puroks";
 
 export async function generateMetadata() {
   const { t } = await getServerI18n();
@@ -9,12 +10,12 @@ export async function generateMetadata() {
 }
 
 export default async function RegisterPage() {
-  const { t } = await getServerI18n();
+  const [{ t }, puroks] = await Promise.all([getServerI18n(), getShownPuroks()]);
 
   return (
     <div className="flex flex-col gap-6">
       <AuthCard title={t.register.dialogTitle} subtitle={t.register.subtitle} wide bare>
-        <RegisterForm />
+        <RegisterForm puroks={puroks} />
       </AuthCard>
       <p className="text-center text-sm text-ink-soft">
         {t.register.haveAccount}{" "}

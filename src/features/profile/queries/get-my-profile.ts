@@ -15,7 +15,7 @@ export async function getMyProfile(user: CurrentUser): Promise<MyProfile> {
   if (user.role === "MOTHER") {
     const { data } = await supabase
       .from("mother")
-      .select("first_name, middle_name, last_name, contact_number, purok_sitio, street_address, emergency_contact_name, emergency_contact_no")
+      .select("first_name, middle_name, last_name, contact_number, purok_id, street_address, emergency_contact_name, emergency_contact_no")
       .eq("user_id", user.id)
       .maybeSingle();
     return {
@@ -27,7 +27,7 @@ export async function getMyProfile(user: CurrentUser): Promise<MyProfile> {
         middleName: data?.middle_name ?? "",
         lastName: data?.last_name ?? "",
         contactNumber: data?.contact_number ?? "",
-        purok: data?.purok_sitio ?? "",
+        purokId: data?.purok_id ? String(data.purok_id) : "",
         street: data?.street_address ?? "",
         emergencyName: data?.emergency_contact_name ?? "",
         emergencyNumber: data?.emergency_contact_no ?? "",

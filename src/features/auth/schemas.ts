@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { purokIdField } from "@/lib/puroks/purok-field";
 import { daysBetween, isPlausibleLmp, parseISODate, todayISO } from "@/lib/utils/pregnancy";
 import { MIN_PASSWORD_LENGTH, MOBILE_PATTERN, normalizeMobile, USERNAME_PATTERN } from "@/lib/validation/account-rules";
 
@@ -65,7 +66,7 @@ export const registerSchema = z
     dateOfBirth: required.refine(isPlausibleBirthDate, "dobInvalid"),
     contactNumber: mobile,
     // Step 3: address
-    purok: required,
+    purokId: purokIdField,
     street: required,
     emergencyName: required,
     emergencyNumber: mobile,
@@ -93,7 +94,7 @@ export type RegisterField = keyof RegisterInput;
 export const REGISTER_STEPS = [
   { key: "account", fields: ["username", "password", "confirmPassword", "email"] },
   { key: "personal", fields: ["firstName", "middleName", "lastName", "dateOfBirth", "contactNumber"] },
-  { key: "address", fields: ["purok", "street", "emergencyName", "emergencyNumber"] },
+  { key: "address", fields: ["purokId", "street", "emergencyName", "emergencyNumber"] },
   { key: "pregnancy", fields: ["gravida", "para", "lmp", "edd"] },
   { key: "review", fields: [] },
 ] as const satisfies readonly { key: string; fields: readonly RegisterField[] }[];

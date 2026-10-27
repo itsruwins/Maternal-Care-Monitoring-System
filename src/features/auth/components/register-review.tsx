@@ -2,12 +2,21 @@
 
 import { IconCircle } from "@/components/ui/icon-circle";
 import { useDictionary } from "@/i18n/dictionary-provider";
+import type { PurokOption } from "@/lib/puroks/types";
 import { formatDate } from "@/lib/utils/pregnancy";
 import { REGISTER_STEPS, type RegisterInput } from "../schemas";
 import { STEP_ICONS } from "./register-stepper";
 
 // Step 5: everything she entered, grouped by step, each group editable.
-export function RegisterReview({ values, onEdit }: { values: RegisterInput; onEdit: (step: number) => void }) {
+export function RegisterReview({
+  values,
+  puroks,
+  onEdit,
+}: {
+  values: RegisterInput;
+  puroks: PurokOption[];
+  onEdit: (step: number) => void;
+}) {
   const { t, locale } = useDictionary();
   const f = t.register.fields;
   const date = (iso: string) => (iso ? formatDate(iso, locale) : t.common.notSet);
@@ -34,7 +43,7 @@ export function RegisterReview({ values, onEdit }: { values: RegisterInput; onEd
     {
       step: 2,
       rows: [
-        [f.purok, text(values.purok)],
+        [f.purok, puroks.find((purok) => String(purok.id) === values.purokId)?.name ?? t.common.notSet],
         [f.street, text(values.street)],
         [f.emergencyName, text(values.emergencyName)],
         [f.emergencyNumber, text(values.emergencyNumber)],

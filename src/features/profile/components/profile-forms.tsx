@@ -7,8 +7,10 @@ import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
 import { InputIcon } from "@/components/ui/input-icon";
+import { PurokSelect } from "@/components/shared/purok-select";
 import { useDictionary } from "@/i18n/dictionary-provider";
 import { format } from "@/i18n/format";
+import type { PurokOption } from "@/lib/puroks/types";
 import { changeMyEmail, changeMyPassword, updateMyDetails } from "../actions/update-profile";
 import type { DetailsField, PasswordField } from "../schemas";
 import type { MyProfile, ProfileErrorKey, ProfileFormState } from "../types";
@@ -37,7 +39,7 @@ function SubmitButton({ pending, label, pendingLabel }: { pending: boolean; labe
 
 // Your details: staff (name, mobile; position shown read-only) or mother
 // (name, mobile, address, emergency contact).
-export function DetailsForm({ profile }: { profile: MyProfile }) {
+export function DetailsForm({ profile, puroks }: { profile: MyProfile; puroks: PurokOption[] }) {
   const { t } = useDictionary();
   const p = t.profile.details;
   const f = t.register.fields;
@@ -83,7 +85,19 @@ export function DetailsForm({ profile }: { profile: MyProfile }) {
         </FormField>
         {profile.kind === "mother" ? (
           <>
-            {text("purok", f.purok, d.purok)}
+            <FormField id="me-purokId" label={f.purok} error={err("purokId")}>
+              {(describedBy) => (
+                <PurokSelect
+                  id="me-purokId"
+                  name="purokId"
+                  puroks={puroks}
+                  placeholder={f.choosePurok}
+                  defaultValue={d.purokId}
+                  aria-invalid={Boolean(errors.purokId)}
+                  aria-describedby={describedBy}
+                />
+              )}
+            </FormField>
             {text("street", f.street, d.street, { autoComplete: "address-line1" })}
             {text("emergencyName", f.emergencyName, d.emergencyName)}
             {text("emergencyNumber", f.emergencyNumber, d.emergencyNumber, { type: "tel", inputMode: "tel" })}

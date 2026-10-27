@@ -5,6 +5,7 @@ import {
   CallIcon,
   CheckupIcon,
   HomeIcon,
+  LocationIcon,
   MothersIcon,
   ProfileIcon,
   RecordsIcon,
@@ -39,10 +40,11 @@ export const STAFF_NAV: NavItem[] = [
 export const ADMIN_NAV: NavItem[] = [
   { key: "accounts", href: "/admin/accounts", icon: AccountsIcon },
   { key: "activityTypes", href: "/admin/activity-types", icon: ActivityTypesIcon },
+  { key: "puroks", href: "/admin/puroks", icon: LocationIcon },
   { key: "smsLog", href: "/admin/sms", icon: SmsIcon },
 ];
 
-// Mother portal: top menu on desktop, bottom tab bar on phones.
+// Mother portal: floating bottom navigation on every screen size.
 export const MOTHER_NAV: NavItem[] = [
   { key: "home", href: "/mother", icon: HomeIcon, exact: true },
   { key: "appointments", href: "/mother/appointments", icon: AppointmentIcon },

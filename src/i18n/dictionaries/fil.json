@@ -260,7 +260,8 @@
       "dateOfBirth": "Petsa ng kapanganakan",
       "contactNumber": "Numero ng cellphone",
       "contactHint": "Dito ite-text ang mga paalala. Halimbawa: 09171234567",
-      "purok": "Purok / Sitio",
+      "purok": "Purok",
+      "choosePurok": "Piliin ang iyong purok",
       "street": "Numero ng bahay at kalye",
       "emergencyName": "Pangalan ng emergency contact",
       "emergencyNumber": "Numero ng emergency contact",
@@ -346,6 +347,7 @@
       "reports": "Mga ulat",
       "accounts": "Mga account",
       "activityTypes": "Mga serbisyo",
+      "puroks": "Mga Purok",
       "smsLog": "SMS log",
       "profile": "Profile"
     },
@@ -513,6 +515,42 @@
       "daysInvalid": "Maglagay ng buong numero mula 0 hanggang 30.",
       "nameTaken": "May ibang serbisyo na may ganitong pangalan.",
       "generic": "May nangyaring mali. Pakisubukang muli."
+    }
+  },
+  "puroks": {
+    "title": "Mga Purok",
+    "intro": "Ang mga purok na pinagpipilian ng mga ina kapag nag-sign up o ipinarehistro. Palitan ang pangalan para tumugma sa listahan ng barangay.",
+    "add": "Magdagdag ng purok",
+    "rename": "Palitan ang pangalan",
+    "renameName": "Palitan ang pangalan ng {name}",
+    "hide": "Itago",
+    "hideName": "Itago ang {name}",
+    "show": "Ipakita",
+    "showName": "Ipakita ang {name}",
+    "shown": "Nakikita",
+    "hidden": "Nakatago",
+    "hiddenNote": "Hindi na mapipili ang mga nakatagong purok. Mananatili ito sa mga inang nakatala na rito.",
+    "hiddenToast": "Nakatago na ang {name}.",
+    "shownToast": "Nakikita na ulit ang {name}.",
+    "count": "{count} purok",
+    "empty": "Wala pang purok. Idagdag ang una.",
+    "noDelete": "Hindi mabubura ang mga purok dahil ginagamit ito ng mga tala ng mga ina. Itago na lang ito.",
+    "dialog": {
+      "addTitle": "Bagong purok",
+      "renameTitle": "Palitan ang pangalan ng purok",
+      "subtitle": "Gamitin ang pangalang kilala ng mga tao, halimbawa “Purok 4” o “Sitio Tico-tico”.",
+      "name": "Pangalan",
+      "save": "I-save",
+      "saving": "Sine-save…",
+      "cancel": "Kanselahin",
+      "saved": "Napalitan ang pangalan ng purok.",
+      "added": "Naidagdag ang purok."
+    },
+    "errors": {
+      "required": "Kailangan ito.",
+      "tooLong": "Gumamit ng 60 titik o mas kaunti.",
+      "nameTaken": "May ibang purok nang may ganitong pangalan.",
+      "generic": "May nangyaring mali. Pakisubukan ulit."
     }
   },
   "profile": {

@@ -23,7 +23,7 @@ export type AccountDetail = {
     position: string;
     contactNumber: string;
   } | null;
-  mother: { firstName: string; lastName: string; contactNumber: string; purok: string } | null;
+  mother: { firstName: string; lastName: string; contactNumber: string; purok: string | null } | null;
 };
 
 // One account with its staff profile or mother record. The caller must be an
@@ -45,7 +45,7 @@ export async function getAccount(userId: string): Promise<AccountDetail | null> 
       .maybeSingle(),
     supabase
       .from("mother")
-      .select("first_name, last_name, contact_number, purok_sitio")
+      .select("first_name, last_name, contact_number, purok:purok_id(name)")
       .eq("user_id", userId)
       .maybeSingle(),
   ]);
@@ -77,7 +77,7 @@ export async function getAccount(userId: string): Promise<AccountDetail | null> 
           firstName: mother.first_name,
           lastName: mother.last_name,
           contactNumber: mother.contact_number,
-          purok: mother.purok_sitio,
+          purok: mother.purok?.name ?? null,
         }
       : null,
   };

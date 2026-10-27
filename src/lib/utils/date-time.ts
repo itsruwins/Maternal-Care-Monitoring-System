@@ -12,3 +12,4 @@ export function formatDateTime(isoTimestamp: string, locale: string): string {
     minute: "2-digit",
   }).format(date);
 }
+

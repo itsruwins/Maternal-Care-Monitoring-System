@@ -386,6 +386,13 @@ Every create, update and reset runs on the server and checks the role first. Sta
 
 **Step 1 built (2026-10-27):** migration `0008_phase3.sql` (already run). Shown puroks are read from a shared cached lookup (`lib/puroks`), which is refreshed as soon as an admin changes a purok. The admin **Puroks** page (`/admin/puroks`) can add, rename, hide and show puroks; there is no delete. Sign-up (step 3) and the mother's own profile now use a purok dropdown. The admin account page shows the purok name. Database types gained the purok table and join info. Dev preview: `/design-preview/puroks`.
 
+**Step 2 built (2026-10-27):** mother registry at `/staff/mothers` (health workers and admins).
+- **Search:** every word must match a name part or the mobile number.
+- **Filters:** purok (including "No purok yet", for mothers whose old typed purok couldn't be matched), due month (last month to 10 months ahead) and pregnancy ("Pregnant now" / "Not pregnant now"). The plan's three statuses became two, because every mother is registered with a pregnancy.
+- **Rows:** weeks pregnant (and trimester) from the LMP, or from the EDD when the LMP is unknown, counted in Manila time. Closed pregnancies show the last outcome and date. Each row also shows whether she can log in.
+- **Layout:** 20 per page; table from 768px, cards on phones. Paging is shared with the Accounts list (`components/shared/pager.tsx`).
+- Rows open her profile once step 4 is built. Dev preview: `/design-preview/mothers`.
+
 ## Phase 4 — Appointments
 
 - **Mother:** request an appointment (activity type, preferred date and time) → REQUESTED; see status updates; cancel her own request.

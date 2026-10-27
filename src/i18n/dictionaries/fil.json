@@ -553,6 +553,56 @@
       "generic": "May nangyaring mali. Pakisubukan ulit."
     }
   },
+  "mothers": {
+    "title": "Mga Ina",
+    "intro": "Lahat ng inang nakarehistro sa health center o sa website.",
+    "search": {
+      "label": "Maghanap",
+      "placeholder": "Pangalan o mobile number",
+      "purok": "Purok",
+      "allPuroks": "Lahat ng purok",
+      "noPurok": "Wala pang purok",
+      "due": "Buwan ng kabuwanan",
+      "anyMonth": "Kahit anong buwan",
+      "status": "Pagbubuntis",
+      "all": "Lahat",
+      "pregnant": "Buntis ngayon",
+      "notPregnant": "Hindi buntis ngayon",
+      "submit": "Maghanap",
+      "clear": "I-clear"
+    },
+    "results": "{count} ina",
+    "resultsOne": "1 ina",
+    "empty": "Walang inang tugma sa mga filter na ito.",
+    "emptyAll": "Wala pang nakarehistrong ina.",
+    "columns": {
+      "name": "Pangalan",
+      "purok": "Purok",
+      "pregnancy": "Pagbubuntis",
+      "due": "Kabuwanan",
+      "login": "Login"
+    },
+    "week": "Ika-{weeks} linggo",
+    "trimesters": [
+      "Unang trimester",
+      "Ikalawang trimester",
+      "Ikatlong trimester"
+    ],
+    "noPregnancy": "Walang kasalukuyang pagbubuntis",
+    "outcomes": {
+      "LIVE_BIRTH": "Nanganak",
+      "STILLBIRTH": "Patay nang ipinanganak",
+      "MISCARRIAGE": "Nakunan",
+      "OTHER": "Natapos"
+    },
+    "outcomeOn": "{outcome}, {date}",
+    "noPurokYet": "Wala pang purok",
+    "hasLogin": "May login",
+    "noLogin": "Walang login",
+    "page": "Pahina {page} ng {pages}",
+    "prev": "Nakaraan",
+    "next": "Susunod"
+  },
   "profile": {
     "title": "Iyong profile",
     "details": {

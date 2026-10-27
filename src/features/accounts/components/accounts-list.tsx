@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { CaretLeftIcon, CaretRightIcon } from "@/components/icons";
-import { Button } from "@/components/ui/button";
+import { CaretRightIcon } from "@/components/icons";
+import { Pager } from "@/components/shared/pager";
 import type { Locale } from "@/i18n/config";
 import { format } from "@/i18n/format";
 import type { Dictionary } from "@/i18n/get-dictionary";
@@ -108,23 +108,7 @@ export function AccountsList({
         ))}
       </ul>
 
-      {pages > 1 && (
-        <nav aria-label={format(a.page, { page: filters.page, pages })} className="flex items-center justify-between gap-3">
-          <Button asChild variant="secondary" size="sm" className={filters.page <= 1 ? "pointer-events-none opacity-40" : ""}>
-            <Link href={pageHref(filters.page - 1)} aria-disabled={filters.page <= 1}>
-              <CaretLeftIcon weight="bold" aria-hidden />
-              {a.prev}
-            </Link>
-          </Button>
-          <span className="tnum text-sm text-ink-soft">{format(a.page, { page: filters.page, pages })}</span>
-          <Button asChild variant="secondary" size="sm" className={filters.page >= pages ? "pointer-events-none opacity-40" : ""}>
-            <Link href={pageHref(filters.page + 1)} aria-disabled={filters.page >= pages}>
-              {a.next}
-              <CaretRightIcon weight="bold" aria-hidden />
-            </Link>
-          </Button>
-        </nav>
-      )}
+      <Pager page={filters.page} pages={pages} hrefFor={pageHref} labels={{ prev: a.prev, next: a.next, page: a.page }} />
     </div>
   );
 }

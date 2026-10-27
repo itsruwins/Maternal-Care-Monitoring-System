@@ -553,6 +553,56 @@
       "generic": "Something went wrong. Please try again."
     }
   },
+  "mothers": {
+    "title": "Mothers",
+    "intro": "Every mother registered at the health center or through the website.",
+    "search": {
+      "label": "Search",
+      "placeholder": "Name or mobile number",
+      "purok": "Purok",
+      "allPuroks": "All puroks",
+      "noPurok": "No purok yet",
+      "due": "Due month",
+      "anyMonth": "Any month",
+      "status": "Pregnancy",
+      "all": "All",
+      "pregnant": "Pregnant now",
+      "notPregnant": "Not pregnant now",
+      "submit": "Search",
+      "clear": "Clear"
+    },
+    "results": "{count} mothers",
+    "resultsOne": "1 mother",
+    "empty": "No mothers match these filters.",
+    "emptyAll": "No mothers registered yet.",
+    "columns": {
+      "name": "Name",
+      "purok": "Purok",
+      "pregnancy": "Pregnancy",
+      "due": "Due date",
+      "login": "Login"
+    },
+    "week": "Week {weeks}",
+    "trimesters": [
+      "1st trimester",
+      "2nd trimester",
+      "3rd trimester"
+    ],
+    "noPregnancy": "No current pregnancy",
+    "outcomes": {
+      "LIVE_BIRTH": "Delivered",
+      "STILLBIRTH": "Stillbirth",
+      "MISCARRIAGE": "Miscarriage",
+      "OTHER": "Ended"
+    },
+    "outcomeOn": "{outcome}, {date}",
+    "noPurokYet": "No purok yet",
+    "hasLogin": "Can log in",
+    "noLogin": "No login",
+    "page": "Page {page} of {pages}",
+    "prev": "Previous",
+    "next": "Next"
+  },
   "profile": {
     "title": "Your profile",
     "details": {

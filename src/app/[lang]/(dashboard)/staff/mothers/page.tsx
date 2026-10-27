@@ -1,12 +1,10 @@
 import { Suspense } from "react";
-import { ComingSoon } from "@/features/shell/components/coming-soon";
-import { AREA_ROLES } from "@/lib/auth/roles";
+import { MothersScreen } from "@/features/mothers/components/mothers-screen";
 
-
-export default function StaffMothersPage() {
+export default function StaffMothersPage({ searchParams }: PageProps<"/[lang]/staff/mothers">) {
   return (
-    <Suspense fallback={null}>
-      <ComingSoon roles={AREA_ROLES.staff} navKey="mothers" phase={3} />
+    <Suspense fallback={<div aria-hidden className="h-96 animate-pulse rounded-3xl bg-white/60" />}>
+      <MothersScreen searchParams={searchParams} />
     </Suspense>
   );
 }

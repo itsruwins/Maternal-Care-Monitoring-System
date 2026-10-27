@@ -393,6 +393,15 @@ Every create, update and reset runs on the server and checks the role first. Sta
 - **Layout:** 20 per page; table from 768px, cards on phones. Paging is shared with the Accounts list (`components/shared/pager.tsx`).
 - Rows open her profile once step 4 is built. Dev preview: `/design-preview/mothers`.
 
+**Step 3 built (2026-10-27):** "Register a mother" on the registry opens `/staff/mothers/new`. The form has four cards (about her, address and emergency contact, current pregnancy, optional login).
+- **Due date:** fills in from the LMP until someone edits it.
+- **Duplicates:** a mother with the same name and date of birth is refused (she may have signed up on the website already).
+- **Login:** ticking "Create a login for her" makes a login with username = temporary password and a forced change at first login. The shared helper `features/mothers/server/mother-login.ts` will be reused by step 4's "Create login".
+- **Undo:** if a later step fails, the earlier ones are undone (login, then record), so nothing half-made is left.
+- **Kept input:** the form submits without React's automatic reset, so a mistake doesn't clear what was typed.
+- **Done screen:** shows who was registered and her temporary password, with "Register another".
+- Date and number rules shared with sign-up moved to `lib/validation/mother-rules.ts`. Dev preview: `/design-preview/register-mother`.
+
 ## Phase 4 — Appointments
 
 - **Mother:** request an appointment (activity type, preferred date and time) → REQUESTED; see status updates; cancel her own request.

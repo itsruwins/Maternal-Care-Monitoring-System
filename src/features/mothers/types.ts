@@ -1,3 +1,4 @@
+import type { Dictionary } from "@/i18n/get-dictionary";
 import type { PregnancyOutcome } from "@/types/database";
 import type { Trimester } from "@/lib/utils/pregnancy";
 
@@ -27,3 +28,14 @@ export type MotherListItem = {
   hasLogin: boolean;
   pregnancy: PregnancySummary;
 };
+
+export type MotherErrorKey = keyof Dictionary["mothers"]["errors"];
+
+export type FormState<Field extends string> = {
+  ok?: boolean;
+  error?: MotherErrorKey;
+  fieldErrors?: Partial<Record<Field, MotherErrorKey>>;
+};
+
+/** What the registration form shows once she is registered. */
+export type RegisteredMother = { motherId: number; name: string; username: string | null };

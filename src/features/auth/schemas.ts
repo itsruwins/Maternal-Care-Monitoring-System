@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { purokIdField } from "@/lib/puroks/purok-field";
-import { daysBetween, isPlausibleLmp, parseISODate, todayISO } from "@/lib/utils/pregnancy";
+import { countField, isPlausibleBirthDate, isPlausibleDueDate, lmpField } from "@/lib/validation/mother-rules";
 import { MIN_PASSWORD_LENGTH, MOBILE_PATTERN, normalizeMobile, USERNAME_PATTERN } from "@/lib/validation/account-rules";
 
 // Error messages are dictionary keys, translated in the UI:
@@ -26,23 +26,6 @@ const mobile = z
   .string()
   .transform(normalizeMobile)
   .pipe(z.string().regex(MOBILE_PATTERN, "phoneInvalid"));
-const count = (message: string, min: number) =>
-  z
-    .string()
-    .trim()
-    .regex(/^\d{1,2}$/, message)
-    .transform(Number)
-    .pipe(z.number().int().min(min, message));
-
-function isPlausibleBirthDate(iso: string): boolean {
-  const days = daysBetween(iso, todayISO());
-  return days !== null && days >= 10 * 365 && days <= 60 * 365;
-}
-
-function isPlausibleDueDate(iso: string): boolean {
-  const days = daysBetween(todayISO(), iso);
-  return days !== null && days >= -14 && days <= 300;
-}
 
 export const registerSchema = z
   .object({
@@ -63,7 +46,7 @@ export const registerSchema = z
     firstName: required,
     middleName: optionalText,
     lastName: required,
-    dateOfBirth: required.refine(isPlausibleBirthDate, "dobInvalid"),
+    dateOfBirth: required.refine((value) => isPlausibleBirthDate(value), "dobInvalid"),
     contactNumber: mobile,
     // Step 3: address
     purokId: purokIdField,
@@ -71,10 +54,10 @@ export const registerSchema = z
     emergencyName: required,
     emergencyNumber: mobile,
     // Step 4: pregnancy
-    gravida: count("gravidaInvalid", 1),
-    para: count("paraInvalid", 0),
-    lmp: z.string().refine((value) => value === "" || (parseISODate(value) !== null && isPlausibleLmp(value)), "lmpInvalid"),
-    edd: required.refine(isPlausibleDueDate, "eddInvalid"),
+    gravida: countField("gravidaInvalid", 1),
+    para: countField("paraInvalid", 0),
+    lmp: lmpField,
+    edd: required.refine((value) => isPlausibleDueDate(value), "eddInvalid"),
   })
   .superRefine((data, ctx) => {
     if (data.password !== data.confirmPassword) {

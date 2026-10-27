@@ -1,3 +1,6 @@
+import Link from "next/link";
+import { PlusIcon } from "@/components/icons";
+import { Button } from "@/components/ui/button";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import { getServerI18n } from "@/i18n/server";
@@ -53,9 +56,17 @@ export function MothersView({
 }) {
   return (
     <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-title font-extrabold">{t.mothers.title}</h1>
-        <p className="mt-2 text-ink-soft">{t.mothers.intro}</p>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1 className="text-title font-extrabold">{t.mothers.title}</h1>
+          <p className="mt-2 text-ink-soft">{t.mothers.intro}</p>
+        </div>
+        <Button asChild className="w-full sm:w-auto">
+          <Link href="/staff/mothers/new">
+            <PlusIcon weight="bold" aria-hidden />
+            {t.mothers.register.open}
+          </Link>
+        </Button>
       </div>
       <MotherFiltersForm t={t} locale={locale} filters={filters} puroks={puroks} dueMonths={dueMonths} />
       <MothersList t={t} locale={locale} items={items} total={total} filters={filters} />

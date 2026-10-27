@@ -924,6 +924,138 @@
       "required": "Pumili ng serbisyo, araw at oras."
     }
   },
+  "slotPicker": {
+    "day": "Araw",
+    "time": "Oras",
+    "pickDateFirst": "Pumili ng araw para makita ang bakanteng oras.",
+    "noTimes": "Wala nang bakanteng oras sa araw na iyan. Pumili ng ibang araw.",
+    "taken": "kuha na",
+    "closedDay": "Sarado",
+    "legendOpen": "Bukas",
+    "legendFull": "Puno o sarado",
+    "prevMonth": "Nakaraang buwan",
+    "nextMonth": "Susunod na buwan"
+  },
+  "appointments": {
+    "title": "Mga appointment",
+    "intro": "Suriin ang mga hiling, mag-book ng bisita at tingnan kung sino ang darating.",
+    "book": "Mag-book ng appointment",
+    "views": {
+      "queue": "Mga hiling",
+      "list": "Listahan",
+      "calendar": "Kalendaryo"
+    },
+    "viewsLabel": "Mga view ng appointment",
+    "statuses": {
+      "REQUESTED": "Hiniling",
+      "CONFIRMED": "Kumpirmado",
+      "RESCHEDULED": "Naipadala ang bagong oras",
+      "COMPLETED": "Tapos na",
+      "MISSED": "Hindi nakapunta",
+      "CANCELLED": "Kinansela"
+    },
+    "queueEmpty": "Walang naghihintay na hiling. Magaling!",
+    "queueIntro": "Pinakaluma muna. Kumpirmahin ang hiniling na oras, mag-alok ng ibang oras, o kanselahin.",
+    "asked": "Hiniling na oras",
+    "waitingSince": "Hiniling noong {date}",
+    "noteLabel": "Tala niya",
+    "remarks": "Tala",
+    "openRecord": "Buksan ang tala",
+    "confirm": "Kumpirmahin",
+    "confirmed": "Kumpirmado na. Naka-queue ang paalala.",
+    "otherTime": "Ibang oras",
+    "newTime": "Bagong oras",
+    "cancel": "Kanselahin",
+    "noLogin": "Walang login: agad nakukumpirma ang bagong oras.",
+    "awaitingMother": "Hinihintay siyang tanggapin ang bagong oras.",
+    "reminder": {
+      "PENDING": "Naka-queue ang paalala para sa {when}",
+      "SENT": "Naipadala ang paalala {when}",
+      "DELIVERED": "Natanggap ang paalala {when}",
+      "FAILED": "Hindi naipadala ang paalala",
+      "none": "Walang paalala"
+    },
+    "propose": {
+      "title": "Mag-alok ng ibang oras",
+      "subtitle": "Hihilingin sa kanyang tanggapin ito. Agad nakukumpirma ang mga inang walang login.",
+      "current": "Kasalukuyang oras: {when}",
+      "remarkLabel": "Mensahe para sa kanya (hindi kailangan)",
+      "remarkHint": "Halimbawa: puno na ang umaga sa araw na iyon.",
+      "submit": "Ipadala ang bagong oras",
+      "submitNoLogin": "Kumpirmahin ang bagong oras",
+      "saving": "Sine-save…",
+      "sent": "Naipadala ang bagong oras. Hihilingin sa kanyang tanggapin ito.",
+      "confirmedNoLogin": "Kumpirmado ang bagong oras.",
+      "pick": "Pumili ng araw at oras."
+    },
+    "cancelDialog": {
+      "title": "Kanselahin ang appointment na ito?",
+      "body": "Magagamit na ng iba ang oras, at aalisin ang paalalang hindi pa naipapadala.",
+      "remarkLabel": "Dahilan (hindi kailangan)",
+      "submit": "Kanselahin ang appointment",
+      "keep": "Huwag kanselahin",
+      "done": "Nakansela ang appointment."
+    },
+    "list": {
+      "status": "Status",
+      "allStatuses": "Lahat ng status",
+      "service": "Serbisyo",
+      "allServices": "Lahat ng serbisyo",
+      "from": "Mula",
+      "to": "Hanggang",
+      "submit": "Ipakita",
+      "clear": "I-clear",
+      "results": "{count} appointment",
+      "resultsOne": "1 appointment",
+      "empty": "Walang appointment na tugma sa mga filter na ito.",
+      "columns": {
+        "when": "Petsa at oras",
+        "mother": "Ina",
+        "service": "Serbisyo",
+        "status": "Status",
+        "reminder": "Paalala"
+      },
+      "page": "Pahina {page} ng {pages}",
+      "prev": "Nakaraan",
+      "next": "Susunod"
+    },
+    "calendar": {
+      "booked": "{count} naka-book",
+      "bookedOne": "1 naka-book",
+      "closed": "Sarado",
+      "dayEmpty": "Walang naka-book sa araw na ito.",
+      "prevMonth": "Nakaraang buwan",
+      "nextMonth": "Susunod na buwan",
+      "today": "Ngayon"
+    },
+    "bookPage": {
+      "title": "Mag-book ng appointment",
+      "back": "Mga appointment",
+      "intro": "Para sa inang may kasalukuyang pagbubuntis. Kumpirmado agad ito at naka-queue ang paalala.",
+      "mother": "1. Ina",
+      "searchLabel": "Maghanap ng ina",
+      "searchPlaceholder": "Pangalan o mobile number",
+      "search": "Maghanap",
+      "change": "Palitan",
+      "noMatches": "Walang tugmang ina na may kasalukuyang pagbubuntis.",
+      "pickMother": "Piliin siya sa mga resulta.",
+      "service": "2. Serbisyo",
+      "day": "3. Araw",
+      "time": "4. Oras",
+      "remarkLabel": "Tala (hindi kailangan)",
+      "submit": "Mag-book",
+      "submitting": "Nagbu-book…",
+      "done": "Naka-book sa {when}. Naka-queue ang paalala.",
+      "required": "Pumili ng ina, serbisyo, araw at oras.",
+      "week": "Ika-{weeks} linggo"
+    },
+    "record": {
+      "empty": "Wala pang appointment.",
+      "book": "Mag-book ng appointment",
+      "upcoming": "Paparating",
+      "past": "Nakaraan"
+    }
+  },
   "profile": {
     "title": "Iyong profile",
     "details": {

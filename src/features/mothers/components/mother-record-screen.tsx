@@ -1,8 +1,10 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CaretLeftIcon, ComingSoonIcon, LocationIcon, PhoneIcon, PregnancyIcon, UserIcon } from "@/components/icons";
 import { IconCircle } from "@/components/ui/icon-circle";
 import { StatusBadge } from "@/features/accounts/components/badges";
+import { MotherAppointmentsPanel } from "@/features/appointments/components/mother-appointments-panel";
 import type { Locale } from "@/i18n/config";
 import { format } from "@/i18n/format";
 import type { Dictionary } from "@/i18n/get-dictionary";
@@ -25,7 +27,7 @@ import { PregnancyTab } from "./pregnancy-tab";
 export const RECORD_TABS = ["overview", "pregnancy", "appointments", "visits", "followUps", "sms"] as const;
 export type RecordTab = (typeof RECORD_TABS)[number];
 // Tabs whose content comes in a later phase.
-const LATER: Partial<Record<RecordTab, number>> = { appointments: 4, visits: 5, followUps: 6, sms: 7 };
+const LATER: Partial<Record<RecordTab, number>> = { visits: 5, followUps: 6, sms: 7 };
 
 // /staff/mothers/[motherId]?tab=…: one mother's record. Reads the session:
 // render inside <Suspense>.
@@ -45,7 +47,17 @@ export async function MotherRecordScreen({
   const tabParam = Array.isArray(query.tab) ? query.tab[0] : query.tab;
   const tab = RECORD_TABS.includes(tabParam as RecordTab) ? (tabParam as RecordTab) : "overview";
   const [{ t, locale }, puroks] = await Promise.all([getServerI18n(), getShownPuroks()]);
-  return <MotherRecordView t={t} locale={locale} mother={mother} tab={tab} puroks={puroks} today={manilaTodayISO()} />;
+  return (
+    <MotherRecordView
+      t={t}
+      locale={locale}
+      mother={mother}
+      tab={tab}
+      puroks={puroks}
+      today={manilaTodayISO()}
+      appointments={tab === "appointments" ? <MotherAppointmentsPanel motherId={mother.id} canBook={Boolean(mother.current)} /> : null}
+    />
+  );
 }
 
 // The page layout, without data loading (also used by the dev preview).
@@ -56,6 +68,7 @@ export function MotherRecordView({
   tab,
   puroks,
   today,
+  appointments,
 }: {
   t: Dictionary;
   locale: Locale;
@@ -63,6 +76,8 @@ export function MotherRecordView({
   tab: RecordTab;
   puroks: PurokOption[];
   today: string;
+  /** The Appointments tab's content (from the appointments feature). */
+  appointments?: ReactNode;
 }) {
   const r = t.mothers.record;
   const name = [mother.firstName, mother.middleName, mother.lastName].filter(Boolean).join(" ");
@@ -159,6 +174,8 @@ export function MotherRecordView({
       )}
 
       {tab === "pregnancy" && <PregnancyTab t={t} locale={locale} mother={mother} today={today} />}
+
+      {tab === "appointments" && appointments}
 
       {LATER[tab] && (
         <section className="flex flex-col items-center gap-3 rounded-3xl bg-white px-6 py-12 text-center shadow-[var(--shadow-soft)]">

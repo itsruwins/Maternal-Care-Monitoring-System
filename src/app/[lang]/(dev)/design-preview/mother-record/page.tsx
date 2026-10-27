@@ -3,7 +3,9 @@ import { notFound } from "next/navigation";
 import { MotherRecordView, RECORD_TABS, type RecordTab } from "@/features/mothers/components/mother-record-screen";
 import type { MotherRecord } from "@/features/mothers/types";
 import { StaffShell } from "@/features/shell/components/staff-shell";
+import { MotherAppointmentsPanelView } from "@/features/appointments/components/mother-appointments-panel";
 import { getServerI18n } from "@/i18n/server";
+import { SAMPLE_APPOINTMENTS, SAMPLE_SLOTS } from "../staff-appointments/sample";
 import { dueDateFromLmp } from "@/lib/utils/pregnancy";
 
 export const metadata = { title: "Mother record preview", robots: { index: false } };
@@ -63,6 +65,17 @@ async function Preview({ searchParams }: { searchParams: Promise<Record<string, 
         tab={tab}
         puroks={Array.from({ length: 10 }, (_, i) => ({ id: i + 1, name: `Purok ${i + 1}` }))}
         today="2026-10-27"
+        appointments={
+          <MotherAppointmentsPanelView
+            t={t}
+            locale={locale}
+            motherId={1}
+            canBook
+            items={[...SAMPLE_APPOINTMENTS.filter((item) => item.id !== 2), { ...SAMPLE_APPOINTMENTS[2], id: 9, status: "COMPLETED", at: "2026-10-01T01:00:00Z" }]}
+            slots={SAMPLE_SLOTS}
+            now="2026-10-27T00:00:00Z"
+          />
+        }
       />
     </StaffShell>
   );

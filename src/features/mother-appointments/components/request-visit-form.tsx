@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { DangerIcon, SpinnerIcon } from "@/components/icons";
@@ -9,16 +9,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useDictionary } from "@/i18n/dictionary-provider";
 import { format } from "@/i18n/format";
-import { formatSlotTime, isWeekday, SLOT_TIMES, slotKey, type SlotError } from "@/lib/appointments/slots";
+import { SlotPicker } from "@/components/shared/slot-picker";
+import { formatSlotTime, type SlotError } from "@/lib/appointments/slots";
 import { formatDate } from "@/lib/utils/pregnancy";
 import { cn } from "@/lib/utils/cn";
 import { requestVisit } from "../actions/my-appointments";
 import type { BookingData } from "../types";
-import { MonthCalendar, type DayState } from "./month-calendar";
 
-// Request a visit: service → day → open time → optional note. Days and times
-// that are taken, closed or out of range can't be picked; the database checks
-// again when she sends it.
+// Request a visit: service → day → open time (shared SlotPicker) → optional
+// note. The database checks every rule again when she sends it.
 export function RequestVisitForm({ data }: { data: BookingData }) {
   const { t, locale } = useDictionary();
   const n = t.myAppointments.new;
@@ -30,15 +29,7 @@ export function RequestVisitForm({ data }: { data: BookingData }) {
   const [error, setError] = useState<SlotError | "required" | null>(null);
   const [pending, startTransition] = useTransition();
 
-  const taken = useMemo(() => new Set(data.taken), [data.taken]);
-  const closed = useMemo(() => new Set(data.closedDays), [data.closedDays]);
-  const stateOf = (day: string): DayState => {
-    if (day < data.first || day > data.last || !isWeekday(day)) return "out";
-    if (closed.has(day)) return "closed";
-    return SLOT_TIMES.every((slot) => taken.has(slotKey(day, slot))) ? "full" : "open";
-  };
   const service = data.services.find((s) => s.id === serviceId);
-  const openTimes = date ? SLOT_TIMES.filter((slot) => !taken.has(slotKey(date, slot))) : [];
 
   const submit = () => {
     if (!serviceId || !date || !time) {
@@ -100,83 +91,22 @@ export function RequestVisitForm({ data }: { data: BookingData }) {
         </div>
       </fieldset>
 
-      <div className="grid gap-6 lg:grid-cols-2 lg:items-start">
-        {/* 2. Day */}
-        <section aria-labelledby="pick-day" className="rounded-3xl bg-white p-5 shadow-[var(--shadow-soft)] sm:p-7">
-          <h2 id="pick-day" className="mb-4 text-lg font-bold">
-            {n.date}
-          </h2>
-          <MonthCalendar
-            first={data.first}
-            last={data.last}
-            stateOf={stateOf}
-            selected={date}
-            onSelect={(day) => {
-              setDate(day);
-              setTime(null);
-            }}
-            locale={locale}
-            labels={{ prev: n.prevMonth, next: n.nextMonth, closed: n.closedDay }}
-          />
-          <p className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm text-ink-soft">
-            <span className="inline-flex items-center gap-2">
-              <span aria-hidden className="size-2.5 rounded-full bg-ink" />
-              {n.legendOpen}
-            </span>
-            <span className="inline-flex items-center gap-2">
-              <span aria-hidden className="size-2.5 rounded-full bg-ink-soft/30" />
-              {n.legendFull}
-            </span>
-          </p>
-        </section>
-
-        {/* 3. Time */}
-        <fieldset className="rounded-3xl bg-white p-5 shadow-[var(--shadow-soft)] sm:p-7">
-          <legend className="sr-only">{n.time}</legend>
-          <p aria-hidden className="mb-4 text-lg font-bold">
-            {n.time}
-          </p>
-          {!date ? (
-            <p className="text-ink-soft">{n.pickDateFirst}</p>
-          ) : openTimes.length === 0 ? (
-            <p className="text-ink-soft">{n.noTimes}</p>
-          ) : (
-            <>
-              <p className="mb-3 font-medium">{formatDate(date, locale)}</p>
-              <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
-                {SLOT_TIMES.map((slot) => {
-                  const isTaken = taken.has(slotKey(date, slot));
-                  const checked = slot === time;
-                  return (
-                    <label
-                      key={slot}
-                      className={cn(
-                        "tnum relative flex h-12 items-center justify-center rounded-full border text-[0.95rem] font-semibold transition-colors",
-                        isTaken && "cursor-not-allowed border-transparent bg-cream text-ink-soft/50 line-through",
-                        !isTaken && !checked && "cursor-pointer border-field text-ink hover:border-leaf hover:bg-mint/40",
-                        checked && "border-leaf bg-leaf text-white",
-                        "has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-leaf",
-                      )}
-                    >
-                      <input
-                        type="radio"
-                        name="time"
-                        value={slot}
-                        checked={checked}
-                        disabled={isTaken}
-                        onChange={() => setTime(slot)}
-                        className="sr-only"
-                      />
-                      {formatSlotTime(slot, locale)}
-                      {isTaken && <span className="sr-only"> ({n.taken})</span>}
-                    </label>
-                  );
-                })}
-              </div>
-            </>
-          )}
-        </fieldset>
-      </div>
+      <SlotPicker
+        first={data.first}
+        last={data.last}
+        closedDays={data.closedDays}
+        taken={data.taken}
+        date={date}
+        time={time}
+        onDate={(day) => {
+          setDate(day);
+          setTime(null);
+        }}
+        onTime={setTime}
+        dayHeading={n.date}
+        timeHeading={n.time}
+        idPrefix="request"
+      />
 
       {/* Note + send */}
       <section className="flex flex-col gap-5 rounded-3xl bg-white p-5 shadow-[var(--shadow-soft)] sm:p-7">

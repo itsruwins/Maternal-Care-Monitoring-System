@@ -509,6 +509,16 @@ Sample reminder (about 140 characters, one SMS):
 - Database error codes map to friendly messages (`appointmentErrors`).
 - Dev previews: `/design-preview/mother-appointments`, `/design-preview/request-visit`, `/design-preview/mother-today`.
 
+**Step 4 built (2026-10-27):** staff appointments (feature `features/appointments`). The calendar and time picker became one shared `components/shared/slot-picker.tsx` (mothers' request form, staff booking and "Other time" all use it).
+- **`/staff/appointments`** has three link-tab views (the Requests tab shows a red count):
+  - **Requests** (oldest first): **Confirm** (at the time she asked for), **Other time** (shared slot picker; she must accept, or it's confirmed right away if she has no login) and **Cancel** (optional reason), with remarks added under her note.
+  - **List:** filters for status, service, from and to; table from 1024px with the actions on one line, cards below; 20 per page (pages follow the requested time).
+  - **Calendar:** a month grid with booked counts and closed days, and the chosen day's appointments beside it.
+- **Each appointment** shows her name (links to her record), the service, a status chip ("New time sent" while she decides), her note and remarks, and the reminder line ("Reminder queued for Wed, Nov 4 · 8:00 AM", sent or failed).
+- **`/staff/appointments/new`:** find a mother with a current pregnancy (search by name or mobile, or `?mother=ID` from her record), then service, day (today up to 6 months ahead) and time, then remarks. It starts CONFIRMED and opens her record's Appointments tab.
+- **Mother record → Appointments tab:** Book, open appointments with actions, then past ones. The record page takes the panel as a slot, so the two features stay separate.
+- Dev previews: `/design-preview/staff-appointments` (`?view=list|calendar`), `/design-preview/book-appointment`, `/design-preview/mother-record?tab=appointments`.
+
 ## Phase 5 — Prenatal visits & services
 
 - **Record a visit:**

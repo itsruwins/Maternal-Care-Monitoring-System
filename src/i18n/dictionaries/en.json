@@ -924,6 +924,138 @@
       "required": "Choose a service, a day and a time."
     }
   },
+  "slotPicker": {
+    "day": "Day",
+    "time": "Time",
+    "pickDateFirst": "Choose a day to see open times.",
+    "noTimes": "No open times left that day. Please choose another day.",
+    "taken": "taken",
+    "closedDay": "Closed",
+    "legendOpen": "Open",
+    "legendFull": "Full or closed",
+    "prevMonth": "Previous month",
+    "nextMonth": "Next month"
+  },
+  "appointments": {
+    "title": "Appointments",
+    "intro": "Review requests, book visits and see who is coming.",
+    "book": "Book appointment",
+    "views": {
+      "queue": "Requests",
+      "list": "List",
+      "calendar": "Calendar"
+    },
+    "viewsLabel": "Appointment views",
+    "statuses": {
+      "REQUESTED": "Requested",
+      "CONFIRMED": "Confirmed",
+      "RESCHEDULED": "New time sent",
+      "COMPLETED": "Completed",
+      "MISSED": "Missed",
+      "CANCELLED": "Cancelled"
+    },
+    "queueEmpty": "No requests waiting. Nice work.",
+    "queueIntro": "Oldest first. Confirm the time she asked for, offer another time, or cancel.",
+    "asked": "Asked for",
+    "waitingSince": "Requested {date}",
+    "noteLabel": "Her note",
+    "remarks": "Remarks",
+    "openRecord": "Open record",
+    "confirm": "Confirm",
+    "confirmed": "Confirmed. The reminder is queued.",
+    "otherTime": "Other time",
+    "newTime": "New time",
+    "cancel": "Cancel",
+    "noLogin": "No login: a new time is confirmed right away.",
+    "awaitingMother": "Waiting for her to accept the new time.",
+    "reminder": {
+      "PENDING": "Reminder queued for {when}",
+      "SENT": "Reminder sent {when}",
+      "DELIVERED": "Reminder delivered {when}",
+      "FAILED": "Reminder failed to send",
+      "none": "No reminder"
+    },
+    "propose": {
+      "title": "Offer another time",
+      "subtitle": "She'll be asked to accept it. Mothers without a login are confirmed right away.",
+      "current": "Current time: {when}",
+      "remarkLabel": "Message for her (optional)",
+      "remarkHint": "For example: morning slots are full that day.",
+      "submit": "Send new time",
+      "submitNoLogin": "Confirm new time",
+      "saving": "Saving…",
+      "sent": "New time sent. She'll be asked to accept it.",
+      "confirmedNoLogin": "New time confirmed.",
+      "pick": "Choose a day and a time."
+    },
+    "cancelDialog": {
+      "title": "Cancel this appointment?",
+      "body": "The time is freed for others, and any unsent reminder is removed.",
+      "remarkLabel": "Reason (optional)",
+      "submit": "Cancel appointment",
+      "keep": "Keep it",
+      "done": "Appointment cancelled."
+    },
+    "list": {
+      "status": "Status",
+      "allStatuses": "All statuses",
+      "service": "Service",
+      "allServices": "All services",
+      "from": "From",
+      "to": "To",
+      "submit": "Show",
+      "clear": "Clear",
+      "results": "{count} appointments",
+      "resultsOne": "1 appointment",
+      "empty": "No appointments match these filters.",
+      "columns": {
+        "when": "Date and time",
+        "mother": "Mother",
+        "service": "Service",
+        "status": "Status",
+        "reminder": "Reminder"
+      },
+      "page": "Page {page} of {pages}",
+      "prev": "Previous",
+      "next": "Next"
+    },
+    "calendar": {
+      "booked": "{count} booked",
+      "bookedOne": "1 booked",
+      "closed": "Closed",
+      "dayEmpty": "Nothing booked this day.",
+      "prevMonth": "Previous month",
+      "nextMonth": "Next month",
+      "today": "Today"
+    },
+    "bookPage": {
+      "title": "Book an appointment",
+      "back": "Appointments",
+      "intro": "For a mother with a current pregnancy. It starts as confirmed and the reminder is queued.",
+      "mother": "1. Mother",
+      "searchLabel": "Find a mother",
+      "searchPlaceholder": "Name or mobile number",
+      "search": "Search",
+      "change": "Change",
+      "noMatches": "No mothers with a current pregnancy match.",
+      "pickMother": "Choose her from the results.",
+      "service": "2. Service",
+      "day": "3. Day",
+      "time": "4. Time",
+      "remarkLabel": "Remarks (optional)",
+      "submit": "Book appointment",
+      "submitting": "Booking…",
+      "done": "Booked for {when}. The reminder is queued.",
+      "required": "Choose a mother, a service, a day and a time.",
+      "week": "Week {weeks}"
+    },
+    "record": {
+      "empty": "No appointments yet.",
+      "book": "Book appointment",
+      "upcoming": "Upcoming",
+      "past": "Past"
+    }
+  },
   "profile": {
     "title": "Your profile",
     "details": {

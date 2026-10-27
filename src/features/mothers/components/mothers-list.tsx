@@ -1,4 +1,5 @@
-import { CheckCircleIcon, LocationIcon, PhoneIcon } from "@/components/icons";
+import Link from "next/link";
+import { CaretRightIcon, CheckCircleIcon, LocationIcon, PhoneIcon } from "@/components/icons";
 import { Pager } from "@/components/shared/pager";
 import type { Locale } from "@/i18n/config";
 import { format } from "@/i18n/format";
@@ -75,10 +76,12 @@ export function MothersList({
           </thead>
           <tbody className="divide-y divide-line">
             {items.map((item) => (
-              <tr key={item.id}>
+              <tr key={item.id} className="transition-colors hover:bg-milk">
                 <td className="px-5 py-3">
                   <span className="flex flex-col">
-                    <span className="font-semibold text-ink">{item.name}</span>
+                    <Link href={`/staff/mothers/${item.id}`} className="self-start font-semibold text-ink no-underline hover:text-leaf hover:underline">
+                      {item.name}
+                    </Link>
                     <span className="tnum text-sm text-ink-soft">{item.contactNumber}</span>
                     {/* Below 1280px the Login column folds in here. */}
                     <span className="mt-1 xl:hidden">{login(item)}</span>
@@ -97,9 +100,13 @@ export function MothersList({
       {/* Cards (phones) */}
       <ul className="flex flex-col gap-3 md:hidden">
         {items.map((item) => (
-          <li key={item.id} className="flex flex-col gap-3 rounded-2xl bg-white p-4 shadow-[var(--shadow-soft)]">
-            <span className="flex flex-col gap-1">
-              <span className="font-semibold text-ink">{item.name}</span>
+          <li key={item.id} className="relative flex flex-col gap-3 rounded-2xl bg-white p-4 shadow-[var(--shadow-soft)]">
+            <span className="flex flex-col gap-1 pr-7">
+              {/* The name link covers the whole card (one tab stop per mother). */}
+              <Link href={`/staff/mothers/${item.id}`} className="font-semibold text-ink no-underline after:absolute after:inset-0 after:rounded-2xl">
+                {item.name}
+              </Link>
+              <CaretRightIcon weight="bold" aria-hidden className="absolute top-4 right-4 size-5 text-ink-soft" />
               <span className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-ink-soft">
                 <span className="tnum inline-flex items-center gap-1.5">
                   <PhoneIcon aria-hidden className="size-4" />

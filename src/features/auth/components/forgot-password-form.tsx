@@ -11,6 +11,7 @@ import { InputIcon } from "@/components/ui/input-icon";
 import { useDictionary } from "@/i18n/dictionary-provider";
 import { requestPasswordReset } from "../actions/password";
 import type { ForgotPasswordState } from "../types";
+import { submitWithoutReset } from "@/lib/forms/submit-without-reset";
 
 export function ForgotPasswordForm() {
   const { t } = useDictionary();
@@ -33,7 +34,7 @@ export function ForgotPasswordForm() {
   }
 
   return (
-    <form action={formAction} noValidate className="flex flex-col gap-5">
+    <form action={formAction} onSubmit={submitWithoutReset(formAction)} noValidate className="flex flex-col gap-5">
       <FormField id="forgot-identifier" label={t.forgot.identifier} error={state.error ? t.forgot.required : null}>
         {(describedBy) => (
           <InputIcon icon={UserIcon}>

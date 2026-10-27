@@ -1,6 +1,6 @@
 "use client";
 
-import { startTransition, useActionState, useEffect, useRef, useState, type ComponentProps, type FormEvent, type ReactNode } from "react";
+import { useActionState, useEffect, useRef, useState, type ComponentProps, type ReactNode } from "react";
 import Link from "next/link";
 import {
   CallIcon,
@@ -23,6 +23,7 @@ import { Input } from "@/components/ui/input";
 import { InputIcon } from "@/components/ui/input-icon";
 import { useDictionary } from "@/i18n/dictionary-provider";
 import { format } from "@/i18n/format";
+import { submitWithoutReset } from "@/lib/forms/submit-without-reset";
 import type { PurokOption } from "@/lib/puroks/types";
 import { cn } from "@/lib/utils/cn";
 import { dueDateFromLmp, parseISODate } from "@/lib/utils/pregnancy";
@@ -53,13 +54,6 @@ function RegisterMotherForm({ puroks, today, onAnother }: { puroks: PurokOption[
     if (state.fieldErrors) formRef.current?.querySelector<HTMLElement>("[aria-invalid='true']")?.focus();
   }, [state]);
 
-  // Submit without React's automatic form reset, so a mistake doesn't clear
-  // everything she told us.
-  const submit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    startTransition(() => formAction(formData));
-  };
 
   const errors = state.fieldErrors ?? {};
   const err = (field: RegisterMotherField) => (errors[field] ? t.mothers.errors[errors[field]] : null);
@@ -100,10 +94,13 @@ function RegisterMotherForm({ puroks, today, onAnother }: { puroks: PurokOption[
           {done.username ? format(r.doneLogin, { username: done.username }) : r.doneNoLogin}
         </p>
         <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
+          <Button asChild className="w-full sm:w-auto">
+            <Link href={`/staff/mothers/${done.motherId}`}>{format(t.mothers.record.open, { name: done.name })}</Link>
+          </Button>
           <Button asChild variant="secondary" className="w-full sm:w-auto">
             <Link href="/staff/mothers">{r.doneBack}</Link>
           </Button>
-          <Button type="button" onClick={onAnother} className="w-full sm:w-auto">
+          <Button type="button" variant="ghost" onClick={onAnother} className="w-full sm:w-auto">
             {r.doneAnother}
           </Button>
         </div>
@@ -112,7 +109,7 @@ function RegisterMotherForm({ puroks, today, onAnother }: { puroks: PurokOption[
   }
 
   return (
-    <form ref={formRef} onSubmit={submit} noValidate className="flex flex-col gap-6">
+    <form ref={formRef} action={formAction} onSubmit={submitWithoutReset(formAction)} noValidate className="flex flex-col gap-6">
       <Section icon={ProfileIcon} tone="blush" title={r.sections.about}>
         {field("firstName", f.firstName, { autoComplete: "off" })}
         {field("middleName", f.middleName, { autoComplete: "off" })}

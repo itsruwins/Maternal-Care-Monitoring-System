@@ -14,6 +14,7 @@ import type { PurokOption } from "@/lib/puroks/types";
 import { changeMyEmail, changeMyPassword, updateMyDetails } from "../actions/update-profile";
 import type { DetailsField, PasswordField } from "../schemas";
 import type { MyProfile, ProfileErrorKey, ProfileFormState } from "../types";
+import { submitWithoutReset } from "@/lib/forms/submit-without-reset";
 
 function FormError({ error }: { error?: ProfileErrorKey }) {
   const { t } = useDictionary();
@@ -61,7 +62,7 @@ export function DetailsForm({ profile, puroks }: { profile: MyProfile; puroks: P
   );
 
   return (
-    <form action={formAction} noValidate className="flex flex-col gap-5">
+    <form action={formAction} onSubmit={submitWithoutReset(formAction)} noValidate className="flex flex-col gap-5">
       <div className="grid gap-5 sm:grid-cols-2">
         {text("firstName", f.firstName, d.firstName, { autoComplete: "given-name" })}
         {text("middleName", f.middleName, d.middleName, { autoComplete: "additional-name" })}
@@ -151,7 +152,7 @@ export function PasswordForm() {
   );
 
   return (
-    <form key={formKey} action={formAction} noValidate className="flex flex-col gap-5">
+    <form key={formKey} action={formAction} onSubmit={submitWithoutReset(formAction)} noValidate className="flex flex-col gap-5">
       {field("current", p.current, "current-password")}
       {field("password", p.next, "new-password", t.register.fields.passwordHint)}
       {field("confirm", p.confirm, "new-password")}
@@ -173,7 +174,7 @@ export function EmailForm({ email }: { email: string | null }) {
   const error = state.fieldErrors?.email;
 
   return (
-    <form action={formAction} noValidate className="flex flex-col gap-5">
+    <form action={formAction} onSubmit={submitWithoutReset(formAction)} noValidate className="flex flex-col gap-5">
       <p className="text-[0.95rem] leading-6 text-ink-soft">{email ? format(p.current, { email }) : p.none}</p>
       <FormField id="me-email" label={p.label} error={error ? t.profile.errors[error] : null}>
         {(describedBy) => (

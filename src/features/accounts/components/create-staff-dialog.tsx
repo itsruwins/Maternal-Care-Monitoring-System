@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils/cn";
 import { createStaffAccount } from "../actions/create-staff";
 import type { CreateStaffField, FormState } from "../types";
 import { StaffFields } from "./staff-fields";
+import { submitWithoutReset } from "@/lib/forms/submit-without-reset";
 
 // "New staff account": a dialog (bottom sheet on phones) with the account type,
 // username (also the temporary password), name, position, mobile and optional email.
@@ -54,7 +55,7 @@ export function CreateStaffDialog() {
           <DialogTitle>{c.title}</DialogTitle>
           <DialogDescription>{c.subtitle}</DialogDescription>
         </DialogHeader>
-        <form key={formKey} action={formAction} noValidate className="flex flex-col gap-5 px-6 pt-4 pb-6 sm:px-8 sm:pb-8">
+        <form key={formKey} action={formAction} onSubmit={submitWithoutReset(formAction)} noValidate className="flex flex-col gap-5 px-6 pt-4 pb-6 sm:px-8 sm:pb-8">
           {/* Account type */}
           <fieldset>
             <legend className="mb-2 text-sm font-medium">{c.role}</legend>

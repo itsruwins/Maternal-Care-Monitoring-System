@@ -11,6 +11,7 @@ import { useDictionary } from "@/i18n/dictionary-provider";
 import { format } from "@/i18n/format";
 import { login } from "../actions/login";
 import type { LoginState } from "../types";
+import { submitWithoutReset } from "@/lib/forms/submit-without-reset";
 
 // Username + password form. Used in the auth dialog and on /login.
 // onNavigate: close the dialog when a link leaves it. onSwitchToSignup: show
@@ -31,7 +32,7 @@ export function LoginForm({
     : null;
 
   return (
-    <form action={formAction} className="flex flex-col gap-5" noValidate>
+    <form action={formAction} onSubmit={submitWithoutReset(formAction)} className="flex flex-col gap-5" noValidate>
       <FormField
         id="login-username"
         label={t.auth.username}

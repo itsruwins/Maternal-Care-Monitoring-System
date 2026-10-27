@@ -13,6 +13,7 @@ import { format } from "@/i18n/format";
 import { saveActivityType } from "../actions/save-activity-type";
 import { MAX_REMINDER_DAYS, type ActivityTypeField } from "../schemas";
 import type { ActivityType, ActivityTypeFormState } from "../types";
+import { submitWithoutReset } from "@/lib/forms/submit-without-reset";
 
 // Add (no `activityType`) or edit an activity type in a dialog.
 export function ActivityTypeDialog({ activityType }: { activityType?: ActivityType }) {
@@ -57,7 +58,7 @@ export function ActivityTypeDialog({ activityType }: { activityType?: ActivityTy
           <DialogTitle>{editing ? d.editTitle : d.addTitle}</DialogTitle>
           <DialogDescription>{d.subtitle}</DialogDescription>
         </DialogHeader>
-        <form key={formKey} action={formAction} noValidate className="flex flex-col gap-5 px-6 pt-4 pb-6 sm:px-8 sm:pb-8">
+        <form key={formKey} action={formAction} onSubmit={submitWithoutReset(formAction)} noValidate className="flex flex-col gap-5 px-6 pt-4 pb-6 sm:px-8 sm:pb-8">
           <FormField id={id("name")} label={d.name} error={err("name")}>
             {(describedBy) => (
               <Input id={id("name")} name="name" defaultValue={activityType?.name} maxLength={80} aria-invalid={Boolean(err("name"))} aria-describedby={describedBy} />

@@ -391,7 +391,7 @@ Every create, update and reset runs on the server and checks the role first. Sta
 - **Filters:** purok (including "No purok yet", for mothers whose old typed purok couldn't be matched), due month (last month to 10 months ahead) and pregnancy ("Pregnant now" / "Not pregnant now"). The plan's three statuses became two, because every mother is registered with a pregnancy.
 - **Rows:** weeks pregnant (and trimester) from the LMP, or from the EDD when the LMP is unknown, counted in Manila time. Closed pregnancies show the last outcome and date. Each row also shows whether she can log in.
 - **Layout:** 20 per page; table from 768px, cards on phones. Paging is shared with the Accounts list (`components/shared/pager.tsx`).
-- Rows open her profile once step 4 is built. Dev preview: `/design-preview/mothers`.
+- Rows open her record (step 4). Dev preview: `/design-preview/mothers`.
 
 **Step 3 built (2026-10-27):** "Register a mother" on the registry opens `/staff/mothers/new`. The form has four cards (about her, address and emergency contact, current pregnancy, optional login).
 - **Due date:** fills in from the LMP until someone edits it.
@@ -401,6 +401,16 @@ Every create, update and reset runs on the server and checks the role first. Sta
 - **Kept input:** the form submits without React's automatic reset, so a mistake doesn't clear what was typed.
 - **Done screen:** shows who was registered and her temporary password, with "Register another".
 - Date and number rules shared with sign-up moved to `lib/validation/mother-rules.ts`. Dev preview: `/design-preview/register-mother`.
+
+**Form fix (2026-10-27):** React 19 cleared a form's fields every time it was submitted, even when the server only returned "fix this field". All 13 forms now use `lib/forms/submit-without-reset.ts`. The `action` prop stays, so a submit before the page has loaded is blocked instead of putting the fields in the address. Checked on the login page: the username stays after an error.
+
+**Step 4 built (2026-10-27):** a mother's record at `/staff/mothers/[id]`, opened from the registry rows or the registration done screen.
+- **Header:** name, age, mobile, purok, pregnancy chip, login status, and who registered her (or "signed up on the website").
+- **Tabs** are plain links (`?tab=`).
+- **Overview:** her editable details, plus a Login card: create a login (shared helper from step 3), or see her username, status, last login and email, with Reset password (back to her username) and Activate / Deactivate behind confirmations. These act only on the login linked to that mother record.
+- **Pregnancy:** the current pregnancy shows the trimester picture placeholder (step 5 replaces it), week, trimester, days to go (or overdue), due date, LMP and G/P, with Edit and Close (outcome, date, remarks; births become DELIVERED, the rest ENDED). Without one, "Start a new pregnancy". Past pregnancies can be added and edited (G/P as they were then; the outcome date can't be before the LMP or in the future, in Manila time).
+- **Appointments, Visits, Follow-ups, SMS log:** say which phase brings them.
+- Dev preview: `/design-preview/mother-record` (`?tab=pregnancy`, `?login=none`, `?current=none`).
 
 ## Phase 4 — Appointments
 

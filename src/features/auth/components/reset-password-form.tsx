@@ -11,6 +11,7 @@ import { InputIcon } from "@/components/ui/input-icon";
 import { useDictionary } from "@/i18n/dictionary-provider";
 import { updatePassword } from "../actions/password";
 import type { ResetPasswordState } from "../types";
+import { submitWithoutReset } from "@/lib/forms/submit-without-reset";
 
 export function ResetPasswordForm() {
   const { t } = useDictionary();
@@ -24,7 +25,7 @@ export function ResetPasswordForm() {
       : null;
 
   return (
-    <form action={formAction} noValidate className="flex flex-col gap-5">
+    <form action={formAction} onSubmit={submitWithoutReset(formAction)} noValidate className="flex flex-col gap-5">
       <FormField id="reset-password" label={t.reset.password} hint={t.register.fields.passwordHint} error={fieldError("password")}>
         {(describedBy) => (
           <InputIcon icon={LockIcon}>

@@ -12,6 +12,7 @@ import { useDictionary } from "@/i18n/dictionary-provider";
 import { format } from "@/i18n/format";
 import { savePurok } from "../actions/save-purok";
 import type { Purok, PurokFormState } from "../types";
+import { submitWithoutReset } from "@/lib/forms/submit-without-reset";
 
 // Add (no `purok`) or rename a purok in a dialog.
 export function PurokDialog({ purok }: { purok?: Purok }) {
@@ -56,7 +57,7 @@ export function PurokDialog({ purok }: { purok?: Purok }) {
           <DialogTitle>{editing ? d.renameTitle : d.addTitle}</DialogTitle>
           <DialogDescription>{d.subtitle}</DialogDescription>
         </DialogHeader>
-        <form key={formKey} action={formAction} noValidate className="flex flex-col gap-5 px-6 pt-4 pb-6 sm:px-8 sm:pb-8">
+        <form key={formKey} action={formAction} onSubmit={submitWithoutReset(formAction)} noValidate className="flex flex-col gap-5 px-6 pt-4 pb-6 sm:px-8 sm:pb-8">
           <FormField id={id} label={d.name} error={nameError}>
             {(describedBy) => (
               <Input

@@ -9,6 +9,7 @@ import { InputIcon } from "@/components/ui/input-icon";
 import { useDictionary } from "@/i18n/dictionary-provider";
 import { setNewPassword } from "../actions/password";
 import type { NewPasswordState } from "../types";
+import { submitWithoutReset } from "@/lib/forms/submit-without-reset";
 
 // First login with a default password: choose a new one to continue.
 export function NewPasswordForm() {
@@ -20,7 +21,7 @@ export function NewPasswordForm() {
     state.field === field && state.error ? n.errors[state.error] : null;
 
   return (
-    <form action={formAction} noValidate className="flex flex-col gap-5">
+    <form action={formAction} onSubmit={submitWithoutReset(formAction)} noValidate className="flex flex-col gap-5">
       <p className="flex items-start gap-2.5 rounded-xl bg-mint px-4 py-3 text-sm leading-5 text-leaf">
         <InfoIcon weight="fill" aria-hidden className="mt-px size-[1.125rem] shrink-0" />
         {n.note}

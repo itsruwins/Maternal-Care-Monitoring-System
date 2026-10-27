@@ -8,6 +8,7 @@ import { useDictionary } from "@/i18n/dictionary-provider";
 import { updateStaffProfile } from "../actions/manage-account";
 import type { FormState, StaffField } from "../types";
 import { StaffFields, type StaffDefaults } from "./staff-fields";
+import { submitWithoutReset } from "@/lib/forms/submit-without-reset";
 
 // Admin edits a staff member's name, position and mobile number.
 export function StaffProfileForm({ userId, defaults }: { userId: string; defaults: StaffDefaults }) {
@@ -20,7 +21,7 @@ export function StaffProfileForm({ userId, defaults }: { userId: string; default
   }, {});
 
   return (
-    <form action={formAction} noValidate className="flex flex-col gap-5">
+    <form action={formAction} onSubmit={submitWithoutReset(formAction)} noValidate className="flex flex-col gap-5">
       <StaffFields idPrefix="edit-staff" defaults={defaults} errors={state.fieldErrors} />
       {state.error && (
         <p role="alert" className="flex items-start gap-2.5 rounded-xl bg-blush px-4 py-3 text-sm leading-5 text-rose-deep">

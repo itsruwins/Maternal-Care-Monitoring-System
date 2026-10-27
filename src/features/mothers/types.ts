@@ -1,5 +1,5 @@
 import type { Dictionary } from "@/i18n/get-dictionary";
-import type { PregnancyOutcome } from "@/types/database";
+import type { AccountStatus, PregnancyOutcome, PregnancyStatus } from "@/types/database";
 import type { Trimester } from "@/lib/utils/pregnancy";
 
 export type MotherStatusFilter = "pregnant" | "notPregnant" | "";
@@ -39,3 +39,50 @@ export type FormState<Field extends string> = {
 
 /** What the registration form shows once she is registered. */
 export type RegisteredMother = { motherId: number; name: string; username: string | null };
+
+export type PregnancyRecord = {
+  id: number;
+  gravida: number;
+  para: number;
+  lmp: string | null;
+  edd: string | null;
+  status: PregnancyStatus;
+  outcome: PregnancyOutcome | null;
+  outcomeDate: string | null;
+  registrationDate: string;
+  remarks: string | null;
+};
+
+export type MotherLogin = {
+  userId: string;
+  username: string;
+  status: AccountStatus;
+  lastLoginAt: string | null;
+  mustChangePassword: boolean;
+  email: string | null;
+};
+
+export type MotherRecord = {
+  id: number;
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  dateOfBirth: string;
+  contactNumber: string;
+  purokId: number | null;
+  purokName: string | null;
+  street: string;
+  emergencyName: string;
+  emergencyNumber: string;
+  registrationDate: string;
+  /** The health worker who registered her at the center, if any. */
+  registeredBy: string | null;
+  /** She signed up on the website herself. */
+  selfSignup: boolean;
+  current: PregnancyRecord | null;
+  past: PregnancyRecord[];
+  login: MotherLogin | null;
+};
+
+/** Result of a one-click action (reset, activate, …). */
+export type MotherActionResult = { ok: true; username?: string } | { ok: false; error: MotherErrorKey };

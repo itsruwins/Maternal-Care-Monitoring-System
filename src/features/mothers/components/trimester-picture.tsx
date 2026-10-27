@@ -1,15 +1,21 @@
-import { FetusIcon } from "@/components/icons/fetus-icon";
+import Image from "next/image";
 import type { Trimester } from "@/lib/utils/pregnancy";
 import { cn } from "@/lib/utils/cn";
 
-const GLYPH: Record<Trimester, string> = { 1: "size-[52%]", 2: "size-[64%]", 3: "size-[76%]" };
-
-// The baby for the current trimester, on a soft blush circle. For now the
-// fetus glyph grows with the trimester; the approved pictures replace it (Phase 3, step 5).
-export function TrimesterPicture({ trimester, className }: { trimester: Trimester; className?: string }) {
+// The baby for the current trimester, a soft 3D picture in a circle (same
+// framing for all three, so the baby visibly grows). Decorative: the week and
+// trimester are always written next to it.
+export function TrimesterPicture({ trimester, className, priority }: { trimester: Trimester; className?: string; priority?: boolean }) {
   return (
-    <span aria-hidden className={cn("grid size-24 shrink-0 place-items-center rounded-full bg-blush text-rose-deep", className)}>
-      <FetusIcon className={GLYPH[trimester]} />
+    <span className={cn("relative block size-24 shrink-0 overflow-hidden rounded-full bg-[#f6e2db]", className)}>
+      <Image
+        src={`/fetus/trimester-${trimester}.webp`}
+        alt=""
+        fill
+        sizes="(min-width: 640px) 224px, 160px"
+        priority={priority}
+        className="object-cover"
+      />
     </span>
   );
 }

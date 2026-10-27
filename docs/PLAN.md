@@ -412,6 +412,8 @@ Every create, update and reset runs on the server and checks the role first. Sta
 - **Appointments, Visits, Follow-ups, SMS log:** say which phase brings them.
 - Dev preview: `/design-preview/mother-record` (`?tab=pregnancy`, `?login=none`, `?current=none`).
 
+**Step 5 done (2026-10-27):** you generated the three pictures from my prompts (originals in `Files/`). All three are cropped with the same 1100px window, so the baby visibly grows, and saved as 640px WebP (`public/fetus/trimester-1/2/3.webp`, 5–8 KB each). `TrimesterPicture` shows them in a circle (decorative; the week and trimester are always written beside it). Used on the staff Pregnancy tab now, and on the mother home in step 6. Credits in `docs/assets.md`. Dev preview: `/design-preview/mother-record?tab=pregnancy&lmp=YYYY-MM-DD` to see each trimester.
+
 ## Phase 4 — Appointments
 
 - **Mother:** request an appointment (activity type, preferred date and time) → REQUESTED; see status updates; cancel her own request.

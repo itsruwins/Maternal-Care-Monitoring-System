@@ -1,11 +1,36 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { CalendarIcon, CaretLeftIcon, CaretRightIcon, CloudSunIcon, SunIcon, type Icon } from "@/components/icons";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Fragment,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
+import {
+  CalendarIcon,
+  CaretLeftIcon,
+  CaretRightIcon,
+  CloudSunIcon,
+  SunIcon,
+  type Icon,
+} from "@/components/icons";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { useDictionary } from "@/i18n/dictionary-provider";
 import { format } from "@/i18n/format";
-import { formatSlotTime, isWeekday, SLOT_TIMES, slotKey } from "@/lib/appointments/slots";
+import {
+  formatSlotTime,
+  isWeekday,
+  SLOT_TIMES,
+  slotKey,
+} from "@/lib/appointments/slots";
 import { addDays, formatDate, parseISODate } from "@/lib/utils/pregnancy";
 import { cn } from "@/lib/utils/cn";
 import { MonthCalendar, type DayState } from "./month-calendar";
@@ -54,7 +79,8 @@ export function SlotPicker({
   const tag = locale === "fil" ? "fil-PH" : "en-PH";
   const takenSet = useMemo(() => new Set(taken), [taken]);
   const closedSet = useMemo(() => new Set(closedDays), [closedDays]);
-  const openCount = (day: string) => SLOT_TIMES.filter((slot) => !takenSet.has(slotKey(day, slot))).length;
+  const openCount = (day: string) =>
+    SLOT_TIMES.filter((slot) => !takenSet.has(slotKey(day, slot))).length;
   const stateOf = (day: string): DayState => {
     if (day < first || day > last || !isWeekday(day)) return "out";
     if (closedSet.has(day)) return "closed";
@@ -64,7 +90,8 @@ export function SlotPicker({
   // Weekdays in the window (weekends are always closed, so they're left out).
   const days = useMemo(() => {
     const list: string[] = [];
-    for (let day = first; day <= last; day = addDays(day, 1)!) if (isWeekday(day)) list.push(day);
+    for (let day = first; day <= last; day = addDays(day, 1)!)
+      if (isWeekday(day)) list.push(day);
     return list;
   }, [first, last]);
 
@@ -72,14 +99,53 @@ export function SlotPicker({
   const strip = useRef<HTMLOListElement>(null);
   useEffect(() => {
     if (!date) return;
-    strip.current?.querySelector<HTMLElement>(`[data-day="${date}"]`)?.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
+    strip.current
+      ?.querySelector<HTMLElement>(`[data-day="${date}"]`)
+      ?.scrollIntoView({
+        inline: "center",
+        block: "nearest",
+        behavior: "smooth",
+      });
   }, [date]);
-  const scrollBy = (direction: number) => strip.current?.scrollBy({ left: direction * strip.current.clientWidth * 0.8, behavior: "smooth" });
+  const scrollBy = (direction: number) =>
+    strip.current?.scrollBy({
+      left: direction * strip.current.clientWidth * 0.8,
+      behavior: "smooth",
+    });
+  // The header names the month of the first day in view.
+  const [visibleDay, setVisibleDay] = useState(date ?? days[0] ?? first);
+  const onStripScroll = () => {
+    const list = strip.current;
+    if (!list) return;
+    const firstInView = [
+      ...list.querySelectorAll<HTMLElement>("[data-day]"),
+    ].find((el) => el.offsetLeft + el.offsetWidth > list.scrollLeft + 8);
+    if (
+      firstInView?.dataset.day &&
+      firstInView.dataset.day.slice(0, 7) !== visibleDay.slice(0, 7)
+    )
+      setVisibleDay(firstInView.dataset.day);
+  };
 
-  const weekday = new Intl.DateTimeFormat(tag, { timeZone: "UTC", weekday: "short" });
-  const monthShort = new Intl.DateTimeFormat(tag, { timeZone: "UTC", month: "short" });
-  const fullDate = new Intl.DateTimeFormat(tag, { timeZone: "UTC", weekday: "long", month: "long", day: "numeric" });
-  const monthTitle = new Intl.DateTimeFormat(tag, { timeZone: "UTC", month: "long", year: "numeric" }).format(parseISODate(date ?? first)!);
+  const weekday = new Intl.DateTimeFormat(tag, {
+    timeZone: "UTC",
+    weekday: "short",
+  });
+  const monthShort = new Intl.DateTimeFormat(tag, {
+    timeZone: "UTC",
+    month: "short",
+  });
+  const fullDate = new Intl.DateTimeFormat(tag, {
+    timeZone: "UTC",
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  });
+  const monthTitle = new Intl.DateTimeFormat(tag, {
+    timeZone: "UTC",
+    month: "long",
+    year: "numeric",
+  }).format(parseISODate(visibleDay)!);
 
   const dayPart = (
     <>
@@ -88,7 +154,7 @@ export function SlotPicker({
         <button
           type="button"
           onClick={() => setMonthOpen(true)}
-          className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold text-leaf transition-colors hover:bg-mint"
+          className="inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold whitespace-nowrap text-leaf transition-colors hover:bg-mint"
         >
           <CalendarIcon aria-hidden className="size-4" />
           {p.seeMonth}
@@ -105,6 +171,7 @@ export function SlotPicker({
         </button>
         <ol
           ref={strip}
+          onScroll={onStripScroll}
           aria-label={dayHeading}
           className="-mx-1 flex snap-x snap-mandatory gap-2 overflow-x-auto px-1 py-1 [scrollbar-width:none] sm:mx-3 [&::-webkit-scrollbar]:hidden"
         >
@@ -112,40 +179,75 @@ export function SlotPicker({
             const state = stateOf(day);
             const isSelected = day === date;
             const count = state === "open" ? openCount(day) : 0;
-            const showMonth = index === 0 || day.slice(5, 7) !== days[index - 1].slice(5, 7);
-            const status = state === "closed" ? p.closedDay : state === "full" ? p.full : format(p.openCount, { count });
+            const newMonth =
+              index > 0 && day.slice(5, 7) !== days[index - 1].slice(5, 7);
+            const status =
+              state === "closed"
+                ? p.closedDay
+                : state === "full"
+                  ? p.full
+                  : format(p.openCount, { count });
             return (
-              <li key={day} data-day={day} className="snap-start">
-                <button
-                  type="button"
-                  disabled={state !== "open"}
-                  aria-pressed={isSelected}
-                  aria-label={`${fullDate.format(parseISODate(day)!)}, ${status}`}
-                  onClick={() => onDate(day)}
-                  className={cn(
-                    "flex h-[5.75rem] w-[4.25rem] flex-col items-center justify-between rounded-2xl border px-1 py-2 transition-colors",
-                    isSelected && "border-leaf bg-leaf text-white shadow-[var(--shadow-soft)]",
-                    !isSelected && state === "open" && "border-line bg-white text-ink hover:border-leaf hover:bg-mint/40",
-                    state !== "open" && "border-transparent bg-cream/70 text-ink-soft/50",
-                  )}
-                >
-                  <span aria-hidden className={cn("text-caption font-medium", isSelected ? "text-white/85" : "text-ink-soft")}>
-                    {showMonth ? monthShort.format(parseISODate(day)!) : weekday.format(parseISODate(day)!)}
-                  </span>
-                  <span aria-hidden className="tnum text-xl leading-none font-bold">
-                    {Number(day.slice(8))}
-                  </span>
-                  <span
-                    aria-hidden
+              <Fragment key={day}>
+                {/* A new month gets a small label between the cards. */}
+                {newMonth && (
+                  <li aria-hidden className="flex shrink-0 items-center">
+                    <span className="rounded-full bg-mint px-2 py-1 text-caption font-semibold text-leaf">
+                      {monthShort.format(parseISODate(day)!)}
+                    </span>
+                  </li>
+                )}
+                <li data-day={day} className="snap-start">
+                  <button
+                    type="button"
+                    disabled={state !== "open"}
+                    aria-pressed={isSelected}
+                    aria-label={`${fullDate.format(parseISODate(day)!)}, ${status}`}
+                    onClick={() => onDate(day)}
                     className={cn(
-                      "text-[0.7rem] leading-none font-semibold whitespace-nowrap",
-                      isSelected ? "text-white" : state === "open" ? "text-leaf" : state === "closed" ? "text-rose-deep/70" : "text-ink-soft/60",
+                      "flex h-24 w-[4.75rem] flex-col items-center justify-between rounded-2xl border px-1 py-2.5 transition-colors",
+                      isSelected &&
+                        "border-leaf bg-leaf text-white shadow-[var(--shadow-soft)]",
+                      !isSelected &&
+                        state === "open" &&
+                        "border-line bg-white text-ink hover:border-leaf hover:bg-mint/40",
+                      state !== "open" &&
+                        "border-transparent bg-cream/70 text-ink-soft/50",
                     )}
                   >
-                    {showMonth && state === "open" ? weekday.format(parseISODate(day)!) : status}
-                  </span>
-                </button>
-              </li>
+                    <span
+                      aria-hidden
+                      className={cn(
+                        "text-caption font-medium",
+                        isSelected ? "text-white/85" : "text-ink-soft",
+                      )}
+                    >
+                      {weekday.format(parseISODate(day)!)}
+                    </span>
+                    <span
+                      aria-hidden
+                      className="tnum text-xl leading-none font-bold"
+                    >
+                      {Number(day.slice(8))}
+                    </span>
+                    <span
+                      aria-hidden
+                      className={cn(
+                        "text-caption leading-none font-semibold whitespace-nowrap",
+                        isSelected
+                          ? "text-white"
+                          : state === "open"
+                            ? "text-leaf"
+                            : state === "closed"
+                              ? "text-rose-deep/70"
+                              : "text-ink-soft/60",
+                      )}
+                    >
+                      {status}
+                    </span>
+                  </button>
+                </li>
+              </Fragment>
             );
           })}
         </ol>
@@ -177,7 +279,12 @@ export function SlotPicker({
                 setMonthOpen(false);
               }}
               locale={locale}
-              labels={{ prev: p.prevMonth, next: p.nextMonth, closed: p.closedDay, full: p.full }}
+              labels={{
+                prev: p.prevMonth,
+                next: p.nextMonth,
+                closed: p.closedDay,
+                full: p.full,
+              }}
             />
           </div>
         </DialogContent>
@@ -200,13 +307,25 @@ export function SlotPicker({
               key={slot}
               className={cn(
                 "tnum relative flex h-12 items-center justify-center rounded-2xl border text-[0.95rem] font-semibold transition-colors",
-                isTaken && "cursor-not-allowed border-transparent bg-cream/70 text-ink-soft/40 line-through decoration-1",
-                !isTaken && !checked && "cursor-pointer border-line bg-white text-ink hover:border-leaf hover:bg-mint/40",
-                checked && "border-leaf bg-leaf text-white shadow-[var(--shadow-soft)]",
+                isTaken &&
+                  "cursor-not-allowed border-transparent bg-cream/70 text-ink-soft/40 line-through decoration-1",
+                !isTaken &&
+                  !checked &&
+                  "cursor-pointer border-line bg-white text-ink hover:border-leaf hover:bg-mint/40",
+                checked &&
+                  "border-leaf bg-leaf text-white shadow-[var(--shadow-soft)]",
                 "has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-leaf",
               )}
             >
-              <input type="radio" name={`${idPrefix}-time`} value={slot} checked={checked} disabled={isTaken} onChange={() => onTime(slot)} className="sr-only" />
+              <input
+                type="radio"
+                name={`${idPrefix}-time`}
+                value={slot}
+                checked={checked}
+                disabled={isTaken}
+                onChange={() => onTime(slot)}
+                className="sr-only"
+              />
               {formatSlotTime(slot, locale)}
               {isTaken && <span className="sr-only"> ({p.taken})</span>}
             </label>
@@ -230,19 +349,46 @@ export function SlotPicker({
 
   return (
     <div className="flex flex-col gap-6">
-      <Part id={`${idPrefix}-day`} heading={dayHeading} plain={variant === "plain"}>
+      <Part
+        id={`${idPrefix}-day`}
+        heading={dayHeading}
+        plain={variant === "plain"}
+      >
         {dayPart}
       </Part>
-      <Part id={`${idPrefix}-time`} heading={timeHeading} plain={variant === "plain"} fieldset>
+      <Part
+        id={`${idPrefix}-time`}
+        heading={timeHeading}
+        plain={variant === "plain"}
+        fieldset
+      >
         {timePart}
       </Part>
     </div>
   );
 }
 
-function Part({ id, heading, plain, fieldset, children }: { id: string; heading: string; plain?: boolean; fieldset?: boolean; children: ReactNode }) {
-  const className = plain ? "min-w-0" : "min-w-0 rounded-3xl bg-white p-5 shadow-[var(--shadow-soft)] sm:p-7";
-  const title = <p className={cn("mb-4 font-bold", plain ? "text-base" : "text-lg")}>{heading}</p>;
+function Part({
+  id,
+  heading,
+  plain,
+  fieldset,
+  children,
+}: {
+  id: string;
+  heading: string;
+  plain?: boolean;
+  fieldset?: boolean;
+  children: ReactNode;
+}) {
+  const className = plain
+    ? "min-w-0"
+    : "min-w-0 rounded-3xl bg-white p-5 shadow-[var(--shadow-soft)] sm:p-7";
+  const title = (
+    <p className={cn("mb-4 font-bold", plain ? "text-base" : "text-lg")}>
+      {heading}
+    </p>
+  );
   return fieldset ? (
     <fieldset className={className}>
       <legend className="sr-only">{heading}</legend>

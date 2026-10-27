@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-27T12:00:00+00:00",
+  "generatedAt": "2026-10-27T18:00:00+00:00",
   "title": "Design System: Taysan MaternaCare",
   "extensions": {
     "colorMeta": {
@@ -336,6 +336,16 @@
         "name": "side-sheet",
         "value": "slide-in-from-left 300ms ease-out-expo; out 200ms",
         "purpose": "Staff menu sheet below 1024px."
+      },
+      {
+        "name": "tab-open",
+        "value": "grid-template-columns 0fr → 1fr with opacity and margin, 420ms cubic-bezier(0.32, 0.72, 0, 1); off under reduced motion",
+        "purpose": "The mother bottom nav: the current tab opens into a mint pill with its name."
+      },
+      {
+        "name": "tile-lift",
+        "value": "translateY(-2px) with soft shadow and leaf border on hover",
+        "purpose": "Service tiles (and Today insight cards) lift a little on hover."
       }
     ],
     "breakpoints": [
@@ -442,9 +452,9 @@
       "name": "Mother Bottom Nav",
       "kind": "nav",
       "refersTo": "bottom-nav",
-      "description": "Floating white pill on every screen size; current tab a mint pill with a filled icon and caption label.",
-      "html": "<nav class=\"ds-bnav\"><a class=\"ds-bnav-item\" aria-current=\"page\" href=\"#\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 256 256\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M224 115.55V208a16 16 0 0 1-16 16h-40a16 16 0 0 1-16-16v-40a8 8 0 0 0-8-8h-32a8 8 0 0 0-8 8v40a16 16 0 0 1-16 16H48a16 16 0 0 1-16-16v-92.45a16 16 0 0 1 5.17-11.78l80-75.48.11-.11a16 16 0 0 1 21.53 0 1.14 1.14 0 0 0 .11.11l80 75.48a16 16 0 0 1 5.08 11.78z\"/></svg>Home</a><a class=\"ds-bnav-item\" href=\"#\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 256 256\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"16\" aria-hidden=\"true\"><circle cx=\"128\" cy=\"128\" r=\"88\"/></svg>Appointments</a><a class=\"ds-bnav-item\" href=\"#\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 256 256\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"16\" aria-hidden=\"true\"><circle cx=\"128\" cy=\"128\" r=\"88\"/></svg>Visits</a><a class=\"ds-bnav-item\" href=\"#\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 256 256\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"16\" aria-hidden=\"true\"><circle cx=\"128\" cy=\"128\" r=\"88\"/></svg>Profile</a></nav>",
-      "css": ".ds-bnav{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;max-width:448px;padding:6px;border:1px solid #e6e0d4;border-radius:9999px;background:#fff;box-shadow:0 4px 10px rgb(31 45 39/.05),0 28px 60px -18px rgb(31 45 39/.28);font-family:Inter,ui-sans-serif,system-ui,sans-serif}.ds-bnav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;height:56px;border-radius:9999px;color:#56665d;font-size:.75rem;line-height:1rem;font-weight:500;text-decoration:none;transition:background-color .2s,color .2s}.ds-bnav-item:hover{background:#f3efe3;color:#1f2d27}.ds-bnav-item[aria-current=page]{background:#e3eae4;color:#3e5a4d;font-weight:600}.ds-bnav-item:focus-visible{outline:2px solid #3e5a4d;outline-offset:2px}"
+      "description": "Snug floating white pill on every screen size; icon-only tabs, the current one opens into a mint pill with a filled icon and its name (grid column 0fr to 1fr, 420ms).",
+      "html": "<nav class=\"ds-bnav\"><a class=\"ds-bnav-item\" aria-current=\"page\" href=\"#\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 256 256\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M224 115.55V208a16 16 0 0 1-16 16h-40a16 16 0 0 1-16-16v-40a8 8 0 0 0-8-8h-32a8 8 0 0 0-8 8v40a16 16 0 0 1-16 16H48a16 16 0 0 1-16-16v-92.45a16 16 0 0 1 5.17-11.78l80-75.48.11-.11a16 16 0 0 1 21.53 0 1.14 1.14 0 0 0 .11.11l80 75.48a16 16 0 0 1 5.08 11.78z\"/></svg><span class=\"ds-bnav-name\"><span>Home</span></span></a><a class=\"ds-bnav-item\" href=\"#\" aria-label=\"Appointments\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 256 256\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"16\" aria-hidden=\"true\"><circle cx=\"128\" cy=\"128\" r=\"88\"/></svg><span class=\"ds-bnav-name\"><span>Appointments</span></span></a><a class=\"ds-bnav-item\" href=\"#\" aria-label=\"Visits\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 256 256\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"16\" aria-hidden=\"true\"><circle cx=\"128\" cy=\"128\" r=\"88\"/></svg><span class=\"ds-bnav-name\"><span>Visits</span></span></a><a class=\"ds-bnav-item\" href=\"#\" aria-label=\"Profile\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 256 256\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"16\" aria-hidden=\"true\"><circle cx=\"128\" cy=\"128\" r=\"88\"/></svg><span class=\"ds-bnav-name\"><span>Profile</span></span></a></nav>",
+      "css": ".ds-bnav{display:inline-flex;align-items:center;gap:4px;width:max-content;max-width:calc(100vw - 2rem);padding:6px;border:1px solid #e6e0d4;border-radius:9999px;background:rgb(255 255 255/.95);box-shadow:0 4px 10px rgb(31 45 39/.05),0 28px 60px -18px rgb(31 45 39/.28);font-family:Inter,ui-sans-serif,system-ui,sans-serif}.ds-bnav-item{display:flex;align-items:center;height:48px;padding:0 14px;border-radius:9999px;color:#56665d;font-size:.95rem;font-weight:500;text-decoration:none;transition:background-color 420ms cubic-bezier(0.32,0.72,0,1),color 420ms cubic-bezier(0.32,0.72,0,1),padding 420ms cubic-bezier(0.32,0.72,0,1)}.ds-bnav-item:hover{background:#f3efe3;color:#1f2d27}.ds-bnav-item[aria-current=page]{background:#e3eae4;color:#3e5a4d;font-weight:600;padding-right:18px}.ds-bnav-item:focus-visible{outline:2px solid #3e5a4d;outline-offset:2px}.ds-bnav-name{display:grid;grid-template-columns:0fr;opacity:0;margin-left:0;transition:grid-template-columns 420ms cubic-bezier(0.32,0.72,0,1),opacity 420ms cubic-bezier(0.32,0.72,0,1),margin 420ms cubic-bezier(0.32,0.72,0,1)}.ds-bnav-name>span{overflow:hidden;white-space:nowrap}.ds-bnav-item[aria-current=page] .ds-bnav-name{grid-template-columns:1fr;opacity:1;margin-left:8px}@media (prefers-reduced-motion:reduce){.ds-bnav-item,.ds-bnav-name{transition:none}}"
     },
     {
       "name": "Role and Status Badges",
@@ -477,11 +487,35 @@
       "description": "Today's three insight cards as whole-card links: white, mint and blush tiles, title top, clamped body, icon circle bottom.",
       "html": "<div class=\"ds-insights\"><a class=\"ds-insight\" href=\"#\"><strong>Next visit</strong><span>None booked yet</span><i class=\"ds-dot ds-dot--leaf\"></i></a><a class=\"ds-insight ds-insight--mint\" href=\"#\"><strong>Tip of the week</strong><span>Get your tetanus vaccine on time. Ask the midwife when it's due.</span><i class=\"ds-dot ds-dot--fern\"></i></a><a class=\"ds-insight ds-insight--blush\" href=\"#\"><strong>Danger signs</strong><span>Know when to get help</span><i class=\"ds-dot ds-dot--white\"></i></a></div>",
       "css": ".ds-insights{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;max-width:480px;font-family:Inter,ui-sans-serif,system-ui,sans-serif}.ds-insight{display:flex;flex-direction:column;justify-content:space-between;gap:12px;min-height:160px;padding:14px;border-radius:20px;background:#fff;box-shadow:0 1px 2px rgb(31 45 39 / 0.04),0 4px 14px -4px rgb(31 45 39 / 0.08);color:#1f2d27;text-decoration:none;transition:transform .2s cubic-bezier(0.16,1,0.3,1)}.ds-insight:hover{transform:translateY(-2px)}.ds-insight:focus-visible{outline:2px solid #3e5a4d;outline-offset:4px}.ds-insight strong{font-size:0.95rem;line-height:20px;font-weight:600}.ds-insight span{font-size:14px;color:#56665d;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;flex:1}.ds-insight--mint{background:#e3eae4;box-shadow:none}.ds-insight--blush{background:#f6e6e1;box-shadow:none}.ds-dot{display:block;width:36px;height:36px;border-radius:9999px}.ds-dot--leaf{background:#3e5a4d}.ds-dot--fern{background:#769382}.ds-dot--white{background:#fff}"
+    },
+    {
+      "name": "Service Tiles",
+      "kind": "custom",
+      "refersTo": "service-tile",
+      "description": "First booking step: white 36px tiles with the client's people illustration and the name only; two per row on phones, lift with a leaf border on hover.",
+      "html": "<ul class=\"ds-tiles\"><li><button class=\"ds-tile\" type=\"button\"><svg viewBox=\"0 0 100 100\" aria-hidden=\"true\"><ellipse cx=\"50\" cy=\"62\" rx=\"40\" ry=\"30\" fill=\"#e3eae4\"/><circle cx=\"40\" cy=\"38\" r=\"10\" fill=\"#d9a5a0\"/><path d=\"M24 80c2-18 10-28 16-28s14 10 16 28z\" fill=\"#769382\"/><circle cx=\"64\" cy=\"44\" r=\"8\" fill=\"#e8ddc9\"/><path d=\"M52 80c2-14 7-22 12-22s10 8 12 22z\" fill=\"#3e5a4d\"/></svg><span>Prenatal Checkup</span></button></li><li><button class=\"ds-tile\" type=\"button\"><svg viewBox=\"0 0 100 100\" aria-hidden=\"true\"><ellipse cx=\"50\" cy=\"62\" rx=\"40\" ry=\"30\" fill=\"#e3eae4\"/><circle cx=\"40\" cy=\"38\" r=\"10\" fill=\"#d9a5a0\"/><path d=\"M24 80c2-18 10-28 16-28s14 10 16 28z\" fill=\"#769382\"/><circle cx=\"64\" cy=\"44\" r=\"8\" fill=\"#e8ddc9\"/><path d=\"M52 80c2-14 7-22 12-22s10 8 12 22z\" fill=\"#3e5a4d\"/></svg><span>Tetanus Toxoid Vaccination</span></button></li></ul>",
+      "css": ".ds-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;max-width:420px;margin:0;padding:0;list-style:none;font-family:Inter,ui-sans-serif,system-ui,sans-serif}.ds-tile{display:flex;flex-direction:column;align-items:center;gap:8px;width:100%;height:100%;padding:16px 12px 20px;border:1px solid #e6e0d4;border-radius:36px;background:#fff;color:#1f2d27;font:inherit;font-size:16px;line-height:24px;font-weight:700;text-align:center;text-wrap:balance;cursor:pointer;transition:transform .2s cubic-bezier(0.16,1,0.3,1),border-color .2s,box-shadow .2s}.ds-tile svg{width:100%;max-width:208px;aspect-ratio:1}.ds-tile:hover{transform:translateY(-2px);border-color:#3e5a4d;box-shadow:0 1px 2px rgb(31 45 39 / 0.04),0 4px 14px -4px rgb(31 45 39 / 0.08)}.ds-tile:focus-visible{outline:2px solid #3e5a4d;outline-offset:2px}"
+    },
+    {
+      "name": "Slot Picker",
+      "kind": "custom",
+      "refersTo": "slot-day-card",
+      "description": "Day strip of weekday cards (weekday / date / N open, Full, Closed) with a mint month label at a month change, then Morning / Afternoon time chips; the pick is solid leaf, unavailable fades on cream.",
+      "html": "<div class=\"ds-slots\"><ol class=\"ds-days\"><li><button class=\"ds-day\" type=\"button\"><small>Fri</small><b>30</b><em>12 open</em></button></li><li class=\"ds-month\"><span>Nov</span></li><li><button class=\"ds-day\" type=\"button\" aria-pressed=\"true\"><small>Thu</small><b>5</b><em>9 open</em></button></li><li><button class=\"ds-day\" type=\"button\" disabled><small>Fri</small><b>6</b><em>Full</em></button></li></ol><p class=\"ds-group\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 256 256\" aria-hidden=\"true\"><circle cx=\"128\" cy=\"128\" r=\"56\" fill=\"#769382\" opacity=\".35\"/><circle cx=\"128\" cy=\"128\" r=\"56\" fill=\"none\" stroke=\"#769382\" stroke-width=\"16\"/></svg>Morning</p><div class=\"ds-times\"><label class=\"ds-time\"><input type=\"radio\" name=\"t\">8:00 AM</label><label class=\"ds-time ds-time--taken\"><input type=\"radio\" name=\"t\" disabled>9:00 AM</label><label class=\"ds-time\"><input type=\"radio\" name=\"t\" checked>10:00 AM</label></div></div>",
+      "css": ".ds-slots{display:flex;flex-direction:column;gap:12px;max-width:360px;font-family:Inter,ui-sans-serif,system-ui,sans-serif}.ds-days{display:flex;gap:8px;margin:0;padding:4px;list-style:none;overflow-x:auto}.ds-day{display:flex;flex-direction:column;align-items:center;justify-content:space-between;width:76px;height:96px;padding:10px 4px;border:1px solid #e6e0d4;border-radius:28px;background:#fff;color:#1f2d27;font:inherit;cursor:pointer;transition:background-color .2s,border-color .2s}.ds-day small{font-size:12px;line-height:16px;font-weight:500;color:#56665d}.ds-day b{font-size:20px;line-height:1;font-weight:700;font-variant-numeric:tabular-nums}.ds-day em{font-style:normal;font-size:12px;line-height:1;font-weight:600;color:#3e5a4d;white-space:nowrap}.ds-day:hover:not(:disabled){border-color:#3e5a4d;background:rgb(227 234 228/.4)}.ds-day[aria-pressed=true]{background:#3e5a4d;border-color:#3e5a4d;color:#fff;box-shadow:0 1px 2px rgb(31 45 39 / 0.04),0 4px 14px -4px rgb(31 45 39 / 0.08)}.ds-day[aria-pressed=true] small{color:rgb(255 255 255/.85)}.ds-day[aria-pressed=true] em{color:#fff}.ds-day:disabled{border-color:transparent;background:rgb(243 239 227/.7);color:rgb(86 102 93/.5);cursor:not-allowed}.ds-day:disabled em{color:rgb(86 102 93/.6)}.ds-day:focus-visible{outline:2px solid #3e5a4d;outline-offset:2px}.ds-month{display:flex;align-items:center}.ds-month span{padding:4px 8px;border-radius:9999px;background:#e3eae4;color:#3e5a4d;font-size:12px;line-height:16px;font-weight:600}.ds-group{display:flex;align-items:center;gap:8px;margin:0;font-size:14px;font-weight:600;color:#56665d}.ds-times{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.ds-time{position:relative;display:flex;align-items:center;justify-content:center;height:48px;border:1px solid #e6e0d4;border-radius:28px;background:#fff;color:#1f2d27;font-size:.95rem;font-weight:600;font-variant-numeric:tabular-nums;cursor:pointer;transition:background-color .2s,border-color .2s}.ds-time input{position:absolute;opacity:0;pointer-events:none}.ds-time:hover{border-color:#3e5a4d;background:rgb(227 234 228/.4)}.ds-time:has(input:checked){background:#3e5a4d;border-color:#3e5a4d;color:#fff;box-shadow:0 1px 2px rgb(31 45 39 / 0.04),0 4px 14px -4px rgb(31 45 39 / 0.08)}.ds-time--taken,.ds-time--taken:hover{border-color:transparent;background:rgb(243 239 227/.7);color:rgb(86 102 93/.4);text-decoration:line-through;cursor:not-allowed}.ds-time:has(input:focus-visible){outline:2px solid #3e5a4d;outline-offset:2px}"
+    },
+    {
+      "name": "Visit Status Chips",
+      "kind": "chip",
+      "refersTo": "chip-appt-confirmed",
+      "description": "One status map for mothers and staff: Requested dashed leaf outline, Confirmed / Completed mint, New time sent / Missed blush, Cancelled cream.",
+      "html": "<div class=\"ds-vchips\"><span class=\"ds-vchip ds-vchip--requested\">Requested</span><span class=\"ds-vchip ds-vchip--mint\">Confirmed</span><span class=\"ds-vchip ds-vchip--blush\">New time sent</span><span class=\"ds-vchip ds-vchip--mint\">Completed</span><span class=\"ds-vchip ds-vchip--blush\">Missed</span><span class=\"ds-vchip ds-vchip--cream\">Cancelled</span></div>",
+      "css": ".ds-vchips{display:flex;flex-wrap:wrap;gap:8px;font-family:Inter,ui-sans-serif,system-ui,sans-serif}.ds-vchip{display:inline-flex;align-items:center;height:28px;padding:0 10px;border-radius:9999px;font-size:12px;line-height:16px;font-weight:600;white-space:nowrap}.ds-vchip--requested{border:1px dashed #3e5a4d;color:#3e5a4d}.ds-vchip--mint{background:#e3eae4;color:#3e5a4d}.ds-vchip--blush{background:#f6e6e1;color:#9c4f4a}.ds-vchip--cream{background:#f3efe3;color:#56665d}"
     }
   ],
   "narrative": {
     "northStar": "The Gentle Checkup",
-    "overview": "A soft, Flo-inspired world built around the mother rather than the clinic. The client's palette (leaf and fern greens, beige, sage, cream on a warm milk ground) carries almost everything; one dusty rose carries the few things meant to feel tender or urgent: hearts, the baby, danger signs and soft tints. Surfaces are rounded white cards, pill buttons and circles for dates and icons, sitting on curved tinted panels with low, ink-tinted shadows. It is light only, made for daylight at home and at the health center.\n\nThis is a web app, not a mobile app. Desktop gets a real web layout (header with section links, two-column sections, a 72rem container); phone widths borrow Flo's patterns (bottom sheets, full-width pill actions, stacked cards). Nothing imitates an app store, an install prompt or a device frame. Type is Inter alone, with extra-bold titles and a friendly single-storey \"a\". Motion is one slow float and short expo-out transitions, all stopped by reduced motion.\n\nIt refuses the generic SaaS hero (headline, device screenshot, feature grid) and clinical realism. Sample data is shown, but always labelled \"Sample\".\n\nBehind the login the same world turns into a quiet working app. Staff (health workers and admins) get a white sidebar and top bar on the milk ground; mothers get a slim top bar and a floating bottom-nav pill. Content sits in white cards with the soft shadow, the selected place is always a mint pill with a filled icon, and roles are told apart by tint (beige admin, mint health worker, blush mother), never by a new colour. The baby is shown two ways: a soft 3D picture per trimester inside the app, and the flat baby-in-womb glyph on the public landing hero.",
+    "overview": "A soft, Flo-inspired world built around the mother rather than the clinic. The client's palette (leaf and fern greens, beige, sage, cream on a warm milk ground) carries almost everything; one dusty rose carries the few things meant to feel tender or urgent: hearts, the baby, danger signs and soft tints. Surfaces are rounded white cards, pill buttons and circles for dates and icons, sitting on curved tinted panels with low, ink-tinted shadows. It is light only, made for daylight at home and at the health center.\n\nThis is a web app, not a mobile app. Desktop gets a real web layout (header with section links, two-column sections, a 72rem container); phone widths borrow Flo's patterns (bottom sheets, full-width pill actions, stacked cards). Nothing imitates an app store, an install prompt or a device frame. Type is Inter alone, with extra-bold titles and a friendly single-storey \"a\". Motion is one slow float and short expo-out transitions, all stopped by reduced motion.\n\nIt refuses the generic SaaS hero (headline, device screenshot, feature grid) and clinical realism. Sample data is shown, but always labelled \"Sample\".\n\nBehind the login the same world turns into a quiet working app. Staff (health workers and admins) get a white sidebar and top bar on the milk ground; mothers get a slim top bar and a floating bottom-nav pill. Content sits in white cards with the soft shadow, the selected place is always a mint pill with a filled icon, and roles are told apart by tint (beige admin, mint health worker, blush mother), never by a new colour. The baby is shown two ways: a soft 3D picture per trimester inside the app, and the flat baby-in-womb glyph on the public landing hero.\n\nBooking a visit is the warmest moment of the app. Services are big white tiles with the client's flat people illustrations; small places show the service as a filled icon on a pastel blob. Days and times are white cards and chips; the one she picks turns solid leaf. A visit's state is always a small tint chip from the same palette, the same on her side and the health center's.",
     "keyCharacteristics": [
       "Greens do the work; rose is a small accent; text only in ink, ink-soft, leaf or rose-deep.",
       "Inter only, extra-bold display and section titles, tabular numerals for every date and count.",
@@ -489,12 +523,13 @@
       "Curved tinted hero panels with a faint white ring for depth.",
       "Soft, low shadows tinted with ink; one gentle float.",
       "Web layout on desktop, Flo patterns at phone width.",
-      "Signed-in app: white sidebar or floating bottom nav, mint active pill with a filled icon, sentence-case labels."
+      "Signed-in app: white sidebar or floating bottom nav, mint active pill with a filled icon, sentence-case labels.",
+      "Booking: illustrated service tiles, a sideways day strip, Morning / Afternoon time chips, and a solid leaf pick."
     ],
     "rules": [
       {
         "name": "The Rose Is an Accent Rule",
-        "body": "Rose appears only on hearts, the baby (glyph or picture), danger signs, errors and soft tints. It never becomes a primary button, a section heading colour or a large flat fill beyond blush.",
+        "body": "Rose appears only on hearts, the baby (glyph or picture), danger signs, errors, soft tints and the few things that need her or the staff's attention (a new time to answer, a missed visit, a closed day, the waiting-request count). It never becomes a primary button, a section heading colour or a large flat fill beyond blush; the solid rose-deep count badge stays 24px.",
         "section": "colors"
       },
       {
@@ -571,6 +606,21 @@
         "name": "The One Float Rule",
         "body": "The only ambient motion is a 6s, 8px float on the hero cards and the \"New reminder\" badge, staggered by animation delay. Reduced motion stops it, along with every transition.",
         "section": "elevation"
+      },
+      {
+        "name": "The Visit Status Rule",
+        "body": "A visit's status is a 28px chip from the same tints, identical for mothers and staff: Requested is a dashed leaf border with leaf text and no fill; Confirmed and Completed are mint with leaf; Rescheduled (\"New time sent\") and Missed are blush with rose-deep; Cancelled is cream with ink-soft. The Today week strip repeats the map on its date circles.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two Pictures Rule",
+        "body": "The people illustration appears only where the picture is big (service tiles, the picker thumbnails); everywhere small uses service art (filled icon on a pastel blob, duotone at 56px). Never squeeze an illustration into a chip or blow service art up into a tile.",
+        "section": "components"
+      },
+      {
+        "name": "The Filled Pick Rule",
+        "body": "In a picker the one chosen day or time is solid leaf with white text and the soft shadow; open choices are white with a line border; unavailable ones fade on cream and are disabled. Navigation keeps the mint pill; choices fill with leaf.",
+        "section": "components"
       }
     ],
     "dos": [
@@ -587,7 +637,11 @@
       "Do keep small labels, table heads and badges in sentence case.",
       "Do register any new custom text-size token with the class merger so it isn't dropped next to a colour class.",
       "Do badge only the exceptional state in a list; let the normal state stay unmarked.",
-      "Do fold secondary columns and filters on narrow screens rather than shrinking them; keep phone list cards as single whole-card links."
+      "Do fold secondary columns and filters on narrow screens rather than shrinking them; keep phone list cards as single whole-card links.",
+      "Do build every new booking surface from the shared service tiles, service art and slot picker (plain variant inside dialogs) rather than a new date or time control.",
+      "Do show a visit's state only with the visit status chips, the same map for mothers and staff.",
+      "Do pad the page for anything fixed above the mother bottom nav (like the summary bar) so it never covers content.",
+      "Do keep the bottom-nav tab opening on its own curve (cubic-bezier(0.32, 0.72, 0, 1), 420ms) and switched off under reduced motion; every other transition stays expo-out."
     ],
     "donts": [
       "Don't set text in fern, sage or rose; they are too light.",
@@ -598,7 +652,9 @@
       "Don't add a second ambient motion or a fake sheet drag handle.",
       "Don't add a second typeface, a dark theme or kicker labels above titles.",
       "Don't set uppercase or letter-spaced micro-labels; the week strip's weekday letters (and its Today label) are the only uppercase.",
-      "Don't introduce a new colour for roles or statuses; use the existing tint pairs."
+      "Don't introduce a new colour for roles or statuses; use the existing tint pairs.",
+      "Don't put the people illustrations in small places or the blob icon art in big tiles.",
+      "Don't let an unavailable day or time look pickable; fade it on cream, strike taken times, and disable it."
     ]
   }
 }

@@ -346,9 +346,9 @@ export function CalendarView({
               >
                 <span className="tnum text-[0.95rem] font-semibold">{Number(date.slice(8))}</span>
                 {isClosed ? (
-                  <span className={cn("text-[0.65rem] font-semibold sm:text-caption", selected ? "text-white" : "text-rose-deep")}>{c.closed}</span>
+                  <span className={cn("text-caption leading-none font-semibold", selected ? "text-white" : "text-rose-deep")}>{c.closed}</span>
                 ) : count > 0 ? (
-                  <span className={cn("tnum grid h-5 min-w-5 place-items-center rounded-full px-1 text-[0.7rem] font-bold sm:h-6 sm:min-w-6 sm:text-caption", selected ? "bg-white text-leaf" : "bg-mint text-leaf")}>
+                  <span className={cn("tnum grid h-6 min-w-6 place-items-center rounded-full px-1 text-caption font-bold", selected ? "bg-white text-leaf" : "bg-mint text-leaf")}>
                     {count}
                   </span>
                 ) : null}

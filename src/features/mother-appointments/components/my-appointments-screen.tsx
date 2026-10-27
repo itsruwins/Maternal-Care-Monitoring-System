@@ -69,7 +69,7 @@ export function MyAppointmentsView({ t, locale, data, today }: { t: Dictionary; 
             {a.proposedTitle}
           </p>
           <p className="mt-1 text-[0.95rem] text-ink-soft">{a.proposedBody}</p>
-          <div className="mt-4 flex items-center gap-4 rounded-2xl bg-white p-4">
+          <div className="mt-4 flex items-center gap-4 rounded-md bg-white p-4">
             <DateTile iso={item.scheduledAt!} locale={locale} />
             <div className="min-w-0">
               <p className="font-semibold break-words">{item.service}</p>

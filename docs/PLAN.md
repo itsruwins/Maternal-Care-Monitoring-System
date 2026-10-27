@@ -534,6 +534,22 @@ Sample reminder (about 140 characters, one SMS):
 - **More services (your request):** migration `0011_more_services.sql` adds Nutrition Counseling, Prenatal Dental Checkup, Fetal Heartbeat Check and Birth Plan Counseling (1-day reminder; they use the nutrition, dental, heartbeat and counseling pictures). That makes 9 services. Postpartum and newborn services are left out: appointments need a current pregnancy, and the MVP excludes newborn care.
 - **Mother bottom navigation (your request):** a snug pill that is only as wide as its buttons. Tabs show only their icon; the current tab opens into a mint pill with its icon and name. When she switches tabs, the name slides open (its grid column eases from 0fr to 1fr over 420 ms with the padding and colour), and it switches off for "reduce motion". Previews pass `previewPath` to mark the current tab.
 
+**Step 5 review (2026-10-27):**
+- **Checks:** production build, typecheck and lint pass.
+- **Contrast:** readable text is at least 6:1. The faded text appears only on days and times that can't be picked, and each one is also named for screen readers ("Full", "Closed", "taken").
+- **Design review:** returned 4 fixes, all applied and confirmed in a second pass (verdict "ship"):
+  - the "Offer another time" dialog overflowed and hid its Send button; fixed in the shared dialog (`grid-cols-[minmax(0,1fr)]`), so no dialog can be widened by its content;
+  - day-strip cards keep weekday, date and status, with a month label between cards and the header following the first visible day;
+  - strip status text is 12px with wider cards (the Filipino "12 bakante" fits);
+  - the admin picture picker shows the real illustrations.
+- **Extras:**
+  - the month view opens on the first month with an open day;
+  - the proposal panel's inner card has a 12px radius;
+  - the Activity types reminder bell uses the regular weight;
+  - the Filipino "See full month" is now "Buong buwan".
+- **Docs:** `DESIGN.md` + sidecar updated for Phase 4. Review screenshots deleted (not kept in the repo).
+- **Still needed:** your testing. Run migrations `0010` and `0011` first if you haven't.
+
 ## Phase 5 — Prenatal visits & services
 
 - **Record a visit:**

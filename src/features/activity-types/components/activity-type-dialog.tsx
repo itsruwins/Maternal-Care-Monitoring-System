@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { DangerIcon, PencilIcon, PlusIcon, SpinnerIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { ServiceArt } from "@/components/shared/service-art";
+import { ServiceIllustration } from "@/components/shared/service-illustration";
 import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
 import { useDictionary } from "@/i18n/dictionary-provider";
@@ -82,7 +82,7 @@ export function ActivityTypeDialog({ activityType }: { activityType?: ActivityTy
                   className="flex cursor-pointer flex-col items-center gap-1 rounded-2xl border border-line px-1 py-2 transition-colors hover:bg-milk has-[:checked]:border-leaf has-[:checked]:bg-mint/50 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-leaf"
                 >
                   <input type="radio" name="icon" value={key} defaultChecked={key === (activityType?.icon ?? "checkup")} className="sr-only" />
-                  <ServiceArt icon={key} size="sm" />
+                  <ServiceIllustration icon={key} className="w-16" />
                   <span className="text-center text-caption leading-tight text-ink-soft">{t.serviceIcons[key]}</span>
                 </label>
               ))}

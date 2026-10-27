@@ -95,7 +95,7 @@ function ProposeDialog({ appointment, slots, onClose }: { appointment: Target; s
           <DialogTitle>{p.title}</DialogTitle>
           <DialogDescription>{appointment.hasLogin ? p.subtitle : t.appointments.noLogin}</DialogDescription>
         </DialogHeader>
-        <div className="flex flex-col gap-5 px-6 pt-4 pb-6 sm:px-8 sm:pb-8">
+        <div className="flex min-w-0 flex-col gap-5 px-6 pt-4 pb-6 sm:px-8 sm:pb-8">
           <p className="tnum rounded-xl bg-milk px-4 py-3 text-[0.95rem]">{format(p.current, { when: formatSlot(appointment.at, locale) })}</p>
           <SlotPicker
             first={slots.first}

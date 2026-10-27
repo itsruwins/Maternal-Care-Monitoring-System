@@ -33,7 +33,14 @@ export function MonthCalendar({
   const tag = locale === "fil" ? "fil-PH" : "en-PH";
   const firstMonth = monthStart(first);
   const lastMonth = monthStart(last);
-  const [month, setMonth] = useState(selected ? monthStart(selected) : firstMonth);
+  // Open on the chosen day's month, else the first month with an open day.
+  const [month, setMonth] = useState(() => {
+    if (selected) return monthStart(selected);
+    for (let day = first; day <= last; day = toISODate(new Date(parseISODate(day)!.getTime() + 86_400_000))) {
+      if (stateOf(day) === "open") return monthStart(day);
+    }
+    return firstMonth;
+  });
 
   const start = parseISODate(month)!;
   const daysInMonth = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth() + 1, 0)).getUTCDate();

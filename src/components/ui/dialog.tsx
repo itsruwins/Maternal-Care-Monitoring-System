@@ -54,7 +54,7 @@ function DialogContent({
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          "fixed inset-x-0 bottom-0 z-50 grid max-h-[92dvh] w-full overflow-y-auto rounded-t-3xl bg-white pb-[env(safe-area-inset-bottom)] text-ink shadow-[var(--shadow-float)] outline-none data-open:animate-in data-open:slide-in-from-bottom-full data-open:duration-400 data-open:ease-[var(--ease-out-expo)] data-closed:animate-out data-closed:slide-out-to-bottom-full data-closed:duration-200 sm:inset-x-auto sm:top-1/2 sm:bottom-auto sm:left-1/2 sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-3xl sm:pb-0 sm:data-open:fade-in-0 sm:data-open:slide-in-from-bottom-4 sm:data-closed:fade-out-0 sm:data-closed:slide-out-to-bottom-2",
+          "fixed inset-x-0 bottom-0 z-50 grid max-h-[92dvh] w-full grid-cols-[minmax(0,1fr)] overflow-y-auto rounded-t-3xl bg-white pb-[env(safe-area-inset-bottom)] text-ink shadow-[var(--shadow-float)] outline-none data-open:animate-in data-open:slide-in-from-bottom-full data-open:duration-400 data-open:ease-[var(--ease-out-expo)] data-closed:animate-out data-closed:slide-out-to-bottom-full data-closed:duration-200 sm:inset-x-auto sm:top-1/2 sm:bottom-auto sm:left-1/2 sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-3xl sm:pb-0 sm:data-open:fade-in-0 sm:data-open:slide-in-from-bottom-4 sm:data-closed:fade-out-0 sm:data-closed:slide-out-to-bottom-2",
           className
         )}
         {...props}

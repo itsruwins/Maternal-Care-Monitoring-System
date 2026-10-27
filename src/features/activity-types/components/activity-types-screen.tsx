@@ -46,7 +46,7 @@ export function ActivityTypesView({ t, types }: { t: Dictionary; types: Activity
             </div>
             <div className="flex flex-wrap items-center justify-between gap-3 border-t border-line pt-4">
               <span className="inline-flex items-center gap-1.5 text-sm font-medium text-leaf">
-                <ReminderIcon weight="fill" aria-hidden className="size-4" />
+                <ReminderIcon aria-hidden className="size-4" />
                 {reminder(type.reminderDaysBefore)}
               </span>
               <ActivityTypeDialog activityType={type} />

@@ -117,6 +117,7 @@ function ProposeDialog({ appointment, slots, onClose }: { appointment: Target; s
             timeHeading={t.slotPicker.time}
             variant="plain"
             idPrefix={`propose-${appointment.id}`}
+            today={slots.first}
           />
           <div className="flex flex-col gap-2">
             <Label htmlFor={`propose-remark-${appointment.id}`}>{p.remarkLabel}</Label>

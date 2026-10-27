@@ -508,7 +508,9 @@
       "saving": "Sine-save…",
       "cancel": "Kanselahin",
       "saved": "Na-save ang serbisyo.",
-      "added": "Naidagdag ang serbisyo."
+      "added": "Naidagdag ang serbisyo.",
+      "icon": "Larawan",
+      "iconHint": "Makikita sa mga tile ng serbisyo kapag humihiling ng bisita ang mga ina."
     },
     "errors": {
       "required": "Kailangan ito.",
@@ -921,7 +923,13 @@
       "sent": "Naipadala ang hiling. Makikita mo rito kapag kumpirmado na.",
       "prevMonth": "Nakaraang buwan",
       "nextMonth": "Susunod na buwan",
-      "required": "Pumili ng serbisyo, araw at oras."
+      "required": "Pumili ng serbisyo, araw at oras.",
+      "chooseService": "Anong serbisyo ang kailangan mo?",
+      "chooseDay": "Pumili ng araw",
+      "chooseTime": "Pumili ng oras",
+      "change": "Palitan",
+      "addNote": "Magdagdag ng tala",
+      "hideNote": "Alisin ang tala"
     }
   },
   "slotPicker": {
@@ -934,7 +942,29 @@
     "legendOpen": "Bukas",
     "legendFull": "Puno o sarado",
     "prevMonth": "Nakaraang buwan",
-    "nextMonth": "Susunod na buwan"
+    "nextMonth": "Susunod na buwan",
+    "seeMonth": "Tingnan ang buong buwan",
+    "monthHint": "May bakanteng oras ang mga araw na may tuldok.",
+    "earlier": "Mas naunang araw",
+    "later": "Mas huling araw",
+    "openCount": "{count} bakante",
+    "full": "Puno",
+    "morning": "Umaga",
+    "afternoon": "Hapon"
+  },
+  "serviceIcons": {
+    "checkup": "Checkup",
+    "vaccine": "Bakuna",
+    "supplement": "Bitamina",
+    "lab": "Lab test",
+    "education": "Edukasyon",
+    "heartbeat": "Tibok ng puso",
+    "baby": "Baby",
+    "heart": "Puso",
+    "nutrition": "Nutrisyon",
+    "dental": "Ngipin",
+    "blood": "Pagsusuri ng dugo",
+    "counseling": "Payo"
   },
   "appointments": {
     "title": "Mga appointment",

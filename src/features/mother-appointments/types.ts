@@ -1,3 +1,4 @@
+import type { ServiceIconKey } from "@/lib/appointments/service-icons";
 import type { SlotError } from "@/lib/appointments/slots";
 import type { AppointmentStatus } from "@/types/database";
 
@@ -19,7 +20,7 @@ export type MyAppointments = {
   past: MyAppointment[];
 };
 
-export type Service = { id: number; name: string; description: string | null };
+export type Service = { id: number; name: string; description: string | null; icon: ServiceIconKey };
 
 /** Everything the request form needs to grey out unavailable days and times. */
 export type BookingData = {

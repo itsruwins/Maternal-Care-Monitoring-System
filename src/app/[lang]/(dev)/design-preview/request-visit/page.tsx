@@ -20,11 +20,11 @@ export default async function RequestVisitPreview() {
         t={t}
         data={{
           services: [
-            { id: 1, name: "Prenatal Checkup", description: "Routine prenatal consultation and monitoring" },
-            { id: 2, name: "Tetanus Toxoid Vaccination", description: "Maternal tetanus toxoid immunization" },
-            { id: 3, name: "Iron / Folic Acid Supplementation", description: "Iron and folic acid supplementation" },
-            { id: 4, name: "Laboratory Test", description: "Requested maternal laboratory investigations" },
-            { id: 5, name: "Health Education Session", description: "Maternal health education and counseling" },
+            { id: 1, name: "Prenatal Checkup", description: "Routine prenatal consultation and monitoring", icon: "checkup" },
+            { id: 2, name: "Tetanus Toxoid Vaccination", description: "Maternal tetanus toxoid immunization", icon: "vaccine" },
+            { id: 3, name: "Iron / Folic Acid Supplementation", description: "Iron and folic acid supplementation", icon: "supplement" },
+            { id: 4, name: "Laboratory Test", description: "Requested maternal laboratory investigations", icon: "lab" },
+            { id: 5, name: "Health Education Session", description: "Maternal health education and counseling", icon: "education" },
           ],
           today: TODAY,
           first,

@@ -19,11 +19,11 @@ export default async function BookAppointmentPreview() {
         results={[]}
         searched={false}
         services={[
-          { id: 1, name: "Prenatal Checkup" },
-          { id: 2, name: "Tetanus Toxoid Vaccination" },
-          { id: 3, name: "Iron / Folic Acid Supplementation" },
-          { id: 4, name: "Laboratory Test" },
-          { id: 5, name: "Health Education Session" },
+          { id: 1, name: "Prenatal Checkup", icon: "checkup" },
+          { id: 2, name: "Tetanus Toxoid Vaccination", icon: "vaccine" },
+          { id: 3, name: "Iron / Folic Acid Supplementation", icon: "supplement" },
+          { id: 4, name: "Laboratory Test", icon: "lab" },
+          { id: 5, name: "Health Education Session", icon: "education" },
         ]}
         slots={SAMPLE_SLOTS}
       />

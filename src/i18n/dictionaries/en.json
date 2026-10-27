@@ -508,7 +508,9 @@
       "saving": "Saving…",
       "cancel": "Cancel",
       "saved": "Activity type saved.",
-      "added": "Activity type added."
+      "added": "Activity type added.",
+      "icon": "Picture",
+      "iconHint": "Shown on the service tiles when mothers request a visit."
     },
     "errors": {
       "required": "This is required.",
@@ -921,7 +923,13 @@
       "sent": "Request sent. We'll show here when it's confirmed.",
       "prevMonth": "Previous month",
       "nextMonth": "Next month",
-      "required": "Choose a service, a day and a time."
+      "required": "Choose a service, a day and a time.",
+      "chooseService": "Which service do you need?",
+      "chooseDay": "Choose a day",
+      "chooseTime": "Choose a time",
+      "change": "Change",
+      "addNote": "Add a note",
+      "hideNote": "Remove note"
     }
   },
   "slotPicker": {
@@ -934,7 +942,29 @@
     "legendOpen": "Open",
     "legendFull": "Full or closed",
     "prevMonth": "Previous month",
-    "nextMonth": "Next month"
+    "nextMonth": "Next month",
+    "seeMonth": "See full month",
+    "monthHint": "Days with a dot have open times.",
+    "earlier": "Earlier days",
+    "later": "Later days",
+    "openCount": "{count} open",
+    "full": "Full",
+    "morning": "Morning",
+    "afternoon": "Afternoon"
+  },
+  "serviceIcons": {
+    "checkup": "Checkup",
+    "vaccine": "Vaccine",
+    "supplement": "Supplements",
+    "lab": "Lab test",
+    "education": "Education",
+    "heartbeat": "Heartbeat",
+    "baby": "Baby",
+    "heart": "Heart",
+    "nutrition": "Nutrition",
+    "dental": "Dental",
+    "blood": "Blood test",
+    "counseling": "Counseling"
   },
   "appointments": {
     "title": "Appointments",

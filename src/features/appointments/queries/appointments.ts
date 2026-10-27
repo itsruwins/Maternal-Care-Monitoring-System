@@ -1,4 +1,5 @@
 import "server-only";
+import { toServiceIcon } from "@/lib/appointments/service-icons";
 import { addMonths, manilaSlot, slotKey } from "@/lib/appointments/slots";
 import { createClient } from "@/lib/supabase/server";
 import { addDays, gestationalAge, PREGNANCY_DAYS } from "@/lib/utils/pregnancy";
@@ -92,8 +93,8 @@ export async function listMotherAppointments(motherId: number): Promise<StaffApp
 
 export async function listServices(): Promise<Service[]> {
   const supabase = await createClient();
-  const { data } = await supabase.from("activity_type").select("activity_type_id, name").order("activity_type_id");
-  return (data ?? []).map((row) => ({ id: row.activity_type_id, name: row.name }));
+  const { data } = await supabase.from("activity_type").select("activity_type_id, name, icon").order("activity_type_id");
+  return (data ?? []).map((row) => ({ id: row.activity_type_id, name: row.name, icon: toServiceIcon(row.icon) }));
 }
 
 /** Closed days and taken times from today up to 6 months ahead (staff can book today). */

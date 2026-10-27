@@ -14,11 +14,11 @@ export default async function ActivityTypesPreview() {
       <ActivityTypesView
         t={t}
         types={[
-          { id: 1, name: "Prenatal Checkup", description: "Routine prenatal consultation and monitoring", reminderDaysBefore: 1 },
-          { id: 2, name: "Tetanus Toxoid Vaccination", description: "Maternal tetanus toxoid immunization", reminderDaysBefore: 1 },
-          { id: 3, name: "Iron / Folic Acid Supplementation", description: "Iron and folic acid supplementation", reminderDaysBefore: 1 },
-          { id: 4, name: "Laboratory Test", description: "Requested maternal laboratory investigations", reminderDaysBefore: 2 },
-          { id: 5, name: "Health Education Session", description: "Maternal health education and counseling", reminderDaysBefore: 0 },
+          { id: 1, name: "Prenatal Checkup", description: "Routine prenatal consultation and monitoring", reminderDaysBefore: 1, icon: "checkup" },
+          { id: 2, name: "Tetanus Toxoid Vaccination", description: "Maternal tetanus toxoid immunization", reminderDaysBefore: 1, icon: "vaccine" },
+          { id: 3, name: "Iron / Folic Acid Supplementation", description: "Iron and folic acid supplementation", reminderDaysBefore: 1, icon: "supplement" },
+          { id: 4, name: "Laboratory Test", description: "Requested maternal laboratory investigations", reminderDaysBefore: 2, icon: "lab" },
+          { id: 5, name: "Health Education Session", description: "Maternal health education and counseling", reminderDaysBefore: 0, icon: "education" },
         ]}
       />
     </StaffShell>

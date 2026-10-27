@@ -519,6 +519,20 @@ Sample reminder (about 140 characters, one SMS):
 - **Mother record → Appointments tab:** Book, open appointments with actions, then past ones. The record page takes the panel as a slot, so the two features stay separate.
 - Dev previews: `/design-preview/staff-appointments` (`?view=list|calendar`), `/design-preview/book-appointment`, `/design-preview/mother-record?tab=appointments`.
 
+**Request flow redesign (2026-10-27, at your request, after step 4):**
+- **Decisions:**
+  - Flo-style service art made in code: a filled Phosphor icon on a pastel blob, with leaf, plus and sparkle accents (`components/shared/service-art.tsx`).
+  - Admins pick each service's icon from 12 choices (migration `0010_service_icons.sql`, run by you; the Activity types dialog has the picker).
+  - Tiles show the name only.
+  - The day and time appear on the same page after a service is picked.
+  - A day strip, with "See full month".
+  - A summary bar to send.
+  - Staff screens share the new look.
+- **Mother request:** the service tiles come first (2 per row on phones). The chosen one folds into a chip with Change. Then "Choose a day" (sideways weekday cards with "12 open", "Full" or "Closed", plus a polished month view where open days have a dot) and "Choose a time" (Morning / Afternoon groups). A summary bar above the bottom navigation shows the day and time, the service, "Add a note" and **Send request**.
+- **Staff:** booking uses the compact service tiles and the same day strip; "Other time" uses the day strip too. Activity types cards show the service art.
+- **People illustrations (your request):** the big service tiles (mother request, staff booking) show 12 flat illustrations you generated from my prompts (originals in `Files/Services/`, web copies in `public/services/`, 146 KB total, all with the same crop window). One matches each icon key, so whatever icon an admin picks also picks the tile picture. Small spots (the chosen-service chip, summary bar, Activity types cards and the admin picker) keep the icon art.
+- **More services (your request):** migration `0011_more_services.sql` adds Nutrition Counseling, Prenatal Dental Checkup, Fetal Heartbeat Check and Birth Plan Counseling (1-day reminder; they use the nutrition, dental, heartbeat and counseling pictures). That makes 9 services. Postpartum and newborn services are left out: appointments need a current pregnancy, and the MVP excludes newborn care.
+
 ## Phase 5 — Prenatal visits & services
 
 - **Record a visit:**

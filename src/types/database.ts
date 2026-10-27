@@ -1,5 +1,5 @@
 // Database types, written from the confirmed schema (inspect-schema.sql, 2026-10-26)
-// plus migrations 0001-0009. Update this file whenever a migration changes a table.
+// plus migrations 0001-0010. Update this file whenever a migration changes a table.
 
 type NullableKeys<T> = { [K in keyof T]: null extends T[K] ? K : never }[keyof T];
 
@@ -92,6 +92,8 @@ export type ActivityTypeRow = {
   name: string;
   description: string | null;
   reminder_days_before: number;
+  /** Icon key for the service tiles (migration 0010). */
+  icon: string;
 };
 
 export type AppointmentRow = {
@@ -189,7 +191,7 @@ export type Database = {
         ]
       >;
       pregnancy: TableDef<PregnancyRow, "pregnancy_id", [Relation<"pregnancy_mother_id_fkey", "mother_id", "mother", "mother_id">]>;
-      activity_type: TableDef<ActivityTypeRow, "activity_type_id">;
+      activity_type: TableDef<ActivityTypeRow, "activity_type_id" | "icon">;
       appointment: TableDef<
         AppointmentRow,
         "appointment_id" | "created_at" | "updated_at",

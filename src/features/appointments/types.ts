@@ -1,3 +1,4 @@
+import type { ServiceIconKey } from "@/lib/appointments/service-icons";
 import type { SlotError } from "@/lib/appointments/slots";
 import type { AppointmentStatus, SmsDeliveryStatus } from "@/types/database";
 
@@ -28,7 +29,7 @@ export type AppointmentFilters = {
 /** Days and taken times for picking a slot (staff: today up to 6 months). */
 export type SlotData = { first: string; last: string; closedDays: string[]; taken: string[] };
 
-export type Service = { id: number; name: string };
+export type Service = { id: number; name: string; icon: ServiceIconKey };
 
 export type BookableMother = { id: number; pregnancyId: number; name: string; contactNumber: string; weeks: number | null };
 

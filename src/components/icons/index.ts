@@ -75,4 +75,11 @@ export {
   InfoIcon,
   SpinnerGapIcon as SpinnerIcon,
   SparkleIcon,
+  LeafIcon,
+  DropIcon,
+  ToothIcon,
+  CarrotIcon,
+  ChatsCircleIcon,
+  SunIcon,
+  CloudSunIcon,
 } from "@phosphor-icons/react/ssr";

@@ -6,10 +6,12 @@ import { toast } from "sonner";
 import { DangerIcon, PencilIcon, PlusIcon, SpinnerIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { ServiceArt } from "@/components/shared/service-art";
 import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
 import { useDictionary } from "@/i18n/dictionary-provider";
 import { format } from "@/i18n/format";
+import { SERVICE_ICONS } from "@/lib/appointments/service-icons";
 import { saveActivityType } from "../actions/save-activity-type";
 import { MAX_REMINDER_DAYS, type ActivityTypeField } from "../schemas";
 import type { ActivityType, ActivityTypeFormState } from "../types";
@@ -69,6 +71,23 @@ export function ActivityTypeDialog({ activityType }: { activityType?: ActivityTy
               <Input id={id("description")} name="description" defaultValue={activityType?.description ?? ""} maxLength={300} aria-describedby={describedBy} />
             )}
           </FormField>
+          <fieldset className="flex flex-col gap-2">
+            <legend className="text-sm font-medium">{d.icon}</legend>
+            <p className="text-sm text-ink-soft">{d.iconHint}</p>
+            <div className="mt-1 grid grid-cols-4 gap-2">
+              {SERVICE_ICONS.map((key) => (
+                <label
+                  key={key}
+                  title={t.serviceIcons[key]}
+                  className="flex cursor-pointer flex-col items-center gap-1 rounded-2xl border border-line px-1 py-2 transition-colors hover:bg-milk has-[:checked]:border-leaf has-[:checked]:bg-mint/50 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-leaf"
+                >
+                  <input type="radio" name="icon" value={key} defaultChecked={key === (activityType?.icon ?? "checkup")} className="sr-only" />
+                  <ServiceArt icon={key} size="sm" />
+                  <span className="text-center text-caption leading-tight text-ink-soft">{t.serviceIcons[key]}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
           <FormField id={id("reminderDaysBefore")} label={d.reminder} hint={d.reminderHint} error={err("reminderDaysBefore")}>
             {(describedBy) => (
               <Input

@@ -1,4 +1,5 @@
 import "server-only";
+import { toServiceIcon } from "@/lib/appointments/service-icons";
 import { bookingWindow, manilaSlot, slotKey } from "@/lib/appointments/slots";
 import { createClient } from "@/lib/supabase/server";
 import type { BookingData } from "../types";
@@ -9,12 +10,12 @@ export async function getBookingData(today: string): Promise<BookingData> {
   const { first, last } = bookingWindow(today);
   const supabase = await createClient();
   const [{ data: services }, { data: closed }, { data: taken }] = await Promise.all([
-    supabase.from("activity_type").select("activity_type_id, name, description").order("activity_type_id"),
+    supabase.from("activity_type").select("activity_type_id, name, description, icon").order("activity_type_id"),
     supabase.from("closed_day").select("closed_date").gte("closed_date", first).lte("closed_date", last),
     supabase.rpc("taken_slots", { p_from: first, p_to: last }),
   ]);
   return {
-    services: (services ?? []).map((s) => ({ id: s.activity_type_id, name: s.name, description: s.description })),
+    services: (services ?? []).map((s) => ({ id: s.activity_type_id, name: s.name, description: s.description, icon: toServiceIcon(s.icon) })),
     today,
     first,
     last,

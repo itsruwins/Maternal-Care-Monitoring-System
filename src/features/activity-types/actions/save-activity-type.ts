@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { activityTypeSchema, type ActivityTypeField } from "../schemas";
 import type { ActivityTypeErrorKey, ActivityTypeFormState } from "../types";
 
-const FIELDS: ActivityTypeField[] = ["name", "description", "reminderDaysBefore"];
+const FIELDS: ActivityTypeField[] = ["name", "description", "reminderDaysBefore", "icon"];
 
 // Admin adds (id = null) or edits an activity type. No delete: past
 // appointments and visits point to these rows.
@@ -31,6 +31,7 @@ export async function saveActivityType(
     name: parsed.data.name,
     description: parsed.data.description || null,
     reminder_days_before: parsed.data.reminderDaysBefore,
+    icon: parsed.data.icon,
   };
   const supabase = await createClient();
   const { error } =

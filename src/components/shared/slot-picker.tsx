@@ -1,16 +1,22 @@
 "use client";
 
-import { useMemo, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { CalendarIcon, CaretLeftIcon, CaretRightIcon, CloudSunIcon, SunIcon, type Icon } from "@/components/icons";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useDictionary } from "@/i18n/dictionary-provider";
+import { format } from "@/i18n/format";
 import { formatSlotTime, isWeekday, SLOT_TIMES, slotKey } from "@/lib/appointments/slots";
-import { formatDate } from "@/lib/utils/pregnancy";
+import { addDays, formatDate, parseISODate } from "@/lib/utils/pregnancy";
 import { cn } from "@/lib/utils/cn";
 import { MonthCalendar, type DayState } from "./month-calendar";
 
+const MORNING = SLOT_TIMES.filter((slot) => slot < "12:00");
+const AFTERNOON = SLOT_TIMES.filter((slot) => slot >= "12:00");
+
 // Day + time picker for appointment slots (mothers requesting, staff booking
-// or offering another time). Weekends, closed days, full days and days outside
-// [first, last] can't be picked; taken times are shown crossed out. The
-// database checks everything again on save.
+// or offering another time). A sideways strip of weekday cards ("5 open",
+// "Full", "Closed"), a "See full month" view, then the times grouped Morning /
+// Afternoon. The database checks every rule again on save.
 export function SlotPicker({
   first,
   last,
@@ -24,6 +30,7 @@ export function SlotPicker({
   timeHeading,
   variant = "cards",
   idPrefix = "slot",
+  today,
 }: {
   first: string;
   last: string;
@@ -36,64 +43,166 @@ export function SlotPicker({
   onTime: (time: string) => void;
   dayHeading: string;
   timeHeading: string;
-  /** "cards": two white cards (pages); "plain": stacked, no cards (dialogs). */
+  /** "cards": white cards (pages); "plain": no cards (dialogs). */
   variant?: "cards" | "plain";
   idPrefix?: string;
+  /** Today's date (Manila), ringed in the month view. */
+  today?: string;
 }) {
   const { t, locale } = useDictionary();
   const p = t.slotPicker;
+  const tag = locale === "fil" ? "fil-PH" : "en-PH";
   const takenSet = useMemo(() => new Set(taken), [taken]);
   const closedSet = useMemo(() => new Set(closedDays), [closedDays]);
+  const openCount = (day: string) => SLOT_TIMES.filter((slot) => !takenSet.has(slotKey(day, slot))).length;
   const stateOf = (day: string): DayState => {
     if (day < first || day > last || !isWeekday(day)) return "out";
     if (closedSet.has(day)) return "closed";
-    return SLOT_TIMES.every((slot) => takenSet.has(slotKey(day, slot))) ? "full" : "open";
+    return openCount(day) === 0 ? "full" : "open";
   };
-  const openTimes = date ? SLOT_TIMES.filter((slot) => !takenSet.has(slotKey(date, slot))) : [];
+
+  // Weekdays in the window (weekends are always closed, so they're left out).
+  const days = useMemo(() => {
+    const list: string[] = [];
+    for (let day = first; day <= last; day = addDays(day, 1)!) if (isWeekday(day)) list.push(day);
+    return list;
+  }, [first, last]);
+
+  const [monthOpen, setMonthOpen] = useState(false);
+  const strip = useRef<HTMLOListElement>(null);
+  useEffect(() => {
+    if (!date) return;
+    strip.current?.querySelector<HTMLElement>(`[data-day="${date}"]`)?.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
+  }, [date]);
+  const scrollBy = (direction: number) => strip.current?.scrollBy({ left: direction * strip.current.clientWidth * 0.8, behavior: "smooth" });
+
+  const weekday = new Intl.DateTimeFormat(tag, { timeZone: "UTC", weekday: "short" });
+  const monthShort = new Intl.DateTimeFormat(tag, { timeZone: "UTC", month: "short" });
+  const fullDate = new Intl.DateTimeFormat(tag, { timeZone: "UTC", weekday: "long", month: "long", day: "numeric" });
+  const monthTitle = new Intl.DateTimeFormat(tag, { timeZone: "UTC", month: "long", year: "numeric" }).format(parseISODate(date ?? first)!);
 
   const dayPart = (
     <>
-      <MonthCalendar
-        first={first}
-        last={last}
-        stateOf={stateOf}
-        selected={date}
-        onSelect={onDate}
-        locale={locale}
-        labels={{ prev: p.prevMonth, next: p.nextMonth, closed: p.closedDay }}
-      />
-      <p className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm text-ink-soft">
-        <span className="inline-flex items-center gap-2">
-          <span aria-hidden className="size-2.5 rounded-full bg-ink" />
-          {p.legendOpen}
-        </span>
-        <span className="inline-flex items-center gap-2">
-          <span aria-hidden className="size-2.5 rounded-full bg-ink-soft/30" />
-          {p.legendFull}
-        </span>
-      </p>
+      <div className="mb-3 flex items-center justify-between gap-3">
+        <p className="font-semibold text-ink-soft">{monthTitle}</p>
+        <button
+          type="button"
+          onClick={() => setMonthOpen(true)}
+          className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold text-leaf transition-colors hover:bg-mint"
+        >
+          <CalendarIcon aria-hidden className="size-4" />
+          {p.seeMonth}
+        </button>
+      </div>
+      <div className="relative">
+        <button
+          type="button"
+          onClick={() => scrollBy(-1)}
+          aria-label={p.earlier}
+          className="absolute top-1/2 -left-3 z-10 hidden size-9 -translate-y-1/2 place-items-center rounded-full bg-white text-ink shadow-[var(--shadow-soft)] hover:bg-cream sm:grid"
+        >
+          <CaretLeftIcon weight="bold" aria-hidden className="size-4" />
+        </button>
+        <ol
+          ref={strip}
+          aria-label={dayHeading}
+          className="-mx-1 flex snap-x snap-mandatory gap-2 overflow-x-auto px-1 py-1 [scrollbar-width:none] sm:mx-3 [&::-webkit-scrollbar]:hidden"
+        >
+          {days.map((day, index) => {
+            const state = stateOf(day);
+            const isSelected = day === date;
+            const count = state === "open" ? openCount(day) : 0;
+            const showMonth = index === 0 || day.slice(5, 7) !== days[index - 1].slice(5, 7);
+            const status = state === "closed" ? p.closedDay : state === "full" ? p.full : format(p.openCount, { count });
+            return (
+              <li key={day} data-day={day} className="snap-start">
+                <button
+                  type="button"
+                  disabled={state !== "open"}
+                  aria-pressed={isSelected}
+                  aria-label={`${fullDate.format(parseISODate(day)!)}, ${status}`}
+                  onClick={() => onDate(day)}
+                  className={cn(
+                    "flex h-[5.75rem] w-[4.25rem] flex-col items-center justify-between rounded-2xl border px-1 py-2 transition-colors",
+                    isSelected && "border-leaf bg-leaf text-white shadow-[var(--shadow-soft)]",
+                    !isSelected && state === "open" && "border-line bg-white text-ink hover:border-leaf hover:bg-mint/40",
+                    state !== "open" && "border-transparent bg-cream/70 text-ink-soft/50",
+                  )}
+                >
+                  <span aria-hidden className={cn("text-caption font-medium", isSelected ? "text-white/85" : "text-ink-soft")}>
+                    {showMonth ? monthShort.format(parseISODate(day)!) : weekday.format(parseISODate(day)!)}
+                  </span>
+                  <span aria-hidden className="tnum text-xl leading-none font-bold">
+                    {Number(day.slice(8))}
+                  </span>
+                  <span
+                    aria-hidden
+                    className={cn(
+                      "text-[0.7rem] leading-none font-semibold whitespace-nowrap",
+                      isSelected ? "text-white" : state === "open" ? "text-leaf" : state === "closed" ? "text-rose-deep/70" : "text-ink-soft/60",
+                    )}
+                  >
+                    {showMonth && state === "open" ? weekday.format(parseISODate(day)!) : status}
+                  </span>
+                </button>
+              </li>
+            );
+          })}
+        </ol>
+        <button
+          type="button"
+          onClick={() => scrollBy(1)}
+          aria-label={p.later}
+          className="absolute top-1/2 -right-3 z-10 hidden size-9 -translate-y-1/2 place-items-center rounded-full bg-white text-ink shadow-[var(--shadow-soft)] hover:bg-cream sm:grid"
+        >
+          <CaretRightIcon weight="bold" aria-hidden className="size-4" />
+        </button>
+      </div>
+
+      <Dialog open={monthOpen} onOpenChange={setMonthOpen}>
+        <DialogContent closeLabel={t.common.close} className="sm:max-w-md">
+          <DialogHeader className="px-6 pt-5 pr-16 sm:px-8 sm:pt-8 sm:pr-16">
+            <DialogTitle>{dayHeading}</DialogTitle>
+            <DialogDescription>{p.monthHint}</DialogDescription>
+          </DialogHeader>
+          <div className="px-4 pt-2 pb-6 sm:px-8 sm:pb-8">
+            <MonthCalendar
+              first={first}
+              last={last}
+              today={today}
+              stateOf={stateOf}
+              selected={date}
+              onSelect={(day) => {
+                onDate(day);
+                setMonthOpen(false);
+              }}
+              locale={locale}
+              labels={{ prev: p.prevMonth, next: p.nextMonth, closed: p.closedDay, full: p.full }}
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 
-  const timePart = !date ? (
-    <p className="text-ink-soft">{p.pickDateFirst}</p>
-  ) : openTimes.length === 0 ? (
-    <p className="text-ink-soft">{p.noTimes}</p>
-  ) : (
-    <>
-      <p className="mb-3 font-medium">{formatDate(date, locale)}</p>
+  const group = (label: string, GroupIcon: Icon, slots: readonly string[]) => (
+    <div className="flex flex-col gap-2.5">
+      <p className="flex items-center gap-2 text-sm font-semibold text-ink-soft">
+        <GroupIcon weight="duotone" aria-hidden className="size-5 text-fern" />
+        {label}
+      </p>
       <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
-        {SLOT_TIMES.map((slot) => {
-          const isTaken = takenSet.has(slotKey(date, slot));
+        {slots.map((slot) => {
+          const isTaken = takenSet.has(slotKey(date!, slot));
           const checked = slot === time;
           return (
             <label
               key={slot}
               className={cn(
-                "tnum relative flex h-12 items-center justify-center rounded-full border text-[0.95rem] font-semibold transition-colors",
-                isTaken && "cursor-not-allowed border-transparent bg-cream text-ink-soft/50 line-through",
-                !isTaken && !checked && "cursor-pointer border-field text-ink hover:border-leaf hover:bg-mint/40",
-                checked && "border-leaf bg-leaf text-white",
+                "tnum relative flex h-12 items-center justify-center rounded-2xl border text-[0.95rem] font-semibold transition-colors",
+                isTaken && "cursor-not-allowed border-transparent bg-cream/70 text-ink-soft/40 line-through decoration-1",
+                !isTaken && !checked && "cursor-pointer border-line bg-white text-ink hover:border-leaf hover:bg-mint/40",
+                checked && "border-leaf bg-leaf text-white shadow-[var(--shadow-soft)]",
                 "has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-leaf",
               )}
             >
@@ -104,27 +213,27 @@ export function SlotPicker({
           );
         })}
       </div>
-    </>
+    </div>
   );
 
-  if (variant === "plain") {
-    return (
-      <div className="flex flex-col gap-5">
-        <Part id={`${idPrefix}-day`} heading={dayHeading} plain>
-          {dayPart}
-        </Part>
-        <Part id={`${idPrefix}-time`} heading={timeHeading} plain fieldset>
-          {timePart}
-        </Part>
-      </div>
-    );
-  }
+  const timePart = !date ? (
+    <p className="text-ink-soft">{p.pickDateFirst}</p>
+  ) : openCount(date) === 0 ? (
+    <p className="text-ink-soft">{p.noTimes}</p>
+  ) : (
+    <div className="flex flex-col gap-5">
+      <p className="font-medium">{formatDate(date, locale)}</p>
+      {group(p.morning, SunIcon, MORNING)}
+      {group(p.afternoon, CloudSunIcon, AFTERNOON)}
+    </div>
+  );
+
   return (
-    <div className="grid gap-6 lg:grid-cols-2 lg:items-start">
-      <Part id={`${idPrefix}-day`} heading={dayHeading}>
+    <div className="flex flex-col gap-6">
+      <Part id={`${idPrefix}-day`} heading={dayHeading} plain={variant === "plain"}>
         {dayPart}
       </Part>
-      <Part id={`${idPrefix}-time`} heading={timeHeading} fieldset>
+      <Part id={`${idPrefix}-time`} heading={timeHeading} plain={variant === "plain"} fieldset>
         {timePart}
       </Part>
     </div>
@@ -132,7 +241,7 @@ export function SlotPicker({
 }
 
 function Part({ id, heading, plain, fieldset, children }: { id: string; heading: string; plain?: boolean; fieldset?: boolean; children: ReactNode }) {
-  const className = plain ? "" : "rounded-3xl bg-white p-5 shadow-[var(--shadow-soft)] sm:p-7";
+  const className = plain ? "min-w-0" : "min-w-0 rounded-3xl bg-white p-5 shadow-[var(--shadow-soft)] sm:p-7";
   const title = <p className={cn("mb-4 font-bold", plain ? "text-base" : "text-lg")}>{heading}</p>;
   return fieldset ? (
     <fieldset className={className}>

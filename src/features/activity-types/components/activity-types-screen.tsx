@@ -1,15 +1,5 @@
-import {
-  ActivityTypesIcon,
-  CheckupIcon,
-  EducationIcon,
-  InfoIcon,
-  LabTestIcon,
-  ReminderIcon,
-  SupplementIcon,
-  VaccineIcon,
-  type Icon,
-} from "@/components/icons";
-import { IconCircle } from "@/components/ui/icon-circle";
+import { InfoIcon, ReminderIcon } from "@/components/icons";
+import { ServiceArt } from "@/components/shared/service-art";
 import { format } from "@/i18n/format";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import { getServerI18n } from "@/i18n/server";
@@ -18,17 +8,6 @@ import { listActivityTypes } from "../queries/list-activity-types";
 import type { ActivityType } from "../types";
 import { ActivityTypeDialog } from "./activity-type-dialog";
 
-// An icon that fits the service name (the same icons as the landing page).
-function iconFor(name: string): Icon {
-  const n = name.toLowerCase();
-  if (n.includes("prenatal") || n.includes("checkup")) return CheckupIcon;
-  if (n.includes("tetanus") || n.includes("vaccin")) return VaccineIcon;
-  if (n.includes("iron") || n.includes("folic") || n.includes("supplement")) return SupplementIcon;
-  if (n.includes("lab")) return LabTestIcon;
-  if (n.includes("education") || n.includes("class") || n.includes("session")) return EducationIcon;
-  return ActivityTypesIcon;
-}
-const TONES = ["mint", "blush", "beige"] as const;
 
 // /admin/activity-types: one card per service with its reminder timing, an
 // Edit button each, and "Add activity type". Reads the session.
@@ -56,10 +35,10 @@ export function ActivityTypesView({ t, types }: { t: Dictionary; types: Activity
       </div>
 
       <ul className="grid gap-4 md:grid-cols-2">
-        {types.map((type, index) => (
+        {types.map((type) => (
           <li key={type.id} className="flex flex-col gap-4 rounded-3xl bg-white p-5 shadow-[var(--shadow-soft)] sm:p-6">
             <div className="flex items-start gap-4">
-              <IconCircle icon={iconFor(type.name)} tone={TONES[index % TONES.length]} />
+              <ServiceArt icon={type.icon} size="sm" />
               <div className="min-w-0 flex-1">
                 <h2 className="text-lg leading-6 font-semibold break-words">{type.name}</h2>
                 <p className="mt-1 text-[0.95rem] leading-6 text-ink-soft">{type.description || a.noDescription}</p>

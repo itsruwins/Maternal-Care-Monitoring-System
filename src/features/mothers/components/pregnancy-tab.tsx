@@ -95,14 +95,20 @@ function CurrentCard({
   if (pregnancy.remarks) rows.push([p.remarks, pregnancy.remarks]);
 
   return (
-    <section aria-labelledby="current-pregnancy" className="rounded-3xl bg-white p-6 shadow-[var(--shadow-raised)] sm:p-8">
-      <div className="flex flex-col gap-6 md:flex-row md:items-center">
+    <section aria-labelledby="current-pregnancy" className="rounded-3xl bg-white p-6 shadow-[var(--shadow-soft)] sm:p-8">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <h2 id="current-pregnancy" className="text-xl font-bold">{p.current}</h2>
+        <div className="flex flex-wrap gap-2">
+          <CurrentPregnancyDialog motherId={motherId} pregnancy={pregnancy} today={today} />
+          <ClosePregnancyDialog motherId={motherId} pregnancy={pregnancy} today={today} />
+        </div>
+      </div>
+      <div className="mt-6 flex flex-col gap-6 md:flex-row md:items-center">
         <div className="flex items-center gap-5">
           {summary.kind === "active" && summary.trimester && <TrimesterPicture trimester={summary.trimester} className="size-24 sm:size-28" />}
           <div>
-            <h2 id="current-pregnancy" className="text-sm font-semibold text-ink-soft">{p.current}</h2>
             {summary.kind === "active" && summary.weeks !== null && (
-              <p className="tnum mt-1 text-[2rem] leading-tight font-extrabold tracking-[-0.02em]">{format(t.mothers.week, { weeks: summary.weeks })}</p>
+              <p className="tnum text-[2rem] leading-tight font-extrabold tracking-[-0.02em]">{format(t.mothers.week, { weeks: summary.weeks })}</p>
             )}
             {summary.kind === "active" && summary.trimester && <p className="text-ink-soft">{t.mothers.trimesters[summary.trimester - 1]}</p>}
             {countdown && (
@@ -120,10 +126,6 @@ function CurrentCard({
             </div>
           ))}
         </dl>
-      </div>
-      <div className="mt-6 flex flex-wrap gap-2 border-t border-line pt-5">
-        <CurrentPregnancyDialog motherId={motherId} pregnancy={pregnancy} today={today} />
-        <ClosePregnancyDialog motherId={motherId} pregnancy={pregnancy} today={today} />
       </div>
     </section>
   );

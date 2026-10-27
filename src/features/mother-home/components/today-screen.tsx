@@ -72,10 +72,10 @@ export function TodayView({ t, locale, data, today }: { t: Dictionary; locale: L
                 <TrimesterPicture
                   trimester={trimester}
                   priority
-                  className="size-48 shadow-[0_18px_40px_-18px_rgb(156_79_74/0.45)] ring-8 ring-white/60 sm:size-56"
+                  className="size-48 shadow-[var(--shadow-raised)] ring-8 ring-white/60 sm:size-56"
                 />
               )}
-              <p className="tnum mt-6 text-[2.75rem] leading-none font-extrabold tracking-[-0.03em] sm:text-[3.25rem]">
+              <p className="mt-6 text-[2.75rem] leading-none font-extrabold tracking-[-0.02em] sm:text-[3.25rem]">
                 {format(d.week, { weeks: age.weeks })}
               </p>
               <p className="mt-2 text-lg text-ink-soft">
@@ -144,17 +144,17 @@ function weekDays(today: string, intlLocale: string, todayLabel: string): WeekDa
 function Insights({ t, weeks }: { t: Dictionary; weeks: number }) {
   const c = t.today.cards;
   const card = (href: string, title: string, tone: "white" | "mint" | "blush", visual: ReactNode, body?: string) => (
-    <Link href={href} className="block rounded-xl no-underline outline-offset-4 focus-visible:outline-2 focus-visible:outline-leaf">
-      <InsightCard title={title} tone={tone} visual={visual} className="h-40 w-full transition-transform hover:-translate-y-0.5">
-        {body && <p className="text-sm text-ink-soft">{body}</p>}
+    <Link href={href} className="block h-full rounded-xl no-underline outline-offset-4 focus-visible:outline-2 focus-visible:outline-leaf">
+      <InsightCard title={title} tone={tone} visual={visual} className="h-full min-h-40 w-full gap-3 transition-transform hover:-translate-y-0.5">
+        {body && <p className="line-clamp-3 text-sm text-ink-soft">{body}</p>}
       </InsightCard>
     </Link>
   );
   return (
     <div className="grid grid-cols-3 gap-3">
       {card("/mother/appointments", c.nextVisit, "white", <IconCircle icon={AppointmentIcon} tone="leaf" size="sm" />, c.nextVisitNone)}
-      {card("#tip", c.tip, "mint", <IconCircle icon={WellbeingIcon} tone="fern" size="sm" />, format(t.today.week, { weeks }))}
-      {card("#danger", c.danger, "blush", <IconCircle icon={DangerIcon} tone="white" size="sm" className="text-rose-deep" />)}
+      {card("#tip", c.tip, "mint", <IconCircle icon={WellbeingIcon} tone="fern" size="sm" />, t.today.tips[weeks % t.today.tips.length])}
+      {card("#danger", c.danger, "blush", <IconCircle icon={DangerIcon} tone="white" size="sm" className="text-rose-deep" />, c.dangerBody)}
     </div>
   );
 }
@@ -181,6 +181,15 @@ function DangerCard({ t }: { t: Dictionary }) {
         ))}
       </ul>
       <p className="mt-4 font-semibold text-rose-deep">{t.today.dangerAction}</p>
+      {!isPlaceholder(SITE.healthCenter.contactNumber) && (
+        <a
+          href={`tel:${SITE.healthCenter.contactNumber.replace(/[^\d+]/g, "")}`}
+          className="mt-3 inline-flex items-center gap-2 font-semibold text-rose-deep underline decoration-1 underline-offset-4"
+        >
+          <PhoneIcon aria-hidden className="size-4" />
+          {SITE.healthCenter.contactNumber}
+        </a>
+      )}
     </Panel>
   );
 }
@@ -219,14 +228,14 @@ function NoPregnancy({ t, locale }: { t: Dictionary; locale: Locale }) {
           <HealthCenterIcon aria-hidden className="size-5 text-leaf" />
           {d.center}
         </p>
-        <dl className="mt-3 grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-2 text-[0.95rem]">
+        <dl className="mt-3 grid gap-x-4 gap-y-1 text-[0.95rem] sm:grid-cols-[auto_minmax(0,1fr)] sm:gap-y-2">
           {rows.map(([RowIcon, label, value]) => (
             <div key={label} className="contents">
               <dt className="flex items-center gap-2 text-ink-soft">
                 <RowIcon aria-hidden className="size-4" />
                 {label}
               </dt>
-              <dd className="min-w-0 break-words">{value}</dd>
+              <dd className="mb-2 min-w-0 break-words sm:mb-0">{value}</dd>
             </div>
           ))}
         </dl>

@@ -48,9 +48,12 @@ export function PuroksView({ t, puroks }: { t: Dictionary; puroks: Purok[] }) {
                   <span className={cn("min-w-0 text-[0.95rem] font-semibold break-words", !purok.isActive && "text-ink-soft")}>
                     {purok.name}
                   </span>
-                  <span className="shrink-0">
-                    <StatusBadge status={purok.isActive ? "ACTIVE" : "INACTIVE"} label={purok.isActive ? p.shown : p.hidden} />
-                  </span>
+                  {/* Only the exception is marked: shown is the normal state. */}
+                  {!purok.isActive && (
+                    <span className="shrink-0">
+                      <StatusBadge status="INACTIVE" label={p.hidden} />
+                    </span>
+                  )}
                 </div>
                 <div className="flex shrink-0 items-center gap-2">
                   <PurokDialog purok={purok} />

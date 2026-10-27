@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils/cn";
 // trimester are always written next to it.
 export function TrimesterPicture({ trimester, className, priority }: { trimester: Trimester; className?: string; priority?: boolean }) {
   return (
-    <span className={cn("relative block size-24 shrink-0 overflow-hidden rounded-full bg-[#f6e2db]", className)}>
+    <span className={cn("relative block size-24 shrink-0 overflow-hidden rounded-full bg-blush", className)}>
       <Image
         src={`/fetus/trimester-${trimester}.webp`}
         alt=""

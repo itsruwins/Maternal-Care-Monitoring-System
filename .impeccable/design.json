@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-27T00:00:00+00:00",
+  "generatedAt": "2026-10-27T12:00:00+00:00",
   "title": "Design System: Taysan MaternaCare",
   "extensions": {
     "colorMeta": {
@@ -310,7 +310,7 @@
       {
         "name": "ease-out-expo",
         "value": "cubic-bezier(0.16, 1, 0.3, 1)",
-        "purpose": "Button press/hover, sheet slide-in, fetus glyph growth, weeks card entry."
+        "purpose": "Button press/hover, sheet slide-in, landing fetus glyph growth, weeks card entry."
       },
       {
         "name": "float",
@@ -350,6 +350,10 @@
       {
         "name": "lg",
         "value": "1024px"
+      },
+      {
+        "name": "xl",
+        "value": "1280px"
       }
     ]
   },
@@ -449,11 +453,35 @@
       "description": "28px caption pills by role tint; status leads with a 6px dot.",
       "html": "<span class=\"ds-badge ds-badge--admin\">Admin</span><span class=\"ds-badge ds-badge--hw\">Health worker</span><span class=\"ds-badge ds-badge--mother\">Mother</span><span class=\"ds-badge ds-badge--hw\"><i class=\"ds-dot\"></i>Active</span><span class=\"ds-badge ds-badge--off\"><i class=\"ds-dot\"></i>Inactive</span>",
       "css": ".ds-badge{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;margin-right:8px;border-radius:9999px;font:600 .75rem/1rem Inter,ui-sans-serif,system-ui,sans-serif;white-space:nowrap}.ds-badge--admin{background:#e8ddc9;color:#1f2d27}.ds-badge--hw{background:#e3eae4;color:#3e5a4d}.ds-badge--mother{background:#f6e6e1;color:#9c4f4a}.ds-badge--off{background:#f3efe3;color:#56665d}.ds-dot{width:6px;height:6px;border-radius:9999px;background:currentColor}"
+    },
+    {
+      "name": "Record Tabs",
+      "kind": "nav",
+      "refersTo": "record-tab-active",
+      "description": "Link tabs on a mother's record: white pill bar, mint pill for the current tab; scrolls sideways on phones.",
+      "html": "<nav class=\"ds-tabs\"><a class=\"ds-tab\" href=\"#\">Overview</a><a class=\"ds-tab ds-tab--active\" href=\"#\" aria-current=\"page\">Pregnancy</a><a class=\"ds-tab\" href=\"#\">Appointments</a><a class=\"ds-tab\" href=\"#\">Visits</a></nav>",
+      "css": ".ds-tabs{display:inline-flex;gap:4px;padding:6px;background:#fff;border-radius:9999px;box-shadow:0 1px 2px rgb(31 45 39 / 0.04),0 4px 14px -4px rgb(31 45 39 / 0.08);font-family:Inter,ui-sans-serif,system-ui,sans-serif;font-feature-settings:'cv11'}.ds-tab{display:flex;align-items:center;height:40px;padding:0 16px;border-radius:9999px;font-size:0.95rem;font-weight:500;color:#56665d;text-decoration:none;white-space:nowrap;transition:background-color .2s cubic-bezier(0.16,1,0.3,1),color .2s}.ds-tab:hover{background:#f3efe3;color:#1f2d27}.ds-tab:focus-visible{outline:2px solid #3e5a4d;outline-offset:2px}.ds-tab--active,.ds-tab--active:hover{background:#e3eae4;color:#3e5a4d;font-weight:600}"
+    },
+    {
+      "name": "Pregnancy Chip and Countdown",
+      "kind": "chip",
+      "refersTo": "chip-week",
+      "description": "Blush 'Week N' chip with trimester text; cream/mint outcome chips; mint countdown pill, blush when overdue.",
+      "html": "<span class=\"ds-preg\"><span class=\"ds-chip ds-chip--week\">Week 21</span><span class=\"ds-preg-tri\">2nd trimester</span></span><span class=\"ds-chip ds-chip--live\">Live birth</span><span class=\"ds-chip ds-chip--outcome\">Miscarriage · Mar 3, 2024</span><span class=\"ds-count\">132 days to go</span><span class=\"ds-count ds-count--over\">3 days overdue</span>",
+      "css": ".ds-preg{display:inline-flex;align-items:center;gap:8px;margin-right:12px}.ds-preg-tri{font-size:14px;color:#56665d}.ds-chip{display:inline-flex;align-items:center;height:28px;padding:0 10px;border-radius:9999px;font:600 12px/16px Inter,ui-sans-serif,system-ui,sans-serif;white-space:nowrap;margin-right:8px}.ds-chip--week{background:#f6e6e1;color:#9c4f4a}.ds-chip--live{background:#e3eae4;color:#3e5a4d}.ds-chip--outcome{background:#f3efe3;color:#56665d}.ds-count{display:inline-flex;padding:4px 12px;border-radius:9999px;font:600 14px/20px Inter,ui-sans-serif,system-ui,sans-serif;background:#e3eae4;color:#3e5a4d;margin-right:8px;font-variant-numeric:tabular-nums}.ds-count--over{background:#f6e6e1;color:#9c4f4a}"
+    },
+    {
+      "name": "Insight Card Grid",
+      "kind": "card",
+      "refersTo": "insight-card",
+      "description": "Today's three insight cards as whole-card links: white, mint and blush tiles, title top, clamped body, icon circle bottom.",
+      "html": "<div class=\"ds-insights\"><a class=\"ds-insight\" href=\"#\"><strong>Next visit</strong><span>None booked yet</span><i class=\"ds-dot ds-dot--leaf\"></i></a><a class=\"ds-insight ds-insight--mint\" href=\"#\"><strong>Tip of the week</strong><span>Get your tetanus vaccine on time. Ask the midwife when it's due.</span><i class=\"ds-dot ds-dot--fern\"></i></a><a class=\"ds-insight ds-insight--blush\" href=\"#\"><strong>Danger signs</strong><span>Know when to get help</span><i class=\"ds-dot ds-dot--white\"></i></a></div>",
+      "css": ".ds-insights{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;max-width:480px;font-family:Inter,ui-sans-serif,system-ui,sans-serif}.ds-insight{display:flex;flex-direction:column;justify-content:space-between;gap:12px;min-height:160px;padding:14px;border-radius:20px;background:#fff;box-shadow:0 1px 2px rgb(31 45 39 / 0.04),0 4px 14px -4px rgb(31 45 39 / 0.08);color:#1f2d27;text-decoration:none;transition:transform .2s cubic-bezier(0.16,1,0.3,1)}.ds-insight:hover{transform:translateY(-2px)}.ds-insight:focus-visible{outline:2px solid #3e5a4d;outline-offset:4px}.ds-insight strong{font-size:0.95rem;line-height:20px;font-weight:600}.ds-insight span{font-size:14px;color:#56665d;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;flex:1}.ds-insight--mint{background:#e3eae4;box-shadow:none}.ds-insight--blush{background:#f6e6e1;box-shadow:none}.ds-dot{display:block;width:36px;height:36px;border-radius:9999px}.ds-dot--leaf{background:#3e5a4d}.ds-dot--fern{background:#769382}.ds-dot--white{background:#fff}"
     }
   ],
   "narrative": {
     "northStar": "The Gentle Checkup",
-    "overview": "A soft, Flo-inspired world built around the mother rather than the clinic. The client's palette (leaf and fern greens, beige, sage, cream on a warm milk ground) carries almost everything; one dusty rose carries the few things meant to feel tender or urgent: hearts, the baby glyph, danger signs and soft tints. Surfaces are rounded white cards, pill buttons and circles for dates and icons, sitting on curved tinted panels with low, ink-tinted shadows. It is light only, made for daylight at home and at the health center.\n\nThis is a web app, not a mobile app. Desktop gets a real web layout (header with section links, two-column sections, a 72rem container); phone widths borrow Flo's patterns (bottom sheets, full-width pill actions, stacked cards). Nothing imitates an app store, an install prompt or a device frame. Type is Inter alone, with extra-bold titles and a friendly single-storey \"a\". Motion is one slow float and short expo-out transitions, all stopped by reduced motion.\n\nIt refuses the generic SaaS hero (headline, device screenshot, feature grid) and clinical realism. Sample data is shown, but always labelled \"Sample\".\n\nBehind the login the same world turns into a quiet working app. Staff (health workers and admins) get a white sidebar and top bar on the milk ground; mothers get a slim top bar and a floating bottom-nav pill. Content sits in white cards with the soft shadow, the selected place is always a mint pill with a filled icon, and roles are told apart by tint (beige admin, mint health worker, blush mother), never by a new colour.",
+    "overview": "A soft, Flo-inspired world built around the mother rather than the clinic. The client's palette (leaf and fern greens, beige, sage, cream on a warm milk ground) carries almost everything; one dusty rose carries the few things meant to feel tender or urgent: hearts, the baby, danger signs and soft tints. Surfaces are rounded white cards, pill buttons and circles for dates and icons, sitting on curved tinted panels with low, ink-tinted shadows. It is light only, made for daylight at home and at the health center.\n\nThis is a web app, not a mobile app. Desktop gets a real web layout (header with section links, two-column sections, a 72rem container); phone widths borrow Flo's patterns (bottom sheets, full-width pill actions, stacked cards). Nothing imitates an app store, an install prompt or a device frame. Type is Inter alone, with extra-bold titles and a friendly single-storey \"a\". Motion is one slow float and short expo-out transitions, all stopped by reduced motion.\n\nIt refuses the generic SaaS hero (headline, device screenshot, feature grid) and clinical realism. Sample data is shown, but always labelled \"Sample\".\n\nBehind the login the same world turns into a quiet working app. Staff (health workers and admins) get a white sidebar and top bar on the milk ground; mothers get a slim top bar and a floating bottom-nav pill. Content sits in white cards with the soft shadow, the selected place is always a mint pill with a filled icon, and roles are told apart by tint (beige admin, mint health worker, blush mother), never by a new colour. The baby is shown two ways: a soft 3D picture per trimester inside the app, and the flat baby-in-womb glyph on the public landing hero.",
     "keyCharacteristics": [
       "Greens do the work; rose is a small accent; text only in ink, ink-soft, leaf or rose-deep.",
       "Inter only, extra-bold display and section titles, tabular numerals for every date and count.",
@@ -466,7 +494,7 @@
     "rules": [
       {
         "name": "The Rose Is an Accent Rule",
-        "body": "Rose appears only on hearts, the baby glyph, danger signs, errors and soft tints. It never becomes a primary button, a section heading colour or a large flat fill beyond blush.",
+        "body": "Rose appears only on hearts, the baby (glyph or picture), danger signs, errors and soft tints. It never becomes a primary button, a section heading colour or a large flat fill beyond blush.",
         "section": "colors"
       },
       {
@@ -526,7 +554,12 @@
       },
       {
         "name": "The One Place Rule",
-        "body": "The current place in either shell is a mint pill with leaf text and a filled icon; every other item is ink-soft with a regular-weight icon and a cream hover. Nothing else marks position.",
+        "body": "The current place in either shell is a mint pill with leaf text and a filled icon; every other item is ink-soft with a regular-weight icon and a cream hover. Nothing else marks position. The record tab bar follows the same rule without icons.",
+        "section": "layout"
+      },
+      {
+        "name": "The Mark the Exception Rule",
+        "body": "In a list, only the unusual state carries a badge (a hidden purok is badged, a shown one is not); the normal state stays unmarked.",
         "section": "layout"
       },
       {
@@ -542,6 +575,7 @@
     ],
     "dos": [
       "Do import every icon from the one icon index (Phosphor, plus the Health Icons fetus glyph). The same icon always means the same thing.",
+      "Do show the baby in the app with the trimester picture (decorative, beside written weeks), keeping all three renders in the same crop window; the glyph stays on the landing hero.",
       "Do put feature icons in soft colour circles (fill or duotone weight); use regular-weight outlines for navigation, switching to fill for the selected item.",
       "Do label every piece of sample data \"Sample\" (or \"Your estimate\" once she has entered her own weeks).",
       "Do keep text in ink, ink-soft, leaf or rose-deep, and check 4.5:1 on any new tint.",
@@ -551,17 +585,19 @@
       "Do make primary actions full-width pills at phone width and keep tap targets at 44px.",
       "Do mark the current place in a shell with a mint pill, leaf text and a filled icon.",
       "Do keep small labels, table heads and badges in sentence case.",
-      "Do register any new custom text-size token with the class merger so it isn't dropped next to a colour class."
+      "Do register any new custom text-size token with the class merger so it isn't dropped next to a colour class.",
+      "Do badge only the exceptional state in a list; let the normal state stay unmarked.",
+      "Do fold secondary columns and filters on narrow screens rather than shrinking them; keep phone list cards as single whole-card links."
     ],
     "donts": [
       "Don't set text in fern, sage or rose; they are too light.",
-      "Don't let rose spread beyond hearts, the baby glyph, danger signs, errors and tints.",
+      "Don't let rose spread beyond hearts, the baby (glyph or picture), danger signs, errors and tints.",
       "Don't place floating cards over the mother's face or the belly glyph.",
       "Don't add app-store badges, install prompts or device frames; this is a web app.",
       "Don't use black or hard offset shadows; shadows are low and ink-tinted.",
       "Don't add a second ambient motion or a fake sheet drag handle.",
       "Don't add a second typeface, a dark theme or kicker labels above titles.",
-      "Don't set uppercase or letter-spaced micro-labels; the week strip's weekday letters are the only uppercase.",
+      "Don't set uppercase or letter-spaced micro-labels; the week strip's weekday letters (and its Today label) are the only uppercase.",
       "Don't introduce a new colour for roles or statuses; use the existing tint pairs."
     ]
   }

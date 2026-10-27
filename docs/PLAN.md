@@ -423,6 +423,20 @@ Every create, update and reset runs on the server and checks the role first. Sta
 - **No active pregnancy:** a calm message with the health center's address, hours and contact (still "To be announced"), plus history and danger signs.
 - The placeholder check moved to `config/site.ts` (shared with the landing page). Dev preview: `/design-preview/mother-today` (`?lmp=`, `?none=1`).
 
+**Step 7 review (2026-10-27):**
+- **Checks:** production build passes; typecheck and lint pass.
+- **Contrast:** every new text/background pair is at least 4.5:1 (lowest: secondary text at the bottom of the rose hero, 4.67:1).
+- **Design review:** returned 5 fixes, all applied and confirmed in a second pass (verdict "ship"):
+  - the "Current pregnancy" card has a real section header, with Edit and Close beside it;
+  - health-center facts put the label above the value on phones, and the clinic hours no longer break after the dash;
+  - registry filters fold behind a "Filters" button on phones;
+  - the Today tip and danger cards say something;
+  - staff screens use one outcome wording (Live birth / Stillbirth / Miscarriage / Other).
+- **Extras:** only hidden puroks carry a badge; the danger card gets a call link once the health center number is set.
+- **Filipino:** shorter card labels and "Appointment" in the nav so nothing wraps.
+- **Docs:** `DESIGN.md` + `.impeccable/design.json` updated for the Phase 3 screens and the trimester pictures. Review screenshots deleted (not kept in the repo).
+- **Still needed:** your testing.
+
 ## Phase 4 — Appointments
 
 - **Mother:** request an appointment (activity type, preferred date and time) → REQUESTED; see status updates; cancel her own request.

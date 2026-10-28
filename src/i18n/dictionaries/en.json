@@ -115,7 +115,7 @@
         },
         {
           "title": "Get a text reminder",
-          "body": "We text you before every checkup, vaccine, lab test or class."
+          "body": "We text you before every checkup, vaccine or class."
         },
         {
           "title": "Visit the health center",
@@ -157,12 +157,24 @@
           "body": "Supplements given at the health center for a healthy pregnancy."
         },
         {
-          "name": "Laboratory tests",
-          "body": "Tests your midwife requests for you."
-        },
-        {
           "name": "Health education classes",
           "body": "Group sessions on pregnancy, birth and caring for your baby."
+        },
+        {
+          "name": "Nutrition counseling",
+          "body": "Advice on what to eat and healthy weight gain."
+        },
+        {
+          "name": "Prenatal dental checkup",
+          "body": "A check of your teeth and gums, which matter in pregnancy too."
+        },
+        {
+          "name": "Baby's heartbeat check",
+          "body": "Listening to your baby's heartbeat with the midwife."
+        },
+        {
+          "name": "Birth plan counseling",
+          "body": "Planning where and how you'll give birth, and what to bring."
         }
       ]
     },

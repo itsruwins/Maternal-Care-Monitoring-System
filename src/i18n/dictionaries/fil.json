@@ -115,7 +115,7 @@
         },
         {
           "title": "Makatanggap ng text",
-          "body": "Ite-text ka namin bago ang bawat checkup, bakuna, lab test o klase."
+          "body": "Ite-text ka namin bago ang bawat checkup, bakuna o klase."
         },
         {
           "title": "Pumunta sa health center",
@@ -157,12 +157,24 @@
           "body": "Mga bitaminang ibinibigay ng health center para sa malusog na pagbubuntis."
         },
         {
-          "name": "Laboratory tests",
-          "body": "Mga pagsusuring ipinagagawa ng iyong midwife."
-        },
-        {
           "name": "Klase sa kalusugan",
           "body": "Mga sesyon tungkol sa pagbubuntis, panganganak at pag-aalaga ng baby."
+        },
+        {
+          "name": "Payo sa nutrisyon",
+          "body": "Payo kung ano ang kakainin at malusog na pagdagdag ng timbang."
+        },
+        {
+          "name": "Dental checkup habang buntis",
+          "body": "Pagsusuri ng ngipin at gilagid, na mahalaga rin sa pagbubuntis."
+        },
+        {
+          "name": "Pakikinig sa tibok ng puso ng baby",
+          "body": "Pakikinig sa tibok ng puso ng iyong baby kasama ang midwife."
+        },
+        {
+          "name": "Pagpaplano ng panganganak",
+          "body": "Pagplano kung saan at paano ka manganganak, at ano ang dadalhin."
         }
       ]
     },

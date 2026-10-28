@@ -15,6 +15,8 @@ Run these in **Supabase Dashboard → SQL Editor**, in order. Each file is safe 
 | 9 | `supabase/migrations/0009_phase4.sql` | Phase 4: closed days; appointment slot rules (30-minute weekday slots 8–12 and 1–3, Manila time, not closed, not past; mothers from tomorrow up to 3 months); one appointment per slot; mother cancel / accept / decline functions; `taken_slots()`; SMS reminder queue kept in step with each appointment |
 | 10 | `supabase/migrations/0010_service_icons.sql` | Phase 4: an icon for each service (activity type), picked by admins from a fixed set; the 5 existing services get fitting icons |
 | 11 | `supabase/migrations/0011_more_services.sql` | Phase 4: adds Nutrition Counseling, Prenatal Dental Checkup, Fetal Heartbeat Check and Birth Plan Counseling (1-day reminder, with pictures); skips any that exist |
+| 12 | `supabase/migrations/0012_remove_laboratory_test.sql` | Phase 4: deletes the Laboratory Test service; stops without deleting if any appointment or visit uses it (it stopped: 1 test appointment) |
+| 13 | `supabase/migrations/0013_delete_laboratory_test.sql` | Phase 4: deletes Laboratory Test with its appointments and their SMS reminders (refuses if a recorded visit used it) |
 | — | `supabase/seed/first-admin.sql` | First admin (follow the steps at the top of the file) |
 
 ## Rules

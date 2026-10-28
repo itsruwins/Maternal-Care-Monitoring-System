@@ -549,6 +549,7 @@ Sample reminder (about 140 characters, one SMS):
   - the Filipino "See full month" is now "Buong buwan".
 - **Docs:** `DESIGN.md` + sidecar updated for Phase 4. Review screenshots deleted (not kept in the repo).
 - **Still needed:** your testing. Run migrations `0010` and `0011` first if you haven't.
+- **Laboratory Test removed (your request, 2026-10-29):** migration `0012_remove_laboratory_test.sql` deletes it only if nothing uses it, otherwise it stops and deletes nothing. It stopped: 1 test appointment used it. You chose to delete that too, so migration `0013_delete_laboratory_test.sql` deletes the service with its appointments and their SMS reminders (it refuses if a recorded visit used it). That leaves 8 services. The landing page's services section now lists the same 8 (two rows of four).
 
 ## Phase 5 — Prenatal visits & services
 

@@ -1,21 +1,24 @@
-import { CheckupIcon, EducationIcon, LabTestIcon, SupplementIcon, VaccineIcon, type Icon } from "@/components/icons";
+import { CarrotIcon, ChatsCircleIcon, CheckupIcon, EducationIcon, HeartbeatIcon, SupplementIcon, ToothIcon, VaccineIcon, type Icon } from "@/components/icons";
 import { IconCircle } from "@/components/ui/icon-circle";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import { cn } from "@/lib/utils/cn";
 
-// The five activity types, in the order of the dictionary list.
+// The services, in the order of the dictionary list.
 // One rule for every tile: a soft tinted tile with a white icon circle; the
 // glyph takes the tile's own deep colour (green on mint/beige, rose on blush).
 const SERVICES: { icon: Icon; tile: string; glyph: string }[] = [
   { icon: CheckupIcon, tile: "bg-mint", glyph: "text-leaf" },
   { icon: VaccineIcon, tile: "bg-blush", glyph: "text-rose-deep" },
   { icon: SupplementIcon, tile: "bg-beige", glyph: "text-leaf" },
-  { icon: LabTestIcon, tile: "bg-mint", glyph: "text-leaf" },
-  { icon: EducationIcon, tile: "bg-blush", glyph: "text-rose-deep" },
+  { icon: EducationIcon, tile: "bg-mint", glyph: "text-leaf" },
+  { icon: CarrotIcon, tile: "bg-blush", glyph: "text-rose-deep" },
+  { icon: ToothIcon, tile: "bg-beige", glyph: "text-leaf" },
+  { icon: HeartbeatIcon, tile: "bg-mint", glyph: "text-leaf" },
+  { icon: ChatsCircleIcon, tile: "bg-blush", glyph: "text-rose-deep" },
 ];
 
-// What the health center reminds her about. Phones: a list; desktop: five soft
-// tiles with icon, title and text top-aligned.
+// What the health center reminds her about. Phones: a list; desktop: two rows
+// of four soft tiles with icon, title and text top-aligned.
 export function Services({ t }: { t: Dictionary }) {
   const s = t.landing.services;
 
@@ -27,7 +30,7 @@ export function Services({ t }: { t: Dictionary }) {
         </h2>
         <p className="mt-3 max-w-[52ch] text-lg leading-7 text-ink-soft">{s.intro}</p>
 
-        <ul className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-5 lg:gap-4">
+        <ul className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4">
           {s.items.map((item, i) => {
             const style = SERVICES[i];
             return (

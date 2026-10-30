@@ -1211,6 +1211,41 @@
       "earlier": "Earlier pregnancies"
     }
   },
+  "myVisits": {
+    "title": "Visits",
+    "intro": "Your checkups at the health center, and how your weight and blood pressure are going.",
+    "next": "Next visit",
+    "nextNone": "No visit booked yet.",
+    "book": "Request a visit",
+    "seeAppointments": "See appointments",
+    "charts": "Your numbers",
+    "chartsNote": "For your information only. Your midwife will explain what they mean for you.",
+    "weight": "Weight",
+    "bp": "Blood pressure",
+    "top": "Top",
+    "bottom": "Bottom",
+    "week": "Week {weeks}",
+    "weekAxis": "Week of pregnancy",
+    "needTwo": "The chart appears after your second visit.",
+    "showTable": "Show as table",
+    "history": "Your visits",
+    "empty": "No visits recorded yet. They'll show here after your checkups.",
+    "thisPregnancy": "This pregnancy",
+    "earlier": "Earlier pregnancies",
+    "detail": {
+      "back": "Visits",
+      "title": "Visit on {date}",
+      "week": "Week {weeks}",
+      "vitals": "Your measurements",
+      "services": "What you received",
+      "noServices": "No services recorded.",
+      "fundal": "Belly measurement (fundal height)",
+      "fhr": "Baby's heartbeat",
+      "temperature": "Temperature",
+      "pulse": "Pulse",
+      "notRecorded": "Not recorded"
+    }
+  },
   "profile": {
     "title": "Your profile",
     "details": {

@@ -617,6 +617,16 @@ Sample reminder (about 140 characters, one SMS):
 - On phones, the record's tab bar scrolls the current tab into view (`components/shared/scroll-active-into-view.tsx`).
 - Dev previews: `/design-preview/visit-detail`, `/design-preview/mother-record?tab=visits`.
 
+**Step 4 built (2026-10-30):** the mother's **Visits** page (`/mother/visits`, feature `features/mother-visits`).
+- **Next visit:** her next confirmed (or else waiting) visit, with See appointments, or Request a visit when none is booked.
+- **"Your numbers":** weight and blood pressure charts for this pregnancy by week (display only, with "For your information only. Your midwife will explain…"). They appear after the second visit.
+  - Plain SVG, drawn at the real width so labels stay 13px.
+  - Hover or arrow keys show one readout for every line.
+  - The two blood-pressure lines are labelled "Top" and "Bottom", and "Show as table" lists every value.
+  - Colours (green `#16805F`, soft rose `#E08F82`) passed the dataviz validator for colour-blind separation. The rose is light, which is why the lines carry labels and the table exists.
+- **Her visits:** a week tile, date, BP, weight and services. Each opens `/mother/visits/[id]` with her measurements and what she received. Staff visit notes are not shown to mothers.
+- Dev preview: `/design-preview/my-visits` (`?visit=1` for one visit).
+
 ## Phase 6 — Missed appointments & follow-ups
 
 - **Nightly job (pg_cron):** CONFIRMED/RESCHEDULED appointments whose time has passed with no visit → MISSED, and a MISSED_NOTICE SMS is queued.

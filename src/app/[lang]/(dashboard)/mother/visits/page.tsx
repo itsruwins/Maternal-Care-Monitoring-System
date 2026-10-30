@@ -1,12 +1,10 @@
 import { Suspense } from "react";
-import { ComingSoon } from "@/features/shell/components/coming-soon";
-import { AREA_ROLES } from "@/lib/auth/roles";
-
+import { MyVisitsScreen } from "@/features/mother-visits/components/my-visits-screen";
 
 export default function MotherVisitsPage() {
   return (
-    <Suspense fallback={null}>
-      <ComingSoon roles={AREA_ROLES.mother} navKey="visits" phase={5} />
+    <Suspense fallback={<div aria-hidden className="h-96 animate-pulse rounded-3xl bg-white/60" />}>
+      <MyVisitsScreen />
     </Suspense>
   );
 }

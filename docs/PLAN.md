@@ -644,8 +644,60 @@ Sample reminder (about 140 characters, one SMS):
 
 ## Phase 6 — Missed appointments & follow-ups
 
-- **Nightly job (pg_cron):** CONFIRMED/RESCHEDULED appointments whose time has passed with no visit → MISSED, and a MISSED_NOTICE SMS is queued.
+- **Daily check (pg_cron, 6:00 PM):** CONFIRMED/RESCHEDULED appointments whose time has passed with no visit → MISSED, and a MISSED_NOTICE SMS is queued.
 - **Follow-up queue** for staff: log a follow-up (call, SMS or home visit + outcome), several per appointment, and rebook from there.
+
+**Decisions (asked 2026-10-30):**
+
+| Topic | Decision |
+|---|---|
+| When a visit counts as missed | A **daily check at 6:00 PM** Manila time (pg_cron runs on UTC, so 10:00 AM UTC). Every open appointment whose time has passed turns **Missed**; a skipped day is caught up on the next run. **If any visit was recorded for her that day**, her other appointments that day become **Completed** instead (e.g. a checkup and a TT shot booked back to back, with only one linked to the visit). A visit recorded after 6 PM can still be linked to the Missed appointment, which then becomes Completed. |
+| Which appointments | **Confirmed and New time sent** both turn Missed and go on the follow-up list. **Only Confirmed ones get the SMS**: she never agreed to an unanswered new time (and no SMS told her about it), so staff reach her instead. |
+| Closed pregnancies | **Closing a pregnancy cancels its open appointments** (remark "Pregnancy closed") and removes their unsent messages, so no reminder or missed notice reaches her after a birth or a loss. The check skips pregnancies that aren't current. |
+| Requests past their date | A request whose date passes before staff answer it **stays in Requests, marked "Date passed"**. Confirm is hidden; staff offer another time or cancel it. The check leaves it alone. |
+| Missed-visit SMS | **Taglish, direct**, one message for everyone, queued for **8:00 AM the next morning**. It is **removed** if, before then, a visit is recorded, she's rebooked, her pregnancy is closed or staff close the follow-up. Misses found more than 2 days late (e.g. old test appointments) get no SMS. Every mother has a mobile number, so no one is skipped. Phase 6 only queues it; sending starts in Phase 7. |
+| Follow-up list | One item per missed appointment, **open until** she has a new appointment (booked by staff or her own request, not cancelled), a visit is recorded for her, her pregnancy is closed, or a health worker ticks **"No more follow-up needed"**. Sorted-out items move to a **Closed** tab that says how each one ended. |
+| Sorting and filters | **Oldest first**, with "Missed N days ago". Search by name or mobile; filters for purok, missed date (from–to) and "Not contacted yet" / "Tried already". 20 per page; table on desktop, cards on phones. |
+| Logging a follow-up | **Method** (Call, SMS from the health worker's phone, Home visit), **date** (today by default; not in the future or before the missed visit), **result** (Reached her / Couldn't reach her), **notes**, and an optional **"No more follow-up needed"** with a reason (moved away, getting care elsewhere, other). Several per missed appointment. |
+| Editing | **Same day, any health worker; admins any time** (the same rule as visits). Only admins delete. |
+| Rebooking | After logging a follow-up where she was reached, an optional **"Book a new appointment"** step (like Phase 5's next checkup: the shared booking form, starting with the missed service and the first open weekday from tomorrow). Every item also has **Rebook**. It books CONFIRMED and queues the reminder, and the item leaves the list. |
+| Mother view | A **gentle blush notice** on her Appointments page and in the Today "Next visit" card ("We missed you at your Prenatal Checkup on Tue, Nov 3") with **Request a visit** or a line to contact the health center, shown while the missed visit is still open. **Follow-up notes become staff-only** (today the database lets mothers read them). |
+| Staff views | **Mother record → Follow-ups tab:** her missed appointments (open first), each with its follow-up log and the same actions. The Follow-ups page shows the open count. **The staff dashboard stays in Phase 8.** |
+
+Sample missed-visit SMS (157 characters, one SMS; the longest service name with a long first name makes 186, two parts):
+> Hi Ana! Hindi ka nakarating sa Prenatal Checkup mo noong Tue, Nov 3. Pumunta o tumawag sa health center para sa bagong schedule. Salamat! -Taysan MaternaCare
+
+**Build, in steps (each ends with screenshots for you):**
+1. **Database (migration `0015_phase6.sql`, run by you):**
+   - Turns on **pg_cron** and schedules the check every day at 6:00 PM Manila (`mark_missed_appointments()`). You can also run it by hand in the SQL Editor to test.
+   - **The check:** Missed, or Completed when she had a visit that day; skips pregnancies that aren't current; queues the SMS for Confirmed ones (8:00 AM the next morning; none for misses more than 2 days old).
+   - **Closing a pregnancy** cancels its open appointments and removes their unsent messages. Pregnancies closed before this migration get the same clean-up once.
+   - An unsent missed notice is **removed** when she's rebooked, a visit is recorded, her pregnancy closes or staff close the follow-up.
+   - **`follow_up`** gains a result, a close reason and the time it was logged. Rules: only on Missed appointments; recorded by the logged-in staff member; date not in the future or before the missed visit; health workers edit on the day it was logged, admins any time; only admins delete; **only staff can read follow-ups**.
+   - A read-only **follow-up list** for staff (open or closed, how it ended, attempts so far), and a small function that tells a mother which of her missed visits are still open.
+   - App types and `docs/database-setup.md` updated.
+2. **Staff Follow-ups page** (`/staff/follow-ups`, feature `features/follow-ups`):
+   - **Open** (with its count) and **Closed** tabs; search and filters; oldest first; table on desktop, cards on phones.
+   - Each item: her name (links to her record), mobile (tap to call), purok, the missed service and time, "Missed N days ago", attempts so far, **Log follow-up** and **Rebook**.
+   - **Log follow-up** dialog. Entries can be edited (same day, or admins) and deleted (admins).
+   - After logging a follow-up where she was reached: **Book a new appointment?** opens the booking step (`/staff/follow-ups/[appointmentId]/rebook`), or Skip.
+3. **Mother record → Follow-ups tab**, plus appointment touches:
+   - Her missed appointments (open first, then closed with how each ended), each with its follow-up log and the same actions.
+   - Staff Appointments: Missed cards link to her follow-ups; requests past their date say "Date passed" and drop Confirm.
+4. **Mother side:** the gentle missed-visit notice on Appointments and in the Today "Next visit" card, with Request a visit.
+5. **Review:** screenshots, contrast and accessibility checks, an independent design review, fixes, then `DESIGN.md` updated by the documenter. Review screenshots deleted afterwards. Then your testing and sign-off.
+
+**Needs from you:** run `0015_phase6.sql`. If it can't turn on pg_cron, enable it in Supabase → Database → Extensions first, then run the file again (it's safe to re-run).
+
+**For Phase 7:** the sender should skip Pending messages whose time passed long ago, so notices queued while testing Phase 6 aren't sent late.
+
+**Step 1 done (2026-10-30):** migration `0015_phase6.sql`, run and checked by you (follow-up columns as expected; the job is active at `0 10 * * *`).
+- **pg_cron** is turned on; the job `mark-missed-appointments` runs at 10:00 UTC (6:00 PM Manila). To test by hand: `select public.mark_missed_appointments();`.
+- **The check:** Confirmed / New time sent appointments of current pregnancies whose time has passed become Missed, or Completed if she had any visit that day. A missed Confirmed one gets the SMS for 8:00 AM the next morning, unless it is more than 2 days old or she was already rebooked. An appointment that changes while the check runs is left alone.
+- **Follow-ups:** new `result`, `close_reason` and `created_at`. Only on Missed appointments; saved as the logged-in staff member; the date defaults to today, never in the future or before the missed day; health workers edit on the day it was logged, admins any time; "Other" as the close reason needs a note; only staff can read them.
+- **The list (`follow_up_item`):** one row per Missed appointment with the tries so far, the last try, and how it ended (came in, rebooked, closed by staff, pregnancy closed), or open. It follows each reader's own access rules. Mothers use `my_open_missed_visits()` instead, which never includes notes.
+- **Clean-up rules:** an unsent missed notice is deleted as soon as its follow-up is sorted out. Closing a pregnancy cancels its open appointments ("Pregnancy closed"); pregnancies already closed get this once when the migration runs.
+- App types and `docs/database-setup.md` updated (including how to see and test the job).
 
 ## Phase 7 — SMS reminders (HTTPSMS)
 

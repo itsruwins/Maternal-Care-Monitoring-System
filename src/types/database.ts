@@ -1,5 +1,5 @@
 // Database types, written from the confirmed schema (inspect-schema.sql, 2026-10-26)
-// plus migrations 0001-0014. Update this file whenever a migration changes a table.
+// plus migrations 0001-0015. Update this file whenever a migration changes a table.
 
 type NullableKeys<T> = { [K in keyof T]: null extends T[K] ? K : never }[keyof T];
 
@@ -34,6 +34,10 @@ export type AppointmentStatus =
 export type ReminderType = "UPCOMING" | "MISSED_NOTICE";
 export type SmsDeliveryStatus = "PENDING" | "SENT" | "DELIVERED" | "FAILED";
 export type FollowUpMethod = "CALL" | "SMS" | "HOME_VISIT";
+export type FollowUpResult = "REACHED" | "NOT_REACHED";
+export type FollowUpCloseReason = "MOVED_AWAY" | "CARE_ELSEWHERE" | "OTHER";
+/** How a missed appointment's follow-up was sorted out (view follow_up_item). */
+export type FollowUpEnding = "CAME_IN" | "REBOOKED" | "CLOSED" | "PREGNANCY_CLOSED";
 
 export type UserAccountRow = {
   user_id: string;
@@ -151,10 +155,43 @@ export type SmsReminderRow = {
 export type FollowUpRow = {
   follow_up_id: number;
   appointment_id: number;
+  /** Set by the database to the logged-in staff member (0015). */
   health_worker_id: number;
   follow_up_date: string;
   method: FollowUpMethod;
   outcome_notes: string;
+  /** Required for new entries (0015). */
+  result: FollowUpResult | null;
+  /** Set when the entry says "No more follow-up needed" (0015). */
+  close_reason: FollowUpCloseReason | null;
+  created_at: string;
+};
+
+/** One Missed appointment on the follow-up list (view follow_up_item, 0015). */
+export type FollowUpItemRow = {
+  appointment_id: number;
+  pregnancy_id: number;
+  mother_id: number;
+  activity_type_id: number;
+  service: string;
+  missed_at: string;
+  first_name: string;
+  middle_name: string | null;
+  last_name: string;
+  contact_number: string;
+  purok_id: number | null;
+  /** Null when she has no purok, or for a hidden one (health workers see shown puroks only). */
+  purok_name: string | null;
+  attempts: number;
+  last_follow_up_date: string | null;
+  last_method: FollowUpMethod | null;
+  last_result: FollowUpResult | null;
+  ended_how: FollowUpEnding | null;
+  ended_at: string | null;
+  close_reason: FollowUpCloseReason | null;
+  /** The new appointment's time, when it ended as REBOOKED. */
+  rebooked_at: string | null;
+  is_open: boolean;
 };
 
 export type PurokRow = {
@@ -221,12 +258,21 @@ export type Database = {
         ]
       >;
       sms_reminder: TableDef<SmsReminderRow, "reminder_id", [Relation<"sms_reminder_appointment_id_fkey", "appointment_id", "appointment", "appointment_id">]>;
-      follow_up: TableDef<FollowUpRow, "follow_up_id">;
+      follow_up: TableDef<
+        FollowUpRow,
+        "follow_up_id" | "health_worker_id" | "created_at",
+        [
+          Relation<"follow_up_appointment_id_fkey", "appointment_id", "appointment", "appointment_id">,
+          Relation<"follow_up_health_worker_id_fkey", "health_worker_id", "health_worker", "health_worker_id">,
+        ]
+      >;
       login_attempt: TableDef<LoginAttemptRow, "login_attempt_id" | "attempted_at">;
       purok: TableDef<PurokRow, "purok_id" | "sort_order" | "is_active" | "created_at">;
       closed_day: TableDef<ClosedDayRow, "created_at">;
     };
-    Views: { [_ in never]: never };
+    Views: {
+      follow_up_item: { Row: FollowUpItemRow; Relationships: [] };
+    };
     Functions: {
       current_user_role: { Args: never; Returns: string | null };
       current_mother_id: { Args: never; Returns: number | null };
@@ -268,6 +314,7 @@ export type Database = {
         };
         Returns: undefined;
       };
+      my_open_missed_visits: { Args: never; Returns: { appointment_id: number; missed_at: string; service: string }[] };
     };
     Enums: {
       user_role: UserRole;
@@ -278,6 +325,8 @@ export type Database = {
       reminder_type: ReminderType;
       sms_delivery_status: SmsDeliveryStatus;
       follow_up_method: FollowUpMethod;
+      follow_up_result: FollowUpResult;
+      follow_up_close_reason: FollowUpCloseReason;
     };
     CompositeTypes: { [_ in never]: never };
   };

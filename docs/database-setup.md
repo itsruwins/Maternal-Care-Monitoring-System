@@ -1,6 +1,6 @@
 # Database setup
 
-Run these in **Supabase Dashboard → SQL Editor**, in order. Each file is safe to read before running; none of them delete data.
+Run these in **Supabase Dashboard → SQL Editor**, in order. Each file is safe to read before running. Only 0012–0013 delete records (the Laboratory Test service); 0009 and 0015 also remove unsent SMS messages that no longer apply.
 
 | # | File | What it does |
 |---|---|---|
@@ -18,12 +18,21 @@ Run these in **Supabase Dashboard → SQL Editor**, in order. Each file is safe 
 | 12 | `supabase/migrations/0012_remove_laboratory_test.sql` | Phase 4: deletes the Laboratory Test service; stops without deleting if any appointment or visit uses it (it stopped: 1 test appointment) |
 | 13 | `supabase/migrations/0013_delete_laboratory_test.sql` | Phase 4: deletes Laboratory Test with its appointments and their SMS reminders (refuses if a recorded visit used it) |
 | 14 | `supabase/migrations/0014_phase5.sql` | Phase 5: typo limits on vital signs; visits need a current pregnancy, get their AOG worked out, complete their appointment; health workers edit a visit only on its day (admins any time); `record_visit()` / `update_visit()` save a visit with its services together |
+| 15 | `supabase/migrations/0015_phase6.sql` | Phase 6: turns on pg_cron; a check every day at 6:00 PM (Manila) marks passed appointments Missed (or Completed when she had a visit that day) and queues the missed-visit SMS for 8:00 AM the next morning; closing a pregnancy cancels its open appointments; follow-up rules (result, "No more follow-up needed", same-day edits, staff-only reading); the follow-up list (`follow_up_item`) |
 | — | `supabase/seed/first-admin.sql` | First admin (follow the steps at the top of the file) |
 
 ## Rules
 
 - Migrations are never edited after they've been run. Fixes go in a new numbered file.
 - If a file fails, stop and send the error message. Don't run the next file.
+
+## Daily missed check (pg_cron, from 0015)
+
+The job **mark-missed-appointments** runs every day at 10:00 UTC (6:00 PM Manila).
+
+- Run the check now, e.g. to test: `select public.mark_missed_appointments();` (returns how many appointments it changed)
+- See the job: `select jobname, schedule, active from cron.job;`
+- Its last runs: `select status, return_message, start_time from cron.job_run_details order by start_time desc limit 5;`
 
 ## Environment variables (`.env.local`, never committed)
 

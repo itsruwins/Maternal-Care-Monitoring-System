@@ -43,6 +43,20 @@ export function isWeekday(date: string): boolean {
   return day !== undefined && day !== 0 && day !== 6;
 }
 
+/**
+ * The first weekday on or after `from` that is open and still has a free
+ * time, up to `last`; null if there is none.
+ */
+export function firstOpenDay(from: string, slots: { last: string; closedDays: string[]; taken: string[] }): string | null {
+  const closed = new Set(slots.closedDays);
+  const taken = new Set(slots.taken);
+  for (let day: string | null = from; day && day <= slots.last; day = addDays(day, 1)) {
+    const date = day;
+    if (isWeekday(date) && !closed.has(date) && SLOT_TIMES.some((time) => !taken.has(slotKey(date, time)))) return date;
+  }
+  return null;
+}
+
 /** Add months like Postgres does (Nov 30 + 3 months = Feb 28). */
 export function addMonths(date: string, months: number): string {
   const d = parseISODate(date)!;

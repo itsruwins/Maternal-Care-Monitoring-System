@@ -1,12 +1,10 @@
 import { Suspense } from "react";
-import { ComingSoon } from "@/features/shell/components/coming-soon";
-import { AREA_ROLES } from "@/lib/auth/roles";
+import { FollowUpsScreen } from "@/features/follow-ups/components/follow-ups-screen";
 
-
-export default function StaffFollowUpsPage() {
+export default function StaffFollowUpsPage({ searchParams }: PageProps<"/[lang]/staff/follow-ups">) {
   return (
-    <Suspense fallback={null}>
-      <ComingSoon roles={AREA_ROLES.staff} navKey="followUps" phase={6} />
+    <Suspense fallback={<div aria-hidden className="h-96 animate-pulse rounded-3xl bg-white/60" />}>
+      <FollowUpsScreen searchParams={searchParams} />
     </Suspense>
   );
 }

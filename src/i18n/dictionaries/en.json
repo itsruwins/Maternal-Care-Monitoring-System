@@ -1261,6 +1261,150 @@
       "notRecorded": "Not recorded"
     }
   },
+  "followUpErrors": {
+    "method_required": "Choose how you reached out.",
+    "date_required": "Enter the date.",
+    "result_required": "Choose whether you reached her.",
+    "notes_too_long": "Keep the notes under 500 characters.",
+    "reason_required": "Choose a reason.",
+    "close_note_required": "Add a short note for \"Other\".",
+    "follow_up_date_future": "The date can't be in the future.",
+    "follow_up_date_early": "The date can't be before the missed visit.",
+    "appointment_not_missed": "This appointment isn't marked Missed anymore. Refresh the page.",
+    "no_staff_profile": "Your account has no staff profile yet, so it can't log follow-ups.",
+    "follow_up_locked": "Health workers can change a follow-up only on the day it was logged. Ask an admin.",
+    "not_found": "This follow-up is no longer there. Refresh the page.",
+    "generic": "Something went wrong. Please try again."
+  },
+  "followUps": {
+    "title": "Follow-ups",
+    "intro": "Mothers who missed a visit. Reach out, note what happened, and book a new time.",
+    "tabsLabel": "Follow-up lists",
+    "tabs": {
+      "open": "Open",
+      "closed": "Closed"
+    },
+    "search": {
+      "label": "Find a mother",
+      "placeholder": "Name or mobile number",
+      "filters": "Filters",
+      "purok": "Purok",
+      "allPuroks": "All puroks",
+      "noPurok": "No purok yet",
+      "from": "Missed from",
+      "to": "Missed to",
+      "tried": "Follow-up",
+      "anyTried": "Any",
+      "notTried": "Not contacted yet",
+      "triedAlready": "Tried already",
+      "submit": "Show",
+      "clear": "Clear"
+    },
+    "count": "{count} missed visits",
+    "countOne": "1 missed visit",
+    "emptyOpen": "No one to follow up right now.",
+    "emptyClosed": "No closed follow-ups yet.",
+    "empty": "No missed visits match these filters.",
+    "page": "Page {page} of {pages}",
+    "prev": "Previous",
+    "next": "Next",
+    "columns": {
+      "mother": "Mother",
+      "missed": "Missed visit",
+      "tries": "Follow-ups",
+      "ending": "How it ended",
+      "actions": "Actions"
+    },
+    "noPurokYet": "No purok yet",
+    "call": "Call {name}",
+    "callButton": "Call",
+    "missedToday": "Missed today",
+    "missedYesterday": "Missed yesterday",
+    "missedDaysAgo": "Missed {days} days ago",
+    "notContacted": "Not contacted yet",
+    "tries": "{count} tries",
+    "triesOne": "1 try",
+    "lastTry": "Last: {details}",
+    "seeLog": "See log",
+    "seeLogFor": "See log for {name}",
+    "log": "Log follow-up",
+    "logFor": "Log follow-up for {name}",
+    "rebook": "Rebook",
+    "rebookFor": "Rebook {name}",
+    "methods": {
+      "CALL": "Call",
+      "SMS": "SMS from your phone",
+      "HOME_VISIT": "Home visit"
+    },
+    "methodsShort": {
+      "CALL": "Call",
+      "SMS": "SMS",
+      "HOME_VISIT": "Home visit"
+    },
+    "outcomes": {
+      "REACHED": "Reached her",
+      "NOT_REACHED": "Couldn't reach her"
+    },
+    "closeReasons": {
+      "MOVED_AWAY": "Moved away",
+      "CARE_ELSEWHERE": "Getting care elsewhere",
+      "OTHER": "Other"
+    },
+    "endings": {
+      "CAME_IN": "Came in on {date}",
+      "REBOOKED": "Rebooked for {when}",
+      "CLOSED": "No more follow-up needed",
+      "PREGNANCY_CLOSED": "Pregnancy closed"
+    },
+    "form": {
+      "newTitle": "Log a follow-up",
+      "editTitle": "Edit follow-up",
+      "about": "{name} missed her {service} on {when}.",
+      "method": "How did you reach out?",
+      "date": "Date",
+      "result": "Did you reach her?",
+      "notes": "Notes",
+      "notesHint": "What she said, or what happens next.",
+      "close": "No more follow-up needed",
+      "closeHint": "Moves this missed visit to Closed.",
+      "reason": "Reason",
+      "save": "Save follow-up",
+      "saveChanges": "Save changes",
+      "saving": "Saving…",
+      "cancel": "Cancel",
+      "saved": "Follow-up saved.",
+      "updated": "Follow-up updated."
+    },
+    "rebookOffer": {
+      "title": "Follow-up saved",
+      "body": "You reached {name}. Book her a new appointment now?",
+      "book": "Book a new appointment",
+      "skip": "Not now"
+    },
+    "logDialog": {
+      "title": "Follow-ups",
+      "loggedBy": "Logged by {name}",
+      "edit": "Edit",
+      "editEntry": "Edit the follow-up on {date}",
+      "delete": "Delete",
+      "deleteEntry": "Delete the follow-up on {date}",
+      "deleteConfirm": "Delete this follow-up? This can't be undone.",
+      "deleteYes": "Delete",
+      "deleteNo": "Keep it",
+      "deleted": "Follow-up deleted.",
+      "locked": "Only an admin can change it now.",
+      "done": "Done"
+    },
+    "rebookPage": {
+      "back": "Follow-ups",
+      "title": "Book a new appointment",
+      "intro": "For {name}, who missed her {service} on {when}. It starts as confirmed and the reminder is queued.",
+      "suggestion": "Suggested: {date}, the first open weekday.",
+      "sortedTitle": "Already sorted out",
+      "sortedBody": "This missed visit is closed: {ending}.",
+      "noPregnancy": "She has no current pregnancy, so she can't be booked."
+    }
+  },
   "profile": {
     "title": "Your profile",
     "details": {

@@ -1,6 +1,6 @@
 import { format } from "@/i18n/format";
 import { getServerI18n } from "@/i18n/server";
-import { isWeekday, SLOT_TIMES, slotKey } from "@/lib/appointments/slots";
+import { firstOpenDay } from "@/lib/appointments/slots";
 import { manilaTodayISO } from "@/lib/utils/manila-date";
 import { addDays, formatDate } from "@/lib/utils/pregnancy";
 import { nextCheckupInDays } from "@/lib/visits/vitals";
@@ -22,12 +22,7 @@ export async function NextCheckupPanel({ motherId, weeks, doneHref }: { motherId
   if (!mother) return null;
 
   const days = nextCheckupInDays(weeks);
-  const closed = new Set(slots.closedDays);
-  const taken = new Set(slots.taken);
-  let suggested: string | null = addDays(today, days)!;
-  while (suggested && (!isWeekday(suggested) || closed.has(suggested) || SLOT_TIMES.every((time) => taken.has(slotKey(suggested!, time))))) {
-    suggested = suggested < slots.last ? addDays(suggested, 1)! : null;
-  }
+  const suggested = firstOpenDay(addDays(today, days)!, slots);
   const checkup = services.find((s) => s.icon === "checkup") ?? null;
   const n = t.visits.next;
 

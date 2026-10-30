@@ -1261,6 +1261,150 @@
       "notRecorded": "Hindi naitala"
     }
   },
+  "followUpErrors": {
+    "method_required": "Piliin kung paano mo siya kinontak.",
+    "date_required": "Ilagay ang petsa.",
+    "result_required": "Piliin kung nakausap mo siya.",
+    "notes_too_long": "Hanggang 500 character lang ang tala.",
+    "reason_required": "Pumili ng dahilan.",
+    "close_note_required": "Magdagdag ng maikling tala para sa \"Iba pa\".",
+    "follow_up_date_future": "Hindi puwedeng petsa sa hinaharap.",
+    "follow_up_date_early": "Hindi puwedeng mas maaga sa bisitang hindi napuntahan.",
+    "appointment_not_missed": "Hindi na \"Hindi nakapunta\" ang appointment na ito. I-refresh ang page.",
+    "no_staff_profile": "Wala pang staff profile ang account mo, kaya hindi ito makapagtala ng follow-up.",
+    "follow_up_locked": "Sa araw lang na naitala ito mababago ng health worker ang follow-up. Magpatulong sa admin.",
+    "not_found": "Wala na ang follow-up na ito. I-refresh ang page.",
+    "generic": "May nangyaring mali. Pakisubukan ulit."
+  },
+  "followUps": {
+    "title": "Mga follow-up",
+    "intro": "Mga inang hindi nakapunta sa bisita. Kumustahin sila, itala ang nangyari, at mag-book ng bagong oras.",
+    "tabsLabel": "Mga listahan ng follow-up",
+    "tabs": {
+      "open": "Hindi pa tapos",
+      "closed": "Tapos na"
+    },
+    "search": {
+      "label": "Maghanap ng ina",
+      "placeholder": "Pangalan o mobile number",
+      "filters": "Mga filter",
+      "purok": "Purok",
+      "allPuroks": "Lahat ng purok",
+      "noPurok": "Wala pang purok",
+      "from": "Hindi nakapunta mula",
+      "to": "Hanggang",
+      "tried": "Follow-up",
+      "anyTried": "Lahat",
+      "notTried": "Hindi pa nakokontak",
+      "triedAlready": "Nasubukan na",
+      "submit": "Ipakita",
+      "clear": "I-clear"
+    },
+    "count": "{count} bisitang hindi napuntahan",
+    "countOne": "1 bisitang hindi napuntahan",
+    "emptyOpen": "Walang kailangang i-follow up ngayon.",
+    "emptyClosed": "Wala pang tapos na follow-up.",
+    "empty": "Walang bisitang hindi napuntahan na tugma sa mga filter na ito.",
+    "page": "Pahina {page} ng {pages}",
+    "prev": "Nakaraan",
+    "next": "Susunod",
+    "columns": {
+      "mother": "Ina",
+      "missed": "Bisitang hindi napuntahan",
+      "tries": "Mga follow-up",
+      "ending": "Paano natapos",
+      "actions": "Mga aksyon"
+    },
+    "noPurokYet": "Wala pang purok",
+    "call": "Tawagan si {name}",
+    "callButton": "Tawagan",
+    "missedToday": "Hindi nakapunta ngayong araw",
+    "missedYesterday": "Hindi nakapunta kahapon",
+    "missedDaysAgo": "Hindi nakapunta {days} araw na ang nakalipas",
+    "notContacted": "Hindi pa nakokontak",
+    "tries": "{count} subok",
+    "triesOne": "1 subok",
+    "lastTry": "Huli: {details}",
+    "seeLog": "Tingnan ang tala",
+    "seeLogFor": "Tingnan ang tala para kay {name}",
+    "log": "Magtala ng follow-up",
+    "logFor": "Magtala ng follow-up para kay {name}",
+    "rebook": "I-rebook",
+    "rebookFor": "I-rebook si {name}",
+    "methods": {
+      "CALL": "Tawag",
+      "SMS": "SMS mula sa phone mo",
+      "HOME_VISIT": "Pagbisita sa bahay"
+    },
+    "methodsShort": {
+      "CALL": "Tawag",
+      "SMS": "SMS",
+      "HOME_VISIT": "Pagbisita sa bahay"
+    },
+    "outcomes": {
+      "REACHED": "Nakausap siya",
+      "NOT_REACHED": "Hindi siya makontak"
+    },
+    "closeReasons": {
+      "MOVED_AWAY": "Lumipat na ng tirahan",
+      "CARE_ELSEWHERE": "Sa iba nagpapa-checkup",
+      "OTHER": "Iba pa"
+    },
+    "endings": {
+      "CAME_IN": "Pumunta noong {date}",
+      "REBOOKED": "Na-rebook sa {when}",
+      "CLOSED": "Hindi na kailangang i-follow up",
+      "PREGNANCY_CLOSED": "Naisara ang pagbubuntis"
+    },
+    "form": {
+      "newTitle": "Magtala ng follow-up",
+      "editTitle": "Baguhin ang follow-up",
+      "about": "Hindi nakapunta si {name} sa {service} niya noong {when}.",
+      "method": "Paano mo siya kinontak?",
+      "date": "Petsa",
+      "result": "Nakausap mo ba siya?",
+      "notes": "Tala",
+      "notesHint": "Ano ang sinabi niya, o ano ang susunod na gagawin.",
+      "close": "Hindi na kailangang i-follow up",
+      "closeHint": "Ililipat ito sa Tapos na.",
+      "reason": "Dahilan",
+      "save": "I-save ang follow-up",
+      "saveChanges": "I-save ang mga pagbabago",
+      "saving": "Sine-save…",
+      "cancel": "Kanselahin",
+      "saved": "Na-save ang follow-up.",
+      "updated": "Na-update ang follow-up."
+    },
+    "rebookOffer": {
+      "title": "Na-save ang follow-up",
+      "body": "Nakausap mo si {name}. I-book na ba siya ng bagong appointment?",
+      "book": "Mag-book ng bagong appointment",
+      "skip": "Hindi muna"
+    },
+    "logDialog": {
+      "title": "Mga follow-up",
+      "loggedBy": "Itinala ni {name}",
+      "edit": "Baguhin",
+      "editEntry": "Baguhin ang follow-up noong {date}",
+      "delete": "Burahin",
+      "deleteEntry": "Burahin ang follow-up noong {date}",
+      "deleteConfirm": "Burahin ang follow-up na ito? Hindi na ito maibabalik.",
+      "deleteYes": "Burahin",
+      "deleteNo": "Huwag burahin",
+      "deleted": "Nabura ang follow-up.",
+      "locked": "Admin na lang ang makakapagbago nito ngayon.",
+      "done": "Tapos"
+    },
+    "rebookPage": {
+      "back": "Mga follow-up",
+      "title": "Mag-book ng bagong appointment",
+      "intro": "Para kay {name}, na hindi nakapunta sa {service} niya noong {when}. Kumpirmado agad ito at naka-queue ang paalala.",
+      "suggestion": "Mungkahi: {date}, ang pinakamalapit na bukas na araw.",
+      "sortedTitle": "Naayos na",
+      "sortedBody": "Tapos na ang follow-up sa bisitang ito: {ending}.",
+      "noPregnancy": "Wala siyang kasalukuyang pagbubuntis, kaya hindi siya ma-book."
+    }
+  },
   "profile": {
     "title": "Iyong profile",
     "details": {

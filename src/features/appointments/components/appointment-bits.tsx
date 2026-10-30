@@ -1,4 +1,7 @@
-import { ReminderIcon } from "@/components/icons";
+import Link from "next/link";
+import { CallIcon, ClockIcon, ReminderIcon } from "@/components/icons";
+import { Button } from "@/components/ui/button";
+import { recordFollowUpsHref } from "@/features/follow-ups/paths";
 import type { Locale } from "@/i18n/config";
 import { format } from "@/i18n/format";
 import type { Dictionary } from "@/i18n/get-dictionary";
@@ -41,5 +44,32 @@ export function ReminderLine({ t, locale, appointment }: { t: Dictionary; locale
       <ReminderIcon aria-hidden className="size-4 shrink-0" />
       {text}
     </p>
+  );
+}
+
+/** A request whose time came before staff answered it: it can only be moved or cancelled. */
+export function requestPassed(appointment: { status: AppointmentStatus; at: string }, now: string): boolean {
+  return appointment.status === "REQUESTED" && Date.parse(appointment.at) <= Date.parse(now);
+}
+
+export function DatePassedLine({ t }: { t: Dictionary }) {
+  return (
+    <p className="flex items-center gap-1.5 text-sm font-semibold text-rose-deep">
+      <ClockIcon weight="bold" aria-hidden className="size-4 shrink-0" />
+      {t.appointments.datePassed}
+    </p>
+  );
+}
+
+/** Missed: "See follow-ups" on her record. */
+export function FollowUpsLink({ t, mother }: { t: Dictionary; mother: { id: number; name: string } }) {
+  const a = t.appointments;
+  return (
+    <Button asChild size="sm" variant="secondary">
+      <Link href={recordFollowUpsHref(mother.id)} aria-label={format(a.followUpsFor, { name: mother.name })}>
+        <CallIcon weight="bold" aria-hidden />
+        {a.followUps}
+      </Link>
+    </Button>
   );
 }

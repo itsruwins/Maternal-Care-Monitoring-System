@@ -29,7 +29,7 @@ import {
 } from "../queries/appointments";
 import type { AppointmentFilters, Service, SlotData, StaffAppointment } from "../types";
 import { AppointmentActions } from "./appointment-actions";
-import { ReminderLine, StatusChip } from "./appointment-bits";
+import { DatePassedLine, FollowUpsLink, ReminderLine, StatusChip, requestPassed } from "./appointment-bits";
 import { AppointmentCard } from "./appointment-card";
 
 const VIEWS = ["queue", "list", "calendar"] as const;
@@ -49,20 +49,21 @@ export async function AppointmentsScreen({ searchParams }: { searchParams: Promi
   const params = await searchParams;
   const view: View = VIEWS.includes(one(params, "view") as View) ? (one(params, "view") as View) : "queue";
   const today = manilaTodayISO();
+  const now = new Date().toISOString();
   const [{ t, locale }, slots, requestCount] = await Promise.all([getServerI18n(), getStaffSlotData(today), countRequests()]);
 
   let body;
   if (view === "queue") {
-    body = <QueueView t={t} locale={locale} items={await listRequests()} slots={slots} />;
+    body = <QueueView t={t} locale={locale} items={await listRequests()} slots={slots} now={now} />;
   } else if (view === "list") {
     const filters = parseAppointmentFilters(params);
     const [{ items, total }, services] = await Promise.all([listAppointments(filters), listServices()]);
-    body = <ListView t={t} locale={locale} items={items} total={total} filters={filters} services={services} slots={slots} today={today} />;
+    body = <ListView t={t} locale={locale} items={items} total={total} filters={filters} services={services} slots={slots} today={today} now={now} />;
   } else {
     const month = /^\d{4}-(0[1-9]|1[0-2])$/.test(one(params, "month")) ? one(params, "month") : today.slice(0, 7);
     const day = /^\d{4}-\d{2}-\d{2}$/.test(one(params, "day")) && one(params, "day").startsWith(month) ? one(params, "day") : month === today.slice(0, 7) ? today : `${month}-01`;
     const { byDay, closedDays } = await listMonth(month);
-    body = <CalendarView t={t} locale={locale} month={month} day={day} today={today} byDay={byDay} closedDays={closedDays} slots={slots} />;
+    body = <CalendarView t={t} locale={locale} month={month} day={day} today={today} byDay={byDay} closedDays={closedDays} slots={slots} now={now} />;
   }
 
   return <AppointmentsView t={t} view={view} requestCount={requestCount}>{body}</AppointmentsView>;
@@ -115,7 +116,7 @@ export function AppointmentsView({ t, view, requestCount, children }: { t: Dicti
   );
 }
 
-export function QueueView({ t, locale, items, slots }: { t: Dictionary; locale: Locale; items: StaffAppointment[]; slots: SlotData }) {
+export function QueueView({ t, locale, items, slots, now }: { t: Dictionary; locale: Locale; items: StaffAppointment[]; slots: SlotData; now: string }) {
   const a = t.appointments;
   if (items.length === 0) {
     return <p className="rounded-2xl bg-white px-6 py-10 text-center text-ink-soft shadow-[var(--shadow-soft)]">{a.queueEmpty}</p>;
@@ -126,7 +127,7 @@ export function QueueView({ t, locale, items, slots }: { t: Dictionary; locale: 
       <ul className="grid gap-3 lg:grid-cols-2">
         {items.map((item) => (
           <li key={item.id}>
-            <AppointmentCard t={t} locale={locale} appointment={item} slots={slots} />
+            <AppointmentCard t={t} locale={locale} appointment={item} slots={slots} now={now} />
           </li>
         ))}
       </ul>
@@ -143,6 +144,7 @@ export function ListView({
   services,
   slots,
   today,
+  now,
 }: {
   t: Dictionary;
   locale: Locale;
@@ -152,6 +154,8 @@ export function ListView({
   services: Service[];
   slots: SlotData;
   today?: string;
+  /** The current instant (ISO), for "Date passed" on requests. */
+  now: string;
 }) {
   const l = t.appointments.list;
   const hasFilters = Boolean(filters.status || filters.service || filters.from || filters.to);
@@ -217,8 +221,8 @@ export function ListView({
       ) : (
         <>
           <p className="text-sm text-ink-soft">{total === 1 ? l.resultsOne : format(l.results, { count: total })}</p>
-          {/* Table from 1024px */}
-          <div className="hidden overflow-hidden rounded-2xl bg-white shadow-[var(--shadow-soft)] lg:block">
+          {/* Table from 1280px (room for the actions beside the sidebar) */}
+          <div className="hidden overflow-hidden rounded-2xl bg-white shadow-[var(--shadow-soft)] xl:block">
             <table className="w-full text-left text-[0.95rem]">
               <thead className="border-b border-line text-caption font-semibold text-ink-soft">
                 <tr>
@@ -230,43 +234,54 @@ export function ListView({
                 </tr>
               </thead>
               <tbody className="divide-y divide-line">
-                {items.map((item) => (
-                  <tr key={item.id} className="align-top">
-                    <td className="tnum px-5 py-3 whitespace-nowrap">{formatSlot(item.at, locale, "short")}</td>
-                    <td className="px-3 py-3">
-                      <Link href={`/staff/mothers/${item.mother.id}?tab=appointments`} className="font-semibold text-ink no-underline hover:text-leaf hover:underline">
-                        {item.mother.name}
-                      </Link>
-                    </td>
-                    <td className="px-3 py-3">{item.service}</td>
-                    <td className="px-3 py-3">
-                      <div className="flex flex-col items-start gap-1.5">
-                        <StatusChip t={t} status={item.status} />
-                        <ReminderLine t={t} locale={locale} appointment={item} />
-                      </div>
-                    </td>
-                    <td className="w-px px-5 py-3">
-                      <AppointmentActions
-                        appointment={{ id: item.id, status: item.status, at: item.at, hasLogin: item.mother.hasLogin }}
-                        slots={slots}
-                        className="flex-nowrap justify-end"
-                        recordHref={
-                          today && ["CONFIRMED", "RESCHEDULED"].includes(item.status) && manilaSlot(item.at).date === today
-                            ? `/staff/visits/new?appointment=${item.id}`
-                            : undefined
-                        }
-                      />
-                    </td>
-                  </tr>
-                ))}
+                {items.map((item) => {
+                  const passed = requestPassed(item, now);
+                  return (
+                    <tr key={item.id} className="align-top">
+                      <td className="tnum px-5 py-3 whitespace-nowrap">{formatSlot(item.at, locale, "short")}</td>
+                      <td className="px-3 py-3">
+                        <Link href={`/staff/mothers/${item.mother.id}?tab=appointments`} className="font-semibold text-ink no-underline hover:text-leaf hover:underline">
+                          {item.mother.name}
+                        </Link>
+                      </td>
+                      <td className="px-3 py-3">{item.service}</td>
+                      <td className="px-3 py-3">
+                        <div className="flex flex-col items-start gap-1.5">
+                          <StatusChip t={t} status={item.status} />
+                          {passed && <DatePassedLine t={t} />}
+                          <ReminderLine t={t} locale={locale} appointment={item} />
+                        </div>
+                      </td>
+                      <td className="w-px px-5 py-3">
+                        {item.status === "MISSED" ? (
+                          <div className="flex justify-end">
+                            <FollowUpsLink t={t} mother={item.mother} />
+                          </div>
+                        ) : (
+                          <AppointmentActions
+                            appointment={{ id: item.id, status: item.status, at: item.at, hasLogin: item.mother.hasLogin }}
+                            slots={slots}
+                            className="flex-nowrap justify-end"
+                            recordHref={
+                              today && ["CONFIRMED", "RESCHEDULED"].includes(item.status) && manilaSlot(item.at).date === today
+                                ? `/staff/visits/new?appointment=${item.id}`
+                                : undefined
+                            }
+                            datePassed={passed}
+                          />
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
-          {/* Cards below 1024px */}
-          <ul className="flex flex-col gap-3 lg:hidden">
+          {/* Cards below 1280px */}
+          <ul className="flex flex-col gap-3 xl:hidden">
             {items.map((item) => (
               <li key={item.id}>
-                <AppointmentCard t={t} locale={locale} appointment={item} slots={slots} today={today} />
+                <AppointmentCard t={t} locale={locale} appointment={item} slots={slots} today={today} now={now} />
               </li>
             ))}
           </ul>
@@ -286,6 +301,7 @@ export function CalendarView({
   byDay,
   closedDays,
   slots,
+  now,
 }: {
   t: Dictionary;
   locale: Locale;
@@ -295,6 +311,8 @@ export function CalendarView({
   byDay: Record<string, StaffAppointment[]>;
   closedDays: string[];
   slots: SlotData;
+  /** The current instant (ISO), for "Date passed" on requests. */
+  now: string;
 }) {
   const c = t.appointments.calendar;
   const tag = locale === "fil" ? "fil-PH" : "en-PH";
@@ -376,7 +394,7 @@ export function CalendarView({
           <ul className="flex flex-col gap-3">
             {dayItems.map((item) => (
               <li key={item.id}>
-                <AppointmentCard t={t} locale={locale} appointment={item} slots={slots} showDate={false} today={today} />
+                <AppointmentCard t={t} locale={locale} appointment={item} slots={slots} showDate={false} today={today} now={now} />
               </li>
             ))}
           </ul>

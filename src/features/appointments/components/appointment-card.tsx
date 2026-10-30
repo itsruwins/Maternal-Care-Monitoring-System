@@ -7,10 +7,11 @@ import { manilaSlot } from "@/lib/appointments/slots";
 import { formatDateTime } from "@/lib/utils/date-time";
 import type { SlotData, StaffAppointment } from "../types";
 import { AppointmentActions } from "./appointment-actions";
-import { ReminderLine, StatusChip } from "./appointment-bits";
+import { DatePassedLine, FollowUpsLink, ReminderLine, StatusChip, requestPassed } from "./appointment-bits";
 
 // One appointment for staff: when, who (links to her record), the service,
-// status, notes, reminder, and the actions while it's open.
+// status, notes, reminder, and the actions while it's open (Missed ones link
+// to her follow-ups).
 export function AppointmentCard({
   t,
   locale,
@@ -19,6 +20,7 @@ export function AppointmentCard({
   showMother = true,
   showDate = true,
   today,
+  now,
 }: {
   t: Dictionary;
   locale: Locale;
@@ -28,9 +30,12 @@ export function AppointmentCard({
   showDate?: boolean;
   /** Manila date; today's confirmed visits get "Record visit". */
   today?: string;
+  /** The current instant (ISO); requests past their time say "Date passed". */
+  now?: string;
 }) {
   const a = t.appointments;
   const isRequest = appointment.status === "REQUESTED";
+  const passed = now !== undefined && requestPassed(appointment, now);
   return (
     <article className="flex flex-col gap-3 rounded-2xl bg-white p-4 shadow-[var(--shadow-soft)] sm:p-5">
       <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
@@ -49,6 +54,7 @@ export function AppointmentCard({
         <StatusChip t={t} status={appointment.status} />
       </div>
 
+      {passed && <DatePassedLine t={t} />}
       {isRequest && <p className="text-sm text-ink-soft">{format(a.waitingSince, { date: formatDateTime(appointment.createdAt, locale) })}</p>}
       {appointment.status === "RESCHEDULED" && (
         <p className="text-sm text-ink-soft">
@@ -61,6 +67,11 @@ export function AppointmentCard({
         </p>
       )}
       <ReminderLine t={t} locale={locale} appointment={appointment} />
+      {appointment.status === "MISSED" && (
+        <div className="flex">
+          <FollowUpsLink t={t} mother={appointment.mother} />
+        </div>
+      )}
       <AppointmentActions
         appointment={{ id: appointment.id, status: appointment.status, at: appointment.at, hasLogin: appointment.mother.hasLogin }}
         slots={slots}
@@ -69,6 +80,7 @@ export function AppointmentCard({
             ? `/staff/visits/new?appointment=${appointment.id}`
             : undefined
         }
+        datePassed={passed}
       />
     </article>
   );

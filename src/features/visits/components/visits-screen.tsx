@@ -13,8 +13,9 @@ import { formatDate } from "@/lib/utils/pregnancy";
 import { listRecentVisits, listTodayAppointments } from "../queries/visits";
 import type { RecentVisit, TodayAppointment } from "../types";
 
-// /staff/visits: today's appointments (Record visit), Walk-in visit, and the
-// latest visits. Reads the session: render inside <Suspense>.
+// /staff/visits: today's appointments (Record visit; done ones link to the
+// visit), Walk-in visit, and the latest visits. Reads the session: render
+// inside <Suspense>.
 export async function VisitsScreen() {
   await requireRole(AREA_ROLES.staff);
   const today = manilaTodayISO();
@@ -78,14 +79,19 @@ export function VisitsView({
                   </Link>
                   <span className="block text-sm break-words text-ink-soft">{item.service}</span>
                 </span>
-                {item.visitId ? (
+                {item.visitId || item.dayVisitId ? (
                   <Link
-                    href={`/staff/visits/${item.visitId}`}
+                    href={`/staff/visits/${item.visitId ?? item.dayVisitId}`}
                     className="inline-flex w-full shrink-0 items-center gap-1.5 text-sm font-semibold text-leaf underline decoration-1 underline-offset-4 sm:w-auto"
                   >
                     <CheckCircleIcon weight="fill" aria-hidden className="size-5" />
-                    {v.recorded}
+                    {item.visitId ? v.recorded : v.completedAtVisit}
                   </Link>
+                ) : item.status === "COMPLETED" ? (
+                  <span className="inline-flex w-full shrink-0 items-center gap-1.5 text-sm font-semibold text-leaf sm:w-auto">
+                    <CheckCircleIcon weight="fill" aria-hidden className="size-5" />
+                    {t.appointments.statuses.COMPLETED}
+                  </span>
                 ) : (
                   <Button asChild size="sm" className="h-11 w-full shrink-0 sm:h-9 sm:w-auto">
                     <Link href={`/staff/visits/new?appointment=${item.id}`}>

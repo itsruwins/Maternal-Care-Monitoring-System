@@ -27,12 +27,15 @@ export function AppointmentActions({
   slots,
   className,
   recordHref,
+  datePassed = false,
 }: {
   appointment: Target;
   slots: SlotData;
   className?: string;
   /** "Record visit" link (shown for today's confirmed appointments). */
   recordHref?: string;
+  /** A request whose time has passed: no Confirm. */
+  datePassed?: boolean;
 }) {
   const { t } = useDictionary();
   const a = t.appointments;
@@ -59,7 +62,7 @@ export function AppointmentActions({
           </Link>
         </Button>
       )}
-      {appointment.status === "REQUESTED" && (
+      {appointment.status === "REQUESTED" && !datePassed && (
         <Button type="button" size="sm" onClick={confirm} disabled={confirming} aria-busy={confirming}>
           {confirming ? <SpinnerIcon className="animate-spin" aria-hidden /> : <CheckIcon weight="bold" aria-hidden />}
           {a.confirm}

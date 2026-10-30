@@ -8,34 +8,54 @@ import { AppointmentIcon, CheckCircleIcon, PencilIcon, PlusIcon, SpinnerIcon, Tr
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { IconCircle } from "@/components/ui/icon-circle";
+import type { Locale } from "@/i18n/config";
 import { useDictionary } from "@/i18n/dictionary-provider";
 import { format } from "@/i18n/format";
+import type { Dictionary } from "@/i18n/get-dictionary";
 import { formatSlot } from "@/lib/appointments/format";
 import { deleteFollowUp } from "../actions/follow-ups";
-import { rebookHref } from "../paths";
+import { rebookHref, type RebookFrom } from "../paths";
 import type { FollowUpEntry, FollowUpItem } from "../types";
 import { OutcomeChip, shortDay } from "./follow-up-bits";
 import { FollowUpForm } from "./follow-up-form";
 
 const HEADER = "px-6 pt-5 pr-16 sm:px-8 sm:pt-8 sm:pr-16";
 
+/** "Ana missed her Prenatal Checkup on Tue, Oct 27, 9:00 AM." */
+const aboutText = (t: Dictionary, locale: Locale, item: FollowUpItem) =>
+  format(t.followUps.form.about, { name: item.mother.name, service: item.service, when: formatSlot(item.missedAt, locale, "short") });
+
 /** "Log follow-up": the form, then (if she was reached) the offer to rebook. */
-export function LogFollowUpButton({ item, today, className }: { item: FollowUpItem; today: string; className?: string }) {
+export function LogFollowUpButton({
+  item,
+  today,
+  from = "list",
+  label,
+  className,
+}: {
+  item: FollowUpItem;
+  today: string;
+  /** Where the rebook offer's page goes back to. */
+  from?: RebookFrom;
+  /** Screen reader name (default: "Log follow-up for {name}"). */
+  label?: string;
+  className?: string;
+}) {
   const { t } = useDictionary();
   const f = t.followUps;
   const [open, setOpen] = useState(false);
   return (
     <>
-      <Button type="button" size="sm" onClick={() => setOpen(true)} aria-label={format(f.logFor, { name: item.mother.name })} className={className}>
+      <Button type="button" size="sm" onClick={() => setOpen(true)} aria-label={label ?? format(f.logFor, { name: item.mother.name })} className={className}>
         <PlusIcon weight="bold" aria-hidden />
         {f.log}
       </Button>
-      {open && <LogFollowUpDialog item={item} today={today} onClose={() => setOpen(false)} />}
+      {open && <LogFollowUpDialog item={item} today={today} from={from} onClose={() => setOpen(false)} />}
     </>
   );
 }
 
-function LogFollowUpDialog({ item, today, onClose }: { item: FollowUpItem; today: string; onClose: () => void }) {
+function LogFollowUpDialog({ item, today, from, onClose }: { item: FollowUpItem; today: string; from: RebookFrom; onClose: () => void }) {
   const { t, locale } = useDictionary();
   const f = t.followUps;
   const router = useRouter();
@@ -51,14 +71,12 @@ function LogFollowUpDialog({ item, today, onClose }: { item: FollowUpItem; today
     <Dialog open onOpenChange={(open) => !open && (offer ? finish() : onClose())}>
       <DialogContent closeLabel={t.common.close} className="sm:max-w-lg">
         {offer ? (
-          <RebookOffer item={item} onSkip={finish} />
+          <RebookOffer item={item} from={from} onSkip={finish} />
         ) : (
           <>
             <DialogHeader className={HEADER}>
               <DialogTitle>{f.form.newTitle}</DialogTitle>
-              <DialogDescription>
-                {format(f.form.about, { name: item.mother.name, service: item.service, when: formatSlot(item.missedAt, locale, "short") })}
-              </DialogDescription>
+              <DialogDescription>{aboutText(t, locale, item)}</DialogDescription>
             </DialogHeader>
             <FollowUpForm
               appointmentId={item.appointmentId}
@@ -82,7 +100,7 @@ function LogFollowUpDialog({ item, today, onClose }: { item: FollowUpItem; today
 }
 
 /** After a follow-up where she was reached: "Book a new appointment?" (inside the dialog). */
-export function RebookOffer({ item, onSkip }: { item: FollowUpItem; onSkip: () => void }) {
+export function RebookOffer({ item, from = "list", onSkip }: { item: FollowUpItem; from?: RebookFrom; onSkip: () => void }) {
   const { t } = useDictionary();
   const o = t.followUps.rebookOffer;
   return (
@@ -95,7 +113,7 @@ export function RebookOffer({ item, onSkip }: { item: FollowUpItem; onSkip: () =
           {o.skip}
         </Button>
         <Button asChild className="w-full sm:w-auto">
-          <Link href={rebookHref(item.appointmentId)} autoFocus>
+          <Link href={rebookHref(item.appointmentId, from)} autoFocus>
             <AppointmentIcon weight="bold" aria-hidden />
             {o.book}
           </Link>
@@ -126,14 +144,13 @@ function FollowUpLogDialog({ item, today, isAdmin, onClose }: { item: FollowUpIt
   const f = t.followUps;
   const router = useRouter();
   const [editing, setEditing] = useState<FollowUpEntry | null>(null);
-  const about = format(f.form.about, { name: item.mother.name, service: item.service, when: formatSlot(item.missedAt, locale, "short") });
 
   return (
     <Dialog open onOpenChange={(open) => !open && onClose()}>
       <DialogContent closeLabel={t.common.close} className="sm:max-w-lg">
         <DialogHeader className={HEADER}>
           <DialogTitle>{editing ? f.form.editTitle : f.logDialog.title}</DialogTitle>
-          <DialogDescription>{about}</DialogDescription>
+          <DialogDescription>{aboutText(t, locale, item)}</DialogDescription>
         </DialogHeader>
         {editing ? (
           <FollowUpForm
@@ -165,7 +182,63 @@ function FollowUpLogDialog({ item, today, isAdmin, onClose }: { item: FollowUpIt
   );
 }
 
-function EntryRow({ entry, isAdmin, onEdit }: { entry: FollowUpEntry; isAdmin: boolean; onEdit: () => void }) {
+/** The follow-up log shown in place (her record): Edit opens the form in a dialog. */
+export function FollowUpEntries({ item, today, isAdmin }: { item: FollowUpItem; today: string; isAdmin: boolean }) {
+  const { t } = useDictionary();
+  const [editing, setEditing] = useState<FollowUpEntry | null>(null);
+  if (item.entries.length === 0) return <p className="text-sm text-ink-soft">{t.followUps.notContacted}</p>;
+  return (
+    <>
+      <ol className="flex flex-col divide-y divide-line">
+        {item.entries.map((entry) => (
+          <EntryRow key={entry.id} entry={entry} isAdmin={isAdmin} onEdit={() => setEditing(entry)} showLocked={false} />
+        ))}
+      </ol>
+      {editing && <EditFollowUpDialog item={item} entry={editing} today={today} onClose={() => setEditing(null)} />}
+    </>
+  );
+}
+
+function EditFollowUpDialog({ item, entry, today, onClose }: { item: FollowUpItem; entry: FollowUpEntry; today: string; onClose: () => void }) {
+  const { t, locale } = useDictionary();
+  const f = t.followUps;
+  const router = useRouter();
+  return (
+    <Dialog open onOpenChange={(open) => !open && onClose()}>
+      <DialogContent closeLabel={t.common.close} className="sm:max-w-lg">
+        <DialogHeader className={HEADER}>
+          <DialogTitle>{f.form.editTitle}</DialogTitle>
+          <DialogDescription>{aboutText(t, locale, item)}</DialogDescription>
+        </DialogHeader>
+        <FollowUpForm
+          appointmentId={item.appointmentId}
+          missedDate={item.missedDate}
+          today={today}
+          entry={entry}
+          onSaved={() => {
+            toast.success(f.form.updated);
+            onClose();
+            router.refresh();
+          }}
+          onCancel={onClose}
+        />
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function EntryRow({
+  entry,
+  isAdmin,
+  onEdit,
+  showLocked = true,
+}: {
+  entry: FollowUpEntry;
+  isAdmin: boolean;
+  onEdit: () => void;
+  /** "Only an admin can change it now" under locked entries (the log dialog). */
+  showLocked?: boolean;
+}) {
   const { t, locale } = useDictionary();
   const f = t.followUps;
   const l = f.logDialog;
@@ -228,7 +301,7 @@ function EntryRow({ entry, isAdmin, onEdit }: { entry: FollowUpEntry; isAdmin: b
           )}
         </div>
       ) : (
-        <p className="text-sm text-ink-soft italic">{l.locked}</p>
+        showLocked && <p className="text-sm text-ink-soft italic">{l.locked}</p>
       )}
     </li>
   );

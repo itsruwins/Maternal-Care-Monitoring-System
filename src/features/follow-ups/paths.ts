@@ -18,7 +18,11 @@ export function followUpsHref(filters: FollowUpFilters, changes: Partial<FollowU
   return query ? `?${query}` : "?";
 }
 
-export const rebookHref = (appointmentId: number) => `/staff/follow-ups/${appointmentId}/rebook`;
+/** Where rebooking was started: the Follow-ups page or her record (it goes back there). */
+export type RebookFrom = "list" | "record";
+
+export const rebookHref = (appointmentId: number, from: RebookFrom = "list") =>
+  `/staff/follow-ups/${appointmentId}/rebook${from === "record" ? "?from=record" : ""}`;
 
 /** Her record, on the Follow-ups tab. */
 export const recordFollowUpsHref = (motherId: number) => `/staff/mothers/${motherId}?tab=followUps`;

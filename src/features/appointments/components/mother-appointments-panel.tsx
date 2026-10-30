@@ -8,13 +8,14 @@ import { formatSlot } from "@/lib/appointments/format";
 import { manilaTodayISO } from "@/lib/utils/manila-date";
 import { getStaffSlotData, listMotherAppointments } from "../queries/appointments";
 import type { SlotData, StaffAppointment } from "../types";
-import { StatusChip } from "./appointment-bits";
+import { FollowUpsLink, StatusChip } from "./appointment-bits";
 import { AppointmentCard } from "./appointment-card";
 
 const OPEN = new Set(["REQUESTED", "CONFIRMED", "RESCHEDULED"]);
 
 // The Appointments tab on a mother's record: Book (with a current pregnancy),
-// open appointments with their actions, then past ones. Loads its own data
+// open appointments with their actions (requests stay here after their time
+// passes, until staff move or cancel them), then past ones. Loads its own data
 // (the page has already checked the staff role).
 export async function MotherAppointmentsPanel({ motherId, canBook }: { motherId: number; canBook: boolean }) {
   const today = manilaTodayISO();
@@ -44,7 +45,7 @@ export function MotherAppointmentsPanelView({
   today?: string;
 }) {
   const r = t.appointments.record;
-  const upcoming = items.filter((item) => OPEN.has(item.status) && item.at > now);
+  const upcoming = items.filter((item) => OPEN.has(item.status) && (item.status === "REQUESTED" || Date.parse(item.at) > Date.parse(now)));
   const past = items.filter((item) => !upcoming.includes(item)).reverse();
 
   return (
@@ -71,7 +72,7 @@ export function MotherAppointmentsPanelView({
               <ul className="grid gap-3 lg:grid-cols-2">
                 {upcoming.map((item) => (
                   <li key={item.id}>
-                    <AppointmentCard t={t} locale={locale} appointment={item} slots={slots} showMother={false} today={today} />
+                    <AppointmentCard t={t} locale={locale} appointment={item} slots={slots} showMother={false} today={today} now={now} />
                   </li>
                 ))}
               </ul>
@@ -89,7 +90,10 @@ export function MotherAppointmentsPanelView({
                       <span className="block font-medium break-words">{item.service}</span>
                       <span className="tnum block text-sm text-ink-soft">{formatSlot(item.at, locale, "short")}</span>
                     </span>
-                    <StatusChip t={t} status={item.status} />
+                    <span className="flex flex-wrap items-center gap-2">
+                      {item.status === "MISSED" && <FollowUpsLink t={t} mother={item.mother} />}
+                      <StatusChip t={t} status={item.status} />
+                    </span>
                   </li>
                 ))}
               </ul>

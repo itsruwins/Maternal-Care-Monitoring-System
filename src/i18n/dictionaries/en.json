@@ -1010,6 +1010,9 @@
     "cancel": "Cancel",
     "noLogin": "No login: a new time is confirmed right away.",
     "awaitingMother": "Waiting for her to accept the new time.",
+    "datePassed": "Date passed",
+    "followUps": "See follow-ups",
+    "followUpsFor": "See follow-ups for {name}",
     "reminder": {
       "PENDING": "Reminder queued for {when}",
       "SENT": "Reminder sent {when}",
@@ -1106,6 +1109,7 @@
     "todayEmpty": "No appointments left for today.",
     "record": "Record visit",
     "recorded": "Visit recorded",
+    "completedAtVisit": "Completed at her visit",
     "recent": "Recent visits",
     "recentEmpty": "No visits recorded yet.",
     "weekShort": "Wk {weeks}",
@@ -1395,8 +1399,16 @@
       "locked": "Only an admin can change it now.",
       "done": "Done"
     },
+    "record": {
+      "open": "Needs follow-up",
+      "closed": "Closed",
+      "empty": "She hasn't missed any visits.",
+      "logFor": "Log follow-up for the {service} on {date}",
+      "rebookFor": "Rebook the {service} on {date}"
+    },
     "rebookPage": {
       "back": "Follow-ups",
+      "backRecord": "Her record",
       "title": "Book a new appointment",
       "intro": "For {name}, who missed her {service} on {when}. It starts as confirmed and the reminder is queued.",
       "suggestion": "Suggested: {date}, the first open weekday.",

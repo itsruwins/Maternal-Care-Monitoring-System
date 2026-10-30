@@ -23,7 +23,7 @@ export async function listTodayAppointments(today: string): Promise<TodayAppoint
   const { data } = await supabase
     .from("appointment")
     .select(
-      "appointment_id, status, scheduled_datetime, activity_type:activity_type_id(name), pregnancy:pregnancy_id(mother:mother_id(mother_id, first_name, middle_name, last_name))",
+      "appointment_id, pregnancy_id, status, scheduled_datetime, activity_type:activity_type_id(name), pregnancy:pregnancy_id(mother:mother_id(mother_id, first_name, middle_name, last_name))",
     )
     .in("status", [...OPEN_STATUSES, "COMPLETED"])
     .gte("scheduled_datetime", dayStart(today))
@@ -31,10 +31,24 @@ export async function listTodayAppointments(today: string): Promise<TodayAppoint
     .order("scheduled_datetime");
   const rows = data ?? [];
   const ids = rows.map((row) => row.appointment_id);
-  const { data: visits } = ids.length
-    ? await supabase.from("prenatal_visit").select("visit_id, appointment_id").in("appointment_id", ids)
-    : { data: [] };
+  // The 6 PM check marks her other appointments that day Completed without
+  // linking them to her visit, so those point to the visit she had today.
+  const done = [...new Set(rows.filter((row) => row.status === "COMPLETED").map((row) => row.pregnancy_id))];
+  const [{ data: visits }, { data: dayVisits }] = await Promise.all([
+    ids.length ? supabase.from("prenatal_visit").select("visit_id, appointment_id").in("appointment_id", ids) : { data: [] },
+    done.length
+      ? supabase
+          .from("prenatal_visit")
+          .select("visit_id, pregnancy_id")
+          .in("pregnancy_id", done)
+          .gte("visit_datetime", dayStart(today))
+          .lt("visit_datetime", dayStart(addDays(today, 1)!))
+          .order("visit_datetime")
+      : { data: [] },
+  ]);
   const visitOf = new Map((visits ?? []).map((v) => [v.appointment_id, v.visit_id]));
+  const dayVisitOf = new Map<number, number>();
+  for (const v of dayVisits ?? []) if (!dayVisitOf.has(v.pregnancy_id)) dayVisitOf.set(v.pregnancy_id, v.visit_id);
   return rows.map((row) => {
     const mother = row.pregnancy?.mother;
     return {
@@ -44,6 +58,7 @@ export async function listTodayAppointments(today: string): Promise<TodayAppoint
       service: row.activity_type?.name ?? "",
       mother: { id: mother?.mother_id ?? 0, name: mother ? fullName(mother) : "" },
       visitId: visitOf.get(row.appointment_id) ?? null,
+      dayVisitId: row.status === "COMPLETED" ? (dayVisitOf.get(row.pregnancy_id) ?? null) : null,
     };
   });
 }

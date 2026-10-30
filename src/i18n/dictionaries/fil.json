@@ -1010,6 +1010,9 @@
     "cancel": "Kanselahin",
     "noLogin": "Walang login: agad nakukumpirma ang bagong oras.",
     "awaitingMother": "Hinihintay siyang tanggapin ang bagong oras.",
+    "datePassed": "Lumipas na ang petsa",
+    "followUps": "Tingnan ang follow-up",
+    "followUpsFor": "Tingnan ang follow-up para kay {name}",
     "reminder": {
       "PENDING": "Naka-queue ang paalala para sa {when}",
       "SENT": "Naipadala ang paalala {when}",
@@ -1106,6 +1109,7 @@
     "todayEmpty": "Wala nang appointment para ngayon.",
     "record": "Itala ang bisita",
     "recorded": "Naitala ang bisita",
+    "completedAtVisit": "Natapos sa bisita niya",
     "recent": "Mga kamakailang bisita",
     "recentEmpty": "Wala pang naitalang bisita.",
     "weekShort": "Ika-{weeks} lnggo",
@@ -1395,8 +1399,16 @@
       "locked": "Admin na lang ang makakapagbago nito ngayon.",
       "done": "Tapos"
     },
+    "record": {
+      "open": "Kailangang i-follow up",
+      "closed": "Tapos na",
+      "empty": "Wala siyang bisitang hindi napuntahan.",
+      "logFor": "Magtala ng follow-up para sa {service} noong {date}",
+      "rebookFor": "I-rebook ang {service} noong {date}"
+    },
     "rebookPage": {
       "back": "Mga follow-up",
+      "backRecord": "Record niya",
       "title": "Mag-book ng bagong appointment",
       "intro": "Para kay {name}, na hindi nakapunta sa {service} niya noong {when}. Kumpirmado agad ito at naka-queue ang paalala.",
       "suggestion": "Mungkahi: {date}, ang pinakamalapit na bukas na araw.",

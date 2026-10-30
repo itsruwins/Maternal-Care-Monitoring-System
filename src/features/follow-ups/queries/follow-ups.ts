@@ -94,11 +94,25 @@ export async function listFollowUps(
   return { items: await withEntries(supabase, data, viewer, today), total: count ?? 0 };
 }
 
-/** How many missed visits still need a follow-up (the Open tab's count). */
-export async function countOpenFollowUps(): Promise<number> {
+/** How many missed visits still need a follow-up: all (the Open tab's count) or one mother's. */
+export async function countOpenFollowUps(motherId?: number): Promise<number> {
   const supabase = await createClient();
-  const { count } = await supabase.from("follow_up_item").select("appointment_id", { count: "exact", head: true }).eq("is_open", true);
+  let query = supabase.from("follow_up_item").select("appointment_id", { count: "exact", head: true }).eq("is_open", true);
+  if (motherId) query = query.eq("mother_id", motherId);
+  const { count } = await query;
   return count ?? 0;
+}
+
+/** One mother's missed visits, newest first (her record splits open and closed). */
+export async function listMotherFollowUps(motherId: number, viewer: { isAdmin: boolean }, today: string): Promise<FollowUpItem[]> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("follow_up_item")
+    .select(ITEM_FIELDS)
+    .eq("mother_id", motherId)
+    .order("missed_at", { ascending: false })
+    .order("appointment_id", { ascending: false });
+  return withEntries(supabase, data ?? [], viewer, today);
 }
 
 /** One missed visit with its follow-ups (e.g. for rebooking), or null. */

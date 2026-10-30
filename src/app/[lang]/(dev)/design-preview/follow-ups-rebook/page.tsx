@@ -8,7 +8,8 @@ import { SAMPLE_CLOSED, SAMPLE_OPEN } from "../follow-ups/sample";
 export const metadata = { title: "Rebook preview", robots: { index: false } };
 
 // Development only (preview): booking a new appointment for a missed visit
-// (?sorted=1: the item was already sorted out).
+// (?sorted=1: the item was already sorted out; ?from=record: started from her
+// record).
 export default function RebookPreview({ searchParams }: PageProps<"/[lang]/design-preview/follow-ups-rebook">) {
   if (process.env.NODE_ENV === "production") notFound();
   return (
@@ -20,7 +21,8 @@ export default function RebookPreview({ searchParams }: PageProps<"/[lang]/desig
 
 async function Preview({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const { t, locale } = await getServerI18n();
-  const sorted = (await searchParams).sorted === "1";
+  const params = await searchParams;
+  const sorted = params.sorted === "1";
   const item = sorted ? SAMPLE_CLOSED[0] : SAMPLE_OPEN[0];
   return (
     <StaffShell user={{ username: "joy.dela.cruz", role: "HEALTH_WORKER", firstName: "Joy", fullName: "Joy Dela Cruz" }}>
@@ -37,6 +39,7 @@ async function Preview({ searchParams }: { searchParams: Promise<Record<string, 
         ]}
         slots={{ first: "2026-11-06", last: "2027-05-06", closedDays: ["2026-11-30"], taken: ["2026-11-09T08:00", "2026-11-09T08:30", "2026-11-09T09:00", "2026-11-09T13:30"] }}
         suggested="2026-11-09"
+        from={params.from === "record" ? "record" : "list"}
       />
     </StaffShell>
   );

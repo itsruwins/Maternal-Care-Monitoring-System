@@ -15,17 +15,25 @@ import { AREA_ROLES } from "@/lib/auth/roles";
 import { requireRole } from "@/lib/auth/session";
 import { manilaTodayISO } from "@/lib/utils/manila-date";
 import { addDays, formatDate } from "@/lib/utils/pregnancy";
+import { recordFollowUpsHref, type RebookFrom } from "../paths";
 import { getFollowUpItem } from "../queries/follow-ups";
 import type { FollowUpItem } from "../types";
 import { endingText } from "./follow-up-bits";
 
-// /staff/follow-ups/[appointmentId]/rebook: book a new appointment for a
-// missed visit. Starts with the missed service and the first open weekday
-// from tomorrow; booking it moves the item to Closed ("Rebooked"). Reads the
-// session: render inside <Suspense>.
-export async function RebookScreen({ params }: { params: Promise<{ appointmentId: string }> }) {
+// /staff/follow-ups/[appointmentId]/rebook?from=record: book a new
+// appointment for a missed visit. Starts with the missed service and the first
+// open weekday from tomorrow; booking it moves the item to Closed ("Rebooked")
+// and goes back to the Follow-ups page, or to her record when started there.
+// Reads the session: render inside <Suspense>.
+export async function RebookScreen({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ appointmentId: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
   const user = await requireRole(AREA_ROLES.staff);
-  const { appointmentId } = await params;
+  const [{ appointmentId }, query] = await Promise.all([params, searchParams]);
   const today = manilaTodayISO();
   const item = /^[1-9]\d{0,9}$/.test(appointmentId) ? await getFollowUpItem(Number(appointmentId), { isAdmin: user.role === "ADMIN" }, today) : null;
   if (!item) notFound();
@@ -44,6 +52,7 @@ export async function RebookScreen({ params }: { params: Promise<{ appointmentId
       services={services}
       slots={slots}
       suggested={firstOpenDay(addDays(today, 1)!, slots)}
+      from={query.from === "record" ? "record" : "list"}
     />
   );
 }
@@ -57,6 +66,7 @@ export function RebookView({
   services,
   slots,
   suggested,
+  from = "list",
 }: {
   t: Dictionary;
   locale: Locale;
@@ -65,17 +75,19 @@ export function RebookView({
   services: Service[];
   slots: SlotData;
   suggested: string | null;
+  from?: RebookFrom;
 }) {
   const r = t.followUps.rebookPage;
+  const backHref = from === "record" ? recordFollowUpsHref(item.mother.id) : "/staff/follow-ups";
   const missedService = services.some((service) => service.id === item.serviceId) ? item.serviceId : null;
   return (
     <div className="flex flex-col gap-6">
       <Link
-        href="/staff/follow-ups"
+        href={backHref}
         className="inline-flex items-center gap-1.5 self-start text-sm font-semibold text-leaf underline decoration-1 underline-offset-4 hover:decoration-2"
       >
         <CaretLeftIcon weight="bold" aria-hidden className="size-4" />
-        {r.back}
+        {from === "record" ? r.backRecord : r.back}
       </Link>
       <div>
         <h1 className="text-title font-extrabold">{r.title}</h1>
@@ -120,7 +132,7 @@ export function RebookView({
             slots={slots}
             initialServiceId={missedService}
             initialDate={suggested}
-            doneHref="/staff/follow-ups"
+            doneHref={backHref}
           />
         </>
       )}

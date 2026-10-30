@@ -16,9 +16,11 @@ export default async function VisitsPreview() {
         locale={locale}
         today="2026-10-30"
         todays={[
-          { id: 1, at: "2026-10-30T00:30:00Z", status: "COMPLETED", service: "Prenatal Checkup", mother: { id: 1, name: "Ana Marie Bautista" }, visitId: 7 },
-          { id: 2, at: "2026-10-30T01:00:00Z", status: "CONFIRMED", service: "Tetanus Toxoid Vaccination", mother: { id: 2, name: "Carla Dela Cruz" }, visitId: null },
-          { id: 3, at: "2026-10-30T05:30:00Z", status: "CONFIRMED", service: "Nutrition Counseling", mother: { id: 3, name: "Grace Mendoza" }, visitId: null },
+          { id: 1, at: "2026-10-30T00:30:00Z", status: "COMPLETED", service: "Prenatal Checkup", mother: { id: 1, name: "Ana Marie Bautista" }, visitId: 7, dayVisitId: null },
+          { id: 2, at: "2026-10-30T01:00:00Z", status: "CONFIRMED", service: "Tetanus Toxoid Vaccination", mother: { id: 2, name: "Carla Dela Cruz" }, visitId: null, dayVisitId: null },
+          // Completed by the 6 PM check: done at her 8:30 checkup visit.
+          { id: 4, at: "2026-10-30T01:30:00Z", status: "COMPLETED", service: "Tetanus Toxoid Vaccination", mother: { id: 1, name: "Ana Marie Bautista" }, visitId: null, dayVisitId: 7 },
+          { id: 3, at: "2026-10-30T05:30:00Z", status: "CONFIRMED", service: "Nutrition Counseling", mother: { id: 3, name: "Grace Mendoza" }, visitId: null, dayVisitId: null },
         ]}
         recent={[
           { id: 7, at: "2026-10-30T00:41:00Z", weeks: 21, bp: "110/70", weightKg: 58.5, servicesCount: 2, mother: { id: 1, name: "Ana Marie Bautista" } },

@@ -15,6 +15,8 @@ export type TodayAppointment = {
   mother: { id: number; name: string };
   /** Set once a visit is recorded for it. */
   visitId: number | null;
+  /** Completed without a linked visit (the 6 PM check): her visit that day. */
+  dayVisitId: number | null;
 };
 
 export type RecentVisit = {

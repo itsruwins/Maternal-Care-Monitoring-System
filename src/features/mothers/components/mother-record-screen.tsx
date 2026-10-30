@@ -13,6 +13,8 @@ import { ScrollActiveIntoView } from "@/components/shared/scroll-active-into-vie
 import { IconCircle } from "@/components/ui/icon-circle";
 import { StatusBadge } from "@/features/accounts/components/badges";
 import { MotherAppointmentsPanel } from "@/features/appointments/components/mother-appointments-panel";
+import { MotherFollowUpsPanel } from "@/features/follow-ups/components/mother-follow-ups-panel";
+import { countOpenFollowUps } from "@/features/follow-ups/queries/follow-ups";
 import { MotherVisitsPanel } from "@/features/visits/components/mother-visits-panel";
 import type { Locale } from "@/i18n/config";
 import { format } from "@/i18n/format";
@@ -43,7 +45,7 @@ export const RECORD_TABS = [
 ] as const;
 export type RecordTab = (typeof RECORD_TABS)[number];
 // Tabs whose content comes in a later phase.
-const LATER: Partial<Record<RecordTab, number>> = { followUps: 6, sms: 7 };
+const LATER: Partial<Record<RecordTab, number>> = { sms: 7 };
 
 // /staff/mothers/[motherId]?tab=…: one mother's record. Reads the session:
 // render inside <Suspense>.
@@ -54,7 +56,7 @@ export async function MotherRecordScreen({
   params: Promise<{ motherId: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  await requireRole(AREA_ROLES.staff);
+  const user = await requireRole(AREA_ROLES.staff);
   const [{ motherId }, query] = await Promise.all([params, searchParams]);
   const id = /^[1-9]\d{0,9}$/.test(motherId) ? Number(motherId) : null;
   const mother = id ? await getMother(id) : null;
@@ -64,9 +66,10 @@ export async function MotherRecordScreen({
   const tab = RECORD_TABS.includes(tabParam as RecordTab)
     ? (tabParam as RecordTab)
     : "overview";
-  const [{ t, locale }, puroks] = await Promise.all([
+  const [{ t, locale }, puroks, openFollowUps] = await Promise.all([
     getServerI18n(),
     getShownPuroks(),
+    countOpenFollowUps(mother.id),
   ]);
   return (
     <MotherRecordView
@@ -76,6 +79,7 @@ export async function MotherRecordScreen({
       tab={tab}
       puroks={puroks}
       today={manilaTodayISO()}
+      openFollowUps={openFollowUps}
       appointments={
         tab === "appointments" ? (
           <MotherAppointmentsPanel
@@ -92,6 +96,14 @@ export async function MotherRecordScreen({
           />
         ) : null
       }
+      followUps={
+        tab === "followUps" ? (
+          <MotherFollowUpsPanel
+            motherId={mother.id}
+            isAdmin={user.role === "ADMIN"}
+          />
+        ) : null
+      }
     />
   );
 }
@@ -104,8 +116,10 @@ export function MotherRecordView({
   tab,
   puroks,
   today,
+  openFollowUps = 0,
   appointments,
   visits,
+  followUps,
 }: {
   t: Dictionary;
   locale: Locale;
@@ -113,10 +127,14 @@ export function MotherRecordView({
   tab: RecordTab;
   puroks: PurokOption[];
   today: string;
+  /** Her missed visits still to follow up (the count on the tab). */
+  openFollowUps?: number;
   /** The Appointments tab's content (from the appointments feature). */
   appointments?: ReactNode;
   /** The Visits tab's content (from the visits feature). */
   visits?: ReactNode;
+  /** The Follow-ups tab's content (from the follow-ups feature). */
+  followUps?: ReactNode;
 }) {
   const r = t.mothers.record;
   const name = [mother.firstName, mother.middleName, mother.lastName]
@@ -187,13 +205,18 @@ export function MotherRecordView({
                     scroll={false}
                     aria-current={active ? "page" : undefined}
                     className={cn(
-                      "flex h-10 items-center rounded-full px-4 text-[0.95rem] whitespace-nowrap no-underline transition-colors",
+                      "flex h-10 items-center gap-2 rounded-full px-4 text-[0.95rem] whitespace-nowrap no-underline transition-colors",
                       active
                         ? "bg-mint font-semibold text-leaf"
                         : "font-medium text-ink-soft hover:bg-cream hover:text-ink",
                     )}
                   >
                     {r.tabs[key]}
+                    {key === "followUps" && openFollowUps > 0 && (
+                      <span className="tnum grid h-6 min-w-6 place-items-center rounded-full bg-rose-deep px-1.5 text-caption font-bold text-white">
+                        {openFollowUps}
+                      </span>
+                    )}
                   </Link>
                 </li>
               );
@@ -243,6 +266,8 @@ export function MotherRecordView({
       {tab === "appointments" && appointments}
 
       {tab === "visits" && visits}
+
+      {tab === "followUps" && followUps}
 
       {LATER[tab] && (
         <section className="flex flex-col items-center gap-3 rounded-3xl bg-white px-6 py-12 text-center shadow-[var(--shadow-soft)]">

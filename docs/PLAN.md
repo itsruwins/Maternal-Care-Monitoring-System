@@ -699,6 +699,14 @@ Sample missed-visit SMS (157 characters, one SMS; the longest service name with 
 - **Clean-up rules:** an unsent missed notice is deleted as soon as its follow-up is sorted out. Closing a pregnancy cancels its open appointments ("Pregnancy closed"); pregnancies already closed get this once when the migration runs.
 - App types and `docs/database-setup.md` updated (including how to see and test the job).
 
+**Step 2 built (2026-10-31):** staff Follow-ups page (`/staff/follow-ups`, feature `features/follow-ups`), approved by you.
+- **Open (with its count) and Closed tabs:** search by name or mobile; filters for purok, missed date and "Not contacted yet" / "Tried already". Open ones oldest first, closed ones most recently sorted out first; 20 per page. A table from 1280px wide, cards below (two columns on tablets).
+- **Each missed visit:** her name (opens her record's Follow-ups tab), mobile (tap to call), purok, the missed service and time, "Missed N days ago", the tries so far with the last one, **Log follow-up** and **Rebook**. Closed ones say how they ended.
+- **Log follow-up dialog:** how (Call, SMS from your phone, Home visit), reached her or not, the date (today by default), notes, and "No more follow-up needed" with a reason ("Other" needs a note). **See log** lists every entry with who logged it: Edit on the day it was logged (admins any time), Delete for admins (asks first).
+- **After "Reached her":** "Book a new appointment?" opens `/staff/follow-ups/[appointmentId]/rebook` (the shared booking form with the missed service and the first open weekday from tomorrow), or Not now.
+- The "first open weekday" logic is now shared with Phase 5's next-checkup step (same behaviour). Home visits use a door icon.
+- Dev previews: `/design-preview/follow-ups` (`?tab=closed`, `?admin=1`, `?show=offer`) and `/design-preview/follow-ups-rebook`.
+
 ## Phase 7 — SMS reminders (HTTPSMS)
 
 - **Sender:** a protected route in this app (`/api/cron/send-sms`) sends due PENDING messages through HTTPSMS and saves the result (`sent_at`, `provider_message_id`, errors). Supabase `pg_cron` + `pg_net` call it every few minutes with `CRON_SECRET`. (Vercel's free plan only runs its own scheduled jobs once a day, which is too slow.)

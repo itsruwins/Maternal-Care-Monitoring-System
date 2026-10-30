@@ -561,6 +561,42 @@ Sample reminder (about 140 characters, one SMS):
 - **Next checkup:** a "schedule next checkup" step at the end of the visit creates the next appointment.
 - **Mother view:** visit history and simple trend charts (weight, BP) for display only.
 
+**Decisions (asked 2026-10-30):**
+
+| Topic | Decision |
+|---|---|
+| Vitals | **As the database has them:** BP, weight, temperature and pulse are required; fundal height and fetal heart rate are optional. |
+| Range checks | **Impossible values are blocked as typos** (e.g. BP 15, weight 900). **Unusual but possible values** get a gentle "Please double-check this value" note and can still be saved. No diagnosis or medical advice anywhere. |
+| Starting a visit | A **Visits page** shows today's confirmed appointments, each with **Record visit**, plus **Walk-in visit** (find any mother with a current pregnancy). Record visit also appears on the appointment card and on her record. |
+| Editing | **Same day, any health worker** (to fix typos); after that day, admins only. |
+| Services given | **Service + details** (e.g. "TT2", "30 tablets", "Topic: breastfeeding") with optional result notes. The appointment's own service is added already. |
+| Next checkup | An **optional "Book next checkup" step** after saving: the same service tiles and day strip, with a suggested date (about every 4 weeks; every 2 weeks from week 28; weekly from week 36). It books a CONFIRMED appointment and queues the SMS. It can be skipped. |
+| Mother view | **History + 2 charts:** her past visits (date, week, BP, weight, services), each with its details; simple weight and BP charts (display only); her next checkup on top. |
+| Missed appointments | **Phase 6.** Until then, a past appointment with no visit simply stays Confirmed. |
+
+**Build, in steps (each ends with screenshots for you):**
+1. **Database (migration `0014_phase5.sql`, run by you):**
+   - The AOG is worked out from the pregnancy (LMP, or the EDD when the LMP is unknown).
+   - A visit linked to an appointment marks it COMPLETED (it must be the same pregnancy, and not cancelled).
+   - Health workers can only edit a visit on its own day (Manila); admins can edit any time.
+   - The visit and its services are saved together.
+2. **Staff Visits page and Record visit:**
+   - Today's appointments, Walk-in, and recent visits.
+   - The visit form: vitals with typo blocks and double-check notes, services given with details, notes.
+   - The optional Book next checkup step.
+3. **Mother record → Visits tab** (her visits, each opening its details; edit on the same day), and **visit details**.
+4. **Mother → Visits page:** history, next checkup, weight and BP charts.
+5. **Review:** screenshots, accessibility checks, design review, then your testing.
+
+**Step 1 written (2026-10-30):** migration `0014_phase5.sql`.
+- **Typo limits:** BP 60–250 over 30–150 (top number above bottom), weight 30–200 kg, temperature 34–42 °C, pulse 40–200, fundal height 5–50 cm, baby's heartbeat 80–220.
+- **Every visit:** needs a current pregnancy; its AOG comes from the LMP (or EDD − 280); it is recorded by the logged-in staff member.
+- **Appointment link:** only an open appointment (Confirmed, New time sent or Missed) can be linked, and it becomes COMPLETED.
+- **Locked fields:** the pregnancy, appointment, recorder and time can't be changed later.
+- **Edit window:** the same Manila day for health workers; admins any time (also for services given).
+- **Saving:** `record_visit()` / `update_visit()` save a visit with its services in one step.
+- Visits are recorded with the current time (backfilling old paper records is not part of Phase 5). App types updated.
+
 ## Phase 6 — Missed appointments & follow-ups
 
 - **Nightly job (pg_cron):** CONFIRMED/RESCHEDULED appointments whose time has passed with no visit → MISSED, and a MISSED_NOTICE SMS is queued.

@@ -17,6 +17,7 @@ Run these in **Supabase Dashboard → SQL Editor**, in order. Each file is safe 
 | 11 | `supabase/migrations/0011_more_services.sql` | Phase 4: adds Nutrition Counseling, Prenatal Dental Checkup, Fetal Heartbeat Check and Birth Plan Counseling (1-day reminder, with pictures); skips any that exist |
 | 12 | `supabase/migrations/0012_remove_laboratory_test.sql` | Phase 4: deletes the Laboratory Test service; stops without deleting if any appointment or visit uses it (it stopped: 1 test appointment) |
 | 13 | `supabase/migrations/0013_delete_laboratory_test.sql` | Phase 4: deletes Laboratory Test with its appointments and their SMS reminders (refuses if a recorded visit used it) |
+| 14 | `supabase/migrations/0014_phase5.sql` | Phase 5: typo limits on vital signs; visits need a current pregnancy, get their AOG worked out, complete their appointment; health workers edit a visit only on its day (admins any time); `record_visit()` / `update_visit()` save a visit with its services together |
 | — | `supabase/seed/first-admin.sql` | First admin (follow the steps at the top of the file) |
 
 ## Rules

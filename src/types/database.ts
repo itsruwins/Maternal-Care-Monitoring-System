@@ -1,5 +1,5 @@
 // Database types, written from the confirmed schema (inspect-schema.sql, 2026-10-26)
-// plus migrations 0001-0010. Update this file whenever a migration changes a table.
+// plus migrations 0001-0014. Update this file whenever a migration changes a table.
 
 type NullableKeys<T> = { [K in keyof T]: null extends T[K] ? K : never }[keyof T];
 
@@ -177,6 +177,9 @@ export type LoginAttemptRow = {
   attempted_at: string;
 };
 
+/** One service given at a visit, as record_visit / update_visit take it. */
+export type VisitServiceInput = { activity_type_id: number; dose_or_details: string; result_notes: string | null };
+
 export type Database = {
   public: {
     Tables: {
@@ -201,8 +204,22 @@ export type Database = {
           Relation<"appointment_reviewed_by_fkey", "reviewed_by", "health_worker", "health_worker_id">,
         ]
       >;
-      prenatal_visit: TableDef<PrenatalVisitRow, "visit_id">;
-      visit_service: TableDef<VisitServiceRow, "service_id">;
+      prenatal_visit: TableDef<
+        PrenatalVisitRow,
+        "visit_id",
+        [
+          Relation<"prenatal_visit_pregnancy_id_fkey", "pregnancy_id", "pregnancy", "pregnancy_id">,
+          Relation<"prenatal_visit_health_worker_id_fkey", "health_worker_id", "health_worker", "health_worker_id">,
+        ]
+      >;
+      visit_service: TableDef<
+        VisitServiceRow,
+        "service_id",
+        [
+          Relation<"visit_service_visit_id_fkey", "visit_id", "prenatal_visit", "visit_id">,
+          Relation<"visit_service_activity_type_id_fkey", "activity_type_id", "activity_type", "activity_type_id">,
+        ]
+      >;
       sms_reminder: TableDef<SmsReminderRow, "reminder_id", [Relation<"sms_reminder_appointment_id_fkey", "appointment_id", "appointment", "appointment_id">]>;
       follow_up: TableDef<FollowUpRow, "follow_up_id">;
       login_attempt: TableDef<LoginAttemptRow, "login_attempt_id" | "attempted_at">;
@@ -219,6 +236,38 @@ export type Database = {
       respond_to_new_time: { Args: { p_appointment_id: number; p_accept: boolean }; Returns: undefined };
       taken_slots: { Args: { p_from: string; p_to: string }; Returns: string[] };
       slot_problem: { Args: { p_slot: string }; Returns: string | null };
+      visit_editable: { Args: { p_visit_id: number }; Returns: boolean };
+      record_visit: {
+        Args: {
+          p_pregnancy_id: number;
+          p_appointment_id: number | null;
+          p_bp_systolic: number;
+          p_bp_diastolic: number;
+          p_weight_kg: number;
+          p_temperature_c: number;
+          p_pulse_rate: number;
+          p_fundal_height_cm: number | null;
+          p_fetal_heart_rate: number | null;
+          p_notes: string;
+          p_services: VisitServiceInput[];
+        };
+        Returns: number;
+      };
+      update_visit: {
+        Args: {
+          p_visit_id: number;
+          p_bp_systolic: number;
+          p_bp_diastolic: number;
+          p_weight_kg: number;
+          p_temperature_c: number;
+          p_pulse_rate: number;
+          p_fundal_height_cm: number | null;
+          p_fetal_heart_rate: number | null;
+          p_notes: string;
+          p_services: VisitServiceInput[];
+        };
+        Returns: undefined;
+      };
     };
     Enums: {
       user_role: UserRole;

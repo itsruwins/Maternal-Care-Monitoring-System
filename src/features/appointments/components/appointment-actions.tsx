@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { CheckIcon, DangerIcon, SpinnerIcon } from "@/components/icons";
+import { CheckIcon, CheckupIcon, DangerIcon, SpinnerIcon } from "@/components/icons";
 import { SlotPicker } from "@/components/shared/slot-picker";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -21,7 +22,18 @@ import type { SlotData } from "../types";
 type Target = { id: number; status: AppointmentStatus; at: string; hasLogin: boolean };
 
 // Confirm (requests only), Other time and Cancel for one open appointment.
-export function AppointmentActions({ appointment, slots, className }: { appointment: Target; slots: SlotData; className?: string }) {
+export function AppointmentActions({
+  appointment,
+  slots,
+  className,
+  recordHref,
+}: {
+  appointment: Target;
+  slots: SlotData;
+  className?: string;
+  /** "Record visit" link (shown for today's confirmed appointments). */
+  recordHref?: string;
+}) {
   const { t } = useDictionary();
   const a = t.appointments;
   const router = useRouter();
@@ -39,6 +51,14 @@ export function AppointmentActions({ appointment, slots, className }: { appointm
 
   return (
     <div className={cn("flex flex-wrap gap-2", className)}>
+      {recordHref && (
+        <Button asChild size="sm">
+          <Link href={recordHref}>
+            <CheckupIcon weight="bold" aria-hidden />
+            {t.visits.record}
+          </Link>
+        </Button>
+      )}
       {appointment.status === "REQUESTED" && (
         <Button type="button" size="sm" onClick={confirm} disabled={confirming} aria-busy={confirming}>
           {confirming ? <SpinnerIcon className="animate-spin" aria-hidden /> : <CheckIcon weight="bold" aria-hidden />}

@@ -3,6 +3,7 @@ import type { Locale } from "@/i18n/config";
 import { format } from "@/i18n/format";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import { formatSlot, formatSlotClock, formatSlotDate } from "@/lib/appointments/format";
+import { manilaSlot } from "@/lib/appointments/slots";
 import { formatDateTime } from "@/lib/utils/date-time";
 import type { SlotData, StaffAppointment } from "../types";
 import { AppointmentActions } from "./appointment-actions";
@@ -17,6 +18,7 @@ export function AppointmentCard({
   slots,
   showMother = true,
   showDate = true,
+  today,
 }: {
   t: Dictionary;
   locale: Locale;
@@ -24,6 +26,8 @@ export function AppointmentCard({
   slots: SlotData;
   showMother?: boolean;
   showDate?: boolean;
+  /** Manila date; today's confirmed visits get "Record visit". */
+  today?: string;
 }) {
   const a = t.appointments;
   const isRequest = appointment.status === "REQUESTED";
@@ -60,6 +64,11 @@ export function AppointmentCard({
       <AppointmentActions
         appointment={{ id: appointment.id, status: appointment.status, at: appointment.at, hasLogin: appointment.mother.hasLogin }}
         slots={slots}
+        recordHref={
+          today && ["CONFIRMED", "RESCHEDULED"].includes(appointment.status) && manilaSlot(appointment.at).date === today
+            ? `/staff/visits/new?appointment=${appointment.id}`
+            : undefined
+        }
       />
     </article>
   );

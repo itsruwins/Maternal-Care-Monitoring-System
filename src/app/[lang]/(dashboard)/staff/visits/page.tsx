@@ -1,12 +1,10 @@
 import { Suspense } from "react";
-import { ComingSoon } from "@/features/shell/components/coming-soon";
-import { AREA_ROLES } from "@/lib/auth/roles";
-
+import { VisitsScreen } from "@/features/visits/components/visits-screen";
 
 export default function StaffVisitsPage() {
   return (
-    <Suspense fallback={null}>
-      <ComingSoon roles={AREA_ROLES.staff} navKey="visits" phase={5} />
+    <Suspense fallback={<div aria-hidden className="h-96 animate-pulse rounded-3xl bg-white/60" />}>
+      <VisitsScreen />
     </Suspense>
   );
 }

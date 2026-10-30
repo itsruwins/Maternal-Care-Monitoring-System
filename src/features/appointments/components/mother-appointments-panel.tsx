@@ -19,7 +19,7 @@ const OPEN = new Set(["REQUESTED", "CONFIRMED", "RESCHEDULED"]);
 export async function MotherAppointmentsPanel({ motherId, canBook }: { motherId: number; canBook: boolean }) {
   const today = manilaTodayISO();
   const [{ t, locale }, items, slots] = await Promise.all([getServerI18n(), listMotherAppointments(motherId), getStaffSlotData(today)]);
-  return <MotherAppointmentsPanelView t={t} locale={locale} motherId={motherId} canBook={canBook} items={items} slots={slots} now={new Date().toISOString()} />;
+  return <MotherAppointmentsPanelView t={t} locale={locale} motherId={motherId} canBook={canBook} items={items} slots={slots} now={new Date().toISOString()} today={today} />;
 }
 
 export function MotherAppointmentsPanelView({
@@ -30,6 +30,7 @@ export function MotherAppointmentsPanelView({
   items,
   slots,
   now,
+  today,
 }: {
   t: Dictionary;
   locale: Locale;
@@ -39,6 +40,8 @@ export function MotherAppointmentsPanelView({
   slots: SlotData;
   /** The current instant (ISO), to split upcoming from past. */
   now: string;
+  /** Manila date, for "Record visit" on today's appointments. */
+  today?: string;
 }) {
   const r = t.appointments.record;
   const upcoming = items.filter((item) => OPEN.has(item.status) && item.at > now);
@@ -68,7 +71,7 @@ export function MotherAppointmentsPanelView({
               <ul className="grid gap-3 lg:grid-cols-2">
                 {upcoming.map((item) => (
                   <li key={item.id}>
-                    <AppointmentCard t={t} locale={locale} appointment={item} slots={slots} showMother={false} />
+                    <AppointmentCard t={t} locale={locale} appointment={item} slots={slots} showMother={false} today={today} />
                   </li>
                 ))}
               </ul>

@@ -597,6 +597,18 @@ Sample reminder (about 140 characters, one SMS):
 - **Saving:** `record_visit()` / `update_visit()` save a visit with its services in one step.
 - Visits are recorded with the current time (backfilling old paper records is not part of Phase 5). App types updated.
 
+**Step 2 built (2026-10-30):** feature `features/visits`; shared vital-sign rules in `lib/visits/vitals.ts`.
+- **`/staff/visits`:** today's appointments (time tile, mother, service, **Record visit**, or "Visit recorded" once done), **Walk-in visit**, and the 20 latest visits (week, BP, weight, number of services).
+- **`/staff/visits/new`:** from an appointment (`?appointment=`), or a walk-in (search by name or mobile, then `?mother=`). A walk-in who has an open appointment today gets it linked.
+- **The form:**
+  - **Vital signs:** big number fields with units; BP as top / bottom. Typos are blocked with the same limits as the database. The first save with unusual values marks each one "Please double-check this value"; saving again keeps them. The last visit's weight is shown.
+  - **Services given:** tap chips (the appointment's service is picked already), each with details and optional result notes.
+  - **Visit notes.**
+  - Everything is saved in one step (`record_visit`).
+- **After saving:** `/staff/visits/[id]/next` shows "Visit saved" and **Book her next checkup?** (the booking form starts with Prenatal Checkup and the first open weekday after the usual interval) or **Skip for now** (her record).
+- **Appointments:** today's Confirmed / New-time-sent appointments show **Record visit** on their cards (queue, list, calendar day and record tab).
+- New `components/ui/textarea.tsx`. Dev previews: `/design-preview/visits`, `/design-preview/record-visit`.
+
 ## Phase 6 — Missed appointments & follow-ups
 
 - **Nightly job (pg_cron):** CONFIRMED/RESCHEDULED appointments whose time has passed with no visit → MISSED, and a MISSED_NOTICE SMS is queued.

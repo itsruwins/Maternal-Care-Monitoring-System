@@ -10,7 +10,7 @@ import { format } from "@/i18n/format";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import { getServerI18n } from "@/i18n/server";
 import { formatSlot } from "@/lib/appointments/format";
-import { addMonths, isWeekday } from "@/lib/appointments/slots";
+import { addMonths, isWeekday, manilaSlot } from "@/lib/appointments/slots";
 import { AREA_ROLES } from "@/lib/auth/roles";
 import { requireRole } from "@/lib/auth/session";
 import { manilaTodayISO } from "@/lib/utils/manila-date";
@@ -57,7 +57,7 @@ export async function AppointmentsScreen({ searchParams }: { searchParams: Promi
   } else if (view === "list") {
     const filters = parseAppointmentFilters(params);
     const [{ items, total }, services] = await Promise.all([listAppointments(filters), listServices()]);
-    body = <ListView t={t} locale={locale} items={items} total={total} filters={filters} services={services} slots={slots} />;
+    body = <ListView t={t} locale={locale} items={items} total={total} filters={filters} services={services} slots={slots} today={today} />;
   } else {
     const month = /^\d{4}-(0[1-9]|1[0-2])$/.test(one(params, "month")) ? one(params, "month") : today.slice(0, 7);
     const day = /^\d{4}-\d{2}-\d{2}$/.test(one(params, "day")) && one(params, "day").startsWith(month) ? one(params, "day") : month === today.slice(0, 7) ? today : `${month}-01`;
@@ -142,6 +142,7 @@ export function ListView({
   filters,
   services,
   slots,
+  today,
 }: {
   t: Dictionary;
   locale: Locale;
@@ -150,6 +151,7 @@ export function ListView({
   filters: AppointmentFilters;
   services: Service[];
   slots: SlotData;
+  today?: string;
 }) {
   const l = t.appointments.list;
   const hasFilters = Boolean(filters.status || filters.service || filters.from || filters.to);
@@ -248,6 +250,11 @@ export function ListView({
                         appointment={{ id: item.id, status: item.status, at: item.at, hasLogin: item.mother.hasLogin }}
                         slots={slots}
                         className="flex-nowrap justify-end"
+                        recordHref={
+                          today && ["CONFIRMED", "RESCHEDULED"].includes(item.status) && manilaSlot(item.at).date === today
+                            ? `/staff/visits/new?appointment=${item.id}`
+                            : undefined
+                        }
                       />
                     </td>
                   </tr>
@@ -259,7 +266,7 @@ export function ListView({
           <ul className="flex flex-col gap-3 lg:hidden">
             {items.map((item) => (
               <li key={item.id}>
-                <AppointmentCard t={t} locale={locale} appointment={item} slots={slots} />
+                <AppointmentCard t={t} locale={locale} appointment={item} slots={slots} today={today} />
               </li>
             ))}
           </ul>
@@ -369,7 +376,7 @@ export function CalendarView({
           <ul className="flex flex-col gap-3">
             {dayItems.map((item) => (
               <li key={item.id}>
-                <AppointmentCard t={t} locale={locale} appointment={item} slots={slots} showDate={false} />
+                <AppointmentCard t={t} locale={locale} appointment={item} slots={slots} showDate={false} today={today} />
               </li>
             ))}
           </ul>

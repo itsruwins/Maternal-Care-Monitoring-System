@@ -23,16 +23,24 @@ export function BookAppointmentForm({
   mother,
   services,
   slots,
+  initialServiceId = null,
+  initialDate = null,
+  doneHref,
 }: {
   mother: BookableMother;
   services: Service[];
   slots: SlotData;
+  /** Start with this service and day picked (e.g. the next checkup). */
+  initialServiceId?: number | null;
+  initialDate?: string | null;
+  /** Where to go after booking (default: her record's Appointments tab). */
+  doneHref?: string;
 }) {
   const { t, locale } = useDictionary();
   const b = t.appointments.bookPage;
   const router = useRouter();
-  const [serviceId, setServiceId] = useState<number | null>(null);
-  const [date, setDate] = useState<string | null>(null);
+  const [serviceId, setServiceId] = useState<number | null>(initialServiceId);
+  const [date, setDate] = useState<string | null>(initialDate);
   const [time, setTime] = useState<string | null>(null);
   const [remark, setRemark] = useState("");
   const [error, setError] = useState<SlotError | "required" | null>(null);
@@ -60,7 +68,7 @@ export function BookAppointmentForm({
           }),
           { duration: 6000 },
         );
-        router.push(`/staff/mothers/${mother.id}?tab=appointments`);
+        router.push(doneHref ?? `/staff/mothers/${mother.id}?tab=appointments`);
         router.refresh();
       } else {
         setError(result.error);

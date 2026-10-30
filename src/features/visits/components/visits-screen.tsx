@@ -75,10 +75,13 @@ export function VisitsView({
                   <span className="block text-sm break-words text-ink-soft">{item.service}</span>
                 </span>
                 {item.visitId ? (
-                  <span className="inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-leaf">
+                  <Link
+                    href={`/staff/visits/${item.visitId}`}
+                    className="inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-leaf underline decoration-1 underline-offset-4"
+                  >
                     <CheckCircleIcon weight="fill" aria-hidden className="size-5" />
                     {v.recorded}
-                  </span>
+                  </Link>
                 ) : (
                   <Button asChild size="sm" className="shrink-0">
                     <Link href={`/staff/visits/new?appointment=${item.id}`}>
@@ -105,7 +108,7 @@ export function VisitsView({
               <li key={visit.id} className="flex flex-col gap-1 py-3.5 sm:flex-row sm:items-center sm:gap-4">
                 <span className="min-w-0 flex-1">
                   <Link
-                    href={`/staff/mothers/${visit.mother.id}?tab=visits`}
+                    href={`/staff/visits/${visit.id}`}
                     className="font-semibold break-words text-ink no-underline hover:text-leaf hover:underline"
                   >
                     {visit.mother.name}

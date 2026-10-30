@@ -60,3 +60,43 @@ export type VisitField = Exclude<keyof VisitInput, "pregnancyId" | "appointmentI
 export type RecordVisitResult =
   | { ok: true; visitId: number }
   | { ok: false; error?: VisitErrorKey; fieldErrors?: Partial<Record<VisitField, VisitErrorKey>> };
+
+/** One service given at a visit, for display. */
+export type GivenService = { serviceId: number; name: string; icon: ServiceIconKey; details: string; resultNotes: string | null };
+
+export type VisitDetail = {
+  id: number;
+  at: string;
+  weeks: number;
+  pregnancyId: number;
+  pregnancyActive: boolean;
+  mother: { id: number; name: string };
+  recordedBy: string | null;
+  appointment: { service: string; at: string } | null;
+  vitals: {
+    bpSystolic: number;
+    bpDiastolic: number;
+    weightKg: number;
+    temperatureC: number;
+    pulseRate: number;
+    fundalHeightCm: number | null;
+    fetalHeartRate: number | null;
+  };
+  notes: string | null;
+  services: GivenService[];
+  /** The logged-in user may still change it (same day, or admin). */
+  editable: boolean;
+  /** Weight at her visit before this one (for the double-check note). */
+  previousWeightKg: number | null;
+};
+
+/** A row on her record's Visits tab. */
+export type MotherVisit = {
+  id: number;
+  at: string;
+  weeks: number;
+  bp: string;
+  weightKg: number;
+  services: string[];
+  currentPregnancy: boolean;
+};

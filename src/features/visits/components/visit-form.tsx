@@ -2,6 +2,7 @@
 
 import { useMemo, useState, useTransition, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { CheckIcon, DangerIcon, InfoIcon, SpinnerIcon, TrashIcon } from "@/components/icons";
 import { ServiceArt } from "@/components/shared/service-art";
 import { Button } from "@/components/ui/button";
@@ -12,25 +13,34 @@ import { useDictionary } from "@/i18n/dictionary-provider";
 import { format } from "@/i18n/format";
 import { doubleCheck, type VitalKey } from "@/lib/visits/vitals";
 import { cn } from "@/lib/utils/cn";
-import { recordVisit } from "../actions/record-visit";
+import { recordVisit, updateVisit } from "../actions/record-visit";
 import type { VisitContext, VisitErrorKey, VisitField, VisitInput, VisitService, VisitServiceEntry } from "../types";
 
-type Vitals = Pick<VisitInput, VitalKey>;
+export type Vitals = Pick<VisitInput, VitalKey>;
 const EMPTY: Vitals = { bpSystolic: "", bpDiastolic: "", weightKg: "", temperatureC: "", pulseRate: "", fundalHeightCm: "", fetalHeartRate: "" };
 const toNumber = (value: string) => (value.trim() === "" ? null : Number(value.replace(",", ".")));
 
 // Record a visit: vital signs (typos blocked; unusual values asked to be
 // double-checked once), services given with details, and notes. Saving goes to
 // the "Book next checkup" step.
-export function VisitForm({ context, services }: { context: VisitContext; services: VisitService[] }) {
+export function VisitForm({
+  context,
+  services,
+  edit,
+}: {
+  context: VisitContext;
+  services: VisitService[];
+  /** Editing a saved visit (same day, or admin): its values and id. */
+  edit?: { visitId: number; vitals: Vitals; entries: VisitServiceEntry[]; notes: string };
+}) {
   const { t } = useDictionary();
   const f = t.visits.form;
   const router = useRouter();
-  const [vitals, setVitals] = useState<Vitals>(EMPTY);
+  const [vitals, setVitals] = useState<Vitals>(edit?.vitals ?? EMPTY);
   const [entries, setEntries] = useState<VisitServiceEntry[]>(
-    context.appointment ? [{ serviceId: context.appointment.serviceId, details: "", resultNotes: "" }] : [],
+    edit?.entries ?? (context.appointment ? [{ serviceId: context.appointment.serviceId, details: "", resultNotes: "" }] : []),
   );
-  const [notes, setNotes] = useState("");
+  const [notes, setNotes] = useState(edit?.notes ?? "");
   const [errors, setErrors] = useState<Partial<Record<VisitField, VisitErrorKey>>>({});
   const [formError, setFormError] = useState<VisitErrorKey | null>(null);
   // The unusual values she was already asked to check (saving again keeps them).
@@ -67,15 +77,23 @@ export function VisitForm({ context, services }: { context: VisitContext; servic
       return;
     }
     startTransition(async () => {
-      const result = await recordVisit({
-        pregnancyId: context.pregnancyId,
-        appointmentId: context.appointment?.id ?? null,
-        ...vitals,
-        notes,
-        services: entries,
-      });
+      const result = edit
+        ? await updateVisit(edit.visitId, { ...vitals, notes, services: entries })
+        : await recordVisit({
+            pregnancyId: context.pregnancyId,
+            appointmentId: context.appointment?.id ?? null,
+            ...vitals,
+            notes,
+            services: entries,
+          });
       if (result.ok) {
-        router.push(`/staff/visits/${result.visitId}/next`);
+        if (edit) {
+          toast.success(t.visits.detail.saved);
+          router.push(`/staff/visits/${result.visitId}`);
+          router.refresh();
+        } else {
+          router.push(`/staff/visits/${result.visitId}/next`);
+        }
         return;
       }
       setErrors(result.fieldErrors ?? {});
@@ -259,7 +277,7 @@ export function VisitForm({ context, services }: { context: VisitContext; servic
         <div>
           <Button type="button" onClick={save} disabled={pending} aria-busy={pending} className="w-full sm:w-auto">
             {pending && <SpinnerIcon className="animate-spin" aria-hidden />}
-            {pending ? f.saving : f.save}
+            {pending ? f.saving : edit ? t.visits.detail.save : f.save}
           </Button>
         </div>
       </section>

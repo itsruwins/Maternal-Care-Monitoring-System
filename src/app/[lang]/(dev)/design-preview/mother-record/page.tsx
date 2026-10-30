@@ -4,6 +4,7 @@ import { MotherRecordView, RECORD_TABS, type RecordTab } from "@/features/mother
 import type { MotherRecord } from "@/features/mothers/types";
 import { StaffShell } from "@/features/shell/components/staff-shell";
 import { MotherAppointmentsPanelView } from "@/features/appointments/components/mother-appointments-panel";
+import { MotherVisitsPanelView } from "@/features/visits/components/mother-visits-panel";
 import { getServerI18n } from "@/i18n/server";
 import { SAMPLE_APPOINTMENTS, SAMPLE_SLOTS } from "../staff-appointments/sample";
 import { dueDateFromLmp } from "@/lib/utils/pregnancy";
@@ -65,6 +66,19 @@ async function Preview({ searchParams }: { searchParams: Promise<Record<string, 
         tab={tab}
         puroks={Array.from({ length: 10 }, (_, i) => ({ id: i + 1, name: `Purok ${i + 1}` }))}
         today="2026-10-27"
+        visits={
+          <MotherVisitsPanelView
+            t={t}
+            locale={locale}
+            motherId={1}
+            canRecord
+            visits={[
+              { id: 7, at: "2026-10-30T00:41:00Z", weeks: 21, bp: "110/70", weightKg: 58.5, services: ["Prenatal Checkup", "Tetanus Toxoid Vaccination"], currentPregnancy: true },
+              { id: 4, at: "2026-10-02T01:10:00Z", weeks: 17, bp: "108/68", weightKg: 57.4, services: ["Prenatal Checkup"], currentPregnancy: true },
+              { id: 1, at: "2023-09-01T01:00:00Z", weeks: 38, bp: "112/72", weightKg: 63, services: [], currentPregnancy: false },
+            ]}
+          />
+        }
         appointments={
           <MotherAppointmentsPanelView
             t={t}

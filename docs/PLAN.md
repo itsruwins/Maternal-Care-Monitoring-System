@@ -609,6 +609,14 @@ Sample reminder (about 140 characters, one SMS):
 - **Appointments:** today's Confirmed / New-time-sent appointments show **Record visit** on their cards (queue, list, calendar day and record tab).
 - New `components/ui/textarea.tsx`. Dev previews: `/design-preview/visits`, `/design-preview/record-visit`.
 
+**Step 3 built (2026-10-30):**
+- **Visit details (`/staff/visits/[id]`):** the date, the mother (link), week, appointment or walk-in, and who recorded it and when; vital-sign tiles with units; services given with details and results; notes.
+- **Edit visit (`/staff/visits/[id]/edit`):** the same form, filled in (`update_visit`). It's offered on the visit's day, or always to admins; otherwise the page says only an admin can change it.
+- **Mother record → Visits tab:** **Record visit** (with a current pregnancy), then "This pregnancy" and "Earlier pregnancies" lists, each visit opening its details.
+- **Links:** the recent visits and "Visit recorded" on the Visits page, and "Skip for now" after saving, all open the visit details.
+- On phones, the record's tab bar scrolls the current tab into view (`components/shared/scroll-active-into-view.tsx`).
+- Dev previews: `/design-preview/visit-detail`, `/design-preview/mother-record?tab=visits`.
+
 ## Phase 6 — Missed appointments & follow-ups
 
 - **Nightly job (pg_cron):** CONFIRMED/RESCHEDULED appointments whose time has passed with no visit → MISSED, and a MISSED_NOTICE SMS is queued.

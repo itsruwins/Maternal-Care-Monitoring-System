@@ -19,7 +19,7 @@ export async function NextStepScreen({ params }: { params: Promise<{ visitId: st
   if (!visit) notFound();
   const { t } = await getServerI18n();
   const n = t.visits.next;
-  const recordHref = `/staff/mothers/${visit.motherId}?tab=visits`;
+  const recordHref = `/staff/visits/${visitId}`;
 
   return (
     <div className="flex flex-col gap-6">

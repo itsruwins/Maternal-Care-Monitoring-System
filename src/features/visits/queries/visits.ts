@@ -2,7 +2,7 @@ import "server-only";
 import { toServiceIcon } from "@/lib/appointments/service-icons";
 import { createClient } from "@/lib/supabase/server";
 import { addDays, gestationalAge, PREGNANCY_DAYS } from "@/lib/utils/pregnancy";
-import type { RecentVisit, TodayAppointment, VisitContext, VisitService, WalkInMother } from "../types";
+import type { MotherVisit, RecentVisit, TodayAppointment, VisitContext, VisitDetail, VisitService, WalkInMother } from "../types";
 
 // All read as the logged-in staff member (RLS: staff see every record).
 
@@ -178,4 +178,86 @@ export async function getSavedVisit(visitId: number): Promise<{ motherId: number
   const mother = data?.pregnancy?.mother;
   if (!data || !mother) return null;
   return { motherId: mother.mother_id, name: fullName(mother), weeks: data.aog_weeks, date: data.visit_datetime };
+}
+
+const VISIT_COLUMNS =
+  "visit_id, pregnancy_id, visit_datetime, aog_weeks, bp_systolic, bp_diastolic, weight_kg, temperature_c, pulse_rate, fundal_height_cm, fetal_heart_rate, notes, appointment_id, recorder:health_worker_id(first_name, last_name), pregnancy:pregnancy_id(pregnancy_status, mother:mother_id(mother_id, first_name, middle_name, last_name)), visit_service(activity_type_id, dose_or_details, result_notes, activity_type:activity_type_id(name, icon))";
+
+/** Manila date of an instant. */
+const manilaDate = (iso: string) =>
+  new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Manila", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(iso));
+
+/** One visit with everything the details page shows. */
+export async function getVisit(visitId: number, viewer: { isAdmin: boolean; today: string }): Promise<VisitDetail | null> {
+  const supabase = await createClient();
+  const { data } = await supabase.from("prenatal_visit").select(VISIT_COLUMNS).eq("visit_id", visitId).maybeSingle();
+  const mother = data?.pregnancy?.mother;
+  if (!data || !mother) return null;
+
+  const [{ data: appointment }, { data: previous }] = await Promise.all([
+    data.appointment_id
+      ? supabase.from("appointment").select("scheduled_datetime, activity_type:activity_type_id(name)").eq("appointment_id", data.appointment_id).maybeSingle()
+      : Promise.resolve({ data: null }),
+    supabase
+      .from("prenatal_visit")
+      .select("weight_kg")
+      .eq("pregnancy_id", data.pregnancy_id)
+      .lt("visit_datetime", data.visit_datetime)
+      .order("visit_datetime", { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+  ]);
+
+  return {
+    id: data.visit_id,
+    at: data.visit_datetime,
+    weeks: data.aog_weeks,
+    pregnancyId: data.pregnancy_id,
+    pregnancyActive: data.pregnancy?.pregnancy_status === "ACTIVE",
+    mother: { id: mother.mother_id, name: fullName(mother) },
+    recordedBy: data.recorder ? `${data.recorder.first_name} ${data.recorder.last_name}`.trim() : null,
+    appointment: appointment?.scheduled_datetime ? { service: appointment.activity_type?.name ?? "", at: appointment.scheduled_datetime } : null,
+    vitals: {
+      bpSystolic: data.bp_systolic,
+      bpDiastolic: data.bp_diastolic,
+      weightKg: Number(data.weight_kg),
+      temperatureC: Number(data.temperature_c),
+      pulseRate: data.pulse_rate,
+      fundalHeightCm: data.fundal_height_cm === null ? null : Number(data.fundal_height_cm),
+      fetalHeartRate: data.fetal_heart_rate,
+    },
+    notes: data.notes,
+    services: data.visit_service.map((s) => ({
+      serviceId: s.activity_type_id,
+      name: s.activity_type?.name ?? "",
+      icon: toServiceIcon(s.activity_type?.icon),
+      details: s.dose_or_details,
+      resultNotes: s.result_notes,
+    })),
+    editable: viewer.isAdmin || manilaDate(data.visit_datetime) === viewer.today,
+    previousWeightKg: previous ? Number(previous.weight_kg) : null,
+  };
+}
+
+/** All her visits (every pregnancy), newest first. */
+export async function listMotherVisits(motherId: number): Promise<MotherVisit[]> {
+  const supabase = await createClient();
+  const { data: pregnancies } = await supabase.from("pregnancy").select("pregnancy_id, pregnancy_status").eq("mother_id", motherId);
+  const ids = (pregnancies ?? []).map((p) => p.pregnancy_id);
+  if (!ids.length) return [];
+  const active = new Set((pregnancies ?? []).filter((p) => p.pregnancy_status === "ACTIVE").map((p) => p.pregnancy_id));
+  const { data } = await supabase
+    .from("prenatal_visit")
+    .select("visit_id, pregnancy_id, visit_datetime, aog_weeks, bp_systolic, bp_diastolic, weight_kg, visit_service(activity_type:activity_type_id(name))")
+    .in("pregnancy_id", ids)
+    .order("visit_datetime", { ascending: false });
+  return (data ?? []).map((row) => ({
+    id: row.visit_id,
+    at: row.visit_datetime,
+    weeks: row.aog_weeks,
+    bp: `${row.bp_systolic}/${row.bp_diastolic}`,
+    weightKg: Number(row.weight_kg),
+    services: row.visit_service.map((s) => s.activity_type?.name ?? "").filter(Boolean),
+    currentPregnancy: active.has(row.pregnancy_id),
+  }));
 }

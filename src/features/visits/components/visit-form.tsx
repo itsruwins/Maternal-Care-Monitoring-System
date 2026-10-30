@@ -11,12 +11,22 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useDictionary } from "@/i18n/dictionary-provider";
 import { format } from "@/i18n/format";
-import { doubleCheck, type VitalKey } from "@/lib/visits/vitals";
+import { doubleCheck, VITALS, type VitalKey } from "@/lib/visits/vitals";
 import { cn } from "@/lib/utils/cn";
 import { recordVisit, updateVisit } from "../actions/record-visit";
 import type { VisitContext, VisitErrorKey, VisitField, VisitInput, VisitService, VisitServiceEntry } from "../types";
 
 export type Vitals = Pick<VisitInput, VitalKey>;
+type FormText = ReturnType<typeof useDictionary>["t"]["visits"]["form"];
+const VITAL_LABEL: Record<VitalKey, (f: FormText) => string> = {
+  bpSystolic: (f) => f.bp,
+  bpDiastolic: (f) => f.bp,
+  weightKg: (f) => f.weight,
+  temperatureC: (f) => f.temperature,
+  pulseRate: (f) => f.pulse,
+  fundalHeightCm: (f) => f.fundalShort,
+  fetalHeartRate: (f) => f.fhrShort,
+};
 const EMPTY: Vitals = { bpSystolic: "", bpDiastolic: "", weightKg: "", temperatureC: "", pulseRate: "", fundalHeightCm: "", fetalHeartRate: "" };
 const toNumber = (value: string) => (value.trim() === "" ? null : Number(value.replace(",", ".")));
 
@@ -69,11 +79,21 @@ export function VisitForm({
   const updateEntry = (id: number, patch: Partial<VisitServiceEntry>) =>
     setEntries((current) => current.map((entry) => (entry.serviceId === id ? { ...entry, ...patch } : entry)));
 
+  // Bring a field into view and put the cursor in it (phones: the notes are
+  // far above the Save button).
+  const focusField = (key: string) =>
+    requestAnimationFrame(() => {
+      const el = document.getElementById(`visit-${key}`);
+      el?.scrollIntoView({ block: "center", behavior: "smooth" });
+      el?.focus({ preventScroll: true });
+    });
+
   const save = () => {
     setFormError(null);
     // First save with unusual values: ask to check them; the next save keeps them.
     if (flagged.length && acknowledged !== flaggedKey) {
       setAcknowledged(flaggedKey);
+      focusField(VITALS.find((key) => flagged.includes(key))!);
       return;
     }
     startTransition(async () => {
@@ -97,9 +117,17 @@ export function VisitForm({
         return;
       }
       setErrors(result.fieldErrors ?? {});
+      const firstError = VITALS.find((key) => result.fieldErrors?.[key]);
+      if (firstError) focusField(firstError);
       setFormError(result.error ?? null);
     });
   };
+
+  const bpError = Boolean(errors.bpSystolic || errors.bpDiastolic);
+  const bpFlagged = showChecks && (flagged.includes("bpSystolic") || flagged.includes("bpDiastolic"));
+  const bpDescribedBy = ["visit-bp-hint", bpError && "visit-bp-error", bpFlagged && "visit-bp-note"].filter(Boolean).join(" ");
+  // Which fields the notice names (blood pressure once).
+  const flaggedLabels = [...new Set(flagged.map((key) => VITAL_LABEL[key](f)))];
 
   const vitalField = (key: VitalKey, label: string, unit: string, opts: { hint?: string; decimal?: boolean } = {}) => (
     <Field
@@ -143,7 +171,7 @@ export function VisitForm({
                   value={vitals.bpSystolic}
                   onChange={set("bpSystolic")}
                   invalid={Boolean(errors.bpSystolic)}
-                  describedBy="visit-bp-hint"
+                  describedBy={bpDescribedBy}
                 />
               </div>
               <span aria-hidden className="pt-2.5 text-2xl font-light text-ink-soft">
@@ -157,7 +185,7 @@ export function VisitForm({
                   value={vitals.bpDiastolic}
                   onChange={set("bpDiastolic")}
                   invalid={Boolean(errors.bpDiastolic)}
-                  describedBy="visit-bp-hint"
+                  describedBy={bpDescribedBy}
                 />
               </div>
             </div>
@@ -165,9 +193,15 @@ export function VisitForm({
               {f.bpHint}
             </p>
             {(errors.bpSystolic || errors.bpDiastolic) && (
-              <FieldMessage tone="error">{t.visits.errors[(errors.bpSystolic ?? errors.bpDiastolic)!]}</FieldMessage>
+              <FieldMessage id="visit-bp-error" tone="error">
+                {t.visits.errors[(errors.bpSystolic ?? errors.bpDiastolic)!]}
+              </FieldMessage>
             )}
-            {showChecks && (flagged.includes("bpSystolic") || flagged.includes("bpDiastolic")) && <FieldMessage tone="check">{f.doubleCheck}</FieldMessage>}
+            {bpFlagged && !bpError && (
+              <FieldMessage id="visit-bp-note" tone="check">
+                {f.doubleCheck}
+              </FieldMessage>
+            )}
           </fieldset>
           {vitalField("weightKg", f.weight, f.weightUnit, {
             decimal: true,
@@ -232,7 +266,7 @@ export function VisitForm({
                         id={`details-${service.id}`}
                         value={entry.details}
                         onChange={(event) => updateEntry(service.id, { details: event.target.value })}
-                        placeholder={f.detailsPlaceholder}
+                        placeholder={f.detailsExamples[service.icon]}
                         maxLength={120}
                       />
                     </div>
@@ -265,7 +299,7 @@ export function VisitForm({
         {showChecks && flagged.length > 0 && acknowledged === flaggedKey && (
           <p role="status" className="flex items-start gap-2.5 rounded-xl bg-cream px-4 py-3 text-sm leading-5 text-ink">
             <InfoIcon weight="fill" aria-hidden className="mt-px size-[1.125rem] shrink-0 text-leaf" />
-            {f.checkNotice}
+            {format(f.checkNotice, { fields: flaggedLabels.join(", ") })}
           </p>
         )}
         {formError && (

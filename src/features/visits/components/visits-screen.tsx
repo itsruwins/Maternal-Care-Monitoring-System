@@ -54,14 +54,18 @@ export function VisitsView({
 
       <section aria-labelledby="visits-today" className="flex flex-col gap-3">
         <h2 id="visits-today" className="text-lg font-bold">
-          {v.today} · <span className="font-semibold text-ink-soft">{formatDate(today, locale)}</span>
+          {v.today}
+          <span className="block font-semibold text-ink-soft sm:inline">
+            <span aria-hidden className="hidden sm:inline"> · </span>
+            {formatDate(today, locale)}
+          </span>
         </h2>
         {todays.length === 0 ? (
           <p className="rounded-2xl bg-white px-6 py-8 text-center text-ink-soft shadow-[var(--shadow-soft)]">{v.todayEmpty}</p>
         ) : (
           <ul className="grid gap-3 md:grid-cols-2">
             {todays.map((item) => (
-              <li key={item.id} className="flex items-center gap-4 rounded-2xl bg-white p-4 shadow-[var(--shadow-soft)]">
+              <li key={item.id} className="flex flex-wrap items-center gap-x-4 gap-y-3 rounded-2xl bg-white p-4 shadow-[var(--shadow-soft)]">
                 <span className="tnum grid h-14 w-20 shrink-0 place-items-center rounded-2xl bg-mint text-[0.95rem] font-bold text-leaf">
                   {formatSlotClock(item.at, locale)}
                 </span>
@@ -77,13 +81,13 @@ export function VisitsView({
                 {item.visitId ? (
                   <Link
                     href={`/staff/visits/${item.visitId}`}
-                    className="inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-leaf underline decoration-1 underline-offset-4"
+                    className="inline-flex w-full shrink-0 items-center gap-1.5 text-sm font-semibold text-leaf underline decoration-1 underline-offset-4 sm:w-auto"
                   >
                     <CheckCircleIcon weight="fill" aria-hidden className="size-5" />
                     {v.recorded}
                   </Link>
                 ) : (
-                  <Button asChild size="sm" className="shrink-0">
+                  <Button asChild size="sm" className="h-11 w-full shrink-0 sm:h-9 sm:w-auto">
                     <Link href={`/staff/visits/new?appointment=${item.id}`}>
                       <CheckupIcon weight="bold" aria-hidden />
                       {v.record}

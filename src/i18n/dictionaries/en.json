@@ -1147,14 +1147,29 @@
       "services": "Services given",
       "servicesHint": "Tap each service given today, then add the details.",
       "details": "Details",
-      "detailsPlaceholder": "For example: TT2, 30 tablets, Topic: breastfeeding",
       "resultNotes": "Result or notes (optional)",
       "remove": "Remove",
       "notes": "Visit notes (optional)",
       "notesHint": "Anything the next health worker should know.",
       "save": "Save visit",
       "saving": "Saving…",
-      "checkNotice": "Some values look unusual. Please check them, then save again to keep them."
+      "checkNotice": "Some values look unusual: {fields}. Please check them, then save again to keep them.",
+      "detailsExamples": {
+        "checkup": "For example: routine check",
+        "vaccine": "For example: TT2",
+        "supplement": "For example: 30 tablets",
+        "lab": "For example: CBC, urinalysis",
+        "education": "For example: Topic: breastfeeding",
+        "heartbeat": "For example: 145 per minute",
+        "baby": "For example: newborn check",
+        "heart": "For example: wellbeing check",
+        "nutrition": "For example: Topic: iron-rich food",
+        "dental": "For example: cleaning, check-up",
+        "blood": "For example: blood type, hemoglobin",
+        "counseling": "For example: Topic: birth plan"
+      },
+      "fundalShort": "Fundal height",
+      "fhrShort": "Baby's heartbeat"
     },
     "errors": {
       "required": "This is required.",

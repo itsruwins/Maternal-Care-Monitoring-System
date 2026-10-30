@@ -45,7 +45,7 @@
       "tips": "Mga paalala"
     },
     "headline": "Hindi ka na mahuhuli sa checkup.",
-    "lead": "Ang prenatal records mo mula sa Barangay Taysan Health Center, nasa cellphone mo na. Ite-text ka namin bago ang bawat balik.",
+    "lead": "Ang prenatal records mo mula sa Barangay Taysan Health Center, nasa cellphone mo na. Ite-text ka namin bago ang bawat bisita.",
     "browserNote": "Gumagana sa browser ng cellphone mo. Walang app na ii-install.",
     "estimate": {
       "title": "Ilang linggo ka nang buntis?",
@@ -90,14 +90,14 @@
     ],
     "heroCards": {
       "photoAlt": "Larawan ng isang buntis na marahang hawak ang kanyang tiyan",
-      "description": "Mga halimbawang card: ilang linggo nang buntis at ang kabuwanan, text na paalala mula sa health center, at ang susunod na balik.",
+      "description": "Mga halimbawang card: ilang linggo nang buntis at ang kabuwanan, text na paalala mula sa health center, at ang susunod na bisita.",
       "sample": "Halimbawa",
       "yours": "Tantiya mo",
       "dueOn": "Kabuwanan: mga {date}",
       "sampleDue": "Peb 2027",
       "smsSender": "Taysan Health Center",
       "smsBody": "Paalala: ang prenatal checkup mo ay sa Biy, Nob 6.",
-      "nextVisit": "Susunod na balik",
+      "nextVisit": "Susunod na bisita",
       "sampleNext": "Biy, Nob 6",
       "nextVisitUnset": "Itatakda ng midwife"
     },
@@ -110,7 +110,7 @@
           "body": "Ilang minuto lang. Username at password lang ang kailangan; hindi kailangan ang email."
         },
         {
-          "title": "Mag-request ng balik",
+          "title": "Humiling ng bisita",
           "body": "Piliin ang serbisyo at araw na gusto mo. Kukumpirmahin ito ng health worker."
         },
         {
@@ -180,9 +180,9 @@
     },
     "records": {
       "title": "Ang records mo, nasa cellphone mo",
-      "body": "Makikita mo anumang oras ang kabuwanan mo, ilang linggo ka nang buntis, ang mga nakaraang balik at ang mga susunod na appointment. Ikaw at ang health center lang ang makakakita nito.",
+      "body": "Makikita mo anumang oras ang kabuwanan mo, ilang linggo ka nang buntis, ang mga nakaraang bisita at ang mga susunod na appointment. Ikaw at ang health center lang ang makakakita nito.",
       "photoAlt": "Isang nakangiting buntis na nakatayo sa labas",
-      "listTitle": "Mga balik ko",
+      "listTitle": "Mga bisita ko",
       "sample": "Halimbawa",
       "rows": [
         {
@@ -219,7 +219,7 @@
         "Inumin ang iron at folic acid na bigay ng health center.",
         "Kumain ng iba't ibang pagkain, gaya ng malunggay at ibang gulay, isda, itlog at monggo, at uminom ng malinis na tubig.",
         "Magpahinga nang sapat, at iwasan ang paninigarilyo at alak.",
-        "Dalhin ang card o booklet mo sa bawat balik."
+        "Dalhin ang card o booklet mo sa bawat bisita."
       ],
       "dangerTitle": "Magpatingin agad kung may:",
       "danger": [
@@ -354,7 +354,7 @@
       "home": "Home",
       "mothers": "Mga nanay",
       "appointments": "Appointment",
-      "visits": "Mga balik",
+      "visits": "Bisita",
       "followUps": "Mga follow-up",
       "reports": "Mga ulat",
       "accounts": "Mga account",
@@ -380,7 +380,7 @@
     },
     "motherHome": {
       "greeting": "Hello, {name}",
-      "body": "Malapit nang lumabas dito ang buod ng iyong pagbubuntis, susunod na balik at mga paalala."
+      "body": "Malapit nang lumabas dito ang buod ng iyong pagbubuntis, susunod na bisita at mga paalala."
     }
   },
   "newPassword": {
@@ -507,7 +507,7 @@
     "reminderOneDay": "Paalala 1 araw bago",
     "reminderDays": "Paalala {days} araw bago",
     "noDescription": "Walang paglalarawan",
-    "noDelete": "Hindi puwedeng burahin ang mga serbisyo, dahil ginagamit ito ng mga nakaraang appointment at balik.",
+    "noDelete": "Hindi puwedeng burahin ang mga serbisyo, dahil ginagamit ito ng mga nakaraang appointment at bisita.",
     "dialog": {
       "addTitle": "Bagong serbisyo",
       "editTitle": "Baguhin ang serbisyo",
@@ -1147,14 +1147,29 @@
       "services": "Mga ibinigay na serbisyo",
       "servicesHint": "Pindutin ang bawat serbisyong ibinigay ngayon, saka idagdag ang detalye.",
       "details": "Detalye",
-      "detailsPlaceholder": "Halimbawa: TT2, 30 tableta, Paksa: pagpapasuso",
       "resultNotes": "Resulta o tala (hindi kailangan)",
       "remove": "Alisin",
       "notes": "Tala sa bisita (hindi kailangan)",
       "notesHint": "Anumang dapat malaman ng susunod na health worker.",
       "save": "I-save ang bisita",
       "saving": "Sine-save…",
-      "checkNotice": "May mga value na mukhang hindi karaniwan. Pakisuri, saka i-save ulit para panatilihin."
+      "checkNotice": "May mga value na mukhang hindi karaniwan: {fields}. Pakisuri, saka i-save ulit para panatilihin.",
+      "detailsExamples": {
+        "checkup": "Halimbawa: regular na checkup",
+        "vaccine": "Halimbawa: TT2",
+        "supplement": "Halimbawa: 30 tableta",
+        "lab": "Halimbawa: CBC, urinalysis",
+        "education": "Halimbawa: Paksa: pagpapasuso",
+        "heartbeat": "Halimbawa: 145 kada minuto",
+        "baby": "Halimbawa: checkup ng baby",
+        "heart": "Halimbawa: kumustahan",
+        "nutrition": "Halimbawa: Paksa: pagkaing mayaman sa iron",
+        "dental": "Halimbawa: paglilinis, checkup",
+        "blood": "Halimbawa: blood type, hemoglobin",
+        "counseling": "Halimbawa: Paksa: plano sa panganganak"
+      },
+      "fundalShort": "Fundal height",
+      "fhrShort": "Tibok ng puso ng baby"
     },
     "errors": {
       "required": "Kailangan ito.",

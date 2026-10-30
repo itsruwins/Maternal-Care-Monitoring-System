@@ -1,14 +1,15 @@
 "use client";
 
 import { useEffect, useId, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
+import { CaretRightIcon } from "@/components/icons";
 import { cn } from "@/lib/utils/cn";
 
 export type TrendSeries = { name: string; color: string };
 export type TrendPoint = { week: number; label: string; values: number[] };
 
 // A small line chart across pregnancy weeks (display only). Thin 2px lines,
-// 8px dots with a white ring, one y-axis, recessive grid. Two or more series
-// get a legend and a direct label at the line end. Hover or arrow keys move a
+// 8px dots with a white ring, one y-axis, recessive grid. Every series gets
+// a direct label at the line end (no legend). Hover or arrow keys move a
 // crosshair with one readout for every series; "Show as table" lists every
 // value. Colours were checked for colour-blind separation (dataviz validator).
 export function TrendChart({
@@ -80,16 +81,6 @@ export function TrendChart({
         <span className="font-bold">
           {title} <span className="text-sm font-medium text-ink-soft">({unit})</span>
         </span>
-        {series.length > 1 && (
-          <span className="flex gap-4 text-sm text-ink-soft">
-            {series.map((s) => (
-              <span key={s.name} className="inline-flex items-center gap-1.5">
-                <span aria-hidden className="h-0.5 w-4 rounded-full" style={{ backgroundColor: s.color }} />
-                {s.name}
-              </span>
-            ))}
-          </span>
-        )}
       </figcaption>
 
       <div ref={box} className="relative">
@@ -102,7 +93,10 @@ export function TrendChart({
           tabIndex={0}
           onPointerMove={onMove}
           onPointerDown={onMove}
-          onPointerLeave={() => setActive(null)}
+          onPointerLeave={(event) => {
+            // A finger lifting shouldn't hide what she just tapped.
+            if (event.pointerType !== "touch") setActive(null);
+          }}
           onKeyDown={onKey}
           onBlur={() => setActive(null)}
         >
@@ -122,9 +116,6 @@ export function TrendChart({
               {week}
             </text>
           ))}
-          <text x={W - pad.right} y={H - 8} textAnchor="end" className="sr-only">
-            {weekAxis}
-          </text>
 
           {current && <line x1={x(current.week)} x2={x(current.week)} y1={pad.top} y2={pad.top + innerH} className="stroke-ink-soft/50" strokeWidth={1} />}
 
@@ -155,9 +146,13 @@ export function TrendChart({
           })}
         </svg>
 
+        {/* Read out the point chosen with arrow keys (one live region, always present). */}
+        <p aria-live="polite" className="sr-only">
+          {current ? `${weekLabel(current.week)}, ${current.label}: ${series.map((s, si) => `${s.name} ${current.values[si]}`).join(", ")}` : ""}
+        </p>
         {current && (
           <div
-            aria-live="polite"
+            aria-hidden
             className="pointer-events-none absolute top-0 rounded-xl border border-line bg-white px-3 py-2 text-sm shadow-[var(--shadow-soft)]"
             style={{
               left: `${(x(current.week) / W) * 100}%`,
@@ -178,8 +173,13 @@ export function TrendChart({
         )}
       </div>
 
+      <p className="-mt-1 text-center text-caption text-ink-soft">{weekAxis}</p>
+
       <details className="group text-sm">
-        <summary className="cursor-pointer font-semibold text-leaf underline decoration-1 underline-offset-4">{tableLabel}</summary>
+        <summary className="inline-flex cursor-pointer list-none items-center gap-1.5 font-semibold text-leaf underline decoration-1 underline-offset-4 [&::-webkit-details-marker]:hidden">
+          <CaretRightIcon weight="bold" aria-hidden className="size-3.5 transition-transform group-open:rotate-90" />
+          {tableLabel}
+        </summary>
         <table className="mt-3 w-full text-left">
           <thead className="text-caption text-ink-soft">
             <tr>

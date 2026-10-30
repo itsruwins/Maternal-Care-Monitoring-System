@@ -627,6 +627,21 @@ Sample reminder (about 140 characters, one SMS):
 - **Her visits:** a week tile, date, BP, weight and services. Each opens `/mother/visits/[id]` with her measurements and what she received. Staff visit notes are not shown to mothers.
 - Dev preview: `/design-preview/my-visits` (`?visit=1` for one visit).
 
+**Step 5 review (2026-10-30):**
+- **Checks:** production build, typecheck and lint pass.
+- **Contrast:** all text is at least 4.5:1 (lowest: the week badge, 4.77). The soft rose chart line is 2.5:1 by design; its values are always in text too (direct label, readout, table).
+- **Design review:** returned 7 fixes, all applied and confirmed in a second pass (verdict "ship"):
+  - the double-check notice names the fields, and the page scrolls to the first one;
+  - the BP notes are linked to both BP fields for screen readers;
+  - the charts show "Week of pregnancy";
+  - the chart readout stays after a tap, and arrow keys are announced;
+  - the staff Visits cards put Record visit on its own row on phones;
+  - each service has its own example detail;
+  - Filipino uses "bisita" everywhere.
+- **Extras:** the duplicate BP legend is removed (the direct labels stay), and "Show as table" uses the app's caret icon.
+- **Docs:** `DESIGN.md` + sidecar updated for Phase 5. Review screenshots deleted.
+- **Still needed:** your testing.
+
 ## Phase 6 — Missed appointments & follow-ups
 
 - **Nightly job (pg_cron):** CONFIRMED/RESCHEDULED appointments whose time has passed with no visit → MISSED, and a MISSED_NOTICE SMS is queued.

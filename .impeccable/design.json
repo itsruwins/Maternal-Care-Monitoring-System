@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-27T18:00:00+00:00",
+  "generatedAt": "2026-10-30T12:00:00+00:00",
   "title": "Design System: Taysan MaternaCare",
   "extensions": {
     "colorMeta": {
@@ -242,6 +242,36 @@
           "#9da99f",
           "#c0cdc2",
           "#e5f3e8"
+        ]
+      },
+      "chart-green": {
+        "role": "tertiary",
+        "displayName": "Chart Green",
+        "canonical": "#16805f",
+        "tonalRamp": [
+          "#001205",
+          "#002d1d",
+          "#005033",
+          "#007050",
+          "#2f916f",
+          "#55b38f",
+          "#7ddab5",
+          "#c7fde5"
+        ]
+      },
+      "chart-rose": {
+        "role": "tertiary",
+        "displayName": "Chart Rose",
+        "canonical": "#e08f82",
+        "tonalRamp": [
+          "#1f0000",
+          "#3c1712",
+          "#6b261d",
+          "#8e453b",
+          "#b16559",
+          "#d68679",
+          "#ffab9e",
+          "#ffe0d7"
         ]
       }
     },
@@ -511,11 +541,43 @@
       "description": "One status map for mothers and staff: Requested dashed leaf outline, Confirmed / Completed mint, New time sent / Missed blush, Cancelled cream.",
       "html": "<div class=\"ds-vchips\"><span class=\"ds-vchip ds-vchip--requested\">Requested</span><span class=\"ds-vchip ds-vchip--mint\">Confirmed</span><span class=\"ds-vchip ds-vchip--blush\">New time sent</span><span class=\"ds-vchip ds-vchip--mint\">Completed</span><span class=\"ds-vchip ds-vchip--blush\">Missed</span><span class=\"ds-vchip ds-vchip--cream\">Cancelled</span></div>",
       "css": ".ds-vchips{display:flex;flex-wrap:wrap;gap:8px;font-family:Inter,ui-sans-serif,system-ui,sans-serif}.ds-vchip{display:inline-flex;align-items:center;height:28px;padding:0 10px;border-radius:9999px;font-size:12px;line-height:16px;font-weight:600;white-space:nowrap}.ds-vchip--requested{border:1px dashed #3e5a4d;color:#3e5a4d}.ds-vchip--mint{background:#e3eae4;color:#3e5a4d}.ds-vchip--blush{background:#f6e6e1;color:#9c4f4a}.ds-vchip--cream{background:#f3efe3;color:#56665d}"
+    },
+    {
+      "name": "Vital Field with Double-Check",
+      "kind": "input",
+      "refersTo": "unit-input",
+      "description": "Visit form vital sign: value at 18px semibold, unit inside the right edge; an unusual value gets an ink note with a filled leaf info icon, an impossible one the rose-deep error.",
+      "html": "<div class=\"ds-vital\"><label class=\"ds-vital-label\" for=\"ds-w\">Weight</label><div class=\"ds-vital-wrap\"><input id=\"ds-w\" class=\"ds-vital-input\" inputmode=\"decimal\" value=\"118\"><span class=\"ds-vital-unit\">kg</span></div><p class=\"ds-vital-hint\">Last visit: 64 kg</p><p class=\"ds-vital-note\"><svg viewBox=\"0 0 256 256\" width=\"16\" height=\"16\" aria-hidden=\"true\"><path fill=\"#3e5a4d\" d=\"M128 24a104 104 0 1 0 104 104A104.11 104.11 0 0 0 128 24Zm-4 48a12 12 0 1 1-12 12 12 12 0 0 1 12-12Zm12 112a16 16 0 0 1-16-16v-40a8 8 0 0 1 0-16 16 16 0 0 1 16 16v40a8 8 0 0 1 0 16Z\"/></svg>Please check this value again.</p></div><p class=\"ds-check-notice\" role=\"status\"><svg viewBox=\"0 0 256 256\" width=\"18\" height=\"18\" aria-hidden=\"true\"><path fill=\"#3e5a4d\" d=\"M128 24a104 104 0 1 0 104 104A104.11 104.11 0 0 0 128 24Zm-4 48a12 12 0 1 1-12 12 12 12 0 0 1 12-12Zm12 112a16 16 0 0 1-16-16v-40a8 8 0 0 1 0-16 16 16 0 0 1 16 16v40a8 8 0 0 1 0 16Z\"/></svg>Some values look unusual: Weight. Check them, then save again to keep them.</p>",
+      "css": ".ds-vital{display:flex;flex-direction:column;gap:8px;max-width:320px;font-family:Inter,ui-sans-serif,system-ui,sans-serif;font-feature-settings:'cv11'}.ds-vital-label{font-size:14px;line-height:20px;font-weight:500;color:#1f2d27}.ds-vital-wrap{position:relative}.ds-vital-input{width:100%;box-sizing:border-box;height:48px;padding:0 96px 0 16px;border:1px solid #879389;border-radius:8px;background:#fff;color:#1f2d27;font:600 18px/24px Inter,ui-sans-serif,system-ui,sans-serif;font-variant-numeric:tabular-nums;outline:none;transition:border-color .2s cubic-bezier(.16,1,.3,1),box-shadow .2s cubic-bezier(.16,1,.3,1)}.ds-vital-input:focus-visible{border-color:#3e5a4d;box-shadow:0 0 0 4px rgb(118 147 130 / .25)}.ds-vital-input[aria-invalid=true]{border-color:#9c4f4a;box-shadow:0 0 0 4px rgb(217 165 160 / .3)}.ds-vital-unit{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:14px;color:#56665d;pointer-events:none}.ds-vital-hint{margin:0;font-size:14px;color:#56665d}.ds-vital-note{margin:0;display:flex;gap:6px;align-items:flex-start;font-size:14px;font-weight:500;color:#1f2d27}.ds-vital-note svg{margin-top:2px;flex-shrink:0}.ds-check-notice{margin:16px 0 0;max-width:420px;display:flex;gap:10px;align-items:flex-start;padding:12px 16px;border-radius:20px;background:#f3efe3;color:#1f2d27;font-size:14px;line-height:20px;font-family:Inter,ui-sans-serif,system-ui,sans-serif;font-feature-settings:'cv11'}.ds-check-notice svg{margin-top:1px;flex-shrink:0}"
+    },
+    {
+      "name": "Service Toggles",
+      "kind": "chip",
+      "refersTo": "service-toggle",
+      "description": "Services given at a visit: pill toggles with small service art; off is white with a line border, on is mint with a leaf border and a bold check.",
+      "html": "<ul class=\"ds-stog\"><li><button type=\"button\" class=\"ds-stog-btn\" aria-pressed=\"true\"><span class=\"ds-stog-art\"></span>Prenatal checkup<svg viewBox=\"0 0 256 256\" width=\"16\" height=\"16\" aria-hidden=\"true\"><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"24\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M40 144l56 56L224 72\"/></svg></button></li><li><button type=\"button\" class=\"ds-stog-btn\" aria-pressed=\"false\"><span class=\"ds-stog-art ds-stog-art--blush\"></span>Vaccination</button></li><li><button type=\"button\" class=\"ds-stog-btn\" aria-pressed=\"false\"><span class=\"ds-stog-art ds-stog-art--cream\"></span>Supplements</button></li></ul>",
+      "css": ".ds-stog{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px;font-family:Inter,ui-sans-serif,system-ui,sans-serif;font-feature-settings:'cv11'}.ds-stog-btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:4px 16px 4px 6px;border-radius:9999px;border:1px solid #e6e0d4;background:#fff;color:#1f2d27;font:600 15.2px/24px Inter,ui-sans-serif,system-ui,sans-serif;cursor:pointer;transition:background-color .2s cubic-bezier(.16,1,.3,1),border-color .2s cubic-bezier(.16,1,.3,1)}.ds-stog-btn:hover{border-color:#3e5a4d;background:rgb(227 234 228 / .4)}.ds-stog-btn[aria-pressed=true]{border-color:#3e5a4d;background:#e3eae4;color:#3e5a4d}.ds-stog-btn:focus-visible{outline:2px solid #3e5a4d;outline-offset:2px}.ds-stog-btn:active{transform:scale(.97)}.ds-stog-art{width:32px;height:32px;border-radius:45% 55% 50% 50%;background:#e3eae4;flex-shrink:0}.ds-stog-art--blush{background:#f6e6e1}.ds-stog-art--cream{background:#f3efe3}"
+    },
+    {
+      "name": "Visit History Row",
+      "kind": "custom",
+      "refersTo": "visit-week-tile",
+      "description": "The mother's visit list: whole-row links with a 56px blush week tile, the date, BP and weight in tabular ink-soft, services, and a bold caret.",
+      "html": "<ul class=\"ds-vh\"><li><a class=\"ds-vh-row\" href=\"#\"><span class=\"ds-vh-week\">Week<br>24</span><span class=\"ds-vh-body\"><span class=\"ds-vh-date\">October 14, 2026</span><span class=\"ds-vh-meta\"><span>Blood pressure 110/70</span><span>Weight 61.5 kg</span></span><span class=\"ds-vh-svc\">Prenatal checkup · Vaccination</span></span><svg viewBox=\"0 0 256 256\" width=\"20\" height=\"20\" aria-hidden=\"true\"><path fill=\"none\" stroke=\"#56665d\" stroke-width=\"24\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M96 48l80 80-80 80\"/></svg></a></li><li><a class=\"ds-vh-row\" href=\"#\"><span class=\"ds-vh-week\">Week<br>20</span><span class=\"ds-vh-body\"><span class=\"ds-vh-date\">September 16, 2026</span><span class=\"ds-vh-meta\"><span>Blood pressure 108/68</span><span>Weight 59.8 kg</span></span></span><svg viewBox=\"0 0 256 256\" width=\"20\" height=\"20\" aria-hidden=\"true\"><path fill=\"none\" stroke=\"#56665d\" stroke-width=\"24\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M96 48l80 80-80 80\"/></svg></a></li></ul>",
+      "css": ".ds-vh{list-style:none;margin:0;padding:0 24px;max-width:560px;background:#fff;border-radius:36px;box-shadow:0 1px 2px rgb(31 45 39 / .04),0 4px 14px -4px rgb(31 45 39 / .08);font-family:Inter,ui-sans-serif,system-ui,sans-serif;font-feature-settings:'cv11'}.ds-vh li+li{border-top:1px solid #e6e0d4}.ds-vh-row{display:flex;align-items:center;gap:16px;padding:16px 0;text-decoration:none;color:#1f2d27}.ds-vh-row:focus-visible{outline:2px solid #3e5a4d;outline-offset:2px;border-radius:12px}.ds-vh-row:hover .ds-vh-date{color:#3e5a4d}.ds-vh-week{display:grid;place-items:center;width:56px;height:56px;flex-shrink:0;border-radius:12px;background:#f6e6e1;color:#9c4f4a;font-size:14px;line-height:1.25;font-weight:700;text-align:center;white-space:pre-line;font-variant-numeric:tabular-nums}.ds-vh-body{flex:1;min-width:0}.ds-vh-date{display:block;font-weight:600}.ds-vh-meta{display:flex;flex-wrap:wrap;column-gap:16px;margin-top:2px;font-size:14px;color:#56665d;font-variant-numeric:tabular-nums}.ds-vh-svc{display:block;margin-top:4px;font-size:14px;color:#56665d}"
+    },
+    {
+      "name": "Trend Chart",
+      "kind": "custom",
+      "refersTo": "chart-readout",
+      "description": "Blood pressure across weeks: 2px lines with ringed dots, direct line-end labels (no legend), a white readout, the axis caption below and a Show as table disclosure.",
+      "html": "<figure class=\"ds-tc\"><figcaption><b>Blood pressure</b> <span class=\"ds-tc-unit\">(mmHg)</span></figcaption><div class=\"ds-tc-plot\"><svg viewBox=\"0 0 420 200\" role=\"img\" aria-label=\"Blood pressure by week\"><g stroke=\"#e6e0d4\"><line x1=\"44\" x2=\"356\" y1=\"16\" y2=\"16\"/><line x1=\"44\" x2=\"356\" y1=\"66\" y2=\"66\"/><line x1=\"44\" x2=\"356\" y1=\"117\" y2=\"117\"/><line x1=\"44\" x2=\"356\" y1=\"168\" y2=\"168\"/></g><g fill=\"#56665d\" font-size=\"13\" text-anchor=\"end\"><text x=\"36\" y=\"20\">120</text><text x=\"36\" y=\"70\">100</text><text x=\"36\" y=\"121\">80</text><text x=\"36\" y=\"172\">60</text></g><g fill=\"#56665d\" font-size=\"13\" text-anchor=\"middle\"><text x=\"44\" y=\"192\">12</text><text x=\"200\" y=\"192\">18</text><text x=\"356\" y=\"192\">24</text></g><line x1=\"252\" x2=\"252\" y1=\"16\" y2=\"168\" stroke=\"rgb(86 102 93 / .5)\"/><path d=\"M44 41 L148 46 L252 36 L356 41\" fill=\"none\" stroke=\"#16805f\" stroke-width=\"2\" stroke-linejoin=\"round\"/><path d=\"M44 117 L148 122 L252 112 L356 117\" fill=\"none\" stroke=\"#e08f82\" stroke-width=\"2\" stroke-linejoin=\"round\"/><g stroke=\"#fff\" stroke-width=\"2\"><circle cx=\"44\" cy=\"41\" r=\"4\" fill=\"#16805f\"/><circle cx=\"148\" cy=\"46\" r=\"4\" fill=\"#16805f\"/><circle cx=\"252\" cy=\"36\" r=\"6\" fill=\"#16805f\"/><circle cx=\"356\" cy=\"41\" r=\"4\" fill=\"#16805f\"/><circle cx=\"44\" cy=\"117\" r=\"4\" fill=\"#e08f82\"/><circle cx=\"148\" cy=\"122\" r=\"4\" fill=\"#e08f82\"/><circle cx=\"252\" cy=\"112\" r=\"6\" fill=\"#e08f82\"/><circle cx=\"356\" cy=\"117\" r=\"4\" fill=\"#e08f82\"/></g><g fill=\"#56665d\" font-size=\"13\" font-weight=\"600\"><text x=\"366\" y=\"45\">Top</text><text x=\"366\" y=\"121\">Bottom</text></g></svg><div class=\"ds-tc-readout\"><p class=\"ds-tc-when\">Week 21 · Sep 30</p><p><i style=\"background:#16805f\"></i><b>114</b> Top</p><p><i style=\"background:#e08f82\"></i><b>72</b> Bottom</p></div></div><p class=\"ds-tc-axis\">Week of pregnancy</p><details class=\"ds-tc-table\"><summary><svg viewBox=\"0 0 256 256\" width=\"14\" height=\"14\" aria-hidden=\"true\"><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"24\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M96 48l80 80-80 80\"/></svg>Show as table</summary><table><thead><tr><th>Week of pregnancy</th><th>Top</th><th>Bottom</th></tr></thead><tbody><tr><td>Week 12</td><td>110</td><td>70</td></tr><tr><td>Week 21</td><td>114</td><td>72</td></tr></tbody></table></details></figure>",
+      "css": ".ds-tc{margin:0;max-width:440px;display:flex;flex-direction:column;gap:12px;color:#1f2d27;font-family:Inter,ui-sans-serif,system-ui,sans-serif;font-feature-settings:'cv11'}.ds-tc-unit{font-size:14px;font-weight:500;color:#56665d}.ds-tc-plot{position:relative}.ds-tc-plot svg{display:block;width:100%;height:200px;overflow:visible;font-variant-numeric:tabular-nums}.ds-tc-readout{position:absolute;top:0;left:60%;transform:translateX(calc(-100% - 12px));padding:8px 12px;border:1px solid #e6e0d4;border-radius:20px;background:#fff;font-size:14px;box-shadow:0 1px 2px rgb(31 45 39 / .04),0 4px 14px -4px rgb(31 45 39 / .08);pointer-events:none}.ds-tc-readout p{margin:0;display:flex;align-items:center;gap:8px;white-space:nowrap;color:#56665d}.ds-tc-readout .ds-tc-when{font-weight:500}.ds-tc-readout i{display:inline-block;width:12px;height:2px;border-radius:9999px}.ds-tc-readout b{color:#1f2d27;font-variant-numeric:tabular-nums}.ds-tc-axis{margin:-4px 0 0;text-align:center;font-size:12px;line-height:16px;font-weight:500;color:#56665d}.ds-tc-table{font-size:14px}.ds-tc-table summary{display:inline-flex;align-items:center;gap:6px;list-style:none;cursor:pointer;font-weight:600;color:#3e5a4d;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}.ds-tc-table summary::-webkit-details-marker{display:none}.ds-tc-table summary:hover{text-decoration-thickness:2px}.ds-tc-table summary:focus-visible{outline:2px solid #3e5a4d;outline-offset:2px;border-radius:4px}.ds-tc-table summary svg{transition:transform .2s cubic-bezier(.16,1,.3,1)}.ds-tc-table[open] summary svg{transform:rotate(90deg)}.ds-tc-table table{margin-top:12px;width:100%;text-align:left;border-collapse:collapse;font-variant-numeric:tabular-nums}.ds-tc-table th{padding:6px 0;font-size:12px;font-weight:600;color:#56665d}.ds-tc-table td{padding:6px 0;border-top:1px solid #e6e0d4}.ds-tc-table td+td{font-weight:600}"
     }
   ],
   "narrative": {
     "northStar": "The Gentle Checkup",
-    "overview": "A soft, Flo-inspired world built around the mother rather than the clinic. The client's palette (leaf and fern greens, beige, sage, cream on a warm milk ground) carries almost everything; one dusty rose carries the few things meant to feel tender or urgent: hearts, the baby, danger signs and soft tints. Surfaces are rounded white cards, pill buttons and circles for dates and icons, sitting on curved tinted panels with low, ink-tinted shadows. It is light only, made for daylight at home and at the health center.\n\nThis is a web app, not a mobile app. Desktop gets a real web layout (header with section links, two-column sections, a 72rem container); phone widths borrow Flo's patterns (bottom sheets, full-width pill actions, stacked cards). Nothing imitates an app store, an install prompt or a device frame. Type is Inter alone, with extra-bold titles and a friendly single-storey \"a\". Motion is one slow float and short expo-out transitions, all stopped by reduced motion.\n\nIt refuses the generic SaaS hero (headline, device screenshot, feature grid) and clinical realism. Sample data is shown, but always labelled \"Sample\".\n\nBehind the login the same world turns into a quiet working app. Staff (health workers and admins) get a white sidebar and top bar on the milk ground; mothers get a slim top bar and a floating bottom-nav pill. Content sits in white cards with the soft shadow, the selected place is always a mint pill with a filled icon, and roles are told apart by tint (beige admin, mint health worker, blush mother), never by a new colour. The baby is shown two ways: a soft 3D picture per trimester inside the app, and the flat baby-in-womb glyph on the public landing hero.\n\nBooking a visit is the warmest moment of the app. Services are big white tiles with the client's flat people illustrations; small places show the service as a filled icon on a pastel blob. Days and times are white cards and chips; the one she picks turns solid leaf. A visit's state is always a small tint chip from the same palette, the same on her side and the health center's.",
+    "overview": "A soft, Flo-inspired world built around the mother rather than the clinic. The client's palette (leaf and fern greens, beige, sage, cream on a warm milk ground) carries almost everything; one dusty rose carries the few things meant to feel tender or urgent: hearts, the baby, danger signs and soft tints. Surfaces are rounded white cards, pill buttons and circles for dates and icons, sitting on curved tinted panels with low, ink-tinted shadows. It is light only, made for daylight at home and at the health center.\n\nThis is a web app, not a mobile app. Desktop gets a real web layout (header with section links, two-column sections, a 72rem container); phone widths borrow Flo's patterns (bottom sheets, full-width pill actions, stacked cards). Nothing imitates an app store, an install prompt or a device frame. Type is Inter alone, with extra-bold titles and a friendly single-storey \"a\". Motion is one slow float and short expo-out transitions, all stopped by reduced motion.\n\nIt refuses the generic SaaS hero (headline, device screenshot, feature grid) and clinical realism. Sample data is shown, but always labelled \"Sample\".\n\nBehind the login the same world turns into a quiet working app. Staff (health workers and admins) get a white sidebar and top bar on the milk ground; mothers get a slim top bar and a floating bottom-nav pill. Content sits in white cards with the soft shadow, the selected place is always a mint pill with a filled icon, and roles are told apart by tint (beige admin, mint health worker, blush mother), never by a new colour. The baby is shown two ways: a soft 3D picture per trimester inside the app, and the flat baby-in-womb glyph on the public landing hero.\n\nBooking a visit is the warmest moment of the app. Services are big white tiles with the client's flat people illustrations; small places show the service as a filled icon on a pastel blob. Days and times are white cards and chips; the one she picks turns solid leaf. A visit's state is always a small tint chip from the same palette, the same on her side and the health center's.\n\nRecording a visit is the health worker's working moment, kept as calm as the rest: vital signs in big-numbered fields with their units inside, services toggled on as pills, and unusual values met with a quiet cream \"double-check\" note rather than an alarm; only impossible values are errors. The mother sees the same visit as her numbers: a blush week tile per visit, milk value tiles, and two small line charts (weight, blood pressure) that always say their values in words as well as lines.",
     "keyCharacteristics": [
       "Greens do the work; rose is a small accent; text only in ink, ink-soft, leaf or rose-deep.",
       "Inter only, extra-bold display and section titles, tabular numerals for every date and count.",
@@ -524,7 +586,8 @@
       "Soft, low shadows tinted with ink; one gentle float.",
       "Web layout on desktop, Flo patterns at phone width.",
       "Signed-in app: white sidebar or floating bottom nav, mint active pill with a filled icon, sentence-case labels.",
-      "Booking: illustrated service tiles, a sideways day strip, Morning / Afternoon time chips, and a solid leaf pick."
+      "Booking: illustrated service tiles, a sideways day strip, Morning / Afternoon time chips, and a solid leaf pick.",
+      "Visits: unit-inside vital fields, pill service toggles, a soft cream double-check before any hard error, and labelled two-line trend charts."
     ],
     "rules": [
       {
@@ -608,6 +671,11 @@
         "section": "elevation"
       },
       {
+        "name": "The Said Twice Chart Rule",
+        "body": "Chart series colours never carry a value alone. A chart with two series names each line at its end in 13px ink-soft semibold (no separate legend), the readout repeats every value in ink bold beside a short swatch, and a \"Show as table\" disclosure lists them all. Chart green and chart rose stay inside charts.",
+        "section": "colors"
+      },
+      {
         "name": "The Visit Status Rule",
         "body": "A visit's status is a 28px chip from the same tints, identical for mothers and staff: Requested is a dashed leaf border with leaf text and no fill; Confirmed and Completed are mint with leaf; Rescheduled (\"New time sent\") and Missed are blush with rose-deep; Cancelled is cream with ink-soft. The Today week strip repeats the map on its date circles.",
         "section": "colors"
@@ -641,7 +709,10 @@
       "Do build every new booking surface from the shared service tiles, service art and slot picker (plain variant inside dialogs) rather than a new date or time control.",
       "Do show a visit's state only with the visit status chips, the same map for mothers and staff.",
       "Do pad the page for anything fixed above the mother bottom nav (like the summary bar) so it never covers content.",
-      "Do keep the bottom-nav tab opening on its own curve (cubic-bezier(0.32, 0.72, 0, 1), 420ms) and switched off under reduced motion; every other transition stays expo-out."
+      "Do keep the bottom-nav tab opening on its own curve (cubic-bezier(0.32, 0.72, 0, 1), 420ms) and switched off under reduced motion; every other transition stays expo-out.",
+      "Do separate impossible values (rose-deep error) from unusual ones (ink note with a filled leaf info icon, a cream notice naming the fields, kept on the second save).",
+      "Do put a measured value's unit inside its field and beside every recorded value, and set values in tabular numerals.",
+      "Do say every chart value twice: direct line-end labels, the readout and \"Show as table\"; chart green and chart rose stay in charts."
     ],
     "donts": [
       "Don't set text in fern, sage or rose; they are too light.",
@@ -654,7 +725,9 @@
       "Don't set uppercase or letter-spaced micro-labels; the week strip's weekday letters (and its Today label) are the only uppercase.",
       "Don't introduce a new colour for roles or statuses; use the existing tint pairs.",
       "Don't put the people illustrations in small places or the blob icon art in big tiles.",
-      "Don't let an unavailable day or time look pickable; fade it on cream, strike taken times, and disable it."
+      "Don't let an unavailable day or time look pickable; fade it on cream, strike taken times, and disable it.",
+      "Don't colour an unusual-but-possible vital sign in rose or blush; rose is for errors the form will not accept.",
+      "Don't add a separate chart legend or let a series colour be the only way to read a value."
     ]
   }
 }

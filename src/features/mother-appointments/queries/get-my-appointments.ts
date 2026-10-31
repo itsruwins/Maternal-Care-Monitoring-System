@@ -6,7 +6,8 @@ import type { MyAppointment, MyAppointments } from "../types";
 const OPEN = new Set(["REQUESTED", "CONFIRMED", "RESCHEDULED"]);
 
 // The mother's appointments (RLS: only her own), split into upcoming (open and
-// not yet passed; proposals first, then by time) and past (newest first).
+// not yet passed, plus requests still waiting for an answer even after their
+// time; proposals first, then by time) and past (newest first).
 export async function getMyAppointments(user: CurrentUser): Promise<MyAppointments> {
   const supabase = await createClient();
   const { data: mother } = await supabase.from("mother").select("mother_id").eq("user_id", user.id).maybeSingle();
@@ -32,7 +33,7 @@ export async function getMyAppointments(user: CurrentUser): Promise<MyAppointmen
     remarks: row.remarks,
   }));
   const at = (item: MyAppointment) => new Date(item.scheduledAt ?? item.requestedAt).getTime();
-  const isUpcoming = (item: MyAppointment) => OPEN.has(item.status) && at(item) > now;
+  const isUpcoming = (item: MyAppointment) => item.status === "REQUESTED" || (OPEN.has(item.status) && at(item) > now);
 
   return {
     pregnancyId: active,

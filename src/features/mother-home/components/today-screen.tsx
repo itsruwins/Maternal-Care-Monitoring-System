@@ -7,16 +7,21 @@ import {
   HealthCenterIcon,
   LocationIcon,
   PhoneIcon,
+  PlusIcon,
   PregnancyIcon,
   RecordsIcon,
   WellbeingIcon,
   type Icon,
 } from "@/components/icons";
+import { Button } from "@/components/ui/button";
 import { CurvedHero } from "@/components/ui/curved-hero";
 import { IconCircle } from "@/components/ui/icon-circle";
 import { InsightCard } from "@/components/ui/insight-card";
 import { WeekStrip, type WeekDay, type WeekDayState } from "@/components/ui/week-strip";
 import { isPlaceholder, SITE } from "@/config/site";
+import { MissedVisitNotice } from "@/features/mother-appointments/components/missed-visit-notice";
+import { getMyMissedVisits } from "@/features/mother-appointments/queries/get-my-missed-visits";
+import type { MissedVisit } from "@/features/mother-appointments/types";
 import { TrimesterPicture } from "@/features/mothers/components/trimester-picture";
 import type { Locale } from "@/i18n/config";
 import { format } from "@/i18n/format";
@@ -39,12 +44,13 @@ import type { MyToday, MyVisit } from "../types";
 // desktop. Reads the session: render inside <Suspense>.
 export async function TodayScreen() {
   const user = await requireRole(AREA_ROLES.mother);
-  const [{ t, locale }, today] = await Promise.all([getServerI18n(), getMyToday(user)]);
-  return <TodayView t={t} locale={locale} data={today} today={manilaTodayISO()} />;
+  const [{ t, locale }, today, missed] = await Promise.all([getServerI18n(), getMyToday(user), getMyMissedVisits()]);
+  return <TodayView t={t} locale={locale} data={today} missed={missed} today={manilaTodayISO()} />;
 }
 
 // The page layout, without data loading (also used by the dev preview).
-export function TodayView({ t, locale, data, today }: { t: Dictionary; locale: Locale; data: MyToday; today: string }) {
+// `missed`: her missed visits that are still open (the Next visit card notice).
+export function TodayView({ t, locale, data, missed, today }: { t: Dictionary; locale: Locale; data: MyToday; missed: MissedVisit[]; today: string }) {
   const d = t.today;
   const intlLocale = locale === "fil" ? "fil-PH" : "en-PH";
   const longDate = new Intl.DateTimeFormat(intlLocale, { timeZone: "UTC", weekday: "long", month: "long", day: "numeric" });
@@ -108,7 +114,7 @@ export function TodayView({ t, locale, data, today }: { t: Dictionary; locale: L
 
           {/* Right: cards, tip, danger signs, history */}
           <div className="flex flex-col gap-6">
-            <Insights t={t} locale={locale} weeks={age.weeks} next={data.nextVisit} />
+            <Insights t={t} locale={locale} weeks={age.weeks} next={data.nextVisit} missed={missed} />
             <TipCard t={t} weeks={age.weeks} />
             <DangerCard t={t} />
             <History t={t} locale={locale} data={data} />
@@ -163,7 +169,7 @@ function weekDays(t: Dictionary, today: string, intlLocale: string, visits: MyVi
   });
 }
 
-function Insights({ t, locale, weeks, next }: { t: Dictionary; locale: Locale; weeks: number; next: MyVisit | null }) {
+function Insights({ t, locale, weeks, next, missed }: { t: Dictionary; locale: Locale; weeks: number; next: MyVisit | null; missed: MissedVisit[] }) {
   const c = t.today.cards;
   const nextBody = next
     ? `${formatSlot(next.at, locale, "short")}${next.status === "CONFIRMED" ? "" : ` (${t.myAppointments.statuses[next.status]})`}`
@@ -175,11 +181,39 @@ function Insights({ t, locale, weeks, next }: { t: Dictionary; locale: Locale; w
       </InsightCard>
     </Link>
   );
+  const tip = card("#tip", c.tip, "mint", <IconCircle icon={WellbeingIcon} tone="fern" size="sm" />, t.today.tips[weeks % t.today.tips.length]);
+  const danger = card("#danger", c.danger, "blush", <IconCircle icon={DangerIcon} tone="white" size="sm" className="text-rose-deep" />, c.dangerBody);
+
+  // While a missed visit is still open, the Next visit card becomes the
+  // missed-visit notice across the row (a visit she has booked shows inside),
+  // with Tip and Danger signs side by side below it.
+  if (missed.length > 0) {
+    return (
+      <div className="grid grid-cols-2 gap-3">
+        <MissedVisitNotice t={t} locale={locale} missed={missed} className="col-span-2 rounded-xl p-4 sm:p-5">
+          {next && (
+            <p className="flex items-start gap-2 text-[0.95rem]">
+              <AppointmentIcon aria-hidden className="mt-0.5 size-5 shrink-0 text-leaf" />
+              <span className="tnum min-w-0">{format(c.nextVisitLine, { when: nextBody })}</span>
+            </p>
+          )}
+          <Button asChild className="w-full sm:w-auto sm:self-start">
+            <Link href="/mother/appointments/new">
+              <PlusIcon weight="bold" aria-hidden />
+              {t.myAppointments.request}
+            </Link>
+          </Button>
+        </MissedVisitNotice>
+        {tip}
+        {danger}
+      </div>
+    );
+  }
   return (
     <div className="grid grid-cols-3 gap-3">
       {card("/mother/appointments", c.nextVisit, "white", <IconCircle icon={AppointmentIcon} tone="leaf" size="sm" />, nextBody)}
-      {card("#tip", c.tip, "mint", <IconCircle icon={WellbeingIcon} tone="fern" size="sm" />, t.today.tips[weeks % t.today.tips.length])}
-      {card("#danger", c.danger, "blush", <IconCircle icon={DangerIcon} tone="white" size="sm" className="text-rose-deep" />, c.dangerBody)}
+      {tip}
+      {danger}
     </div>
   );
 }

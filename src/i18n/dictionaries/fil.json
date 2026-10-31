@@ -834,6 +834,7 @@
     "cards": {
       "nextVisit": "Susunod na bisita",
       "nextVisitNone": "Wala pang naka-book",
+      "nextVisitLine": "Susunod na bisita: {when}",
       "tip": "Payo ng linggo",
       "danger": "Mga babala",
       "dangerBody": "Alamin kung kailan hihingi ng tulong"
@@ -914,6 +915,13 @@
     "cancelled": "Nakansela ang bisita.",
     "keep": "Huwag kanselahin",
     "callToCancel": "Para magkansela sa mismong araw, makipag-ugnayan sa health center.",
+    "datePassed": "Lumipas na ang petsa.",
+    "datePassedNote": "Magmumungkahi ang health center ng ibang oras.",
+    "missed": {
+      "one": "Na-miss ka namin sa iyong {service} noong {date}.",
+      "several": "Na-miss ka namin",
+      "body": "Humiling ng bagong bisita kapag handa ka na, o makipag-ugnayan sa health center."
+    },
     "new": {
       "title": "Humiling ng bisita",
       "back": "Mga appointment",

@@ -707,6 +707,13 @@ Sample missed-visit SMS (157 characters, one SMS; the longest service name with 
 - The "first open weekday" logic is now shared with Phase 5's next-checkup step (same behaviour). Home visits use a door icon.
 - Dev previews: `/design-preview/follow-ups` (`?tab=closed`, `?admin=1`, `?show=offer`) and `/design-preview/follow-ups-rebook`.
 
+**Step 3 built (2026-10-31):** her record's Follow-ups tab and the appointment touches, approved by you.
+- **Mother record → Follow-ups tab:** a rose count on the tab while she has open follow-ups. "Needs follow-up", then "Closed" with how each ended, newest first. Each missed visit shows its whole log in place (Edit on the day it was logged or by admins, Delete for admins) with **Log follow-up** and **Rebook**. Rebooking started there goes back to her record.
+- **Appointments:** requests whose time has passed say "Date passed" and drop Confirm (Requests, List, Calendar and her record, where they stay under Upcoming). Missed appointments have **See follow-ups**, which opens her record's Follow-ups tab. The List view now shows its table from 1280px wide (cards below), so the actions aren't cut off beside the sidebar.
+- **Visits page:** an appointment the 6 PM check marked Completed without a linked visit says "Completed at her visit" and opens that visit.
+- **Test data:** `supabase/test-data/phase6-step3.sql` (not a migration) adds missed visits, a passed request and a Completed-without-visit appointment for two test mothers; its PART 2 removes them.
+- Dev previews: `/design-preview/mother-record?tab=followUps` (`&admin=1`, `&followUps=none`), `/design-preview/staff-appointments` (now with a passed request and a missed appointment), `/design-preview/visits` and `/design-preview/follow-ups-rebook?from=record`.
+
 ## Phase 7 — SMS reminders (HTTPSMS)
 
 - **Sender:** a protected route in this app (`/api/cron/send-sms`) sends due PENDING messages through HTTPSMS and saves the result (`sent_at`, `provider_message_id`, errors). Supabase `pg_cron` + `pg_net` call it every few minutes with `CRON_SECRET`. (Vercel's free plan only runs its own scheduled jobs once a day, which is too slow.)

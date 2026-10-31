@@ -20,6 +20,9 @@ export type MyAppointments = {
   past: MyAppointment[];
 };
 
+/** A missed visit the health center hasn't sorted out yet (no staff notes). */
+export type MissedVisit = { id: number; service: string; at: string };
+
 export type Service = { id: number; name: string; description: string | null; icon: ServiceIconKey };
 
 /** Everything the request form needs to grey out unavailable days and times. */

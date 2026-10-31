@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { InfoIcon, PlusIcon } from "@/components/icons";
+import { ClockIcon, InfoIcon, PlusIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import type { Locale } from "@/i18n/config";
 import { format } from "@/i18n/format";
@@ -13,15 +13,18 @@ import { manilaTodayISO } from "@/lib/utils/manila-date";
 import { cn } from "@/lib/utils/cn";
 import type { AppointmentStatus } from "@/types/database";
 import { getMyAppointments } from "../queries/get-my-appointments";
-import type { MyAppointment, MyAppointments } from "../types";
+import { getMyMissedVisits } from "../queries/get-my-missed-visits";
+import type { MissedVisit, MyAppointment, MyAppointments } from "../types";
 import { CancelVisitButton, ProposalActions } from "./appointment-actions";
+import { MissedVisitNotice } from "./missed-visit-notice";
 
-// /mother/appointments: new times to answer first, then upcoming visits (with
-// Cancel when allowed) and past ones. Reads the session: render inside <Suspense>.
+// /mother/appointments: the missed-visit notice and new times to answer first,
+// then upcoming visits (with Cancel when allowed) and past ones. Reads the
+// session: render inside <Suspense>.
 export async function MyAppointmentsScreen() {
   const user = await requireRole(AREA_ROLES.mother);
-  const [{ t, locale }, data] = await Promise.all([getServerI18n(), getMyAppointments(user)]);
-  return <MyAppointmentsView t={t} locale={locale} data={data} today={manilaTodayISO()} />;
+  const [{ t, locale }, data, missed] = await Promise.all([getServerI18n(), getMyAppointments(user), getMyMissedVisits()]);
+  return <MyAppointmentsView t={t} locale={locale} data={data} missed={missed} today={manilaTodayISO()} now={new Date().toISOString()} />;
 }
 
 const STATUS_STYLE: Record<AppointmentStatus, string> = {
@@ -34,7 +37,23 @@ const STATUS_STYLE: Record<AppointmentStatus, string> = {
 };
 
 // The page layout, without data loading (also used by the dev preview).
-export function MyAppointmentsView({ t, locale, data, today }: { t: Dictionary; locale: Locale; data: MyAppointments; today: string }) {
+export function MyAppointmentsView({
+  t,
+  locale,
+  data,
+  missed,
+  today,
+  now,
+}: {
+  t: Dictionary;
+  locale: Locale;
+  data: MyAppointments;
+  /** Her missed visits that are still open (the notice under the header). */
+  missed: MissedVisit[];
+  today: string;
+  /** The current time (ISO), for requests whose time has passed. */
+  now: string;
+}) {
   const a = t.myAppointments;
   const proposals = data.upcoming.filter((item) => item.status === "RESCHEDULED");
   const upcoming = data.upcoming.filter((item) => item.status !== "RESCHEDULED");
@@ -62,6 +81,8 @@ export function MyAppointmentsView({ t, locale, data, today }: { t: Dictionary; 
           {a.noPregnancy}
         </p>
       )}
+
+      <MissedVisitNotice t={t} locale={locale} missed={missed} />
 
       {proposals.map((item) => (
         <section key={item.id} aria-labelledby={`proposal-${item.id}`} className="rounded-3xl bg-blush/70 p-5 sm:p-7">
@@ -94,7 +115,7 @@ export function MyAppointmentsView({ t, locale, data, today }: { t: Dictionary; 
           <ul className="flex flex-col gap-3">
             {upcoming.map((item) => (
               <li key={item.id}>
-                <UpcomingCard t={t} locale={locale} item={item} today={today} />
+                <UpcomingCard t={t} locale={locale} item={item} today={today} now={now} />
               </li>
             ))}
           </ul>
@@ -126,10 +147,12 @@ export function MyAppointmentsView({ t, locale, data, today }: { t: Dictionary; 
   );
 }
 
-function UpcomingCard({ t, locale, item, today }: { t: Dictionary; locale: Locale; item: MyAppointment; today: string }) {
+function UpcomingCard({ t, locale, item, today, now }: { t: Dictionary; locale: Locale; item: MyAppointment; today: string; now: string }) {
   const a = t.myAppointments;
   const at = item.scheduledAt ?? item.requestedAt;
   const isRequest = item.status === "REQUESTED";
+  // Not answered before its time: staff will offer another time (or cancel it).
+  const datePassed = isRequest && Date.parse(at) <= Date.parse(now);
   // Confirmed visits can be cancelled online until the day before.
   const canCancel = isRequest || manilaSlot(at).date > today;
 
@@ -146,6 +169,14 @@ function UpcomingCard({ t, locale, item, today }: { t: Dictionary; locale: Local
           </div>
           <StatusChip t={t} status={item.status} />
         </div>
+        {datePassed && (
+          <p className="flex items-start gap-1.5 text-sm">
+            <ClockIcon weight="bold" aria-hidden className="mt-0.5 size-4 shrink-0 text-rose-deep" />
+            <span>
+              <span className="font-semibold text-rose-deep">{a.datePassed}</span> <span className="text-ink-soft">{a.datePassedNote}</span>
+            </span>
+          </p>
+        )}
         {item.remarks && (
           <p className="text-sm break-words text-ink-soft">
             <span className="font-medium text-ink">{a.note}:</span> {item.remarks}

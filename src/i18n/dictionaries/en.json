@@ -834,6 +834,7 @@
     "cards": {
       "nextVisit": "Next visit",
       "nextVisitNone": "None booked yet",
+      "nextVisitLine": "Next visit: {when}",
       "tip": "Tip of the week",
       "danger": "Danger signs",
       "dangerBody": "Know when to get help"
@@ -914,6 +915,13 @@
     "cancelled": "Visit cancelled.",
     "keep": "Keep it",
     "callToCancel": "To cancel on the day itself, please contact the health center.",
+    "datePassed": "Date passed.",
+    "datePassedNote": "The health center will suggest another time.",
+    "missed": {
+      "one": "We missed you at your {service} on {date}.",
+      "several": "We missed you",
+      "body": "Request a new visit when you're ready, or contact the health center."
+    },
     "new": {
       "title": "Request a visit",
       "back": "Appointments",

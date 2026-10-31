@@ -1,3 +1,5 @@
+import { keepTimeTogether } from "@/lib/utils/date-time";
+
 // Appointment dates and times for display, in Manila time.
 
 const tag = (locale: string) => (locale === "fil" ? "fil-PH" : "en-PH");
@@ -14,7 +16,7 @@ export function formatSlotDate(iso: string, locale: string, style: "long" | "sho
 
 /** "9:00 AM". */
 export function formatSlotClock(iso: string, locale: string): string {
-  return new Intl.DateTimeFormat(tag(locale), { timeZone: "Asia/Manila", hour: "numeric", minute: "2-digit" }).format(new Date(iso));
+  return keepTimeTogether(new Intl.DateTimeFormat(tag(locale), { timeZone: "Asia/Manila", hour: "numeric", minute: "2-digit" }).format(new Date(iso)));
 }
 
 /** "Thursday, November 5 · 9:00 AM". */

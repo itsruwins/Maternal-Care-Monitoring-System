@@ -714,6 +714,30 @@ Sample missed-visit SMS (157 characters, one SMS; the longest service name with 
 - **Test data:** `supabase/test-data/phase6-step3.sql` (not a migration) adds missed visits, a passed request and a Completed-without-visit appointment for two test mothers; its PART 2 removes them.
 - Dev previews: `/design-preview/mother-record?tab=followUps` (`&admin=1`, `&followUps=none`), `/design-preview/staff-appointments` (now with a passed request and a missed appointment), `/design-preview/visits` and `/design-preview/follow-ups-rebook?from=record`.
 
+**Step 4 built (2026-10-31):** the mother-side missed-visit notice, approved by you.
+- **Today:** while she has an open missed visit, the Next visit card becomes a wide blush notice across the row ("We missed you at your Prenatal Checkup on Fri, Oct 23."), with the line to request a visit or contact the health center, her next booked visit (if any) and **Request a visit**. Tip and Danger signs sit side by side below it. Otherwise Today is unchanged.
+- **Appointments:** one notice under the header; with two or more missed visits it says "We missed you" and lists them (one new request closes them all). The header's Request a visit button is right above it.
+- **Her requests whose time has passed** stay under Upcoming with "Date passed. The health center will suggest another time." She can still cancel them.
+- Filipino: "Na-miss ka namin sa iyong … noong …". The health center's number shows as a call link once the placeholder in `src/config/site.ts` is replaced.
+- Dev previews: `/design-preview/mother-today?missed=1` (or `2`, `&next=none`) and `/design-preview/mother-appointments?missed=1` (or `2`, `&passed=1`).
+
+**Step 5 review (2026-10-31):**
+- **Checks:** production build, typecheck and lint pass.
+- **Contrast:** all Phase 6 text is at least 4.5:1 (lowest: the Today hero note, 4.67). The only lower ones are Phase 4's faded taken times and closed calendar days, accepted then. One h1 per page, no skipped heading levels, every control named.
+- **Design review:** returned 6 fixes and 3 optional ones. 5 fixes and 2 optional ones were applied and confirmed in a second pass (verdict "ship"):
+  - keyboard focus shows a green ring on every button again (it was missing app-wide: in Tailwind v4 `outline-none` also turns the outline style off, so buttons need `focus-visible:outline-solid`);
+  - the Rebook page and the next-checkup step say "Service", "Day", "Time" without numbers (the staff booking page keeps "1. Mother", "2. Service"...);
+  - the Appointments List filters use two rows below 1280px wide, so "All statuses" and the dates aren't cut off;
+  - Rebook is a mint button, so it stands out on white cards;
+  - a time never breaks between "9:00" and "AM", and the Filipino "makipag-ugnayan" no longer breaks at its hyphen;
+  - (optional) her record lists open follow-ups oldest first, like the Follow-ups page;
+  - (optional) the Today tiles line up: text under the title, icon at the bottom.
+  - The reviewer withdrew the sixth fix (a bigger See log button: it is already 44px tall). The third optional one (the Today week number's size) is recorded in `DESIGN.md` instead.
+- **Extras:** Today's "Next visit:" line in the missed notice keeps its date and time together, so a narrow phone breaks after the label (your choice).
+- **Docs:** `DESIGN.md` + sidecar updated for Phase 6 (follow-up cards and chips, the missed-visit notice, and rules for the focus ring, unbroken times, real step numbers, wide filter rows and the button beside a main action). Review screenshots deleted.
+- **Recorded in `DESIGN.md`, left as they are:** white "Call" (follow-up cards on phones), "See follow-ups" (Missed appointments) and "Other time" (staff appointments, from Phase 4) buttons on white cards; the landing page's sample SMS times; the Today week number's size.
+- **Still needed:** your testing and sign-off. `supabase/test-data/phase6-step3.sql` gives two test mothers missed visits.
+
 ## Phase 7 — SMS reminders (HTTPSMS)
 
 - **Sender:** a protected route in this app (`/api/cron/send-sms`) sends due PENDING messages through HTTPSMS and saves the result (`sent_at`, `provider_message_id`, errors). Supabase `pg_cron` + `pg_net` call it every few minutes with `CRON_SECRET`. (Vercel's free plan only runs its own scheduled jobs once a day, which is too slow.)

@@ -172,7 +172,7 @@ export function ListView({
 
   return (
     <div className="flex flex-col gap-4">
-      <form method="get" className="grid gap-3 rounded-2xl bg-white p-4 shadow-[var(--shadow-soft)] sm:grid-cols-2 sm:p-5 lg:grid-cols-[repeat(4,minmax(0,1fr))_auto] lg:items-end">
+      <form method="get" className="grid gap-3 rounded-2xl bg-white p-4 shadow-[var(--shadow-soft)] sm:grid-cols-2 sm:p-5 xl:grid-cols-[repeat(4,minmax(0,1fr))_auto] xl:items-end">
         <input type="hidden" name="view" value="list" />
         <div className="flex flex-col gap-2">
           <Label htmlFor="appt-status">{l.status}</Label>
@@ -204,8 +204,8 @@ export function ListView({
           <Label htmlFor="appt-to">{l.to}</Label>
           <Input id="appt-to" name="to" type="date" defaultValue={filters.to} />
         </div>
-        <div className="flex gap-2 sm:col-span-2 lg:col-span-1">
-          <Button type="submit" className="h-12 flex-1 lg:flex-none">
+        <div className="flex gap-2 sm:col-span-2 xl:col-span-1">
+          <Button type="submit" className="h-12 flex-1 xl:flex-none">
             {l.submit}
           </Button>
           {hasFilters && (

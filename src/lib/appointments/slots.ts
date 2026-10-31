@@ -1,3 +1,4 @@
+import { keepTimeTogether } from "@/lib/utils/date-time";
 import { addDays, parseISODate, toISODate } from "@/lib/utils/pregnancy";
 
 // Appointment slots (same rules as migration 0009): 30 minutes, Monday to
@@ -74,8 +75,10 @@ export function bookingWindow(today: string): { first: string; last: string } {
 /** "9:00 AM" for "09:00". */
 export function formatSlotTime(time: string, locale: string): string {
   const [hour, minute] = time.split(":").map(Number);
-  return new Intl.DateTimeFormat(locale === "fil" ? "fil-PH" : "en-PH", { timeZone: "UTC", hour: "numeric", minute: "2-digit" }).format(
-    new Date(Date.UTC(2000, 0, 1, hour, minute)),
+  return keepTimeTogether(
+    new Intl.DateTimeFormat(locale === "fil" ? "fil-PH" : "en-PH", { timeZone: "UTC", hour: "numeric", minute: "2-digit" }).format(
+      new Date(Date.UTC(2000, 0, 1, hour, minute)),
+    ),
   );
 }
 

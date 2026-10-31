@@ -1093,6 +1093,7 @@
       "noMatches": "No mothers with a current pregnancy match.",
       "pickMother": "Choose her from the results.",
       "service": "2. Service",
+      "servicePlain": "Service",
       "day": "3. Day",
       "time": "4. Time",
       "remarkLabel": "Remarks (optional)",

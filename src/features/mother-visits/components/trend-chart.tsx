@@ -87,7 +87,7 @@ export function TrendChart({
         <svg
           viewBox={`0 0 ${W} ${H}`}
           style={{ height: H }}
-          className="block w-full touch-pan-y overflow-visible outline-none focus-visible:rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-leaf"
+          className="block w-full touch-pan-y overflow-visible outline-none focus-visible:rounded-md focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-4 focus-visible:outline-leaf"
           role="img"
           aria-labelledby={`${id}-desc`}
           tabIndex={0}

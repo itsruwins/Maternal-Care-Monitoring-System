@@ -132,6 +132,7 @@ export function RebookView({
             slots={slots}
             initialServiceId={missedService}
             initialDate={suggested}
+            numbered={false}
             doneHref={backHref}
           />
         </>

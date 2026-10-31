@@ -27,7 +27,7 @@ export function ProfileMenu({ user, profileHref }: { user: ShellUser; profileHre
     <DropdownMenu>
       <DropdownMenuTrigger
         aria-label={t.shell.accountMenu}
-        className="grid size-11 place-items-center rounded-full bg-blush text-sm font-bold text-rose-deep transition-shadow outline-none hover:shadow-[var(--shadow-soft)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-leaf"
+        className="grid size-11 place-items-center rounded-full bg-blush text-sm font-bold text-rose-deep transition-shadow outline-none hover:shadow-[var(--shadow-soft)] focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-2 focus-visible:outline-leaf"
       >
         {initials}
       </DropdownMenuTrigger>

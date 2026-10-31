@@ -4,9 +4,10 @@ import { Slot } from "radix-ui"
 import { cn } from "@/lib/utils/cn"
 
 // Pill buttons, Flo-style. 44px tall by default (mothers on phones);
-// a small squeeze on press.
+// a small squeeze on press. The focus ring needs focus-visible:outline-solid:
+// in Tailwind v4, outline-none also sets the outline style to none.
 const buttonVariants = cva(
-  "group/button relative inline-flex shrink-0 items-center justify-center gap-2 rounded-full text-[0.95rem] font-semibold whitespace-nowrap select-none outline-none transition-[background-color,color,box-shadow,transform] duration-200 ease-[var(--ease-out-expo)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-leaf active:not-aria-[haspopup]:scale-[0.97] disabled:pointer-events-none disabled:opacity-50 aria-busy:cursor-progress [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5",
+  "group/button relative inline-flex shrink-0 items-center justify-center gap-2 rounded-full text-[0.95rem] font-semibold whitespace-nowrap select-none outline-none transition-[background-color,color,box-shadow,transform] duration-200 ease-[var(--ease-out-expo)] focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-2 focus-visible:outline-leaf active:not-aria-[haspopup]:scale-[0.97] disabled:pointer-events-none disabled:opacity-50 aria-busy:cursor-progress [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5",
   {
     variants: {
       variant: {

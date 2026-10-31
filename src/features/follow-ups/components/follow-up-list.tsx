@@ -86,7 +86,7 @@ export function FollowUpList({ items, total, filters, ...shared }: Shared & { it
                   {open ? (
                     <div className="flex justify-end gap-2">
                       <LogFollowUpButton item={item} today={shared.today} />
-                      <Button asChild size="sm" variant="secondary">
+                      <Button asChild size="sm" variant="soft">
                         <Link href={rebookHref(item.appointmentId)} aria-label={format(f.rebookFor, { name: item.mother.name })}>
                           <AppointmentIcon weight="bold" aria-hidden />
                           {f.rebook}
@@ -156,7 +156,7 @@ function FollowUpCard({ t, locale, today, isAdmin, item, open }: Shared & { item
               {f.callButton}
             </a>
           </Button>
-          <Button asChild variant="secondary" className="px-4">
+          <Button asChild variant="soft" className="px-4">
             <Link href={rebookHref(item.appointmentId)} aria-label={format(f.rebookFor, { name: item.mother.name })}>
               <AppointmentIcon weight="bold" aria-hidden />
               {f.rebook}

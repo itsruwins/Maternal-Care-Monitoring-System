@@ -520,6 +520,59 @@ components:
     textColor: "{colors.ink}"
     rounded: "{rounded.xl}"
     padding: "8px 12px"
+  follow-up-card:
+    backgroundColor: "{colors.white}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.2xl}"
+    padding: "20px"
+  choice-card:
+    backgroundColor: "{colors.white}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.2xl}"
+    padding: "10px 8px"
+    height: "48px"
+  choice-card-checked:
+    backgroundColor: "{colors.mint}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.2xl}"
+    padding: "10px 8px"
+    height: "48px"
+  chip-follow-up-reached:
+    backgroundColor: "{colors.mint}"
+    textColor: "{colors.leaf}"
+    typography: "{typography.caption}"
+    rounded: "{rounded.full}"
+    padding: "0 10px"
+    height: "28px"
+  chip-follow-up-not-reached:
+    backgroundColor: "{colors.cream}"
+    textColor: "{colors.ink-soft}"
+    typography: "{typography.caption}"
+    rounded: "{rounded.full}"
+    padding: "0 10px"
+    height: "28px"
+  chip-ending:
+    backgroundColor: "{colors.mint}"
+    textColor: "{colors.leaf}"
+    typography: "{typography.caption}"
+    rounded: "{rounded.2xl}"
+    padding: "4px 10px"
+  chip-ending-closed:
+    backgroundColor: "{colors.cream}"
+    textColor: "{colors.ink-soft}"
+    typography: "{typography.caption}"
+    rounded: "{rounded.2xl}"
+    padding: "4px 10px"
+  missed-notice:
+    backgroundColor: "{colors.blush}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.3xl}"
+    padding: "28px"
+  missed-notice-today:
+    backgroundColor: "{colors.blush}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.xl}"
+    padding: "20px"
 ---
 
 # Design System: Taysan MaternaCare
@@ -540,6 +593,8 @@ Booking a visit is the warmest moment of the app. Services are big white tiles w
 
 Recording a visit is the health worker's working moment, kept as calm as the rest: vital signs in big-numbered fields with their units inside, services toggled on as pills, and unusual values met with a quiet cream "double-check" note rather than an alarm; only impossible values are errors. The mother sees the same visit as her numbers: a blush week tile per visit, milk value tiles, and two small line charts (weight, blood pressure) that always say their values in words as well as lines.
 
+Following up a missed visit stays gentle on both sides. Staff see open items oldest first, each led by a small rose-deep "Missed N days ago" line, with one leaf action (Log follow-up) beside a mint Rebook and the log of every try kept in place. The mother is never scolded: she gets a blush "We missed you" notice with a heart and a way to ask for a new visit.
+
 **Key Characteristics:**
 - Greens do the work; rose is a small accent; text only in ink, ink-soft, leaf or rose-deep.
 - Inter only, extra-bold display and section titles, tabular numerals for every date and count.
@@ -550,26 +605,27 @@ Recording a visit is the health worker's working moment, kept as calm as the res
 - Signed-in app: white sidebar or floating bottom nav, mint active pill with a filled icon, sentence-case labels.
 - Booking: illustrated service tiles, a sideways day strip, Morning / Afternoon time chips, and a solid leaf pick.
 - Visits: unit-inside vital fields, pill service toggles, a soft cream double-check before any hard error, and labelled two-line trend charts.
+- Follow-ups: oldest first, a rose-deep "Missed N days ago" clue, a leaf Log follow-up beside a mint Rebook, outcome and ending chips in mint or cream, and a blush heart notice for her.
 
 ## Colors
 
-A warm, quiet green-and-cream palette with one dusty-rose accent; every text colour clears 4.5:1 on its ground.
+A warm, quiet green-and-cream palette with one dusty-rose accent; every text colour clears 4.5:1 on its ground. Two disabled states sit below that on purpose and are accepted: a taken time chip faded on cream (1.77:1) and a closed staff calendar day (2.16:1). Both are disabled, and each also says so another way (struck through, or the Closed label).
 
 ### Primary
 - **Leaf Green** (leaf): primary buttons, links, the selected language pill, the current step, the "Sample" pill on floating hero cards; the chosen day card, time chip and month day in the slot picker, and the selected day in the staff calendar. White on leaf is 7.6:1; leaf on mint is 6.2:1.
 - **Deep Leaf** (leaf-deep): hover state of primary buttons and links only.
 - **Fern** (fern): fill and decoration only: filled icon circles, completed stepper lines, habit check marks; the open-day dot in the month view, the duotone sun and cloud-sun beside Morning and Afternoon, the leaf accent on service art. Too light for text.
-- **Mint** (mint): the green tint: default icon circles, soft buttons (the slider −/+), done status chips, service tiles, the tips band (at 60%); in the app, the active nav pill, the Active status badge, the Health worker role badge and the selected role choice; the active record tab, the countdown pill, the Live birth outcome chip, a shown purok's icon circle and the checked login option card (at 50%); in booking, the mint service-art blob, the month label in the day strip, the date tile on visit cards, the Confirmed and Completed chips, the calendar's per-day count badges and the open-day hover (at 40%); in visits, the time tile on today's appointments, a service toggle that is on (and its hover at 40%), and the checkup and "Visit saved" icon circles on staff pages.
+- **Mint** (mint): the green tint: default icon circles, soft buttons (the slider −/+), done status chips, service tiles, the tips band (at 60%); in the app, the active nav pill, the Active status badge, the Health worker role badge and the selected role choice; the active record tab, the countdown pill, the Live birth outcome chip, a shown purok's icon circle and the checked login option card (at 50%); in booking, the mint service-art blob, the month label in the day strip, the date tile on visit cards, the Confirmed and Completed chips, the calendar's per-day count badges and the open-day hover (at 40%); in visits, the time tile on today's appointments, a service toggle that is on (and its hover at 40%), and the checkup and "Visit saved" icon circles on staff pages; in follow-ups, the Rebook button, the "Reached her" outcome chip, the "Rebooked for …" and "Came in on …" ending chips, and a chosen method or outcome card (at 50%).
 
 ### Secondary
 - **Dusty Rose** (rose): fill and decoration only: the slider fill, the closing heart, selection highlight (at 45%), SMS-thread dividers (at 40%), the small plus and sparkle accents on service art. Never text.
-- **Blush** (blush): the rose tint: danger-sign card, SMS thread panel, blush icon circles, error notices, the destructive button, the top of the rose hero gradient; in the app, the initials avatar and the Mother role badge; the "Week N" pregnancy chip, the overdue countdown pill and the Today danger panel (at 60%); the blush service-art blob, the Rescheduled ("New time sent") and Missed chips, the new-time proposal panel (at 70%), the closed-day icon circle and every inline form error notice; in visits, the week tile on each of her visit rows and the checkup icon circle on her visit page.
-- **Rose Deep** (rose-deep): rose text and glyphs: danger signs and the danger panel's action line, form errors, the landing baby glyph, reminder flags, the Week chip and overdue countdown; in booking, the Closed label on calendar days, the "still has bookings" warning on a closed day, a failed reminder line, the Cancel action, and the solid request-count badge (white numerals). 5.8:1 on white, 4.77:1 on blush (the visit week tile is the lowest text pair in the app).
+- **Blush** (blush): the rose tint: danger-sign card, SMS thread panel, blush icon circles, error notices, the destructive button, the top of the rose hero gradient; in the app, the initials avatar and the Mother role badge; the "Week N" pregnancy chip, the overdue countdown pill and the Today danger panel (at 60%); the blush service-art blob, the Rescheduled ("New time sent") and Missed chips, the new-time proposal panel (at 70%), the closed-day icon circle and every inline form error notice; in visits, the week tile on each of her visit rows and the checkup icon circle on her visit page; her missed-visit notice (at 70%).
+- **Rose Deep** (rose-deep): rose text and glyphs: danger signs and the danger panel's action line, form errors, the landing baby glyph, reminder flags, the Week chip and overdue countdown; in booking, the Closed label on calendar days, the "still has bookings" warning on a closed day, a failed reminder line, the Cancel action, and the solid request-count badge (white numerals); in follow-ups, the "Missed N days ago" line with its bold clock, the open count on the Open tab and the record's Follow-ups tab, the "Date passed" line on a request that went by, the heart and bullets of her missed-visit notice, and Delete on a log entry. 5.8:1 on white, 4.77:1 on blush (the visit week tile is the lowest text pair in the app).
 
 ### Neutral
 - **Milk** (milk): the page ground and the browser theme colour; inside white cards, the vital-value tiles, the "chart after your second visit" note and the hover on search-result rows.
 - **White** (white): cards, dialogs, inputs, the footer; the staff sidebar, top bars, bottom nav, menus and sheets.
-- **Cream** (cream): quiet fills: services band, unavailable day cards and taken time chips (at 70%), the beige-tone service-art blob, the Cancelled chip, info tiles inside cards, the dialog and sheet close button, sample chips; the hover fill for nav and menu rows and the Inactive status badge; the outcome chip for every outcome except live birth, the Hidden purok badge and the login info notice; the visit form's double-check notice (ink text, filled leaf info icon).
+- **Cream** (cream): quiet fills: services band, unavailable day cards and taken time chips (at 70%), the beige-tone service-art blob, the Cancelled chip, info tiles inside cards, the dialog and sheet close button, sample chips; the hover fill for nav and menu rows and the Inactive status badge; the outcome chip for every outcome except live birth, the Hidden purok badge and the login info notice; the visit form's double-check notice (ink text, filled leaf info icon); the "Couldn't reach her" outcome chip and the ending chip of a follow-up closed without a visit.
 - **Beige** (beige): warm tiles and the "To be announced" chip; the end of the beige hero tone; the Admin role badge and the pending-password chip; a hidden purok's icon circle and the past-pregnancies icon circle.
 - **Sage** (sage): soft borders (outline button, dashed timeline), scrollbar thumb. Not text.
 - **Ink** (ink): body and heading text, 14.4:1 on white; the dialog overlay at 40%.
@@ -584,7 +640,7 @@ A warm, quiet green-and-cream palette with one dusty-rose accent; every text col
 Tinted panels use radial gradients that stay inside the palette: rose (blush → #f2dfd6 → #eedfd2), green (#eef2ec → mint → #d6e0d8) and beige (#f7f1e6 → #efe6d6 → beige). The rose end was lightened to #eedfd2 so ink-soft keeps 4.5:1 at the bottom of the hero.
 
 ### Named Rules
-**The Rose Is an Accent Rule.** Rose appears only on hearts, the baby (glyph or picture), danger signs, errors, soft tints and the few things that need her or the staff's attention (a new time to answer, a missed visit, a closed day, the waiting-request count). It never becomes a primary button, a section heading colour or a large flat fill beyond blush; the solid rose-deep count badge stays 24px.
+**The Rose Is an Accent Rule.** Rose appears only on hearts, the baby (glyph or picture), danger signs, errors, soft tints and the few things that need her or the staff's attention (a new time to answer, a missed visit and how long ago it was, a request whose date has passed, a closed day, the waiting-request and open follow-up counts). Once a follow-up is sorted it leaves rose: reached, rebooked and came-in states are mint, the rest cream. It never becomes a primary button, a section heading colour or a large flat fill beyond blush; the solid rose-deep count badge stays 24px.
 
 **The Light Colours Don't Speak Rule.** Fern, sage and rose are fills and decoration only. Text and meaningful glyphs use ink, ink-soft, leaf or rose-deep.
 
@@ -619,6 +675,8 @@ In the signed-in app, page titles take the Headline style; card section headings
 
 In visits: vital-sign fields set the typed value at 18px semibold with the unit in 14px ink-soft inside the field's right edge; a recorded value is 18px bold tabular with its unit in 14px medium ink-soft (milk tiles); the time tile on today's appointments is UI-size bold tabular; the mother's week tile stacks "Week" over the number in 14px bold tabular. A chart's title is body-size bold with the unit in 14px medium ink-soft; tick labels are 13px ink-soft tabular, line-end labels 13px semibold, the "Week of pregnancy" axis caption sits centred below the chart in caption ink-soft, and the table's heads are caption semibold. History group labels ("This pregnancy", "Earlier pregnancies") are 14px semibold ink-soft, sentence case.
 
+In follow-ups: the mother's name and the service are semibold (the service medium in the table) over the missed date and time in 14px ink-soft tabular; the "Missed N days ago" clue is 14px semibold rose-deep; the try count is semibold over "Last: …" in 14px ink-soft; a log entry leads with its date and method in semibold tabular. On her record the groups ("Needs follow-up", "Closed") are 18px bold and each card's "Follow-ups" label is 14px semibold ink-soft. Her missed-visit notice title is 18px bold; its list and body are UI size.
+
 Implementation note: the class merger (`cn`) registers the caption, title and display size utilities as font sizes, so they survive next to a text colour class. Any new custom text-size token must be added there too, or it will be dropped silently. (The `title` utility carries the Headline size.)
 
 ### Named Rules
@@ -627,6 +685,8 @@ Implementation note: the class merger (`cn`) registers the caption, title and di
 **The Tabular Numbers Rule.** Every date, week count and time uses tabular lining numerals so values never jitter as they change.
 
 **The Gentle Wrap Rule.** Headings h1–h3 balance their lines; paragraphs and list items wrap pretty. No orphaned last words.
+
+**The Unbroken Time Rule.** A time never breaks from its AM or PM: the shared date and time formatters put a no-break space before it, and times written into copy do the same. A short date and time inside a labelled line ("Next visit: Thu, Oct 29 · 9:00 AM") is joined with no-break spaces throughout, so the line breaks after the label, never before "· 9:00 AM"; a status after it, like "(Requested)", may still wrap. A Filipino hyphenated word that must stay whole (makipag-ugnayan) takes a word joiner after its hyphen.
 
 **The Sentence Case Label Rule.** Small labels stay in sentence case at normal tracking: sidebar group labels, table column heads, badges, form labels and bottom-nav labels. No uppercase or letter-spaced micro-labels; the week strip's weekday letters are the one exception.
 
@@ -645,14 +705,18 @@ Desktop gets a real web layout: header with brand, section links, language switc
 - **Long forms:** registration is a stack of section cards (icon circle plus title), each a two-column grid from 640px; Cancel and Register sit at the end, full width and stacked (primary on top) on phones, right-aligned from 640px.
 - **Record pages:** back link, a header card, a link-tab bar, then the tab's cards; Overview puts details beside login at 1.4 : 1 from 1024px.
 - **Booking a visit (mother):** a back link and title, then three steps that fold as she goes: the service tiles (two per row on phones, three from 640px, four from 1024px), then the chosen service as one white chip with a small secondary Change, then the slot picker's day card and time card stacked. Once a day and time are chosen, a white summary bar (up to 576px, float shadow) is fixed 88px above the bottom edge plus the safe area, just over the bottom nav, and the page gains 176px of bottom padding so it never covers the last chips.
-- **Booking a visit (staff):** the same steps in white cards on the full staff column: a mother search, compact service tiles (two per row, three from 640px, five from 1024px), the slot picker and a remarks card with a fit-width primary from 640px.
-- **Staff appointments:** title and intro with Book appointment beside them from 640px, then a link-tab bar in the record-tab style (Requests with its count, List, Calendar). Requests and the record's Appointments tab are a grid of appointment cards, two columns from 1024px. List is a filter card (four fields and Search in one row from 1024px) above a table from 1024px whose actions stay on one line, with stacked cards below 1024px. Calendar is a month grid beside the chosen day's cards at 1.15 : 1 from 1024px, stacked below.
+- **Booking a visit (staff):** the same steps in white cards on the full staff column: a mother search, compact service tiles (two per row, three from 640px, five from 1024px), the slot picker and a remarks card with a fit-width primary from 640px. Only this page numbers its steps (1. Mother, 2. Service, 3. Day, 4. Time); rebooking and the next-checkup step already know the mother and reuse the same form with plain headings (Service, Day, Time).
+- **Staff appointments:** title and intro with Book appointment beside them from 640px, then a link-tab bar in the record-tab style (Requests with its count, List, Calendar). Requests and the record's Appointments tab are a grid of appointment cards, two columns from 1024px. List is a filter card (two fields per row with a full-width Show from 640px; four fields and Show in one row only from 1280px) above a table from 1024px whose actions stay on one line, with stacked cards below 1024px. Calendar is a month grid beside the chosen day's cards at 1.15 : 1 from 1024px, stacked below.
 - **Closed days (admin):** one 36px card of line-divided upcoming rows (blush icon circle, date, reason, the rose-deep warning when visits remain, then Remove; on phones Remove drops under the text), then past days in a quieter card on 60% white.
 - **Staff Visits:** title and intro with a primary Walk-in visit beside them from 640px (full width on phones), then "Today" with the date (one line from 640px joined by a middle dot; on phones the date drops to its own ink-soft line), today's confirmed appointments as cards two per row from 768px, then recent visits as one line-divided card. In an appointment card the Record visit button fits its label from 640px and takes its own full-width 44px row on phones; once recorded it becomes a leaf "Recorded" link with a filled check.
 - **Recording a visit:** back link and title, then either a find-a-mother card (search with the button aligned to the field bottom from 640px; results in a bordered list) or the mother's summary card with a small secondary Change, then three 36px section cards: vital signs (fields one column on phones, two from 640px, three from 1024px; blood pressure spans the row as a systolic / diastolic pair up to 576px wide), services given, and notes with the save button (full width on phones). After the first save a confirmation card sits on top of the optional "Book next checkup" step (the shared staff booking form, prefilled).
 - **Visit detail (staff):** back link, a 36px header card (checkup circle, title, the mother as a link, week, source and who recorded it, secondary Edit or a lock line), then vitals beside services and notes at 1 : 1 from 1024px, stacked below. Editing reuses the visit form under the same header text.
 - **Mother Visits:** title and intro (up to 56ch), the next-visit card (secondary action full width on phones), her numbers card with the two charts side by side from 1024px and stacked below, then her visit history (this pregnancy, then earlier ones). Her visit page: back link, a blush checkup circle beside the title and week, then a vitals card (tiles two per row, three from 640px) and a services card. Staff notes never appear on her side.
-- **Mother Today:** date and greeting, then from 1024px two columns at 1.05 : 1 with the hero sticky 96px from the top on the left and insight grid, tip, danger and past pregnancies stacked on the right; one column below. With no pregnancy, a health-center card and the danger panel take the two columns.
+- **Mother Today:** date and greeting, then from 1024px two columns at 1.05 : 1 with the hero sticky 96px from the top on the left and insight grid, tip, danger and past pregnancies stacked on the right; one column below. With no pregnancy, a health-center card and the danger panel take the two columns. While she has an open missed visit, the next-visit insight becomes her missed-visit notice across the width of the insight grid, with Tip and Danger signs side by side below it.
+- **My Appointments (mother):** her missed-visit notice appears once, right under the header, above any new time to answer and her upcoming visits.
+- **Staff Follow-ups:** title and intro, an Open / Closed link-tab bar in the record-tab style (Open carries the open count), the filter card, a result count, then the list: a table from 1280px (room for the actions beside the sidebar) and cards below it, two per row from 768px. Open items run oldest first. The filter card spans the search across two columns with the other four fields two per row and a full-width Show; it becomes four columns at 1280px; below 640px purok, follow-up and the date range fold behind the "Filters" disclosure, as on the mother list.
+- **Follow-ups tab (mother record):** two groups under 18px bold headings, "Needs follow-up" (open, oldest first) then "Closed" (newest first), each a grid of cards, two per row from 1280px.
+- **Rebook:** back link, title and intro, the mother's summary card, an ink-soft suggested-date line, then the shared staff booking form without step numbers. A missed visit already sorted shows one card saying how it ended instead.
 
 ### Named Rules
 **The Web, Not App Rule.** Desktop is a website, not a stretched phone. Phone-width layouts borrow Flo's patterns, but there are no app-store badges, install prompts or device frames; the product says it works in the phone's browser.
@@ -662,6 +726,10 @@ Desktop gets a real web layout: header with brand, section links, language switc
 **The Shared Header Rule.** Paired cards share header height (icon circle plus title at a 48px minimum) so their lists start and run on the same lines; tile rows top-align their titles.
 
 **The One Place Rule.** The current place in either shell is a mint pill with leaf text and a filled icon; every other item is ink-soft with a regular-weight icon and a cream hover. Nothing else marks position. The record tab bar follows the same rule without icons.
+
+**The Wide Row Rule.** A filter card goes to a single row only when every field still has room: four fields and their button share a row from 1280px. Below that, fields sit two per row and the button takes the full width.
+
+**The Real Steps Rule.** Step headings carry numbers only when the sequence is real: the staff booking page, where finding the mother is step one. A form reused where the mother is already known drops the numbers.
 
 **The Mark the Exception Rule.** In a list, only the unusual state carries a badge (a hidden purok is badged, a shown one is not); the normal state stays unmarked.
 
@@ -692,6 +760,8 @@ In booking: service tiles, the chosen-service chip, the summary bar, slot-picker
 
 In visits: section cards, the visit lists and the mother's history use 36px; today's appointment cards, the time tile, service-entry cards and empty states use 28px; the double-check and error notices and the chart readout use 20px; vital tiles and the week tile use 12px; vital inputs 8px. Service toggles are pills.
 
+In follow-ups: the filter card, the table card, list and record cards, method and outcome choice cards and the "No more follow-up needed" option use 28px; the missed-visit notice is 36px on My Appointments and 20px as the Today insight; outcome chips are pills, while ending chips keep a 28px radius so a long "Rebooked for …" can wrap.
+
 Hero panels curve: the bottom edge bulges down as an elliptical radius (50% wide by 28, 44 or 72px tall). The illustration sits in an arch (fully rounded top, 40px bottom corners) with a thin white ring. A large, faint white ring (22–28px border at 35–40% white) sits half off the corner of tinted panels for depth without content. SMS bubbles take one tighter corner on the speaker's side.
 
 ## Components
@@ -705,7 +775,9 @@ Calm, round and tactile, with a small squeeze on press.
 - **Outline / Ghost:** sage border or none, ink text; hover to white or 5% ink. Ghost is the header Log in.
 - **Destructive:** blush with rose-deep text, never a saturated red.
 - **Link:** leaf, 1px underline offset 4px, thickening to 2px on hover.
-- **Focus / Press:** 2px leaf outline offset 2px; scale to 0.97 on press with expo-out easing; trailing arrow icons in bold weight.
+- **Focus / Press:** a solid 2px leaf outline offset 2px on every button, the profile avatar and the trend chart (offset 4px there and on whole-card links); scale to 0.97 on press with expo-out easing; trailing arrow icons in bold weight. Implementation note: in Tailwind v4 the outline-none reset also sets the outline style to none, so any control that removes the browser ring must name the solid style in its focus-visible set, or the ring never draws.
+- **Companion action:** beside a leaf primary on a white card, the second action is soft (mint), as Rebook is beside Log follow-up; a white secondary pill on a white card reads only by its shadow.
+- **Text actions in lists:** "See log" is a link-style button kept at a 44px target height so a text action in a dense row stays easy to hit.
 - **Account actions:** Reset password is an outline button with a bold lock icon; Deactivate is destructive and Activate is soft. Both open a confirmation dialog whose confirm button repeats the action's style (destructive for Deactivate, primary otherwise) beside a ghost Cancel. Paging uses small secondary buttons with bold carets, dimmed to 40% at the ends.
 - **Row and card actions:** small (36px) buttons with bold icons: secondary for Rename, Edit and Add past pregnancy; outline for Close pregnancy; ghost for Hide / Show and editing a past row. Full-size primary only for the one main action of a page or empty state (Add purok, Register a mother, Start a new pregnancy).
 
@@ -717,6 +789,7 @@ Calm, round and tactile, with a small squeeze on press.
 - **Pregnancy chip:** while pregnant, a 28px blush pill reading "Week N" in rose-deep, followed by the trimester in 14px ink-soft text; after a pregnancy, a cream outcome pill with the outcome and date. Past-pregnancy outcome chips are mint and leaf for a live birth, cream and ink-soft otherwise.
 - **Visit status:** 28px caption-semibold pills per The Visit Status Rule; the Requested chip is the only outlined chip in the system.
 - **Count badges:** the waiting-request count on the Requests tab is a 24px solid rose-deep circle with white bold tabular numerals; the staff calendar's per-day counts are mint circles with leaf numerals (white with leaf on the selected day).
+- **Follow-up chips:** each log entry carries an outcome pill (28px, caption semibold): "Reached her" mint with leaf, "Couldn't reach her" cream with ink-soft. A closed item carries one ending chip, "Rebooked for …" or "Came in on …" in mint with leaf, closed without a visit in cream with ink-soft; it keeps a 28px radius and wraps rather than truncating the date.
 - **Countdown pill:** "132 days to go" in 14px semibold; mint and leaf on white cards, blush and rose-deep once overdue. On the rose Today hero it is 16px semibold on 80% white with ink text (solid white with rose-deep when overdue).
 
 ### Cards / Containers
@@ -737,6 +810,7 @@ Calm, round and tactile, with a small squeeze on press.
 - **Filter card:** search, role and status in one white card; one column on phones, a single row from 640px with the 48px Search button aligned to the field bottoms and a ghost Clear when filters are set.
 - **Mother filter card:** search, purok, due month and pregnancy in one white 28px card (16px padding, 20px from 640px); see Layout for how it folds.
 - **Option card:** an optional choice (create a login) is a checkbox card: 28px radius, 16px padding, a 20px leaf-accent checkbox beside a semibold title and an ink-soft hint; line border at rest with a milk hover, leaf border on 50% mint when checked. Its fields appear below only when checked.
+- **Choice cards:** a one-of choice inside a dialog (how you reached out, did you reach her, why it ends) is a grid of radio cards: 48px minimum, 28px radius, line border on white with a leaf border and milk hover, leaf border on 50% mint when chosen; the radio itself is hidden and the card takes the leaf focus outline. Method cards (Call, SMS, Home visit) put a 24px duotone leaf icon above the name in 14px semibold; outcome cards are words only. With an error, the unchosen cards take a faded rose-deep border and the message sits below in rose-deep with a filled warning icon.
 - **Keep input on error:** every form submits through the shared submit-without-reset helper, so a server error never wipes what was typed; forms that should clear after saving remount instead.
 - **Slider:** a 10px cream track with rose fill to the value, a white round thumb with a 3px leaf ring and raised shadow; trimester ticks underneath.
 
@@ -782,7 +856,7 @@ A 36px white card: a header row with a 20px bold title and its small actions (Ed
 The mother's home after Flo's pregnancy screen. The rose curved hero (large curve, 36px top corners) holds the week strip, the trimester picture, the week number, "2nd trimester · 21 weeks and 1 day" in 18px ink-soft, the countdown pill, the due date and a 14px note on how it was counted. Beside it, the insight grid, then white panels with a 36px icon circle and an 18px bold title: the tip of the week (mint), danger signs (on 60% blush, rose-deep dots, a rose-deep semibold action line and the health center's number as a rose-deep link) and past pregnancies (beige). With no pregnancy she gets a raised card (large blush circle, a milk inset with the health center's address, hours and contact, label above value on phones and beside it from 640px) and a leaf link to Appointments.
 
 ### Week Strip and Insight Card
-The week strip shows seven 40px date circles, Sunday to Saturday, whose fill tells the day's state (leaf for appointment, dashed leaf for requested, mint for done, blush for missed; today is white with a soft shadow). Insight cards are 20px-radius tiles (white with the soft shadow, mint or blush) with a 15px semibold title on top and a small icon circle at the bottom. On Today they ship as a three-column grid of whole-card links (next visit, showing its day and time with the status in brackets until confirmed; tip; danger signs), at least 160px tall, a 14px ink-soft body clamped to three lines, lifting 2px on hover; each points at its fuller panel. The 144 × 176px snap-scrolling row remains available (design preview) for longer sets.
+The week strip shows seven 40px date circles, Sunday to Saturday, whose fill tells the day's state (leaf for appointment, dashed leaf for requested, mint for done, blush for missed; today is white with a soft shadow). Insight cards are 20px-radius tiles (white with the soft shadow, mint or blush) with a 15px semibold title on top, the body filling the space right under it, and a small icon circle at the bottom, so every tile in a row lines up. On Today they ship as a three-column grid of whole-card links (next visit, showing its day and time with the status in brackets until confirmed; tip; danger signs), at least 160px tall, a 14px ink-soft body clamped to three lines, lifting 2px on hover; each points at its fuller panel. While she has an open missed visit the row becomes two columns: the missed-visit notice spans both (20px radius, 16–20px padding) with her next visit as a leaf-icon line and a primary Request a visit (full width on phones), and Tip and Danger signs sit side by side below it. The 144 × 176px snap-scrolling row remains available (design preview) for longer sets.
 
 ### Service Tiles and Service Art
 A service has two pictures. **Service tiles** (the first booking step) are white 36px buttons with a line border holding the client-approved flat people illustration (square, up to 208px; 128px compact) above the name only, centred; hover lifts 2px with a leaf border and the soft shadow, focus is the leaf outline. The admin picture picker repeats the illustrations as 64px thumbnails in a four-column grid of 28px radio options (line border, milk hover, leaf border on 50% mint when chosen) with the picture name in caption ink-soft. **Service art** is for small places (the chosen-service chip, the summary bar, Activity types cards): a filled Phosphor icon on a pastel blob (mint with leaf, blush with rose-deep, cream with leaf), with a fern leaf, a rose plus and a rose sparkle around it at the larger sizes; at the smallest (56px) the accents drop and the icon turns duotone. Both are decorative; the name is always written beside them.
@@ -798,10 +872,10 @@ One shared day-and-time picker for mothers requesting, staff booking and staff o
 Once a service, day and time are chosen, a white 36px bar with a line border and the float shadow rises above the bottom nav: the service art beside the day and time in bold tabular numerals and the service name in ink-soft, then a leaf underlined "Add a note" (opening a 48px input with a "Hide note" link) and the primary Send request. A send error appears inside it in rose-deep with a filled warning icon.
 
 ### Visit Cards (mother)
-Upcoming visits are white 36px cards with the soft shadow: a 64px mint date tile (month over day), the service in semibold, the date in ink-soft with the time in semibold ink, the status chip top right, an optional note, then a ghost Cancel or a 14px ink-soft "call to cancel" line. A new time from the health center comes first, as a 70% blush panel with an 18px bold title, an ink-soft line, a white 12px inner card (date tile, service, the new time, "You asked for" in 14px ink-soft) and Accept (primary) / Decline beside it. Past visits are one white card of line-divided rows with their status chips.
+Upcoming visits are white 36px cards with the soft shadow: a 64px mint date tile (month over day), the service in semibold, the date in ink-soft with the time in semibold ink, the status chip top right, an optional note, then a ghost Cancel or a 14px ink-soft "call to cancel" line. A new time from the health center comes first, as a 70% blush panel with an 18px bold title, an ink-soft line, a white 12px inner card (date tile, service, the new time, "You asked for" in 14px ink-soft) and Accept (primary) / Decline beside it. Past visits are one white card of line-divided rows with their status chips. A request whose date has gone by without an answer shows a 14px line with a bold rose-deep clock: "Date passed." in rose-deep semibold, then an ink-soft note that the health center will suggest another time.
 
 ### Staff Appointments
-Appointment cards are white 28px cards with the soft shadow: the time in semibold ink after the date in ink-soft, the mother's name as a semibold link to her record (leaf underline on hover), the service, the status chip top right, waiting-since or asked-for lines and remarks in 14px ink-soft, the reminder line (bell icon, ink-soft, rose-deep when sending failed), then small actions: Confirm (primary, bold check), Other time (secondary) and Cancel (ghost in rose-deep). Other time opens a 576px dialog with the current time on a 20px milk strip, the plain slot picker and a remark; Cancel opens a confirmation. Inline errors in every booking dialog are 20px blush notices with rose-deep text and a filled warning icon. The calendar is a 36px white card: month title between 40px caret links, caption weekday heads, 20px day cells (56px tall, 80px from 640px) with the date in semibold tabular numerals and either a count badge or "Closed" in rose-deep; weekends and closed days fade; today is ringed in leaf; the chosen day is solid leaf. The chosen day's cards sit beside it under an 18px bold date heading.
+Appointment cards are white 28px cards with the soft shadow: the time in semibold ink after the date in ink-soft, the mother's name as a semibold link to her record (leaf underline on hover), the service, the status chip top right, waiting-since or asked-for lines and remarks in 14px ink-soft, the reminder line (bell icon, ink-soft, rose-deep when sending failed), then small actions: Confirm (primary, bold check), Other time (secondary) and Cancel (ghost in rose-deep). Other time opens a 576px dialog with the current time on a 20px milk strip, the plain slot picker and a remark; Cancel opens a confirmation. Inline errors in every booking dialog are 20px blush notices with rose-deep text and a filled warning icon. The calendar is a 36px white card: month title between 40px caret links, caption weekday heads, 20px day cells (56px tall, 80px from 640px) with the date in semibold tabular numerals and either a count badge or "Closed" in rose-deep; weekends and closed days fade; today is ringed in leaf; the chosen day is solid leaf. The chosen day's cards sit beside it under an 18px bold date heading. A request whose time has passed drops Confirm and shows a 14px rose-deep semibold "Date passed" line with a bold clock, in cards and table rows alike; a Missed visit gains a small secondary "See follow-ups" (bold call icon) that opens her record's Follow-ups tab.
 
 ### Visit Form (staff)
 Calm and numeric, with typos stopped and unusual values only questioned.
@@ -820,6 +894,17 @@ Calm and numeric, with typos stopped and unusual values only questioned.
 
 ### Trend Chart
 A small, quiet line chart across weeks of pregnancy, display only. 200px tall, drawn at the real width so labels stay 13px. Lines are 2px with round joins; dots 8px (12px when chosen) in the series colour with a 2px white ring. Gridlines are 1px line, about four, with ink-soft tick values on the left; three week ticks below and the "Week of pregnancy" caption under the chart. A two-series chart labels each line at its end; there is no legend. Hover, tap or the arrow keys move a 1px ink-soft crosshair (50%) and a white 20px readout (line border, soft shadow) with the week and date in ink-soft medium and each value in ink bold beside a short swatch; it flips to the left of the point past 60% of the width, persists after a touch tap and clears on blur. One always-present visually hidden live region announces the chosen point; the readout itself is hidden from screen readers. The 2px leaf focus outline wraps the chart. "Show as table" is a leaf underlined disclosure led by the bold caret (turning 90° when open) above a compact table with caption heads and line dividers. Fewer than two visits shows a milk note instead of a chart.
+
+### Follow-ups (staff)
+Calm working lists for missed visits, built from the same cards, tabs and chips.
+- **Rows and cards:** from 1280px a 28px white table card with the soft shadow and caption heads (Mother, Missed visit, Follow-ups, then actions): the name as a semibold link to her record's Follow-ups tab, her number as a leaf underlined call link with a call icon, and her purok with a location icon; the service, the missed date and time, and on open items the "Missed N days ago" clue; the try count and last try, with See log under it. Below 1280px each item is a 28px white card in the same order with the clue on top, a line divider before the tries, and its actions at the bottom.
+- **Actions:** open items get Log follow-up (primary, bold plus) and Rebook (soft, bold calendar). On cards Log follow-up takes a full-width 44px row with Call (secondary, bold phone icon) and Rebook side by side below it; in the table Log follow-up and Rebook are small and stay on one line. Closed items show their ending chip instead.
+- **Log follow-up dialog:** a 512px dialog: the headline-style title, an ink-soft line naming her, the missed service and time, then method choice cards (three across), outcome cards (two across), a 224px date field limited to the days since the visit, notes with an ink-soft hint, and a "No more follow-up needed" option card that opens the reasons when checked. Ghost Cancel and primary Save follow-up close it, stacked full width on phones with the primary on top. When she was reached, the dialog turns into a centred offer (large mint check circle, title, line) with a primary Book a new appointment and a ghost Not now.
+- **See log:** a 512px dialog listing the entries newest first, line-divided: date and method in semibold tabular with the outcome pill on the right, the notes, a 14px medium leaf line naming why it was closed, "Logged by" in ink-soft, then small secondary Edit and a ghost rose-deep Delete whose confirmation opens in place under a dashed line, with a destructive confirm. Entries past editing show an ink-soft italic note instead.
+- **Record cards:** on her Follow-ups tab each missed visit is a 28px white card: the clue (open only), the service in semibold and the date; the ending chip when closed; a line divider, a 14px semibold ink-soft "Follow-ups" label and the entries shown in place; then Log follow-up and Rebook side by side at 44px, wrapping to full width on narrow cards.
+
+### Missed Visit Notice
+The mother's side of a missed visit, gentle rather than alarming: a blush section (at 70%) with a white 36px icon circle holding a rose-deep heart beside an 18px bold title. One missed visit makes a single sentence ("We missed you at your Prenatal Checkup on Fri, Oct 23."); several make a short title and a list, each row a small rose-deep dot, the service in semibold and the date in tabular numerals. Below sit an ink-soft body line, the health center's number as a rose-deep underlined phone link once a real number is set (never while it is a placeholder), and any extra content, such as the next-visit line and Request a visit on Today. 36px radius with 20px padding (28px from 640px) on My Appointments; 20px radius as the Today insight.
 
 ## Do's and Don'ts
 
@@ -845,6 +930,13 @@ A small, quiet line chart across weeks of pregnancy, display only. 200px tall, d
 - **Do** separate impossible values (rose-deep error) from unusual ones (ink note with a filled leaf info icon, a cream notice naming the fields, kept on the second save).
 - **Do** put a measured value's unit inside its field and beside every recorded value, and set values in tabular numerals.
 - **Do** say every chart value twice: direct line-end labels, the readout and "Show as table"; chart green and chart rose stay in charts.
+- **Do** give every focusable control the solid 2px leaf outline; where a control resets the browser outline, name the solid style in its focus-visible set.
+- **Do** make the companion action beside a leaf primary on a white card soft (mint).
+- **Do** keep a filter card's single row for 1280px and up; below that, two fields per row and a full-width button.
+- **Do** keep every time joined to its AM or PM with a no-break space, keep a short date and time inside a labelled line whole so it breaks after the label, and join Filipino hyphenated words that must not break with a word joiner.
+- **Do** let an insight tile's body fill the space under its title, clamped to three lines, with the icon at the bottom.
+- **Do** number step headings only where the steps are real; a reused form that already knows the mother uses plain headings.
+- **Do** run open follow-ups oldest first and lead each with its "Missed N days ago" clue; closed ones run newest first.
 
 ### Don't:
 - **Don't** set text in fern, sage or rose; they are too light.
@@ -860,3 +952,6 @@ A small, quiet line chart across weeks of pregnancy, display only. 200px tall, d
 - **Don't** let an unavailable day or time look pickable; fade it on cream, strike taken times, and disable it.
 - **Don't** colour an unusual-but-possible vital sign in rose or blush; rose is for errors the form will not accept.
 - **Don't** add a separate chart legend or let a series colour be the only way to read a value.
+- **Don't** put rose on a follow-up once it is sorted; reached, rebooked and came-in states are mint, the rest cream.
+- **Don't** put a white secondary pill beside the primary on a white card; it disappears into the card.
+- **Don't** let a time wrap between the number and AM or PM.

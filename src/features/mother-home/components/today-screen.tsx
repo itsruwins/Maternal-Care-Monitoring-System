@@ -171,13 +171,13 @@ function weekDays(t: Dictionary, today: string, intlLocale: string, visits: MyVi
 
 function Insights({ t, locale, weeks, next, missed }: { t: Dictionary; locale: Locale; weeks: number; next: MyVisit | null; missed: MissedVisit[] }) {
   const c = t.today.cards;
-  const nextBody = next
-    ? `${formatSlot(next.at, locale, "short")}${next.status === "CONFIRMED" ? "" : ` (${t.myAppointments.statuses[next.status]})`}`
-    : c.nextVisitNone;
+  const nextStatus = next && next.status !== "CONFIRMED" ? ` (${t.myAppointments.statuses[next.status]})` : "";
+  const nextBody = next ? `${formatSlot(next.at, locale, "short")}${nextStatus}` : c.nextVisitNone;
   const card = (href: string, title: string, tone: "white" | "mint" | "blush", visual: ReactNode, body?: string) => (
     <Link href={href} className="block h-full rounded-xl no-underline outline-offset-4 focus-visible:outline-2 focus-visible:outline-leaf">
       <InsightCard title={title} tone={tone} visual={visual} className="h-full min-h-40 w-full gap-3 transition-transform hover:-translate-y-0.5">
-        {body && <p className="line-clamp-3 text-sm text-ink-soft">{body}</p>}
+        {/* flex-1: the text sits right under the title, the icon at the bottom */}
+        {body && <p className="line-clamp-3 flex-1 text-sm text-ink-soft">{body}</p>}
       </InsightCard>
     </Link>
   );
@@ -194,7 +194,10 @@ function Insights({ t, locale, weeks, next, missed }: { t: Dictionary; locale: L
           {next && (
             <p className="flex items-start gap-2 text-[0.95rem]">
               <AppointmentIcon aria-hidden className="mt-0.5 size-5 shrink-0 text-leaf" />
-              <span className="tnum min-w-0">{format(c.nextVisitLine, { when: nextBody })}</span>
+              {/* No-break spaces keep the date and time whole, so a narrow phone breaks after "Next visit:" */}
+              <span className="tnum min-w-0">
+                {format(c.nextVisitLine, { when: `${formatSlot(next.at, locale, "short").replace(/\s+/g, " ")}${nextStatus}` })}
+              </span>
             </p>
           )}
           <Button asChild className="w-full sm:w-auto sm:self-start">

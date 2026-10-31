@@ -26,6 +26,7 @@ export function BookAppointmentForm({
   initialServiceId = null,
   initialDate = null,
   doneHref,
+  numbered = true,
 }: {
   mother: BookableMother;
   services: Service[];
@@ -35,9 +36,14 @@ export function BookAppointmentForm({
   initialDate?: string | null;
   /** Where to go after booking (default: her record's Appointments tab). */
   doneHref?: string;
+  /** "2. Service", "3. Day"...: off where the page has no "1. Mother" step. */
+  numbered?: boolean;
 }) {
   const { t, locale } = useDictionary();
   const b = t.appointments.bookPage;
+  const heading = numbered
+    ? { service: b.service, day: b.day, time: b.time }
+    : { service: b.servicePlain, day: t.slotPicker.day, time: t.slotPicker.time };
   const router = useRouter();
   const [serviceId, setServiceId] = useState<number | null>(initialServiceId);
   const [date, setDate] = useState<string | null>(initialDate);
@@ -88,12 +94,12 @@ export function BookAppointmentForm({
           className="rounded-3xl bg-white p-5 shadow-[var(--shadow-soft)] sm:p-7"
         >
           <h2 id="book-service" className="mb-4 text-lg font-bold">
-            {b.service}
+            {heading.service}
           </h2>
           <ServiceTiles
             services={services}
             onPick={setServiceId}
-            label={b.service}
+            label={heading.service}
             compact
           />
         </section>
@@ -131,8 +137,8 @@ export function BookAppointmentForm({
               setTime(null);
             }}
             onTime={setTime}
-            dayHeading={b.day}
-            timeHeading={b.time}
+            dayHeading={heading.day}
+            timeHeading={heading.time}
             idPrefix="book"
             today={slots.first}
           />

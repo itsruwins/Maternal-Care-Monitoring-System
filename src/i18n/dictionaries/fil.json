@@ -914,13 +914,13 @@
     "cancelBody": "Magagamit na ng ibang ina ang oras na ito.",
     "cancelled": "Nakansela ang bisita.",
     "keep": "Huwag kanselahin",
-    "callToCancel": "Para magkansela sa mismong araw, makipag-ugnayan sa health center.",
+    "callToCancel": "Para magkansela sa mismong araw, makipag-⁠ugnayan sa health center.",
     "datePassed": "Lumipas na ang petsa.",
     "datePassedNote": "Magmumungkahi ang health center ng ibang oras.",
     "missed": {
       "one": "Na-miss ka namin sa iyong {service} noong {date}.",
       "several": "Na-miss ka namin",
-      "body": "Humiling ng bagong bisita kapag handa ka na, o makipag-ugnayan sa health center."
+      "body": "Humiling ng bagong bisita kapag handa ka na, o makipag-⁠ugnayan sa health center."
     },
     "new": {
       "title": "Humiling ng bisita",
@@ -1093,6 +1093,7 @@
       "noMatches": "Walang tugmang ina na may kasalukuyang pagbubuntis.",
       "pickMother": "Piliin siya sa mga resulta.",
       "service": "2. Serbisyo",
+      "servicePlain": "Serbisyo",
       "day": "3. Araw",
       "time": "4. Oras",
       "remarkLabel": "Tala (hindi kailangan)",

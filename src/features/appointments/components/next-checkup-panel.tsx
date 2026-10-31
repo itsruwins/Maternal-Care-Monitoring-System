@@ -40,6 +40,7 @@ export async function NextCheckupPanel({ motherId, weeks, doneHref }: { motherId
         slots={slots}
         initialServiceId={checkup?.id ?? null}
         initialDate={suggested}
+        numbered={false}
         doneHref={doneHref}
       />
     </section>

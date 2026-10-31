@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-30T12:00:00+00:00",
+  "generatedAt": "2026-10-31T12:00:00+00:00",
   "title": "Design System: Taysan MaternaCare",
   "extensions": {
     "colorMeta": {
@@ -573,11 +573,43 @@
       "description": "Blood pressure across weeks: 2px lines with ringed dots, direct line-end labels (no legend), a white readout, the axis caption below and a Show as table disclosure.",
       "html": "<figure class=\"ds-tc\"><figcaption><b>Blood pressure</b> <span class=\"ds-tc-unit\">(mmHg)</span></figcaption><div class=\"ds-tc-plot\"><svg viewBox=\"0 0 420 200\" role=\"img\" aria-label=\"Blood pressure by week\"><g stroke=\"#e6e0d4\"><line x1=\"44\" x2=\"356\" y1=\"16\" y2=\"16\"/><line x1=\"44\" x2=\"356\" y1=\"66\" y2=\"66\"/><line x1=\"44\" x2=\"356\" y1=\"117\" y2=\"117\"/><line x1=\"44\" x2=\"356\" y1=\"168\" y2=\"168\"/></g><g fill=\"#56665d\" font-size=\"13\" text-anchor=\"end\"><text x=\"36\" y=\"20\">120</text><text x=\"36\" y=\"70\">100</text><text x=\"36\" y=\"121\">80</text><text x=\"36\" y=\"172\">60</text></g><g fill=\"#56665d\" font-size=\"13\" text-anchor=\"middle\"><text x=\"44\" y=\"192\">12</text><text x=\"200\" y=\"192\">18</text><text x=\"356\" y=\"192\">24</text></g><line x1=\"252\" x2=\"252\" y1=\"16\" y2=\"168\" stroke=\"rgb(86 102 93 / .5)\"/><path d=\"M44 41 L148 46 L252 36 L356 41\" fill=\"none\" stroke=\"#16805f\" stroke-width=\"2\" stroke-linejoin=\"round\"/><path d=\"M44 117 L148 122 L252 112 L356 117\" fill=\"none\" stroke=\"#e08f82\" stroke-width=\"2\" stroke-linejoin=\"round\"/><g stroke=\"#fff\" stroke-width=\"2\"><circle cx=\"44\" cy=\"41\" r=\"4\" fill=\"#16805f\"/><circle cx=\"148\" cy=\"46\" r=\"4\" fill=\"#16805f\"/><circle cx=\"252\" cy=\"36\" r=\"6\" fill=\"#16805f\"/><circle cx=\"356\" cy=\"41\" r=\"4\" fill=\"#16805f\"/><circle cx=\"44\" cy=\"117\" r=\"4\" fill=\"#e08f82\"/><circle cx=\"148\" cy=\"122\" r=\"4\" fill=\"#e08f82\"/><circle cx=\"252\" cy=\"112\" r=\"6\" fill=\"#e08f82\"/><circle cx=\"356\" cy=\"117\" r=\"4\" fill=\"#e08f82\"/></g><g fill=\"#56665d\" font-size=\"13\" font-weight=\"600\"><text x=\"366\" y=\"45\">Top</text><text x=\"366\" y=\"121\">Bottom</text></g></svg><div class=\"ds-tc-readout\"><p class=\"ds-tc-when\">Week 21 · Sep 30</p><p><i style=\"background:#16805f\"></i><b>114</b> Top</p><p><i style=\"background:#e08f82\"></i><b>72</b> Bottom</p></div></div><p class=\"ds-tc-axis\">Week of pregnancy</p><details class=\"ds-tc-table\"><summary><svg viewBox=\"0 0 256 256\" width=\"14\" height=\"14\" aria-hidden=\"true\"><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"24\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M96 48l80 80-80 80\"/></svg>Show as table</summary><table><thead><tr><th>Week of pregnancy</th><th>Top</th><th>Bottom</th></tr></thead><tbody><tr><td>Week 12</td><td>110</td><td>70</td></tr><tr><td>Week 21</td><td>114</td><td>72</td></tr></tbody></table></details></figure>",
       "css": ".ds-tc{margin:0;max-width:440px;display:flex;flex-direction:column;gap:12px;color:#1f2d27;font-family:Inter,ui-sans-serif,system-ui,sans-serif;font-feature-settings:'cv11'}.ds-tc-unit{font-size:14px;font-weight:500;color:#56665d}.ds-tc-plot{position:relative}.ds-tc-plot svg{display:block;width:100%;height:200px;overflow:visible;font-variant-numeric:tabular-nums}.ds-tc-readout{position:absolute;top:0;left:60%;transform:translateX(calc(-100% - 12px));padding:8px 12px;border:1px solid #e6e0d4;border-radius:20px;background:#fff;font-size:14px;box-shadow:0 1px 2px rgb(31 45 39 / .04),0 4px 14px -4px rgb(31 45 39 / .08);pointer-events:none}.ds-tc-readout p{margin:0;display:flex;align-items:center;gap:8px;white-space:nowrap;color:#56665d}.ds-tc-readout .ds-tc-when{font-weight:500}.ds-tc-readout i{display:inline-block;width:12px;height:2px;border-radius:9999px}.ds-tc-readout b{color:#1f2d27;font-variant-numeric:tabular-nums}.ds-tc-axis{margin:-4px 0 0;text-align:center;font-size:12px;line-height:16px;font-weight:500;color:#56665d}.ds-tc-table{font-size:14px}.ds-tc-table summary{display:inline-flex;align-items:center;gap:6px;list-style:none;cursor:pointer;font-weight:600;color:#3e5a4d;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}.ds-tc-table summary::-webkit-details-marker{display:none}.ds-tc-table summary:hover{text-decoration-thickness:2px}.ds-tc-table summary:focus-visible{outline:2px solid #3e5a4d;outline-offset:2px;border-radius:4px}.ds-tc-table summary svg{transition:transform .2s cubic-bezier(.16,1,.3,1)}.ds-tc-table[open] summary svg{transform:rotate(90deg)}.ds-tc-table table{margin-top:12px;width:100%;text-align:left;border-collapse:collapse;font-variant-numeric:tabular-nums}.ds-tc-table th{padding:6px 0;font-size:12px;font-weight:600;color:#56665d}.ds-tc-table td{padding:6px 0;border-top:1px solid #e6e0d4}.ds-tc-table td+td{font-weight:600}"
+    },
+    {
+      "name": "Follow-up Card",
+      "kind": "card",
+      "refersTo": "follow-up-card",
+      "description": "An open missed visit below 1280px: rose-deep 'Missed N days ago' clue, name, service and date, tries, then Log follow-up (primary) beside a mint Rebook companion.",
+      "html": "<article class=\"ds-fu\"><p class=\"ds-fu-ago\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 256 256\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M128 20a108 108 0 1 0 108 108A108.12 108.12 0 0 0 128 20Zm0 192a84 84 0 1 1 84-84a84.09 84.09 0 0 1-84 84Zm68-84a12 12 0 0 1-12 12h-56a12 12 0 0 1-12-12V72a12 12 0 0 1 24 0v44h44a12 12 0 0 1 12 12Z\"/></svg>Missed 10 days ago</p><a class=\"ds-fu-name\" href=\"#\">Ana Marie Bautista</a><p class=\"ds-fu-svc\">Prenatal Checkup</p><p class=\"ds-fu-meta\">Tue, Oct 27 · 9:00 AM</p><div class=\"ds-fu-tries\"><strong>2 tries</strong><span>Last: Mon, Nov 2 · Call · Couldn't reach her</span><a href=\"#\">See log</a></div><div class=\"ds-fu-actions\"><button class=\"ds-fbtn ds-fbtn--primary\">Log follow-up</button><button class=\"ds-fbtn ds-fbtn--soft\">Rebook</button></div></article>",
+      "css": ".ds-fu{display:flex;flex-direction:column;gap:4px;max-width:360px;padding:20px;border-radius:28px;background:#fff;box-shadow:0 1px 2px rgb(31 45 39/.04),0 4px 14px -4px rgb(31 45 39/.08);color:#1f2d27;font-family:Inter,ui-sans-serif,system-ui,sans-serif}.ds-fu-ago{display:flex;align-items:center;gap:6px;margin:0 0 8px;font-size:14px;font-weight:600;color:#9c4f4a}.ds-fu-name{font-weight:600;color:#1f2d27;text-decoration:none}.ds-fu-name:hover{color:#3e5a4d;text-decoration:underline}.ds-fu-svc{margin:0;font-weight:500}.ds-fu-meta{margin:0;font-size:14px;color:#56665d;font-variant-numeric:tabular-nums}.ds-fu-tries{display:flex;flex-direction:column;gap:2px;margin-top:8px;padding-top:12px;border-top:1px solid #e6e0d4}.ds-fu-tries span{font-size:14px;color:#56665d}.ds-fu-tries a{display:inline-flex;align-items:center;height:44px;font-size:14px;font-weight:600;color:#3e5a4d;text-decoration:underline;text-underline-offset:4px}.ds-fu-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}.ds-fbtn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 16px;border:none;border-radius:9999px;font:600 .95rem/1 Inter,ui-sans-serif,system-ui,sans-serif;cursor:pointer;transition:background-color .2s cubic-bezier(.16,1,.3,1),transform .2s cubic-bezier(.16,1,.3,1)}.ds-fbtn:focus-visible{outline:2px solid #3e5a4d;outline-offset:2px}.ds-fbtn:active{transform:scale(.97)}.ds-fbtn--primary{background:#3e5a4d;color:#fff;box-shadow:0 1px 2px rgb(31 45 39/.12),0 8px 18px -8px rgb(62 90 77/.55)}.ds-fbtn--primary:hover{background:#2f473c}.ds-fbtn--soft{background:#e3eae4;color:#3e5a4d}.ds-fbtn--soft:hover{background:#d7e1d9}"
+    },
+    {
+      "name": "Follow-up Choice Cards",
+      "kind": "input",
+      "refersTo": "choice-card-checked",
+      "description": "One-of choices in the Log follow-up dialog: 48px radio cards, line border on white, leaf border on 50% mint when chosen; method cards carry a duotone leaf icon.",
+      "html": "<fieldset class=\"ds-ch\"><legend>How did you reach out?</legend><div class=\"ds-ch-grid\"><label class=\"ds-ch-card is-on\"><input type=\"radio\" name=\"m\" checked>Call</label><label class=\"ds-ch-card\"><input type=\"radio\" name=\"m\">SMS from your phone</label><label class=\"ds-ch-card\"><input type=\"radio\" name=\"m\">Home visit</label></div></fieldset>",
+      "css": ".ds-ch{border:none;margin:0;padding:0;max-width:448px;font-family:Inter,ui-sans-serif,system-ui,sans-serif}.ds-ch legend{margin-bottom:8px;font-size:14px;font-weight:500;color:#1f2d27}.ds-ch-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.ds-ch-card{display:flex;align-items:center;justify-content:center;min-height:48px;padding:10px 8px;border:1px solid #e6e0d4;border-radius:28px;background:#fff;color:#1f2d27;font-size:14px;font-weight:600;text-align:center;cursor:pointer;transition:background-color .2s,border-color .2s}.ds-ch-card:hover{border-color:#3e5a4d;background:#fbf8f3}.ds-ch-card.is-on{border-color:#3e5a4d;background:rgb(227 234 228/.5)}.ds-ch-card input{position:absolute;opacity:0;width:1px;height:1px}.ds-ch-card:has(input:focus-visible){outline:2px solid #3e5a4d;outline-offset:2px}"
+    },
+    {
+      "name": "Follow-up Chips",
+      "kind": "chip",
+      "refersTo": "chip-ending",
+      "description": "Outcome pills per log entry (Reached her mint, Couldn't reach her cream) and the wrapping 28px ending chip on a closed item.",
+      "html": "<div class=\"ds-fch\"><span class=\"ds-fch-pill ds-fch--mint\">Reached her</span><span class=\"ds-fch-pill ds-fch--cream\">Couldn't reach her</span><span class=\"ds-fch-end ds-fch--mint\">Rebooked for Tue, Nov 10 · 9:00 AM</span><span class=\"ds-fch-end ds-fch--mint\">Came in on Thu, Oct 22</span></div>",
+      "css": ".ds-fch{display:flex;flex-wrap:wrap;gap:8px;font-family:Inter,ui-sans-serif,system-ui,sans-serif}.ds-fch-pill{display:inline-flex;align-items:center;height:28px;padding:0 10px;border-radius:9999px;font-size:12px;line-height:16px;font-weight:600;white-space:nowrap}.ds-fch-end{display:inline-flex;align-items:center;min-height:28px;padding:4px 10px;border-radius:28px;font-size:12px;line-height:1.25;font-weight:600}.ds-fch--mint{background:#e3eae4;color:#3e5a4d}.ds-fch--cream{background:#f3efe3;color:#56665d}"
+    },
+    {
+      "name": "Missed Visit Notice",
+      "kind": "custom",
+      "refersTo": "missed-notice",
+      "description": "The mother's gentle missed-visit section: blush at 70%, a rose-deep heart in a white circle, a one-visit sentence, an ink-soft body and room for an action.",
+      "html": "<section class=\"ds-mn\"><div class=\"ds-mn-head\"><span class=\"ds-mn-circle\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 256 256\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M240 102c0 70-103.79 126.66-108.21 129a8 8 0 0 1-7.58 0C119.79 228.66 16 172 16 102a62.07 62.07 0 0 1 62-62c20.65 0 38.73 8.88 50 23.89C139.27 48.88 157.35 40 178 40a62.07 62.07 0 0 1 62 62Z\"/></svg></span><h2>We missed you at your Prenatal Checkup on Fri, Oct 23.</h2></div><p>Request a new visit when you're ready, or contact the health center.</p><button class=\"ds-fbtn ds-fbtn--primary\">Request a visit</button></section>",
+      "css": ".ds-mn{display:flex;flex-direction:column;align-items:flex-start;gap:12px;max-width:448px;padding:28px;border-radius:36px;background:rgb(246 230 225/.7);color:#1f2d27;font-family:Inter,ui-sans-serif,system-ui,sans-serif}.ds-mn-head{display:flex;align-items:flex-start;gap:12px}.ds-mn-circle{display:grid;place-items:center;flex-shrink:0;width:36px;height:36px;border-radius:9999px;background:#fff;color:#9c4f4a}.ds-mn h2{margin:4px 0 0;font-size:18px;line-height:1.4;font-weight:700;text-wrap:pretty}.ds-mn p{margin:0;font-size:.95rem;color:#56665d}.ds-fbtn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 16px;border:none;border-radius:9999px;font:600 .95rem/1 Inter,ui-sans-serif,system-ui,sans-serif;cursor:pointer;transition:background-color .2s cubic-bezier(.16,1,.3,1),transform .2s cubic-bezier(.16,1,.3,1)}.ds-fbtn:focus-visible{outline:2px solid #3e5a4d;outline-offset:2px}.ds-fbtn:active{transform:scale(.97)}.ds-fbtn--primary{background:#3e5a4d;color:#fff;box-shadow:0 1px 2px rgb(31 45 39/.12),0 8px 18px -8px rgb(62 90 77/.55)}.ds-fbtn--primary:hover{background:#2f473c}.ds-fbtn--soft{background:#e3eae4;color:#3e5a4d}.ds-fbtn--soft:hover{background:#d7e1d9}"
     }
   ],
   "narrative": {
     "northStar": "The Gentle Checkup",
-    "overview": "A soft, Flo-inspired world built around the mother rather than the clinic. The client's palette (leaf and fern greens, beige, sage, cream on a warm milk ground) carries almost everything; one dusty rose carries the few things meant to feel tender or urgent: hearts, the baby, danger signs and soft tints. Surfaces are rounded white cards, pill buttons and circles for dates and icons, sitting on curved tinted panels with low, ink-tinted shadows. It is light only, made for daylight at home and at the health center.\n\nThis is a web app, not a mobile app. Desktop gets a real web layout (header with section links, two-column sections, a 72rem container); phone widths borrow Flo's patterns (bottom sheets, full-width pill actions, stacked cards). Nothing imitates an app store, an install prompt or a device frame. Type is Inter alone, with extra-bold titles and a friendly single-storey \"a\". Motion is one slow float and short expo-out transitions, all stopped by reduced motion.\n\nIt refuses the generic SaaS hero (headline, device screenshot, feature grid) and clinical realism. Sample data is shown, but always labelled \"Sample\".\n\nBehind the login the same world turns into a quiet working app. Staff (health workers and admins) get a white sidebar and top bar on the milk ground; mothers get a slim top bar and a floating bottom-nav pill. Content sits in white cards with the soft shadow, the selected place is always a mint pill with a filled icon, and roles are told apart by tint (beige admin, mint health worker, blush mother), never by a new colour. The baby is shown two ways: a soft 3D picture per trimester inside the app, and the flat baby-in-womb glyph on the public landing hero.\n\nBooking a visit is the warmest moment of the app. Services are big white tiles with the client's flat people illustrations; small places show the service as a filled icon on a pastel blob. Days and times are white cards and chips; the one she picks turns solid leaf. A visit's state is always a small tint chip from the same palette, the same on her side and the health center's.\n\nRecording a visit is the health worker's working moment, kept as calm as the rest: vital signs in big-numbered fields with their units inside, services toggled on as pills, and unusual values met with a quiet cream \"double-check\" note rather than an alarm; only impossible values are errors. The mother sees the same visit as her numbers: a blush week tile per visit, milk value tiles, and two small line charts (weight, blood pressure) that always say their values in words as well as lines.",
+    "overview": "A soft, Flo-inspired world built around the mother rather than the clinic. The client's palette (leaf and fern greens, beige, sage, cream on a warm milk ground) carries almost everything; one dusty rose carries the few things meant to feel tender or urgent: hearts, the baby, danger signs and soft tints. Surfaces are rounded white cards, pill buttons and circles for dates and icons, sitting on curved tinted panels with low, ink-tinted shadows. It is light only, made for daylight at home and at the health center.\n\nThis is a web app, not a mobile app. Desktop gets a real web layout (header with section links, two-column sections, a 72rem container); phone widths borrow Flo's patterns (bottom sheets, full-width pill actions, stacked cards). Nothing imitates an app store, an install prompt or a device frame. Type is Inter alone, with extra-bold titles and a friendly single-storey \"a\". Motion is one slow float and short expo-out transitions, all stopped by reduced motion.\n\nIt refuses the generic SaaS hero (headline, device screenshot, feature grid) and clinical realism. Sample data is shown, but always labelled \"Sample\".\n\nBehind the login the same world turns into a quiet working app. Staff (health workers and admins) get a white sidebar and top bar on the milk ground; mothers get a slim top bar and a floating bottom-nav pill. Content sits in white cards with the soft shadow, the selected place is always a mint pill with a filled icon, and roles are told apart by tint (beige admin, mint health worker, blush mother), never by a new colour. The baby is shown two ways: a soft 3D picture per trimester inside the app, and the flat baby-in-womb glyph on the public landing hero.\n\nBooking a visit is the warmest moment of the app. Services are big white tiles with the client's flat people illustrations; small places show the service as a filled icon on a pastel blob. Days and times are white cards and chips; the one she picks turns solid leaf. A visit's state is always a small tint chip from the same palette, the same on her side and the health center's.\n\nRecording a visit is the health worker's working moment, kept as calm as the rest: vital signs in big-numbered fields with their units inside, services toggled on as pills, and unusual values met with a quiet cream \"double-check\" note rather than an alarm; only impossible values are errors. The mother sees the same visit as her numbers: a blush week tile per visit, milk value tiles, and two small line charts (weight, blood pressure) that always say their values in words as well as lines.\n\nFollowing up a missed visit stays gentle on both sides. Staff see open items oldest first, each led by a small rose-deep \"Missed N days ago\" line, with one leaf action (Log follow-up) beside a mint Rebook and the log of every try kept in place. The mother is never scolded: she gets a blush \"We missed you\" notice with a heart and a way to ask for a new visit.",
     "keyCharacteristics": [
       "Greens do the work; rose is a small accent; text only in ink, ink-soft, leaf or rose-deep.",
       "Inter only, extra-bold display and section titles, tabular numerals for every date and count.",
@@ -587,12 +619,13 @@
       "Web layout on desktop, Flo patterns at phone width.",
       "Signed-in app: white sidebar or floating bottom nav, mint active pill with a filled icon, sentence-case labels.",
       "Booking: illustrated service tiles, a sideways day strip, Morning / Afternoon time chips, and a solid leaf pick.",
-      "Visits: unit-inside vital fields, pill service toggles, a soft cream double-check before any hard error, and labelled two-line trend charts."
+      "Visits: unit-inside vital fields, pill service toggles, a soft cream double-check before any hard error, and labelled two-line trend charts.",
+      "Follow-ups: oldest first, a rose-deep \"Missed N days ago\" clue, a leaf Log follow-up beside a mint Rebook, outcome and ending chips in mint or cream, and a blush heart notice for her."
     ],
     "rules": [
       {
         "name": "The Rose Is an Accent Rule",
-        "body": "Rose appears only on hearts, the baby (glyph or picture), danger signs, errors, soft tints and the few things that need her or the staff's attention (a new time to answer, a missed visit, a closed day, the waiting-request count). It never becomes a primary button, a section heading colour or a large flat fill beyond blush; the solid rose-deep count badge stays 24px.",
+        "body": "Rose appears only on hearts, the baby (glyph or picture), danger signs, errors, soft tints and the few things that need her or the staff's attention (a new time to answer, a missed visit and how long ago it was, a request whose date has passed, a closed day, the waiting-request and open follow-up counts). Once a follow-up is sorted it leaves rose: reached, rebooked and came-in states are mint, the rest cream. It never becomes a primary button, a section heading colour or a large flat fill beyond blush; the solid rose-deep count badge stays 24px.",
         "section": "colors"
       },
       {
@@ -616,6 +649,16 @@
         "section": "colors"
       },
       {
+        "name": "The Said Twice Chart Rule",
+        "body": "Chart series colours never carry a value alone. A chart with two series names each line at its end in 13px ink-soft semibold (no separate legend), the readout repeats every value in ink bold beside a short swatch, and a \"Show as table\" disclosure lists them all. Chart green and chart rose stay inside charts.",
+        "section": "colors"
+      },
+      {
+        "name": "The Visit Status Rule",
+        "body": "A visit's status is a 28px chip from the same tints, identical for mothers and staff: Requested is a dashed leaf border with leaf text and no fill (asked, not yet real); Confirmed and Completed are mint with leaf; Rescheduled (\"New time sent\") and Missed are blush with rose-deep; Cancelled is cream with ink-soft. The Today week strip repeats the map on its date circles.",
+        "section": "colors"
+      },
+      {
         "name": "The Extra-Bold Title Rule",
         "body": "Every display, section and dialog title is weight 800 with negative tracking. Body never goes above 600 except numbers and key values (700).",
         "section": "typography"
@@ -628,6 +671,11 @@
       {
         "name": "The Gentle Wrap Rule",
         "body": "Headings h1–h3 balance their lines; paragraphs and list items wrap pretty. No orphaned last words.",
+        "section": "typography"
+      },
+      {
+        "name": "The Unbroken Time Rule",
+        "body": "A time never breaks from its AM or PM: the shared date and time formatters put a no-break space before it, and times written into copy do the same. A short date and time inside a labelled line (\"Next visit: Thu, Oct 29 · 9:00 AM\") is joined with no-break spaces throughout, so the line breaks after the label, never before \"· 9:00 AM\"; a status after it, like \"(Requested)\", may still wrap. A Filipino hyphenated word that must stay whole (makipag-ugnayan) takes a word joiner after its hyphen.",
         "section": "typography"
       },
       {
@@ -656,6 +704,16 @@
         "section": "layout"
       },
       {
+        "name": "The Wide Row Rule",
+        "body": "A filter card goes to a single row only when every field still has room: four fields and their button share a row from 1280px. Below that, fields sit two per row and the button takes the full width.",
+        "section": "layout"
+      },
+      {
+        "name": "The Real Steps Rule",
+        "body": "Step headings carry numbers only when the sequence is real: the staff booking page, where finding the mother is step one. A form reused where the mother is already known drops the numbers.",
+        "section": "layout"
+      },
+      {
         "name": "The Mark the Exception Rule",
         "body": "In a list, only the unusual state carries a badge (a hidden purok is badged, a shown one is not); the normal state stays unmarked.",
         "section": "layout"
@@ -671,18 +729,8 @@
         "section": "elevation"
       },
       {
-        "name": "The Said Twice Chart Rule",
-        "body": "Chart series colours never carry a value alone. A chart with two series names each line at its end in 13px ink-soft semibold (no separate legend), the readout repeats every value in ink bold beside a short swatch, and a \"Show as table\" disclosure lists them all. Chart green and chart rose stay inside charts.",
-        "section": "colors"
-      },
-      {
-        "name": "The Visit Status Rule",
-        "body": "A visit's status is a 28px chip from the same tints, identical for mothers and staff: Requested is a dashed leaf border with leaf text and no fill; Confirmed and Completed are mint with leaf; Rescheduled (\"New time sent\") and Missed are blush with rose-deep; Cancelled is cream with ink-soft. The Today week strip repeats the map on its date circles.",
-        "section": "colors"
-      },
-      {
         "name": "The Two Pictures Rule",
-        "body": "The people illustration appears only where the picture is big (service tiles, the picker thumbnails); everywhere small uses service art (filled icon on a pastel blob, duotone at 56px). Never squeeze an illustration into a chip or blow service art up into a tile.",
+        "body": "The people illustration appears only where the picture is big (service tiles, the picker thumbnails); everywhere small uses service art. Never squeeze an illustration into a chip or blow service art up into a tile.",
         "section": "components"
       },
       {
@@ -712,7 +760,14 @@
       "Do keep the bottom-nav tab opening on its own curve (cubic-bezier(0.32, 0.72, 0, 1), 420ms) and switched off under reduced motion; every other transition stays expo-out.",
       "Do separate impossible values (rose-deep error) from unusual ones (ink note with a filled leaf info icon, a cream notice naming the fields, kept on the second save).",
       "Do put a measured value's unit inside its field and beside every recorded value, and set values in tabular numerals.",
-      "Do say every chart value twice: direct line-end labels, the readout and \"Show as table\"; chart green and chart rose stay in charts."
+      "Do say every chart value twice: direct line-end labels, the readout and \"Show as table\"; chart green and chart rose stay in charts.",
+      "Do give every focusable control the solid 2px leaf outline; where a control resets the browser outline, name the solid style in its focus-visible set.",
+      "Do make the companion action beside a leaf primary on a white card soft (mint).",
+      "Do keep a filter card's single row for 1280px and up; below that, two fields per row and a full-width button.",
+      "Do keep every time joined to its AM or PM with a no-break space, keep a short date and time inside a labelled line whole so it breaks after the label, and join Filipino hyphenated words that must not break with a word joiner.",
+      "Do let an insight tile's body fill the space under its title, clamped to three lines, with the icon at the bottom.",
+      "Do number step headings only where the steps are real; a reused form that already knows the mother uses plain headings.",
+      "Do run open follow-ups oldest first and lead each with its \"Missed N days ago\" clue; closed ones run newest first."
     ],
     "donts": [
       "Don't set text in fern, sage or rose; they are too light.",
@@ -727,7 +782,10 @@
       "Don't put the people illustrations in small places or the blob icon art in big tiles.",
       "Don't let an unavailable day or time look pickable; fade it on cream, strike taken times, and disable it.",
       "Don't colour an unusual-but-possible vital sign in rose or blush; rose is for errors the form will not accept.",
-      "Don't add a separate chart legend or let a series colour be the only way to read a value."
+      "Don't add a separate chart legend or let a series colour be the only way to read a value.",
+      "Don't put rose on a follow-up once it is sorted; reached, rebooked and came-in states are mint, the rest cream.",
+      "Don't put a white secondary pill beside the primary on a white card; it disappears into the card.",
+      "Don't let a time wrap between the number and AM or PM."
     ]
   }
 }

@@ -26,7 +26,10 @@ export async function MotherFollowUpsPanel({ motherId, isAdmin }: { motherId: nu
 
 export function MotherFollowUpsPanelView({ items, ...shared }: Shared & { items: FollowUpItem[] }) {
   const r = shared.t.followUps.record;
-  const open = items.filter((item) => item.isOpen);
+  // Open ones oldest first, like the Follow-ups page; closed ones stay newest first.
+  const open = items
+    .filter((item) => item.isOpen)
+    .sort((a, b) => Date.parse(a.missedAt) - Date.parse(b.missedAt) || a.appointmentId - b.appointmentId);
   const closed = items.filter((item) => !item.isOpen);
 
   if (items.length === 0) {
@@ -80,7 +83,7 @@ function MissedVisitCard({ t, locale, today, isAdmin, item }: Shared & { item: F
       {item.isOpen && (
         <div className="mt-auto flex flex-wrap gap-2 pt-1">
           <LogFollowUpButton item={item} today={today} from="record" label={format(f.record.logFor, which)} className="h-11 grow basis-36" />
-          <Button asChild size="sm" variant="secondary" className="h-11 grow basis-36">
+          <Button asChild size="sm" variant="soft" className="h-11 grow basis-36">
             <Link href={rebookHref(item.appointmentId, "record")} aria-label={format(f.record.rebookFor, which)}>
               <AppointmentIcon weight="bold" aria-hidden />
               {f.rebook}

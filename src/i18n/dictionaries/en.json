@@ -1467,5 +1467,31 @@
       "samePassword": "Choose a password different from your current one.",
       "generic": "Something went wrong. Please try again."
     }
+  },
+  "sms": {
+    "title": "SMS log",
+    "intro": "Visit reminders, missed-visit notices and answers to appointment requests, sent to mothers through HTTPSMS.",
+    "send": {
+      "title": "Send",
+      "intro": "The schedule sends every 5 minutes, day and night. Send now runs it right away.",
+      "now": "Send now",
+      "sending": "Sending…",
+      "phoneUnknown": "SMS phone: no news yet",
+      "phoneOnline": "SMS phone online since {time}",
+      "phoneOffline": "SMS phone offline since {time}",
+      "limit": "HTTPSMS refused texts on {date}: the monthly limit was reached. Texts keep waiting until it resets or the plan is upgraded."
+    },
+    "result": {
+      "nothing": "Nothing was due.",
+      "sent": "{count} sent",
+      "retrying": "{count} to try again",
+      "failed": "{count} failed",
+      "checked": "{count} checked",
+      "delivered": "{count} delivered",
+      "limit": "HTTPSMS refused: the monthly limit is reached. Texts keep waiting.",
+      "auth": "HTTPSMS refused the API key. Check HTTPSMS_API_KEY.",
+      "config": "HTTPSMS isn't set up on the server (HTTPSMS_API_KEY, HTTPSMS_FROM_NUMBER).",
+      "generic": "Something went wrong. Please try again."
+    }
   }
 }

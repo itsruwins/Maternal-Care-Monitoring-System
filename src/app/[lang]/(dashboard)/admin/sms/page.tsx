@@ -1,12 +1,10 @@
 import { Suspense } from "react";
-import { ComingSoon } from "@/features/shell/components/coming-soon";
-import { AREA_ROLES } from "@/lib/auth/roles";
-
+import { SmsScreen } from "@/features/sms/components/sms-screen";
 
 export default function AdminSmsLogPage() {
   return (
-    <Suspense fallback={null}>
-      <ComingSoon roles={AREA_ROLES.admin} navKey="smsLog" phase={7} />
+    <Suspense fallback={<div aria-hidden className="h-96 animate-pulse rounded-3xl bg-white/60" />}>
+      <SmsScreen />
     </Suspense>
   );
 }

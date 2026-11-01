@@ -1467,5 +1467,31 @@
       "samePassword": "Pumili ng password na iba sa kasalukuyan.",
       "generic": "May nangyaring mali. Pakisubukang muli."
     }
+  },
+  "sms": {
+    "title": "SMS log",
+    "intro": "Mga paalala sa bisita, abiso sa hindi nakarating, at sagot sa hiling na appointment para sa mga nanay, ipinapadala sa HTTPSMS.",
+    "send": {
+      "title": "Pagpapadala",
+      "intro": "Nagpapadala ang schedule kada 5 minuto, araw at gabi. Pinatatakbo ito agad ng Ipadala ngayon.",
+      "now": "Ipadala ngayon",
+      "sending": "Ipinapadala…",
+      "phoneUnknown": "SMS phone: wala pang balita",
+      "phoneOnline": "Online ang SMS phone mula {time}",
+      "phoneOffline": "Offline ang SMS phone mula {time}",
+      "limit": "Tinanggihan ng HTTPSMS ang mga text noong {date}: naabot na ang buwanang limit. Maghihintay ang mga text hanggang mag-reset ito o ma-upgrade ang plan."
+    },
+    "result": {
+      "nothing": "Walang dapat ipadala.",
+      "sent": "{count} naipadala",
+      "retrying": "{count} susubukan ulit",
+      "failed": "{count} hindi naipadala",
+      "checked": "{count} tiningnan",
+      "delivered": "{count} natanggap",
+      "limit": "Tinanggihan ng HTTPSMS: naabot na ang buwanang limit. Maghihintay ang mga text.",
+      "auth": "Tinanggihan ng HTTPSMS ang API key. Tingnan ang HTTPSMS_API_KEY.",
+      "config": "Hindi pa naka-set up ang HTTPSMS sa server (HTTPSMS_API_KEY, HTTPSMS_FROM_NUMBER).",
+      "generic": "May nangyaring mali. Pakisubukan ulit."
+    }
   }
 }

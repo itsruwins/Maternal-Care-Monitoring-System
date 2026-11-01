@@ -1,5 +1,5 @@
 // Database types, written from the confirmed schema (inspect-schema.sql, 2026-10-26)
-// plus migrations 0001-0016. Update this file whenever a migration changes a table.
+// plus migrations 0001-0017. Update this file whenever a migration changes a table.
 
 type NullableKeys<T> = { [K in keyof T]: null extends T[K] ? K : never }[keyof T];
 
@@ -31,9 +31,9 @@ export type AppointmentStatus =
   | "COMPLETED"
   | "MISSED"
   | "CANCELLED";
-export type ReminderType = "UPCOMING" | "MISSED_NOTICE";
+/** UPCOMING: visit reminder. REQUEST_*: staff answered her request (0017). */
+export type ReminderType = "UPCOMING" | "MISSED_NOTICE" | "REQUEST_CONFIRMED" | "REQUEST_NEW_TIME" | "REQUEST_DECLINED";
 export type SmsDeliveryStatus = "PENDING" | "SENT" | "DELIVERED" | "FAILED" | "SKIPPED";
-export type SmsMode = "TEST" | "LIVE";
 export type FollowUpMethod = "CALL" | "SMS" | "HOME_VISIT";
 export type FollowUpResult = "REACHED" | "NOT_REACHED";
 export type FollowUpCloseReason = "MOVED_AWAY" | "CARE_ELSEWHERE" | "OTHER";
@@ -158,7 +158,7 @@ export type SmsReminderRow = {
   next_attempt_at: string | null;
   /** Taken by a sender run; cleared when the run saves a result. */
   claimed_at: string | null;
-  /** The number it actually went to (the test number in Test mode). */
+  /** The number it actually went to. */
   sent_to: string | null;
   delivered_at: string | null;
   /** When HTTPSMS was last asked about it. */
@@ -169,10 +169,6 @@ export type SmsReminderRow = {
 
 export type SmsSettingRow = {
   setting_id: number;
-  mode: SmsMode;
-  test_number: string | null;
-  updated_by: string | null;
-  updated_at: string;
   phone_online: boolean | null;
   phone_status_at: string | null;
   limit_reached_at: string | null;
@@ -295,7 +291,7 @@ export type Database = {
       login_attempt: TableDef<LoginAttemptRow, "login_attempt_id" | "attempted_at">;
       purok: TableDef<PurokRow, "purok_id" | "sort_order" | "is_active" | "created_at">;
       closed_day: TableDef<ClosedDayRow, "created_at">;
-      sms_setting: TableDef<SmsSettingRow, "setting_id" | "mode" | "updated_at">;
+      sms_setting: TableDef<SmsSettingRow, "setting_id">;
     };
     Views: {
       follow_up_item: { Row: FollowUpItemRow; Relationships: [] };
@@ -354,7 +350,6 @@ export type Database = {
       appointment_status: AppointmentStatus;
       reminder_type: ReminderType;
       sms_delivery_status: SmsDeliveryStatus;
-      sms_mode: SmsMode;
       follow_up_method: FollowUpMethod;
       follow_up_result: FollowUpResult;
       follow_up_close_reason: FollowUpCloseReason;

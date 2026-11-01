@@ -743,26 +743,28 @@ Sample missed-visit SMS (157 characters, one SMS; the longest service name with 
 - **Sender:** a protected route in this app (`/api/cron/send-sms`) sends due PENDING messages through HTTPSMS and saves the result (`sent_at`, `provider_message_id`, errors). Supabase `pg_cron` + `pg_net` call it every few minutes with `CRON_SECRET`. (Vercel's free plan only runs its own scheduled jobs once a day, which is too slow.)
 - **Delivery updates:** an HTTPSMS webhook route updates the status to DELIVERED or FAILED.
 - **Messages:** Taglish texts of up to 2 SMS (306 plain characters); the number is copied from the mother's contact when queued and follows her record until it's sent.
-- **Admin SMS log** with filters, retry for failed messages, and a test-mode switch.
+- **Admin SMS log** with filters and retry for failed messages.
+- **Request answers:** a text when staff confirm her request, propose a new time, or decline it.
 
-**Decisions (asked 2026-10-31):**
+**Decisions (asked 2026-10-31; test mode dropped and request texts added 2026-11-01):**
 
 | Topic | Decision |
 |---|---|
 | Testing while building | An admin **Send now** button runs the same sender on your laptop. Every run also asks HTTPSMS about texts it already took, so sending and delivery can be tested without a public address. At the end, **one test of the real schedule and the delivery webhook through a temporary Cloudflare tunnel** (`cloudflared`, installed only with your OK). |
-| Schedule | `pg_cron` + `pg_net` call the sender **every 5 minutes during sending hours** with `CRON_SECRET`. The sender's address and `CRON_SECRET` are kept in **Supabase Vault** (you add them in the SQL Editor; never in a migration file). Without an address the job does nothing. |
-| Test / Live switch | **One admin switch on the SMS log page, saved in the database**, so your laptop and the live site always agree (they share one queue). **It starts in Test.** Going Live asks you to confirm and says how many waiting texts will then go to mothers. |
-| Test mode | A due text goes **only to the test number** you save (your phone), with exactly the text she would get. With no test number, nothing leaves and the log says "Test mode: not sent". Either way it is used up, so switching to Live never sends a backlog. |
-| Sending hours | **8:00 AM to 8:00 PM**, Manila time. A text due outside them waits for 8:00 AM. Test mode (your own number only) isn't held to them, so you can test in the evening. |
+| Schedule | `pg_cron` + `pg_net` call the sender **every 5 minutes, day and night** (from `0018`; before that, during sending hours) with `CRON_SECRET`. The sender's address and `CRON_SECRET` are kept in **Supabase Vault** (you add them in the SQL Editor; never in a migration file). Without an address the job does nothing. |
+| No test mode (changed 2026-11-01) | **Texts always go to her number.** The Test / Live switch, the test number and "Send a test SMS" built in step 2 are removed (migration `0017`). Before that change goes in, you check the waiting texts and the demo ones are marked Skipped, so no made-up number gets a text. There is no pause switch: to stop the schedule, remove the Vault sender address. |
+| Sending hours (changed 2026-11-01) | **None: a due text goes on the next run, day or night** (`0018`). Reminders are still queued for 8:00 AM N days before and missed-visit notices for 8:00 AM the next morning, so night texts are only retries, late bookings, request answers given at night and Send now. |
 | Per run | **At most 20 texts per run.** HTTPSMS spaces them at the phone's rate (10 a minute by default; Android allows up to 29 without root). |
-| Too late | **By type:** a visit reminder is skipped once the visit time has passed, or when the visit was moved or cancelled; a missed-visit notice is skipped when it's more than 1 day late or her follow-up is already sorted out. Skipped texts are marked **Skipped** with the reason and never sent. This also clears the old texts queued while testing Phase 6. |
-| Failures | **Tried again automatically 2 more times, 30 minutes apart**, while still in time and inside sending hours. Then it stays **Failed** and an admin can press **Retry**. A number that can't be used, or a text that's too long, isn't retried automatically. |
+| Too late | **By type:** a visit reminder is skipped once the visit time has passed, or when the visit was moved or cancelled; a missed-visit notice is skipped when it's more than 1 day late or her follow-up is already sorted out; a request answer is skipped when the appointment changed again before it went out, or when it's more than 1 day late. Skipped texts are marked **Skipped** with the reason and never sent. This also clears the old texts queued while testing Phase 6. |
+| Failures | **Tried again automatically 2 more times, 30 minutes apart**, while still in time. Then it stays **Failed** and an admin can press **Retry**. A number that can't be used, or a text that's too long, isn't retried automatically. |
 | Delivery updates | The **HTTPSMS webhook** (`/api/webhooks/httpsms`) handles sent, delivered, failed and expired, plus the phone's offline / online heartbeat. Every call must carry a token signed with `HTTPSMS_WEBHOOK_SIGNING_KEY` (HS256, issued by api.httpsms.com, not expired); anything else is refused. Each sender run also **asks HTTPSMS about texts with no news yet, for up to a day**; after that a text without a delivery report stays **Sent** (some networks never send one). A phone that is off: HTTPSMS gives up after about 5 minutes, and the text becomes Failed ("phone offline") and follows the retry rule. |
 | Language | **Taglish for everyone** (the Phase 4 decision, confirmed). The landing page's "Sent in English or Filipino" becomes "Sent in simple Taglish" / "Ipinapadala sa simpleng Taglish". |
 | Length | **Up to 2 texts (306 characters), plain characters only:** no special dashes or no-break spaces, accents dropped (ñ stays), so each text holds 160 characters. A longer text is never cut off: it isn't sent and shows "Failed: too long". |
 | Sign-off | **"-Brgy. Taysan Health Center"**. The reminder says "sa health center" so the name isn't said twice. The missed-visit notice becomes 2 texts. |
-| Admin SMS log | **Admins only** (Admin group). Counts at the top (waiting, sent today, failed) that filter the list; filters for status, type, date range and mother (name or number); the Test / Live switch and the test number; **Send now**; **Retry** on failed texts; **Send a test SMS** (a fixed sample to the test number, the result shown on the page, not stored); **phone and plan status** ("SMS phone offline since 2:15 PM", and a warning when HTTPSMS refused texts because the monthly limit was reached). |
-| Mother record → SMS log tab | Her texts, newest first: what it was about (visit reminder or missed-visit notice, with the service and time), the full text, the number it went to, and its status with the time, or why it failed or was skipped. **Admins also get Retry** on failed ones. |
+| Admin SMS log | **Admins only** (Admin group). Counts at the top (waiting, sent today, failed) that filter the list; filters for status, type, date range and mother (name or number); **Send now**; **Retry** on failed texts; **phone and plan status** ("SMS phone offline since 2:15 PM", and a warning when HTTPSMS refused texts because the monthly limit was reached). |
+| Request answers (added 2026-11-01) | **Three texts, sent when staff answer her request:** confirmed, new time proposed (she accepts or declines in the app) and declined. **No staff remarks** in the text (they can be long or private); the declined text points her to the health center. Only staff decisions send one: her own cancel, accept or decline sends nothing, and so do visits staff book directly. Queued at once, so it goes out on the next run (within 5 minutes). |
+| Reminder overlap | If her visit reminder would go out **the same day** as her "Confirmed" text, the reminder is marked **Skipped** (the Confirmed text already gives the date and time), saving texts from the monthly limit. |
+| Mother record → SMS log tab | Her texts, newest first: what it was about (visit reminder, missed-visit notice or request answer, with the service and time), the full text, the number it went to, and its status with the time, or why it failed or was skipped. **Admins also get Retry** on failed ones. |
 | Her appointment cards | Her confirmed visit shows one line: "Text reminder on Wed, Nov 4, 8:00 AM to 0917 123 4567", then "Reminder sent Nov 4", so she can spot a wrong number early. |
 | Number changes | When her mobile number changes, **her waiting texts move to the new number**; sent ones keep the number they went to. |
 | Who writes SMS rows | **Health workers can no longer add or edit SMS rows directly** (an old database rule allowed it, which would let any staff login text anything to any number). Only the database's own rules and the server sender write them; Retry goes through an admin-only function. |
@@ -772,6 +774,13 @@ Sample reminder (137 characters, one SMS):
 
 Sample missed-visit notice (165 characters, two SMS):
 > Hi Ana! Hindi ka nakarating sa Prenatal Checkup mo noong Tue, Nov 3. Pumunta o tumawag sa health center para sa bagong schedule. Salamat! -Brgy. Taysan Health Center
+
+Sample request answers (one SMS each with this service name; a longer name may make 2):
+> Hi Ana! Kumpirmado na ang Prenatal Checkup mo sa Thu, Nov 5, 9:00 AM sa health center. Salamat! -Brgy. Taysan Health Center
+
+> Hi Ana! May bagong oras para sa Prenatal Checkup mo: Fri, Nov 6, 10:00 AM. Buksan ang app para tanggapin o tanggihan. Salamat! -Brgy. Taysan Health Center
+
+> Hi Ana! Hindi naaprubahan ang hiling mong Prenatal Checkup sa Thu, Nov 5, 9:00 AM. Tumawag o pumunta sa health center. -Brgy. Taysan Health Center
 
 **Build, in steps (each ends with screenshots for you):**
 1. **Database (migration `0016_phase7.sql`, run by you):**
@@ -790,25 +799,29 @@ Sample missed-visit notice (165 characters, two SMS):
    - `POST /api/cron/send-sms` runs it, only with `Authorization: Bearer CRON_SECRET`.
    - On `/admin/sms`: the Test / Live switch (Live asks to confirm and shows the waiting count), the test number, **Send now**, **Send a test SMS** and the plan status.
    - **The first real SMS goes only to your test phone, after your OK.**
-3. **The log, her record's SMS log tab and the staff cards:**
-   - **`/admin/sms` list:** counts at the top (waiting, sent today, failed) that filter the list; filters for status, type, date range and mother (name or number); 20 per page; a table on desktop and cards on phones. Each text shows her name (links to her record), the number (and the test number when it went there), the type and the visit, the status with its time or reason, and the full text; **Retry** on failed ones.
+3. **No test mode, and request answers (migration `0017_phase7_live.sql`, run by you; changed 2026-11-01):**
+   - **First, the queue check:** a read-only query lists the waiting texts; the ones you mark as demo are made Skipped in `0017`.
+   - **Database:** `sms_setting` loses `mode` and `test_number` (and the `sms_mode` type); `claim_due_sms()` keeps sending hours for every text. Three new text types for request answers, queued by a trigger only when staff confirm, propose a new time for, or decline a waiting request (her own changes queue nothing). The too-late rules for them, and a same-day reminder Skipped when a Confirmed text goes out.
+   - **App:** the sender always uses her number; the Test / Live card, the test number, "Send a test SMS" and the "Test mode: not sent" reason are removed. `/admin/sms` keeps **Send now** and the phone and plan status. Types, dictionaries, `docs/database-setup.md` and the dev preview updated.
+4. **The log, her record's SMS log tab and the staff cards:**
+   - **`/admin/sms` list:** counts at the top (waiting, sent today, failed) that filter the list; filters for status, type (including request answers), date range and mother (name or number); 20 per page; a table on desktop and cards on phones. Each text shows her name (links to her record), the number it went to, the type and the visit, the status with its time or reason, and the full text; **Retry** on failed ones.
    - **Mother record → SMS log tab:** her texts, newest first; Retry for admins.
-   - The staff appointment cards' reminder line learns the new states (trying again, skipped, test mode).
-4. **Delivery webhook and the mother side:**
+   - The staff appointment cards' reminder line learns the new states (trying again, skipped).
+5. **Delivery webhook and the mother side:**
    - `POST /api/webhooks/httpsms`: checks the token; sent, delivered, failed and expired update the text; phone offline / online update the status line on `/admin/sms`; texts it doesn't know are ignored. Tested locally with a hand-signed call (the key is read from `.env.local`, never printed).
    - **Her confirmed visit card:** "Text reminder on … to …", then "Reminder sent …".
    - **Landing page:** the SMS fact says Taglish. (Its sample text bubbles are written in each page's language; whether they switch to the real Taglish wording is your call at this step.)
-5. **Live test through a tunnel (with your OK):** install `cloudflared` and open a temporary tunnel to your dev server. You put its address in Vault (sender) and in HTTPSMS → Settings → Webhooks (with the signing key; events: sent, delivered, failed, expired, phone offline / online). We watch a scheduled run send to your test phone and the webhook mark it Delivered, then remove the tunnel address again, so the job stays quiet until the app is deployed.
-6. **Review:** screenshots, contrast and accessibility checks, an independent design review, fixes, then `DESIGN.md` updated by the documenter. Review screenshots deleted afterwards. Then your testing and sign-off.
+6. **Live test through a tunnel (with your OK):** install `cloudflared` and open a temporary tunnel to your dev server. You put its address in Vault (sender) and in HTTPSMS → Settings → Webhooks (with the signing key; events: sent, delivered, failed, expired, phone offline / online). We watch a scheduled run send a text due to a record with your own number (for example a request you answer for a test mother using your phone) and the webhook mark it Delivered, then remove the tunnel address again, so the job stays quiet until the app is deployed.
+7. **Review:** screenshots, contrast and accessibility checks, an independent design review, fixes, then `DESIGN.md` updated by the documenter. Review screenshots deleted afterwards. Then your testing and sign-off.
 
 **Needs from you:**
-- An Android phone with the HTTPSMS app, logged in to your HTTPSMS account. Its SIM needs load or an unlimited-text promo. The HTTPSMS free plan allows 200 messages a month, replies included (the paid plan allows 5,000).
+- An Android phone with the HTTPSMS app, logged in to your HTTPSMS account. Its SIM needs load or an unlimited-text promo; on a dual-SIM phone, the HTTPSMS app must send from the SIM whose number is `HTTPSMS_FROM_NUMBER`. The HTTPSMS free plan allows 200 messages a month, replies included (the paid plan allows 5,000). Request answers add a text per decided request, so watch the count.
 - In `.env.local` (then restart the dev server): `HTTPSMS_API_KEY`, `HTTPSMS_FROM_NUMBER` (the phone's number as `+639…`), and two long random strings you make up: `CRON_SECRET` and `HTTPSMS_WEBHOOK_SIGNING_KEY` (the signing key is also typed into HTTPSMS in step 5).
 - Run `0016_phase7.sql`. If it can't turn on pg_net, enable it in Supabase → Database → Extensions first, then run the file again.
-- Your test number, typed on the SMS log page (kept in the database, not in a file).
-- For step 5: two Vault secrets, with the lines I'll give you.
+- For step 3: the waiting-texts check, telling me which texts are demo ones.
+- For step 6: two Vault secrets, with the lines I'll give you.
 
-**Not in Phase 7:** texts when staff cancel or move a visit (staff call her, as today), and mothers' replies in the app (they stay on the SMS phone).
+**Not in Phase 7:** texts when staff cancel or move a confirmed visit (staff call her, as today; answers to her request do get a text), and mothers' replies in the app (they stay on the SMS phone).
 
 **Step 1 done (2026-11-01):** migration `0016_phase7.sql`, run and checked by you (14 checks as expected; no texts in the queue yet, so the new wording first shows in step 2).
 - **pg_net** is on. Texts have a new status **Skipped** and new columns: `attempt_count`, `next_attempt_at`, `claimed_at`, `sent_to`, `delivered_at`, `status_checked_at`, `status_reason` (a short code; `error_message` keeps HTTPSMS's own text). A retry waits as Pending with `next_attempt_at`; Failed is final.
@@ -818,6 +831,13 @@ Sample missed-visit notice (165 characters, two SMS):
 - **Wording:** "sa health center", "-Brgy. Taysan Health Center", plain characters (`sms_plain()`). A text already tried becomes Skipped if its visit changes or its follow-up is sorted out. Waiting texts follow a changed number.
 - **Job `send-sms`** at `*/5 0-11 * * *`: quiet until the Vault secrets `sms_sender_url` and `cron_secret` exist.
 - App types, `docs/database-setup.md` (Vault lines, the job, check queries) and the secrets list updated; the staff cards got a Skipped label.
+
+**Step 2 built (2026-11-01):** the sender (`features/sms`), `POST /api/cron/send-sms` and the `/admin/sms` controls. The first test SMS reached your phone once the HTTPSMS app sent from the 0954 SIM (it had been using the other SIM). **Changed the same day:** test mode is dropped and request answers are added (new step 3); its Test / Live parts are removed there.
+
+**Step 3 built (2026-11-01):** migration `0017_phase7_live.sql`, run and checked by you (11 checks as expected; Jennilyn Dugan's 2 waiting reminders kept, she's a real mother).
+- **No test mode:** texts always go to her number. `sms_setting` keeps only the phone and plan status; the Mode card, test number and "Send a test SMS" are gone, and `/admin/sms` has one card (**Send now**, phone and plan status).
+- **Request answers:** `REQUEST_CONFIRMED`, `REQUEST_NEW_TIME`, `REQUEST_DECLINED`, queued only when staff answer a waiting request; dropped if the appointment changes again before they go, Skipped when more than 1 day late (`answer_late`), when the time passed or when the appointment no longer matches. A reminder due the same day as the Confirmed text is saved Skipped (`covered_by_answer`).
+- **Then, the same day: no sending hours** (your choice): migration `0018_sms_any_time.sql`, run and checked by you (4 checks as expected), takes due texts at any hour and runs `send-sms` every 5 minutes all day (`*/5 * * * *`).
 
 ## Phase 8 — Dashboards & reports
 

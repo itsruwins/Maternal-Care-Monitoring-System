@@ -33,6 +33,7 @@ export {
   BellRingingIcon as ReminderIcon,
   DeviceMobileIcon as PhoneIcon,
   PhoneCallIcon as CallIcon,
+  PaperPlaneTiltIcon as SendIcon,
   DoorOpenIcon as HomeVisitIcon,
   MapPinIcon as LocationIcon,
   HospitalIcon as HealthCenterIcon,

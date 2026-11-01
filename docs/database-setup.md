@@ -20,6 +20,8 @@ Run these in **Supabase Dashboard → SQL Editor**, in order. Each file is safe 
 | 14 | `supabase/migrations/0014_phase5.sql` | Phase 5: typo limits on vital signs; visits need a current pregnancy, get their AOG worked out, complete their appointment; health workers edit a visit only on its day (admins any time); `record_visit()` / `update_visit()` save a visit with its services together |
 | 15 | `supabase/migrations/0015_phase6.sql` | Phase 6: turns on pg_cron; a check every day at 6:00 PM (Manila) marks passed appointments Missed (or Completed when she had a visit that day) and queues the missed-visit SMS for 8:00 AM the next morning; closing a pregnancy cancels its open appointments; follow-up rules (result, "No more follow-up needed", same-day edits, staff-only reading); the follow-up list (`follow_up_item`) |
 | 16 | `supabase/migrations/0016_phase7.sql` | Phase 7: turns on pg_net; SMS settings (Test / Live, starts in Test; the test number; phone and plan status), admins only; each text gets tries, next try, where it went, delivery and check times, a reason code, and the new status Skipped; staff can no longer add or change texts directly (`retry_sms()` for admins); `claim_due_sms()` for the server sender (sending hours, too-late texts Skipped, at most 20 per run); new wording ("sa health center", "-Brgy. Taysan Health Center") in plain characters, also for texts still waiting; waiting texts follow a changed mobile number; the `send-sms` job every 5 minutes, 8:00 AM–7:55 PM Manila |
+| 17 | `supabase/migrations/0017_phase7_live.sql` | Phase 7 step 3: no test mode (texts always go to her number, inside sending hours; `sms_setting` keeps only the phone and plan status; the `sms_mode` type is removed); three new text types for staff answers to her request (confirmed, new time proposed, declined), with their too-late rules; a visit reminder due the same day as her Confirmed text is saved as Skipped |
+| 18 | `supabase/migrations/0018_sms_any_time.sql` | Phase 7: no sending hours (a due text goes on the next run, day or night); a reminder due the same day as her Confirmed text is Skipped; the `send-sms` job every 5 minutes, all day |
 | — | `supabase/seed/first-admin.sql` | First admin (follow the steps at the top of the file) |
 
 ## Rules
@@ -37,7 +39,7 @@ The job **mark-missed-appointments** runs every day at 10:00 UTC (6:00 PM Manila
 
 ## SMS sender job (pg_cron + pg_net, from 0016)
 
-The job **send-sms** runs every 5 minutes from 00:00 to 11:55 UTC (8:00 AM–7:55 PM Manila). It calls `public.call_sms_sender()`, which posts to the sender address with `Authorization: Bearer <cron_secret>`. **Until both Vault secrets exist it does nothing**, so no text is sent.
+The job **send-sms** runs every 5 minutes, all day (from 0018; 0016 ran it 8:00 AM–7:55 PM Manila only). It calls `public.call_sms_sender()`, which posts to the sender address with `Authorization: Bearer <cron_secret>`. **Until both Vault secrets exist it does nothing**, so no text is sent.
 
 **Vault secrets (Phase 7 step 5).** Run these in the SQL Editor with your own values in place of the placeholders. Never put the values in a file or a migration, and don't save the query as a snippet.
 
@@ -124,6 +126,58 @@ select reminder_id, reminder_type, scheduled_at, public.sms_skip_reason(reminder
 from public.sms_reminder
 where delivery_status = 'PENDING'
 order by scheduled_at;
+```
+
+## Phase 7 step 3 check queries (after running 0017)
+
+```sql
+-- 1. The new text types, and sms_setting without test mode
+select unnest(enum_range(null::public.reminder_type)) as reminder_type;
+
+select column_name from information_schema.columns
+where table_schema = 'public' and table_name = 'sms_setting'
+order by ordinal_position;
+
+select exists (select 1 from pg_type where typname = 'sms_mode') as sms_mode_left,
+       exists (select 1 from pg_proc where proname = 'stamp_sms_setting') as stamp_left;
+
+select policyname, cmd from pg_policies
+where schemaname = 'public' and tablename = 'sms_setting';
+
+-- 2. The functions still run with the right rights
+select p.proname, p.prosecdef as security_definer,
+       has_function_privilege('authenticated', p.oid, 'execute') as app_users_can_run,
+       has_function_privilege('service_role', p.oid, 'execute') as server_can_run
+from pg_proc as p
+where p.pronamespace = 'public'::regnamespace
+  and p.proname in ('claim_due_sms', 'sms_skip_reason', 'sync_appointment_reminder')
+order by p.proname;
+
+-- 3. Waiting texts and what the sender would skip
+select reminder_id, reminder_type, scheduled_at, public.sms_skip_reason(reminder_id) as would_skip
+from public.sms_reminder
+where delivery_status = 'PENDING'
+order by scheduled_at;
+```
+
+## 0018 check query (after running it)
+
+```sql
+select 1 as n, 'send-sms schedule' as check_name,
+       (select schedule from cron.job where jobname = 'send-sms') as result, '*/5 * * * *' as expected
+union all
+select 2, 'claim_due_sms has no hours',
+       (select strpos(prosrc, '08:00') = 0 from pg_proc where proname = 'claim_due_sms')::text, 'true'
+union all
+select 3, 'sync uses today for the overlap',
+       (select strpos(prosrc, 'answer_day') = 0 and strpos(prosrc, 'covered_by_answer') > 0
+        from pg_proc where proname = 'sync_appointment_reminder')::text, 'true'
+union all
+select 4, 'claim_due_sms: app / server',
+       has_function_privilege('authenticated', 'public.claim_due_sms()', 'execute')::text || ' / '
+         || has_function_privilege('service_role', 'public.claim_due_sms()', 'execute')::text,
+       'false / true'
+order by n;
 ```
 
 ## Environment variables (`.env.local`, never committed)

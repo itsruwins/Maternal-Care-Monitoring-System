@@ -1026,6 +1026,7 @@
       "SENT": "Reminder sent {when}",
       "DELIVERED": "Reminder delivered {when}",
       "FAILED": "Reminder failed to send",
+      "SKIPPED": "Reminder not sent: no longer needed",
       "none": "No reminder"
     },
     "propose": {

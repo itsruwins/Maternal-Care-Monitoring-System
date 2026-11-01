@@ -1026,6 +1026,7 @@
       "SENT": "Naipadala ang paalala {when}",
       "DELIVERED": "Natanggap ang paalala {when}",
       "FAILED": "Hindi naipadala ang paalala",
+      "SKIPPED": "Hindi na ipinadala ang paalala",
       "none": "Walang paalala"
     },
     "propose": {

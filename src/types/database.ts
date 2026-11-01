@@ -1,5 +1,5 @@
 // Database types, written from the confirmed schema (inspect-schema.sql, 2026-10-26)
-// plus migrations 0001-0015. Update this file whenever a migration changes a table.
+// plus migrations 0001-0016. Update this file whenever a migration changes a table.
 
 type NullableKeys<T> = { [K in keyof T]: null extends T[K] ? K : never }[keyof T];
 
@@ -32,7 +32,8 @@ export type AppointmentStatus =
   | "MISSED"
   | "CANCELLED";
 export type ReminderType = "UPCOMING" | "MISSED_NOTICE";
-export type SmsDeliveryStatus = "PENDING" | "SENT" | "DELIVERED" | "FAILED";
+export type SmsDeliveryStatus = "PENDING" | "SENT" | "DELIVERED" | "FAILED" | "SKIPPED";
+export type SmsMode = "TEST" | "LIVE";
 export type FollowUpMethod = "CALL" | "SMS" | "HOME_VISIT";
 export type FollowUpResult = "REACHED" | "NOT_REACHED";
 export type FollowUpCloseReason = "MOVED_AWAY" | "CARE_ELSEWHERE" | "OTHER";
@@ -149,7 +150,32 @@ export type SmsReminderRow = {
   sent_at: string | null;
   delivery_status: SmsDeliveryStatus;
   provider_message_id: string | null;
+  /** HTTPSMS's own error text. */
   error_message: string | null;
+  /** Tries so far (taking a text for sending counts as one). */
+  attempt_count: number;
+  /** When an automatic retry is due (the text is PENDING meanwhile). */
+  next_attempt_at: string | null;
+  /** Taken by a sender run; cleared when the run saves a result. */
+  claimed_at: string | null;
+  /** The number it actually went to (the test number in Test mode). */
+  sent_to: string | null;
+  delivered_at: string | null;
+  /** When HTTPSMS was last asked about it. */
+  status_checked_at: string | null;
+  /** Why it was skipped or failed, as a short code (e.g. visit_passed, too_long). */
+  status_reason: string | null;
+};
+
+export type SmsSettingRow = {
+  setting_id: number;
+  mode: SmsMode;
+  test_number: string | null;
+  updated_by: string | null;
+  updated_at: string;
+  phone_online: boolean | null;
+  phone_status_at: string | null;
+  limit_reached_at: string | null;
 };
 
 export type FollowUpRow = {
@@ -257,7 +283,7 @@ export type Database = {
           Relation<"visit_service_activity_type_id_fkey", "activity_type_id", "activity_type", "activity_type_id">,
         ]
       >;
-      sms_reminder: TableDef<SmsReminderRow, "reminder_id", [Relation<"sms_reminder_appointment_id_fkey", "appointment_id", "appointment", "appointment_id">]>;
+      sms_reminder: TableDef<SmsReminderRow, "reminder_id" | "attempt_count", [Relation<"sms_reminder_appointment_id_fkey", "appointment_id", "appointment", "appointment_id">]>;
       follow_up: TableDef<
         FollowUpRow,
         "follow_up_id" | "health_worker_id" | "created_at",
@@ -269,6 +295,7 @@ export type Database = {
       login_attempt: TableDef<LoginAttemptRow, "login_attempt_id" | "attempted_at">;
       purok: TableDef<PurokRow, "purok_id" | "sort_order" | "is_active" | "created_at">;
       closed_day: TableDef<ClosedDayRow, "created_at">;
+      sms_setting: TableDef<SmsSettingRow, "setting_id" | "mode" | "updated_at">;
     };
     Views: {
       follow_up_item: { Row: FollowUpItemRow; Relationships: [] };
@@ -315,6 +342,9 @@ export type Database = {
         Returns: undefined;
       };
       my_open_missed_visits: { Args: never; Returns: { appointment_id: number; missed_at: string; service: string }[] };
+      /** Server sender only (service_role): takes up to 20 due texts. */
+      claim_due_sms: { Args: never; Returns: SmsReminderRow[] };
+      retry_sms: { Args: { p_reminder_id: number }; Returns: undefined };
     };
     Enums: {
       user_role: UserRole;
@@ -324,6 +354,7 @@ export type Database = {
       appointment_status: AppointmentStatus;
       reminder_type: ReminderType;
       sms_delivery_status: SmsDeliveryStatus;
+      sms_mode: SmsMode;
       follow_up_method: FollowUpMethod;
       follow_up_result: FollowUpResult;
       follow_up_close_reason: FollowUpCloseReason;

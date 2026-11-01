@@ -32,7 +32,14 @@ export type AppointmentStatus =
   | "MISSED"
   | "CANCELLED";
 /** UPCOMING: visit reminder. REQUEST_*: staff answered her request (0017). */
-export type ReminderType = "UPCOMING" | "MISSED_NOTICE" | "REQUEST_CONFIRMED" | "REQUEST_NEW_TIME" | "REQUEST_DECLINED";
+export type ReminderType =
+  | "UPCOMING"
+  | "MISSED_NOTICE"
+  | "REQUEST_CONFIRMED"
+  | "REQUEST_NEW_TIME"
+  | "REQUEST_DECLINED"
+  | "VISIT_MOVED"
+  | "VISIT_CANCELLED";
 export type SmsDeliveryStatus = "PENDING" | "SENT" | "DELIVERED" | "FAILED" | "SKIPPED";
 export type FollowUpMethod = "CALL" | "SMS" | "HOME_VISIT";
 export type FollowUpResult = "REACHED" | "NOT_REACHED";

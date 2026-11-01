@@ -821,7 +821,7 @@ Sample request answers (one SMS each with this service name; a longer name may m
 - For step 3: the waiting-texts check, telling me which texts are demo ones.
 - For step 6: the Vercel deploy and the two Vault secrets (done 2026-11-01); after step 5, the HTTPSMS webhook form.
 
-**Not in Phase 7:** texts when staff cancel or move a confirmed visit (staff call her, as today; answers to her request do get a text), and mothers' replies in the app (they stay on the SMS phone).
+**Not in Phase 7:** mothers' replies in the app (they stay on the SMS phone). Texts when staff move or cancel a confirmed visit were added on 2026-11-02 (see the note at the end of this phase).
 
 **Step 1 done (2026-11-01):** migration `0016_phase7.sql`, run and checked by you (14 checks as expected; no texts in the queue yet, so the new wording first shows in step 2).
 - **pg_net** is on. Texts have a new status **Skipped** and new columns: `attempt_count`, `next_attempt_at`, `claimed_at`, `sent_to`, `delivered_at`, `status_checked_at`, `status_reason` (a short code; `error_message` keeps HTTPSMS's own text). A retry waits as Pending with `next_attempt_at`; Failed is final.
@@ -853,6 +853,15 @@ Sample request answers (one SMS each with this service name; a longer name may m
 - **Her confirmed visit card:** "Text reminder on … to …" while waiting, "Reminder sent …" once sent; if it failed, "We couldn't text your reminder." with a link to her profile to check her number; nothing when it wasn't needed (your choice). Preview `/design-preview/mother-appointments?reminder=sent|failed|none`.
 - **Landing page:** the sample is the real Taglish text in both languages, and the fact line says "Sent in simple Taglish" (your choice); the hero card matches.
 - **After you push:** fill in the HTTPSMS webhook form (step 6) and watch a text be marked Delivered by the webhook.
+
+**Layout change (2026-11-02, your request):** migration `0020_sms_layout.sql`: every text reads "Hi {name}!", the message, then "From: Brgy. Taysan Health Center", with a blank line between; `sms_plain()` keeps line breaks; the Declined text ends "Thank you!"; waiting texts switched too. The landing sample matches.
+
+**Added (2026-11-02, your request): texts when staff move or cancel a visit.** Admins and health workers alike (the database checks the role, not the screen). Migration `0021_sms_visit_changes.sql`, after 0020:
+- **Moved, she has a login** (she must accept it in the app): the "New time proposed" text, as for a request ("May bagong oras … Buksan ang app para tanggapin o tanggihan."). Also when staff change a time she hasn't answered yet.
+- **Moved, no login** (confirmed at once): new type **Visit moved**: "Inilipat ang {service} mo sa {date, time} sa health center. Salamat!" A day-before reminder that would go the same day is Skipped, as after a Confirmed text.
+- **Cancelled** (a confirmed visit, or one with a new time she hasn't answered): new type **Visit cancelled**: "Kinansela ang {service} mo sa {date, time}. Tumawag o pumunta sa health center para sa bagong schedule. Thank you!"
+- **No cancel text** when her pregnancy is closed (that cancels her open visits) or when the visit time has passed; her own cancel, accept or decline sends none, as before.
+- Too-late rules as for request answers. SMS log: the two new types, the "Request answers" filter becomes "Answers and changes"; English and Filipino; previews.
 
 ## Phase 8 — Dashboards & reports
 

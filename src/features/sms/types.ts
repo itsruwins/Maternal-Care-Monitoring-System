@@ -46,7 +46,7 @@ export type SendingPanel = {
 /** The SMS log's status filter. "sent": went out (Sent or Delivered). */
 export type SmsLogStatus = "waiting" | "sent" | "delivered" | "failed" | "skipped";
 
-/** The SMS log's type filter. "answer": any of the three request answers. */
+/** The SMS log's type filter. "answer": staff answers to her requests and staff moving or cancelling a visit. */
 export type SmsLogType = "reminder" | "missed" | "answer";
 
 export type SmsLogFilters = {

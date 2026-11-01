@@ -1030,7 +1030,7 @@
       "SKIPPED": "Hindi na ipinadala ang paalala",
       "none": "Walang paalala",
       "retrying": "Hindi naipadala ang paalala, susubukan ulit {when}",
-      "covered": "Hindi na kailangan ng paalala: nasa text ng kumpirmasyon na ang oras"
+      "covered": "Hindi na kailangan ng paalala: nasa naunang text na ang oras"
     },
     "propose": {
       "title": "Mag-alok ng ibang oras",
@@ -1526,14 +1526,16 @@
       "typeFilter": {
         "reminder": "Mga paalala sa bisita",
         "missed": "Mga abiso sa hindi nakarating",
-        "answer": "Mga sagot sa hiling"
+        "answer": "Mga sagot at pagbabago"
       },
       "types": {
         "UPCOMING": "Paalala sa bisita",
         "MISSED_NOTICE": "Abiso sa hindi nakarating",
         "REQUEST_CONFIRMED": "Kumpirmadong hiling",
         "REQUEST_NEW_TIME": "Bagong oras na mungkahi",
-        "REQUEST_DECLINED": "Hindi naaprubahang hiling"
+        "REQUEST_DECLINED": "Hindi naaprubahang hiling",
+        "VISIT_MOVED": "Inilipat na bisita",
+        "VISIT_CANCELLED": "Kinanselang bisita"
       },
       "statuses": {
         "PENDING": "Naghihintay",
@@ -1553,8 +1555,8 @@
         "visit_changed": "Nagbago ang appointment",
         "notice_late": "Huli na para sa abiso sa hindi nakarating",
         "follow_up_closed": "Naayos na ang follow-up niya",
-        "answer_late": "Huli na para ipadala ang sagot",
-        "covered_by_answer": "Nasa text ng kumpirmasyon na ang oras",
+        "answer_late": "Huli na para ipadala",
+        "covered_by_answer": "Nasa naunang text na niya ang oras",
         "too_long": "Masyadong mahaba ang text (lampas 2 SMS)",
         "bad_characters": "May mga titik na hindi maipadala sa SMS",
         "bad_number": "Hindi magamit ang mobile number niya",

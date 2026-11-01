@@ -1030,7 +1030,7 @@
       "SKIPPED": "Reminder not sent: no longer needed",
       "none": "No reminder",
       "retrying": "Reminder failed, trying again {when}",
-      "covered": "No reminder needed: her Confirmed text gave the time"
+      "covered": "No reminder needed: her earlier text gave the time"
     },
     "propose": {
       "title": "Offer another time",
@@ -1526,14 +1526,16 @@
       "typeFilter": {
         "reminder": "Visit reminders",
         "missed": "Missed-visit notices",
-        "answer": "Request answers"
+        "answer": "Answers and changes"
       },
       "types": {
         "UPCOMING": "Visit reminder",
         "MISSED_NOTICE": "Missed-visit notice",
         "REQUEST_CONFIRMED": "Request confirmed",
         "REQUEST_NEW_TIME": "New time proposed",
-        "REQUEST_DECLINED": "Request declined"
+        "REQUEST_DECLINED": "Request declined",
+        "VISIT_MOVED": "Visit moved",
+        "VISIT_CANCELLED": "Visit cancelled"
       },
       "statuses": {
         "PENDING": "Waiting",
@@ -1553,8 +1555,8 @@
         "visit_changed": "The appointment changed",
         "notice_late": "Too late for a missed-visit notice",
         "follow_up_closed": "Her follow-up was already sorted out",
-        "answer_late": "Too late to send the answer",
-        "covered_by_answer": "Her Confirmed text already gave the time",
+        "answer_late": "Too late to send",
+        "covered_by_answer": "Her earlier text already gave the time",
         "too_long": "The text is too long (over 2 SMS)",
         "bad_characters": "The text has characters SMS can't send",
         "bad_number": "Her mobile number can't be used",

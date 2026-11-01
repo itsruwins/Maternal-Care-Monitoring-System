@@ -7,6 +7,32 @@ const joy = { id: 5, name: "Joy Villanueva" };
 
 export const SAMPLE_SMS: SmsLogItem[] = [
   {
+    id: 14,
+    type: "VISIT_CANCELLED",
+    status: "DELIVERED",
+    reason: null,
+    number: "09281112233",
+    text: "Hi Grace!\n\nKinansela ang Nutrition Counseling mo sa Wed, Nov 4, 1:30 PM. Tumawag o pumunta sa health center para sa bagong schedule. Thank you!\n\nFrom: Brgy. Taysan Health Center",
+    at: "2026-11-01T07:10:00Z",
+    retrying: false,
+    service: "Nutrition Counseling",
+    visitAt: "2026-11-04T05:30:00Z",
+    mother: grace,
+  },
+  {
+    id: 13,
+    type: "VISIT_MOVED",
+    status: "PENDING",
+    reason: null,
+    number: "09394445566",
+    text: "Hi Joy!\n\nInilipat ang Prenatal Checkup mo sa Mon, Nov 9, 8:30 AM sa health center. Salamat!\n\nFrom: Brgy. Taysan Health Center",
+    at: "2026-11-01T07:00:00Z",
+    retrying: false,
+    service: "Prenatal Checkup",
+    visitAt: "2026-11-09T00:30:00Z",
+    mother: joy,
+  },
+  {
     id: 12,
     type: "REQUEST_CONFIRMED",
     status: "PENDING",

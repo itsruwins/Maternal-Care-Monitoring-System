@@ -24,6 +24,7 @@ Run these in **Supabase Dashboard → SQL Editor**, in order. Each file is safe 
 | 18 | `supabase/migrations/0018_sms_any_time.sql` | Phase 7: no sending hours (a due text goes on the next run, day or night); a reminder due the same day as her Confirmed text is Skipped; the `send-sms` job every 5 minutes, all day |
 | 19 | `supabase/migrations/0019_sms_log.sql` | Phase 7 step 4: the `sms_log_item` view (each text with her name, the service and the appointment; staff read all, a mother her own) for the SMS log and her record's SMS log tab, and an index for newest first. Changes no data |
 | 20 | `supabase/migrations/0020_sms_layout.sql` | Phase 7: every text in three parts ("Hi {name}!", the message, "From: Brgy. Taysan Health Center") with blank lines between; `sms_plain()` keeps line breaks; the Declined text ends "Thank you!"; texts still waiting get the new layout too |
+| 21 | `supabase/migrations/0021_sms_visit_changes.sql` | Phase 7: texts when staff (admins or health workers) move or cancel a visit: "New time proposed" when she must accept it in the app, new types Visit moved (no login, confirmed at once) and Visit cancelled; no cancel text when her pregnancy is closed or the visit time has passed. Changes no data |
 | — | `supabase/seed/first-admin.sql` | First admin (follow the steps at the top of the file) |
 
 ## Rules
@@ -231,6 +232,27 @@ select reminder_id, reminder_type, scheduled_at, length(message_text) as chars, 
 from public.sms_reminder
 where delivery_status = 'PENDING'
 order by scheduled_at;
+```
+
+## 0021 check query (after running it)
+
+```sql
+select 1 as n, 'new text types' as check_name,
+       (select count(*) from unnest(enum_range(null::public.reminder_type)) as v
+        where v::text in ('VISIT_MOVED', 'VISIT_CANCELLED'))::text as result,
+       '2' as expected
+union all
+select 2, 'queuing handles moves and cancels',
+       (select strpos(prosrc, 'VISIT_MOVED') > 0 and strpos(prosrc, 'VISIT_CANCELLED') > 0
+               and strpos(prosrc, 'From: Brgy. Taysan Health Center') > 0
+        from pg_proc where proname = 'sync_appointment_reminder')::text, 'true'
+union all
+select 3, 'too-late rules know the new types',
+       (select strpos(prosrc, 'VISIT_MOVED') > 0 from pg_proc where proname = 'sms_skip_reason')::text, 'true'
+union all
+select 4, 'app can call the queuing function',
+       has_function_privilege('authenticated', 'public.sync_appointment_reminder()', 'execute')::text, 'false'
+order by n;
 ```
 
 ## Environment variables (`.env.local`, never committed)

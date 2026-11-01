@@ -23,6 +23,7 @@ Run these in **Supabase Dashboard → SQL Editor**, in order. Each file is safe 
 | 17 | `supabase/migrations/0017_phase7_live.sql` | Phase 7 step 3: no test mode (texts always go to her number, inside sending hours; `sms_setting` keeps only the phone and plan status; the `sms_mode` type is removed); three new text types for staff answers to her request (confirmed, new time proposed, declined), with their too-late rules; a visit reminder due the same day as her Confirmed text is saved as Skipped |
 | 18 | `supabase/migrations/0018_sms_any_time.sql` | Phase 7: no sending hours (a due text goes on the next run, day or night); a reminder due the same day as her Confirmed text is Skipped; the `send-sms` job every 5 minutes, all day |
 | 19 | `supabase/migrations/0019_sms_log.sql` | Phase 7 step 4: the `sms_log_item` view (each text with her name, the service and the appointment; staff read all, a mother her own) for the SMS log and her record's SMS log tab, and an index for newest first. Changes no data |
+| 20 | `supabase/migrations/0020_sms_layout.sql` | Phase 7: every text in three parts ("Hi {name}!", the message, "From: Brgy. Taysan Health Center") with blank lines between; `sms_plain()` keeps line breaks; the Declined text ends "Thank you!"; texts still waiting get the new layout too |
 | — | `supabase/seed/first-admin.sql` | First admin (follow the steps at the top of the file) |
 
 ## Rules
@@ -200,6 +201,36 @@ union all
 select 5, 'newest-first index',
        exists (select 1 from pg_indexes where indexname = 'sms_reminder_shown_at')::text, 'true'
 order by n;
+```
+
+## 0020 check query (after running it)
+
+```sql
+select 1 as n, 'sms_plain keeps line breaks' as check_name,
+       (public.sms_plain(E'Hi  Ana! \n\n\n  Paalala:  test.\r\n\nFrom: X ') = E'Hi Ana!\n\nPaalala: test.\n\nFrom: X')::text as result,
+       'true' as expected
+union all
+select 2, 'reminder and answers use the new layout',
+       (select strpos(prosrc, 'From: Brgy. Taysan Health Center') > 0 and strpos(prosrc, 'Thank you!') > 0
+        from pg_proc where proname = 'sync_appointment_reminder')::text, 'true'
+union all
+select 3, 'missed notice uses the new layout',
+       (select strpos(prosrc, 'From: Brgy. Taysan Health Center') > 0
+        from pg_proc where proname = 'mark_missed_appointments')::text, 'true'
+union all
+select 4, 'waiting texts still in the old layout',
+       (select count(*) from public.sms_reminder
+        where delivery_status = 'PENDING' and message_text like '% -Brgy. Taysan Health Center')::text, '0'
+union all
+select 5, 'sms_plain: app can call it',
+       has_function_privilege('authenticated', 'public.sms_plain(text)', 'execute')::text, 'false'
+order by n;
+
+-- The waiting texts as they will go out (line breaks show in the result cell)
+select reminder_id, reminder_type, scheduled_at, length(message_text) as chars, message_text
+from public.sms_reminder
+where delivery_status = 'PENDING'
+order by scheduled_at;
 ```
 
 ## Environment variables (`.env.local`, never committed)

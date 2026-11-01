@@ -78,7 +78,7 @@ export function HowItWorks({ t }: { t: Dictionary }) {
 
             {/* messages */}
             <div className="relative mt-4 flex flex-col gap-2">
-              <p className="rounded-2xl rounded-bl-md bg-white px-4 py-3 text-[0.95rem] leading-6 shadow-[var(--shadow-soft)] sm:max-w-[90%]">
+              <p className="rounded-2xl rounded-bl-md bg-white px-4 py-3 text-[0.95rem] leading-6 whitespace-pre-line shadow-[var(--shadow-soft)] sm:max-w-[90%]">
                 {how.sms.text}
               </p>
               <span className="tnum pl-1 text-caption text-ink-soft">{how.sms.time}</span>

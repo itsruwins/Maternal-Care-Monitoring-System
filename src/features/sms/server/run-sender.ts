@@ -2,8 +2,9 @@ import "server-only";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { SmsReminderRow } from "@/types/database";
 import { checkSmsText, toInternational } from "../text-rules";
-import type { RunSummary, SmsStatusReason } from "../types";
+import type { RunSummary } from "../types";
 import { getMessageStatus, httpsmsConfig, sendSms, type HttpsmsConfig } from "./httpsms";
+import { applyNews, finish, retryOrFail, type Admin, type TextNews } from "./save-result";
 
 // One sender run, used by the schedule (/api/cron/send-sms) and by Send now:
 // 1. Take the due texts (claim_due_sms: at most 20, too-late ones Skipped),
@@ -13,16 +14,14 @@ import { getMessageStatus, httpsmsConfig, sendSms, type HttpsmsConfig } from "./
 //    HTTPSMS refuses, a bad number, or a text that breaks the text rules is
 //    not retried. The monthly limit or a refused API key stops the run; the
 //    texts not sent yet keep waiting (that try isn't counted).
-// 3. Ask HTTPSMS about Sent texts from the last day with no news yet.
+// 3. Ask HTTPSMS about Sent texts from the last day with no news yet. An
+//    expired text that HTTPSMS will try again itself is left alone; only its
+//    final attempt counts as failed (else she could get the text twice).
 // Uses the admin client: the sender has no login.
 
-const MAX_TRIES = 3; // the first try + 2 automatic retries
-const RETRY_AFTER_MS = 30 * 60_000;
 const CHECK_WINDOW_MS = 24 * 60 * 60_000;
 const CHECKS_PER_RUN = 20;
 
-type Admin = ReturnType<typeof createAdminClient>;
-type Update = Partial<SmsReminderRow>;
 
 export async function runSender(): Promise<RunSummary> {
   const summary: RunSummary = { sent: 0, retrying: 0, failed: 0, checked: 0, delivered: 0, stopped: null };
@@ -92,42 +91,12 @@ export async function runSender(): Promise<RunSummary> {
   return summary;
 }
 
-// A result is saved: the lock and any planned retry are cleared.
-async function finish(admin: Admin, match: Update, fields: Update) {
-  await admin.from("sms_reminder").update({ ...fields, claimed_at: null, next_attempt_at: null }).match(match);
-}
-
 // Not sent by this run after all: back in the queue, the try not counted.
 async function release(admin: Admin, row: SmsReminderRow) {
   await admin
     .from("sms_reminder")
     .update({ claimed_at: null, attempt_count: Math.max(row.attempt_count - 1, 0) })
     .match({ reminder_id: row.reminder_id, claimed_at: row.claimed_at });
-}
-
-// Tried again in 30 minutes while tries are left, else Failed for good.
-async function retryOrFail(
-  admin: Admin,
-  row: Pick<SmsReminderRow, "attempt_count">,
-  match: Update,
-  reason: SmsStatusReason,
-  detail: string | null,
-): Promise<"retrying" | "failed"> {
-  if (row.attempt_count < MAX_TRIES) {
-    await admin
-      .from("sms_reminder")
-      .update({
-        delivery_status: "PENDING",
-        next_attempt_at: new Date(Date.now() + RETRY_AFTER_MS).toISOString(),
-        claimed_at: null,
-        status_reason: reason,
-        error_message: detail,
-      })
-      .match(match);
-    return "retrying";
-  }
-  await finish(admin, match, { delivery_status: "FAILED", status_reason: reason, error_message: detail });
-  return "failed";
 }
 
 // Sent texts from the last day with no news yet, least recently asked first.
@@ -145,24 +114,14 @@ async function checkSentTexts(admin: Admin, config: HttpsmsConfig, summary: RunS
     const status = await getMessageStatus(config, row.provider_message_id!);
     if (!status) continue;
     summary.checked++;
-    const now = new Date().toISOString();
-    // Only while it is still Sent (a webhook may have updated it meanwhile).
-    const stillSent = { reminder_id: row.reminder_id, delivery_status: "SENT" as const };
-
-    if (status.status === "delivered") {
-      await admin
-        .from("sms_reminder")
-        .update({ delivery_status: "DELIVERED", delivered_at: status.deliveredAt ?? now, status_checked_at: now })
-        .match(stillSent);
-      summary.delivered++;
-    } else if (status.status === "failed" || status.status === "expired") {
-      const reason = status.status === "expired" ? "phone_offline" : "send_failed";
-      summary[await retryOrFail(admin, row, stillSent, reason, status.failureReason)]++;
-    } else {
-      await admin
-        .from("sms_reminder")
-        .update({ sent_at: status.sentAt ?? row.sent_at, status_checked_at: now })
-        .match(stillSent);
-    }
+    const finalExpiry = status.status === "expired" && status.sendAttempts >= status.maxSendAttempts;
+    const news: TextNews =
+      status.status === "delivered"
+        ? { kind: "delivered", at: status.deliveredAt }
+        : status.status === "failed" || finalExpiry
+          ? { kind: "failed", reason: finalExpiry ? "phone_offline" : "send_failed", detail: status.failureReason }
+          : { kind: "sent", at: status.sentAt };
+    const outcome = await applyNews(admin, row, news);
+    if (outcome !== "updated") summary[outcome]++;
   }
 }

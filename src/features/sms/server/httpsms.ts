@@ -54,6 +54,9 @@ export type MessageStatus = {
   failureReason: string | null;
   sentAt: string | null;
   deliveredAt: string | null;
+  /** HTTPSMS tries an expired text again itself while sendAttempts < maxSendAttempts. */
+  sendAttempts: number;
+  maxSendAttempts: number;
 };
 
 /** A text's status at HTTPSMS, or null when it can't be read right now. */
@@ -66,7 +69,14 @@ export async function getMessageStatus(config: HttpsmsConfig, id: string): Promi
     });
     if (!response.ok) return null;
     const body = (await response.json()) as {
-      data?: { status?: string; failure_reason?: string | null; sent_at?: string | null; delivered_at?: string | null };
+      data?: {
+        status?: string;
+        failure_reason?: string | null;
+        sent_at?: string | null;
+        delivered_at?: string | null;
+        send_attempt_count?: number;
+        max_send_attempts?: number;
+      };
     };
     if (!body.data?.status) return null;
     return {
@@ -74,6 +84,9 @@ export async function getMessageStatus(config: HttpsmsConfig, id: string): Promi
       failureReason: body.data.failure_reason ?? null,
       sentAt: body.data.sent_at ?? null,
       deliveredAt: body.data.delivered_at ?? null,
+      // Missing counts: treat the expiry as final.
+      sendAttempts: body.data.send_attempt_count ?? 1,
+      maxSendAttempts: body.data.max_send_attempts ?? 1,
     };
   } catch {
     return null;

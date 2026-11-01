@@ -1,13 +1,14 @@
 import "server-only";
 import type { CurrentUser } from "@/lib/auth/session";
 import { createClient } from "@/lib/supabase/server";
-import type { MyAppointment, MyAppointments } from "../types";
+import type { MyAppointment, MyAppointments, MyReminder } from "../types";
 
 const OPEN = new Set(["REQUESTED", "CONFIRMED", "RESCHEDULED"]);
 
 // The mother's appointments (RLS: only her own), split into upcoming (open and
 // not yet passed, plus requests still waiting for an answer even after their
-// time; proposals first, then by time) and past (newest first).
+// time; proposals first, then by time) and past (newest first). Confirmed
+// visits carry their latest reminder text (RLS: she can read her own).
 export async function getMyAppointments(user: CurrentUser): Promise<MyAppointments> {
   const supabase = await createClient();
   const { data: mother } = await supabase.from("mother").select("mother_id").eq("user_id", user.id).maybeSingle();
@@ -23,6 +24,21 @@ export async function getMyAppointments(user: CurrentUser): Promise<MyAppointmen
     .select("appointment_id, status, requested_datetime, scheduled_datetime, remarks, activity_type:activity_type_id(name)")
     .in("pregnancy_id", ids);
 
+  const confirmed = (rows ?? []).filter((row) => row.status === "CONFIRMED").map((row) => row.appointment_id);
+  const { data: reminders } = confirmed.length
+    ? await supabase
+        .from("sms_reminder")
+        .select("appointment_id, delivery_status, scheduled_at, sent_at, next_attempt_at, recipient_number")
+        .eq("reminder_type", "UPCOMING")
+        .in("appointment_id", confirmed)
+        .order("reminder_id", { ascending: false })
+    : { data: [] };
+  const latest = new Map<number, MyReminder>();
+  for (const r of reminders ?? []) {
+    if (latest.has(r.appointment_id)) continue;
+    latest.set(r.appointment_id, { status: r.delivery_status, at: r.next_attempt_at ?? r.scheduled_at, sentAt: r.sent_at, number: r.recipient_number });
+  }
+
   const now = Date.now();
   const items: MyAppointment[] = (rows ?? []).map((row) => ({
     id: row.appointment_id,
@@ -31,6 +47,7 @@ export async function getMyAppointments(user: CurrentUser): Promise<MyAppointmen
     requestedAt: row.requested_datetime,
     scheduledAt: row.scheduled_datetime,
     remarks: row.remarks,
+    reminder: row.status === "CONFIRMED" ? (latest.get(row.appointment_id) ?? null) : null,
   }));
   const at = (item: MyAppointment) => new Date(item.scheduledAt ?? item.requestedAt).getTime();
   const isUpcoming = (item: MyAppointment) => item.status === "REQUESTED" || (OPEN.has(item.status) && at(item) > now);

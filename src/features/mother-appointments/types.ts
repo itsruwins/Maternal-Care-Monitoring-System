@@ -1,6 +1,6 @@
 import type { ServiceIconKey } from "@/lib/appointments/service-icons";
 import type { SlotError } from "@/lib/appointments/slots";
-import type { AppointmentStatus } from "@/types/database";
+import type { AppointmentStatus, SmsDeliveryStatus } from "@/types/database";
 
 export type MyAppointment = {
   id: number;
@@ -11,7 +11,12 @@ export type MyAppointment = {
   /** The confirmed or proposed time, if any. */
   scheduledAt: string | null;
   remarks: string | null;
+  /** The latest visit reminder text for it (confirmed visits only), or null. */
+  reminder: MyReminder | null;
 };
+
+/** at: when it goes out (or is tried again); sentAt once sent; number: where it goes. */
+export type MyReminder = { status: SmsDeliveryStatus; at: string; sentAt: string | null; number: string };
 
 export type MyAppointments = {
   /** Her current pregnancy, or null (no requests then). */

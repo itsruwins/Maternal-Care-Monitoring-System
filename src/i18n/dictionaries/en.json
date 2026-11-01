@@ -96,7 +96,7 @@
       "dueOn": "Due around {date}",
       "sampleDue": "Feb 2027",
       "smsSender": "Taysan Health Center",
-      "smsBody": "Reminder: your prenatal checkup is on Fri, Nov 6.",
+      "smsBody": "Paalala: Prenatal Checkup mo sa Fri, Nov 6.",
       "nextVisit": "Next visit",
       "sampleNext": "Fri, Nov 6",
       "nextVisitUnset": "Set by your midwife"
@@ -127,15 +127,11 @@
         "sender": "Brgy. Taysan Health Center",
         "meta": "Text message · Today",
         "newBadge": "New reminder",
-        "greeting": "Hi Maria! This is a reminder from your health center.",
-        "apptTitle": "Prenatal checkup",
-        "apptWhen": "Fri, Nov 6 · 8:00 AM – 3:00 PM",
-        "apptWhere": "Brgy. 56 Taysan, Legazpi City",
-        "closing": "Please bring your booklet. See you!",
+        "text": "Hi Maria! Paalala: Prenatal Checkup mo sa Fri, Nov 6, 8:00 AM sa health center. Dalhin ang booklet mo. Salamat! -Brgy. Taysan Health Center",
         "time": "8:00 AM",
         "facts": [
           "Works on any phone, no internet needed",
-          "Sent in English or Filipino"
+          "Sent in simple Taglish"
         ],
         "sample": "Sample"
       }
@@ -916,6 +912,12 @@
     "callToCancel": "To cancel on the day itself, please contact the health center.",
     "datePassed": "Date passed.",
     "datePassedNote": "The health center will suggest another time.",
+    "reminder": {
+      "waiting": "Text reminder on {when} to {number}",
+      "sent": "Reminder sent {when}",
+      "failed": "We couldn't text your reminder.",
+      "checkNumber": "Check your mobile number in your profile."
+    },
     "missed": {
       "one": "We missed you at your {service} on {date}.",
       "several": "We missed you",

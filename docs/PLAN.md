@@ -848,6 +848,12 @@ Sample request answers (one SMS each with this service name; a longer name may m
 - **Staff appointment cards:** reminder line only (your choice), now also "trying again …" and "No reminder needed: her Confirmed text gave the time"; the card shows the newest reminder queued.
 - English and Filipino; previews `/design-preview/sms` and `/design-preview/mother-record?tab=sms&admin=1`.
 
+**Step 5 built (2026-11-02):** no migration; approved by you.
+- **Webhook `POST /api/webhooks/httpsms`:** accepts only HTTPSMS's signed token (HS256 with the signing key, issuer `api.httpsms.com`, this webhook's address, not expired); anything else gets 401. Sent, delivered and failed update the text at once; **expired counts as failed only on HTTPSMS's last try** (your choice; the 5-minute status check follows the same rule now); phone online / offline update the status on `/admin/sms`; events from another phone or for unknown texts are ignored. Tested locally with hand-signed calls (401 / 200 ignored / 400 as expected, nothing written).
+- **Her confirmed visit card:** "Text reminder on … to …" while waiting, "Reminder sent …" once sent; if it failed, "We couldn't text your reminder." with a link to her profile to check her number; nothing when it wasn't needed (your choice). Preview `/design-preview/mother-appointments?reminder=sent|failed|none`.
+- **Landing page:** the sample is the real Taglish text in both languages, and the fact line says "Sent in simple Taglish" (your choice); the hero card matches.
+- **After you push:** fill in the HTTPSMS webhook form (step 6) and watch a text be marked Delivered by the webhook.
+
 ## Phase 8 — Dashboards & reports
 
 - **Staff dashboard:** today's appointments, pending requests, missed needing follow-up, active pregnancies, mothers due within 30 days.

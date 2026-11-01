@@ -2,7 +2,6 @@ import {
   AppointmentIcon,
   CheckupIcon,
   LanguageIcon,
-  LocationIcon,
   PhoneIcon,
   ReminderIcon,
   SmsIcon,
@@ -14,7 +13,8 @@ import type { Dictionary } from "@/i18n/get-dictionary";
 
 const STEP_ICONS: Icon[] = [UserIcon, AppointmentIcon, SmsIcon, CheckupIcon];
 
-// Four steps on a soft timeline, beside a sample of the reminder text she gets.
+// Four steps on a soft timeline, beside the reminder text she gets (the real
+// wording, in Taglish in both languages).
 export function HowItWorks({ t }: { t: Dictionary }) {
   const how = t.landing.how;
 
@@ -78,24 +78,8 @@ export function HowItWorks({ t }: { t: Dictionary }) {
 
             {/* messages */}
             <div className="relative mt-4 flex flex-col gap-2">
-              <p className="sm:max-w-[90%] rounded-2xl rounded-tl-md bg-white px-4 py-3 text-[0.95rem] leading-6 shadow-[var(--shadow-soft)]">
-                {how.sms.greeting}
-              </p>
-
-              <div className="flex sm:max-w-[90%] items-center gap-3 rounded-2xl bg-white p-3 pr-4 shadow-[var(--shadow-soft)]">
-                <IconCircle icon={AppointmentIcon} tone="blush" size="md" />
-                <span className="flex min-w-0 flex-col">
-                  <span className="text-[0.95rem] leading-5 font-bold">{how.sms.apptTitle}</span>
-                  <span className="tnum mt-0.5 text-sm leading-5 text-ink-soft">{how.sms.apptWhen}</span>
-                  <span className="mt-0.5 flex items-center gap-1 text-sm leading-5 text-ink-soft">
-                    <LocationIcon weight="fill" aria-hidden className="size-3.5 shrink-0 text-rose-deep" />
-                    {how.sms.apptWhere}
-                  </span>
-                </span>
-              </div>
-
-              <p className="sm:max-w-[90%] rounded-2xl rounded-bl-md bg-white px-4 py-3 text-[0.95rem] leading-6 shadow-[var(--shadow-soft)]">
-                {how.sms.closing}
+              <p className="rounded-2xl rounded-bl-md bg-white px-4 py-3 text-[0.95rem] leading-6 shadow-[var(--shadow-soft)] sm:max-w-[90%]">
+                {how.sms.text}
               </p>
               <span className="tnum pl-1 text-caption text-ink-soft">{how.sms.time}</span>
             </div>

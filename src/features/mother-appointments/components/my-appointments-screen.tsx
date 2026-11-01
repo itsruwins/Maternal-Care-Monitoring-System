@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ClockIcon, InfoIcon, PlusIcon } from "@/components/icons";
+import { ClockIcon, InfoIcon, PlusIcon, ReminderIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import type { Locale } from "@/i18n/config";
 import { format } from "@/i18n/format";
@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils/cn";
 import type { AppointmentStatus } from "@/types/database";
 import { getMyAppointments } from "../queries/get-my-appointments";
 import { getMyMissedVisits } from "../queries/get-my-missed-visits";
-import type { MissedVisit, MyAppointment, MyAppointments } from "../types";
+import type { MissedVisit, MyAppointment, MyAppointments, MyReminder } from "../types";
 import { CancelVisitButton, ProposalActions } from "./appointment-actions";
 import { MissedVisitNotice } from "./missed-visit-notice";
 
@@ -182,11 +182,38 @@ function UpcomingCard({ t, locale, item, today, now }: { t: Dictionary; locale: 
             <span className="font-medium text-ink">{a.note}:</span> {item.remarks}
           </p>
         )}
+        {item.reminder && <ReminderNote t={t} locale={locale} reminder={item.reminder} />}
         <div className="-ml-3">
           {canCancel ? <CancelVisitButton appointmentId={item.id} isRequest={isRequest} /> : <p className="ml-3 text-sm text-ink-soft">{a.callToCancel}</p>}
         </div>
       </div>
     </article>
+  );
+}
+
+/** Her text reminder: when and where it goes, that it went, or that it couldn't (a not-needed one shows nothing). */
+function ReminderNote({ t, locale, reminder }: { t: Dictionary; locale: Locale; reminder: MyReminder }) {
+  const r = t.myAppointments.reminder;
+  if (reminder.status === "SKIPPED") return null;
+  if (reminder.status === "FAILED") {
+    return (
+      <p className="flex items-start gap-1.5 text-sm text-rose-deep">
+        <ReminderIcon aria-hidden className="mt-0.5 size-4 shrink-0" />
+        <span>
+          {r.failed}{" "}
+          <Link href="/mother/profile" className="font-semibold text-rose-deep underline decoration-1 underline-offset-4 hover:decoration-2">
+            {r.checkNumber}
+          </Link>
+        </span>
+      </p>
+    );
+  }
+  const when = formatSlot(reminder.status === "PENDING" ? reminder.at : (reminder.sentAt ?? reminder.at), locale, "short").replace(/ /g, "\u00a0");
+  return (
+    <p className="tnum flex items-start gap-1.5 text-sm text-ink-soft">
+      <ReminderIcon aria-hidden className="mt-0.5 size-4 shrink-0" />
+      <span>{reminder.status === "PENDING" ? format(r.waiting, { when, number: reminder.number }) : format(r.sent, { when })}</span>
+    </p>
   );
 }
 

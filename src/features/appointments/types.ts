@@ -15,7 +15,8 @@ export type StaffAppointment = {
   createdAt: string;
   service: string;
   mother: { id: number; name: string; contactNumber: string; hasLogin: boolean };
-  reminder: { status: SmsDeliveryStatus; at: string; sentAt: string | null } | null;
+  /** retryAt: when a failed reminder is tried again; reason: why it failed or wasn't sent (sms_reminder.status_reason). */
+  reminder: { status: SmsDeliveryStatus; at: string; sentAt: string | null; retryAt: string | null; reason: string | null } | null;
 };
 
 export type AppointmentFilters = {

@@ -13,8 +13,8 @@ import { cn } from "@/lib/utils/cn";
 import { sendNow } from "../actions/sending";
 import type { RunSummary } from "../types";
 
-// Send now (the same run the schedule makes) and the SMS phone and plan
-// status. Results show as toasts.
+// Automatic sending: what the schedule does, the SMS phone and plan status,
+// and Send now (the same run, right away). Results show as toasts.
 export function SendCard({
   phoneOnline,
   phoneStatusAt,
@@ -43,37 +43,38 @@ export function SendCard({
   const phoneLine =
     phoneOnline === null || !phoneStatusAt
       ? s.phoneUnknown
-      : format(phoneOnline ? s.phoneOnline : s.phoneOffline, { time: formatSlot(phoneStatusAt, locale, "short") });
+      : // The date and time stay on one line.
+        format(phoneOnline ? s.phoneOnline : s.phoneOffline, { time: formatSlot(phoneStatusAt, locale, "short").replace(/ /g, "\u00a0") });
 
   return (
-    <section aria-labelledby="sms-send-title" className="rounded-3xl bg-white p-6 shadow-[var(--shadow-soft)] sm:p-8">
-      <div className="flex items-center gap-3">
-        <IconCircle icon={SmsIcon} tone="mint" size="sm" />
-        <h2 id="sms-send-title" className="text-xl font-bold">{s.title}</h2>
+    <section aria-labelledby="sms-send-title" className="rounded-2xl bg-white p-5 shadow-[var(--shadow-soft)] sm:p-6">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+        <div className="flex items-start gap-3">
+          <IconCircle icon={SmsIcon} tone="mint" size="sm" />
+          <div className="flex flex-col gap-1">
+            <h2 id="sms-send-title" className="text-lg font-bold">{s.title}</h2>
+            <p className="text-sm text-ink-soft">{s.intro}</p>
+            <p className="mt-1 flex items-center gap-2 text-sm font-medium text-ink-soft">
+              <PhoneIcon aria-hidden className="size-5 shrink-0" />
+              <span
+                aria-hidden
+                className={cn("size-2 shrink-0 rounded-full", phoneOnline === null ? "bg-sage" : phoneOnline ? "bg-leaf" : "bg-rose-deep")}
+              />
+              {phoneLine}
+            </p>
+          </div>
+        </div>
+        <Button type="button" disabled={running} aria-busy={running} onClick={runNow} className="w-full shrink-0 sm:w-auto">
+          {running ? <SpinnerIcon className="animate-spin" aria-hidden /> : <SendIcon weight="bold" aria-hidden />}
+          {running ? s.sending : s.now}
+        </Button>
       </div>
-      <p className="mt-3 text-sm text-ink-soft">{s.intro}</p>
-
-      <Button type="button" disabled={running} aria-busy={running} onClick={runNow} className="mt-5 w-full sm:w-auto">
-        {running ? <SpinnerIcon className="animate-spin" aria-hidden /> : <SendIcon weight="bold" aria-hidden />}
-        {running ? s.sending : s.now}
-      </Button>
-
-      <div className="mt-6 flex flex-col gap-3 border-t border-line pt-5">
-        <p className="flex items-center gap-2 text-sm font-medium text-ink-soft">
-          <PhoneIcon aria-hidden className="size-5 shrink-0" />
-          <span
-            aria-hidden
-            className={cn("size-2 shrink-0 rounded-full", phoneOnline === null ? "bg-sage" : phoneOnline ? "bg-leaf" : "bg-rose-deep")}
-          />
-          {phoneLine}
+      {limitReachedAt && (
+        <p role="status" className="mt-4 flex items-start gap-2.5 rounded-xl bg-blush px-4 py-3 text-sm leading-5 text-rose-deep">
+          <DangerIcon weight="fill" aria-hidden className="mt-px size-[1.125rem] shrink-0" />
+          {format(s.limit, { date: formatSlotDate(limitReachedAt, locale, "short") })}
         </p>
-        {limitReachedAt && (
-          <p role="status" className="flex items-start gap-2.5 rounded-xl bg-blush px-4 py-3 text-sm leading-5 text-rose-deep">
-            <DangerIcon weight="fill" aria-hidden className="mt-px size-[1.125rem] shrink-0" />
-            {format(s.limit, { date: formatSlotDate(limitReachedAt, locale, "short") })}
-          </p>
-        )}
-      </div>
+      )}
     </section>
   );
 }

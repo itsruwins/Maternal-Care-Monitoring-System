@@ -719,7 +719,6 @@
         "followUps": "Mga follow-up"
       },
       "tabsLabel": "Ang tala niya",
-      "comingSoon": "Darating ang {tab} sa Phase {phase}.",
       "age": "{age} taong gulang",
       "registeredBy": "Ipinarehistro ni {name} noong {date}",
       "registeredOn": "Ipinarehistro sa health center noong {date}",
@@ -1027,7 +1026,9 @@
       "DELIVERED": "Natanggap ang paalala {when}",
       "FAILED": "Hindi naipadala ang paalala",
       "SKIPPED": "Hindi na ipinadala ang paalala",
-      "none": "Walang paalala"
+      "none": "Walang paalala",
+      "retrying": "Hindi naipadala ang paalala, susubukan ulit {when}",
+      "covered": "Hindi na kailangan ng paalala: nasa text ng kumpirmasyon na ang oras"
     },
     "propose": {
       "title": "Mag-alok ng ibang oras",
@@ -1472,7 +1473,7 @@
     "title": "SMS log",
     "intro": "Mga paalala sa bisita, abiso sa hindi nakarating, at sagot sa hiling na appointment para sa mga nanay, ipinapadala sa HTTPSMS.",
     "send": {
-      "title": "Pagpapadala",
+      "title": "Awtomatikong pagpapadala",
       "intro": "Nagpapadala ang schedule kada 5 minuto, araw at gabi. Pinatatakbo ito agad ng Ipadala ngayon.",
       "now": "Ipadala ngayon",
       "sending": "Ipinapadala…",
@@ -1492,6 +1493,99 @@
       "auth": "Tinanggihan ng HTTPSMS ang API key. Tingnan ang HTTPSMS_API_KEY.",
       "config": "Hindi pa naka-set up ang HTTPSMS sa server (HTTPSMS_API_KEY, HTTPSMS_FROM_NUMBER).",
       "generic": "May nangyaring mali. Pakisubukan ulit."
+    },
+    "log": {
+      "countsLabel": "Buod ng mga text",
+      "counts": {
+        "waiting": "Naghihintay",
+        "sentToday": "Naipadala ngayon",
+        "failed": "Hindi naipadala"
+      },
+      "search": {
+        "label": "Hanapin ang nanay",
+        "placeholder": "Pangalan o mobile number",
+        "filters": "Mga filter",
+        "status": "Status",
+        "anyStatus": "Kahit anong status",
+        "type": "Uri",
+        "anyType": "Kahit anong uri",
+        "from": "Mula",
+        "to": "Hanggang",
+        "submit": "Hanapin",
+        "clear": "I-clear"
+      },
+      "statusFilter": {
+        "waiting": "Naghihintay",
+        "sent": "Naipadala o natanggap",
+        "delivered": "Natanggap",
+        "failed": "Hindi naipadala",
+        "skipped": "Hindi na ipinadala"
+      },
+      "typeFilter": {
+        "reminder": "Mga paalala sa bisita",
+        "missed": "Mga abiso sa hindi nakarating",
+        "answer": "Mga sagot sa hiling"
+      },
+      "types": {
+        "UPCOMING": "Paalala sa bisita",
+        "MISSED_NOTICE": "Abiso sa hindi nakarating",
+        "REQUEST_CONFIRMED": "Kumpirmadong hiling",
+        "REQUEST_NEW_TIME": "Bagong oras na mungkahi",
+        "REQUEST_DECLINED": "Hindi naaprubahang hiling"
+      },
+      "statuses": {
+        "PENDING": "Naghihintay",
+        "retrying": "Susubukan ulit",
+        "SENT": "Naipadala",
+        "DELIVERED": "Natanggap",
+        "FAILED": "Hindi naipadala",
+        "SKIPPED": "Hindi na ipinadala"
+      },
+      "when": {
+        "PENDING": "Ipapadala {when}",
+        "retrying": "Susunod na subok {when}",
+        "SENT": "Naipadala {when}"
+      },
+      "reasons": {
+        "visit_passed": "Lumipas na ang oras ng bisita",
+        "visit_changed": "Nagbago ang appointment",
+        "notice_late": "Huli na para sa abiso sa hindi nakarating",
+        "follow_up_closed": "Naayos na ang follow-up niya",
+        "answer_late": "Huli na para ipadala ang sagot",
+        "covered_by_answer": "Nasa text ng kumpirmasyon na ang oras",
+        "too_long": "Masyadong mahaba ang text (lampas 2 SMS)",
+        "bad_characters": "May mga titik na hindi maipadala sa SMS",
+        "bad_number": "Hindi magamit ang mobile number niya",
+        "rejected": "Tinanggihan ng HTTPSMS ang text",
+        "send_error": "Hindi maabot ang HTTPSMS",
+        "send_failed": "Hindi ito naipadala ng SMS phone",
+        "phone_offline": "Offline ang SMS phone"
+      },
+      "columns": {
+        "mother": "Nanay",
+        "text": "Text",
+        "status": "Status",
+        "actions": "Mga aksyon"
+      },
+      "about": "{service} · {when}",
+      "showText": "Ipakita ang text",
+      "to": "Para sa {number}",
+      "retry": "Subukan ulit",
+      "retryFor": "Subukan ulit ang text para kay {name}",
+      "retried": "Naka-queue ulit. Ipapadala ito sa loob ng 5 minuto.",
+      "tooLate": "Huli na para ipadala: lumipas na ang oras ng bisita o nagbago ang appointment.",
+      "notFailed": "Hindi na ito bigong text.",
+      "count": "{count} text",
+      "countOne": "1 text",
+      "empty": "Walang text na tugma sa mga filter na ito.",
+      "emptyAll": "Wala pang text. Dito lalabas ang mga paalala at sagot sa mga hiling.",
+      "prev": "Nakaraan",
+      "next": "Susunod",
+      "page": "Pahina {page} ng {pages}"
+    },
+    "record": {
+      "empty": "Wala pang text para sa kanya.",
+      "title": "Mga text niya"
     }
   }
 }

@@ -1,5 +1,5 @@
 // Database types, written from the confirmed schema (inspect-schema.sql, 2026-10-26)
-// plus migrations 0001-0017. Update this file whenever a migration changes a table.
+// plus migrations 0001-0019. Update this file whenever a migration changes a table.
 
 type NullableKeys<T> = { [K in keyof T]: null extends T[K] ? K : never }[keyof T];
 
@@ -189,6 +189,33 @@ export type FollowUpRow = {
   created_at: string;
 };
 
+/** One text on the SMS log, with her name and the appointment (view sms_log_item, 0019). */
+export type SmsLogItemRow = {
+  reminder_id: number;
+  appointment_id: number;
+  reminder_type: ReminderType;
+  recipient_number: string;
+  sent_to: string | null;
+  message_text: string;
+  delivery_status: SmsDeliveryStatus;
+  status_reason: string | null;
+  attempt_count: number;
+  scheduled_at: string;
+  next_attempt_at: string | null;
+  sent_at: string | null;
+  delivered_at: string | null;
+  /** When it went out, else when it is next due, else when it was first due. */
+  shown_at: string;
+  appointment_status: AppointmentStatus;
+  /** The visit's time, or the time she asked for while it is a request. */
+  visit_at: string;
+  service: string;
+  mother_id: number;
+  first_name: string;
+  middle_name: string | null;
+  last_name: string;
+};
+
 /** One Missed appointment on the follow-up list (view follow_up_item, 0015). */
 export type FollowUpItemRow = {
   appointment_id: number;
@@ -295,6 +322,7 @@ export type Database = {
     };
     Views: {
       follow_up_item: { Row: FollowUpItemRow; Relationships: [] };
+      sms_log_item: { Row: SmsLogItemRow; Relationships: [] };
     };
     Functions: {
       current_user_role: { Args: never; Returns: string | null };

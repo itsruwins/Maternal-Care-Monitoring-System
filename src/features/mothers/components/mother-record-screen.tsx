@@ -3,7 +3,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
   CaretLeftIcon,
-  ComingSoonIcon,
   LocationIcon,
   PhoneIcon,
   PregnancyIcon,
@@ -14,6 +13,7 @@ import { IconCircle } from "@/components/ui/icon-circle";
 import { StatusBadge } from "@/features/accounts/components/badges";
 import { MotherAppointmentsPanel } from "@/features/appointments/components/mother-appointments-panel";
 import { MotherFollowUpsPanel } from "@/features/follow-ups/components/mother-follow-ups-panel";
+import { MotherSmsPanel } from "@/features/sms/components/mother-sms-panel";
 import { countOpenFollowUps } from "@/features/follow-ups/queries/follow-ups";
 import { MotherVisitsPanel } from "@/features/visits/components/mother-visits-panel";
 import type { Locale } from "@/i18n/config";
@@ -44,8 +44,6 @@ export const RECORD_TABS = [
   "sms",
 ] as const;
 export type RecordTab = (typeof RECORD_TABS)[number];
-// Tabs whose content comes in a later phase.
-const LATER: Partial<Record<RecordTab, number>> = { sms: 7 };
 
 // /staff/mothers/[motherId]?tab=…: one mother's record. Reads the session:
 // render inside <Suspense>.
@@ -104,6 +102,11 @@ export async function MotherRecordScreen({
           />
         ) : null
       }
+      sms={
+        tab === "sms" ? (
+          <MotherSmsPanel motherId={mother.id} isAdmin={user.role === "ADMIN"} />
+        ) : null
+      }
     />
   );
 }
@@ -120,6 +123,7 @@ export function MotherRecordView({
   appointments,
   visits,
   followUps,
+  sms,
 }: {
   t: Dictionary;
   locale: Locale;
@@ -135,6 +139,8 @@ export function MotherRecordView({
   visits?: ReactNode;
   /** The Follow-ups tab's content (from the follow-ups feature). */
   followUps?: ReactNode;
+  /** The SMS log tab's content (from the sms feature). */
+  sms?: ReactNode;
 }) {
   const r = t.mothers.record;
   const name = [mother.firstName, mother.middleName, mother.lastName]
@@ -269,14 +275,7 @@ export function MotherRecordView({
 
       {tab === "followUps" && followUps}
 
-      {LATER[tab] && (
-        <section className="flex flex-col items-center gap-3 rounded-3xl bg-white px-6 py-12 text-center shadow-[var(--shadow-soft)]">
-          <IconCircle icon={ComingSoonIcon} tone="beige" size="lg" />
-          <p className="max-w-[40ch] text-ink-soft">
-            {format(r.comingSoon, { tab: r.tabs[tab], phase: LATER[tab]! })}
-          </p>
-        </section>
-      )}
+      {tab === "sms" && sms}
     </div>
   );
 }

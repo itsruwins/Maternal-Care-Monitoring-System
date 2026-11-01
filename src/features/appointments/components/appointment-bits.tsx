@@ -27,20 +27,27 @@ export function StatusChip({ t, status }: { t: Dictionary; status: AppointmentSt
   );
 }
 
-/** "Reminder queued for Wed, Nov 4 · 8:00 AM" (confirmed visits only). */
+/** "Reminder queued for Wed, Nov 4 · 8:00 AM", "…trying again …", "No reminder needed: …" (confirmed visits only). */
 export function ReminderLine({ t, locale, appointment }: { t: Dictionary; locale: Locale; appointment: StaffAppointment }) {
   const r = t.appointments.reminder;
   const reminder = appointment.reminder;
   if (appointment.status !== "CONFIRMED" && !reminder) return null;
+  const retrying = reminder?.status === "PENDING" && reminder.retryAt !== null;
   const text = !reminder
     ? r.none
-    : reminder.status === "PENDING"
-      ? format(r.PENDING, { when: formatSlot(reminder.at, locale, "short") })
-      : reminder.status === "FAILED"
-        ? r.FAILED
-        : format(r[reminder.status], { when: formatSlot(reminder.sentAt ?? reminder.at, locale, "short") });
+    : retrying
+      ? format(r.retrying, { when: formatSlot(reminder.retryAt!, locale, "short") })
+      : reminder.status === "PENDING"
+        ? format(r.PENDING, { when: formatSlot(reminder.at, locale, "short") })
+        : reminder.status === "FAILED"
+          ? r.FAILED
+          : reminder.status === "SKIPPED"
+            ? reminder.reason === "covered_by_answer"
+              ? r.covered
+              : r.SKIPPED
+            : format(r[reminder.status], { when: formatSlot(reminder.sentAt ?? reminder.at, locale, "short") });
   return (
-    <p className={cn("flex items-center gap-1.5 text-sm", reminder?.status === "FAILED" ? "text-rose-deep" : "text-ink-soft")}>
+    <p className={cn("flex items-center gap-1.5 text-sm", reminder?.status === "FAILED" || retrying ? "text-rose-deep" : "text-ink-soft")}>
       <ReminderIcon aria-hidden className="size-4 shrink-0" />
       {text}
     </p>

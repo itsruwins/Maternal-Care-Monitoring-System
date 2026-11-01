@@ -22,6 +22,7 @@ Run these in **Supabase Dashboard → SQL Editor**, in order. Each file is safe 
 | 16 | `supabase/migrations/0016_phase7.sql` | Phase 7: turns on pg_net; SMS settings (Test / Live, starts in Test; the test number; phone and plan status), admins only; each text gets tries, next try, where it went, delivery and check times, a reason code, and the new status Skipped; staff can no longer add or change texts directly (`retry_sms()` for admins); `claim_due_sms()` for the server sender (sending hours, too-late texts Skipped, at most 20 per run); new wording ("sa health center", "-Brgy. Taysan Health Center") in plain characters, also for texts still waiting; waiting texts follow a changed mobile number; the `send-sms` job every 5 minutes, 8:00 AM–7:55 PM Manila |
 | 17 | `supabase/migrations/0017_phase7_live.sql` | Phase 7 step 3: no test mode (texts always go to her number, inside sending hours; `sms_setting` keeps only the phone and plan status; the `sms_mode` type is removed); three new text types for staff answers to her request (confirmed, new time proposed, declined), with their too-late rules; a visit reminder due the same day as her Confirmed text is saved as Skipped |
 | 18 | `supabase/migrations/0018_sms_any_time.sql` | Phase 7: no sending hours (a due text goes on the next run, day or night); a reminder due the same day as her Confirmed text is Skipped; the `send-sms` job every 5 minutes, all day |
+| 19 | `supabase/migrations/0019_sms_log.sql` | Phase 7 step 4: the `sms_log_item` view (each text with her name, the service and the appointment; staff read all, a mother her own) for the SMS log and her record's SMS log tab, and an index for newest first. Changes no data |
 | — | `supabase/seed/first-admin.sql` | First admin (follow the steps at the top of the file) |
 
 ## Rules
@@ -41,15 +42,15 @@ The job **mark-missed-appointments** runs every day at 10:00 UTC (6:00 PM Manila
 
 The job **send-sms** runs every 5 minutes, all day (from 0018; 0016 ran it 8:00 AM–7:55 PM Manila only). It calls `public.call_sms_sender()`, which posts to the sender address with `Authorization: Bearer <cron_secret>`. **Until both Vault secrets exist it does nothing**, so no text is sent.
 
-**Vault secrets (Phase 7 step 5).** Run these in the SQL Editor with your own values in place of the placeholders. Never put the values in a file or a migration, and don't save the query as a snippet.
+**Vault secrets (Phase 7 step 6; set 2026-11-01 for the Vercel address).** Run these in the SQL Editor with your own values in place of the placeholders. Never put the values in a file or a migration, and don't save the query as a snippet.
 
 ```sql
-select vault.create_secret('https://<your-tunnel>.trycloudflare.com/api/cron/send-sms', 'sms_sender_url', 'Address the send-sms job calls');
+select vault.create_secret('https://<your-app>.vercel.app/api/cron/send-sms', 'sms_sender_url', 'Address the send-sms job calls');
 select vault.create_secret('<the same value as CRON_SECRET in .env.local>', 'cron_secret', 'Bearer token for the send-sms job');
 ```
 
 - Change the address later: `select vault.update_secret((select id from vault.secrets where name = 'sms_sender_url'), '<new address>');`
-- Make the job quiet again (e.g. after the tunnel test): `delete from vault.secrets where name = 'sms_sender_url';`
+- Stop automatic sending (e.g. if the SMS phone or plan has a problem): `delete from vault.secrets where name = 'sms_sender_url';`
 - See which names exist (no values): `select name, created_at, updated_at from vault.secrets order by name;`
 
 **The job:**
@@ -177,6 +178,27 @@ select 4, 'claim_due_sms: app / server',
        has_function_privilege('authenticated', 'public.claim_due_sms()', 'execute')::text || ' / '
          || has_function_privilege('service_role', 'public.claim_due_sms()', 'execute')::text,
        'false / true'
+order by n;
+```
+
+## 0019 check query (after running it)
+
+```sql
+select 1 as n, 'view exists, runs as the reader' as check_name,
+       (select coalesce(array_to_string(reloptions, ','), '') from pg_class where relname = 'sms_log_item') as result,
+       'security_invoker=true' as expected
+union all
+select 2, 'app users can read it',
+       has_table_privilege('authenticated', 'public.sms_log_item', 'SELECT')::text, 'true'
+union all
+select 3, 'anon can read it',
+       has_table_privilege('anon', 'public.sms_log_item', 'SELECT')::text, 'false'
+union all
+select 4, 'rows in the view = texts',
+       ((select count(*) from public.sms_log_item) = (select count(*) from public.sms_reminder))::text, 'true'
+union all
+select 5, 'newest-first index',
+       exists (select 1 from pg_indexes where indexname = 'sms_reminder_shown_at')::text, 'true'
 order by n;
 ```
 

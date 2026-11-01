@@ -21,16 +21,16 @@ type Row = {
   } | null;
 };
 
-/** Rows → appointments, with each one's latest upcoming-visit reminder. */
+/** Rows → appointments, with each one's latest upcoming-visit reminder (the newest one queued). */
 export async function toAppointments(supabase: Client, rows: Row[]): Promise<StaffAppointment[]> {
   const ids = rows.map((row) => row.appointment_id);
   const { data: reminders } = ids.length
     ? await supabase
         .from("sms_reminder")
-        .select("appointment_id, delivery_status, scheduled_at, sent_at")
+        .select("appointment_id, delivery_status, scheduled_at, sent_at, next_attempt_at, status_reason")
         .eq("reminder_type", "UPCOMING")
         .in("appointment_id", ids)
-        .order("scheduled_at", { ascending: false })
+        .order("reminder_id", { ascending: false })
     : { data: [] };
   const latest = new Map<number, NonNullable<typeof reminders>[number]>();
   for (const reminder of reminders ?? []) if (!latest.has(reminder.appointment_id)) latest.set(reminder.appointment_id, reminder);
@@ -53,7 +53,15 @@ export async function toAppointments(supabase: Client, rows: Row[]): Promise<Sta
         contactNumber: mother?.contact_number ?? "",
         hasLogin: Boolean(mother?.user_id),
       },
-      reminder: reminder ? { status: reminder.delivery_status, at: reminder.scheduled_at, sentAt: reminder.sent_at } : null,
+      reminder: reminder
+        ? {
+            status: reminder.delivery_status,
+            at: reminder.scheduled_at,
+            sentAt: reminder.sent_at,
+            retryAt: reminder.next_attempt_at,
+            reason: reminder.status_reason,
+          }
+        : null,
     };
   });
 }

@@ -719,7 +719,6 @@
         "followUps": "Follow-ups"
       },
       "tabsLabel": "Her record",
-      "comingSoon": "{tab} will be here in Phase {phase}.",
       "age": "{age} years old",
       "registeredBy": "Registered by {name} on {date}",
       "registeredOn": "Registered at the health center on {date}",
@@ -1027,7 +1026,9 @@
       "DELIVERED": "Reminder delivered {when}",
       "FAILED": "Reminder failed to send",
       "SKIPPED": "Reminder not sent: no longer needed",
-      "none": "No reminder"
+      "none": "No reminder",
+      "retrying": "Reminder failed, trying again {when}",
+      "covered": "No reminder needed: her Confirmed text gave the time"
     },
     "propose": {
       "title": "Offer another time",
@@ -1472,7 +1473,7 @@
     "title": "SMS log",
     "intro": "Visit reminders, missed-visit notices and answers to appointment requests, sent to mothers through HTTPSMS.",
     "send": {
-      "title": "Send",
+      "title": "Automatic sending",
       "intro": "The schedule sends every 5 minutes, day and night. Send now runs it right away.",
       "now": "Send now",
       "sending": "Sending…",
@@ -1492,6 +1493,99 @@
       "auth": "HTTPSMS refused the API key. Check HTTPSMS_API_KEY.",
       "config": "HTTPSMS isn't set up on the server (HTTPSMS_API_KEY, HTTPSMS_FROM_NUMBER).",
       "generic": "Something went wrong. Please try again."
+    },
+    "log": {
+      "countsLabel": "Texts at a glance",
+      "counts": {
+        "waiting": "Waiting",
+        "sentToday": "Sent today",
+        "failed": "Failed"
+      },
+      "search": {
+        "label": "Find a mother",
+        "placeholder": "Name or mobile number",
+        "filters": "Filters",
+        "status": "Status",
+        "anyStatus": "Any status",
+        "type": "Type",
+        "anyType": "Any type",
+        "from": "From",
+        "to": "To",
+        "submit": "Search",
+        "clear": "Clear"
+      },
+      "statusFilter": {
+        "waiting": "Waiting",
+        "sent": "Sent or delivered",
+        "delivered": "Delivered",
+        "failed": "Failed",
+        "skipped": "Not sent"
+      },
+      "typeFilter": {
+        "reminder": "Visit reminders",
+        "missed": "Missed-visit notices",
+        "answer": "Request answers"
+      },
+      "types": {
+        "UPCOMING": "Visit reminder",
+        "MISSED_NOTICE": "Missed-visit notice",
+        "REQUEST_CONFIRMED": "Request confirmed",
+        "REQUEST_NEW_TIME": "New time proposed",
+        "REQUEST_DECLINED": "Request declined"
+      },
+      "statuses": {
+        "PENDING": "Waiting",
+        "retrying": "Trying again",
+        "SENT": "Sent",
+        "DELIVERED": "Delivered",
+        "FAILED": "Failed",
+        "SKIPPED": "Not sent"
+      },
+      "when": {
+        "PENDING": "Goes out {when}",
+        "retrying": "Next try {when}",
+        "SENT": "Sent {when}"
+      },
+      "reasons": {
+        "visit_passed": "The visit time had passed",
+        "visit_changed": "The appointment changed",
+        "notice_late": "Too late for a missed-visit notice",
+        "follow_up_closed": "Her follow-up was already sorted out",
+        "answer_late": "Too late to send the answer",
+        "covered_by_answer": "Her Confirmed text already gave the time",
+        "too_long": "The text is too long (over 2 SMS)",
+        "bad_characters": "The text has characters SMS can't send",
+        "bad_number": "Her mobile number can't be used",
+        "rejected": "HTTPSMS refused the text",
+        "send_error": "HTTPSMS couldn't be reached",
+        "send_failed": "The SMS phone couldn't send it",
+        "phone_offline": "The SMS phone was offline"
+      },
+      "columns": {
+        "mother": "Mother",
+        "text": "Text",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "about": "{service} · {when}",
+      "showText": "Show text",
+      "to": "To {number}",
+      "retry": "Retry",
+      "retryFor": "Retry the text to {name}",
+      "retried": "Queued again. It goes out within 5 minutes.",
+      "tooLate": "Too late to send: the visit time has passed or the appointment changed.",
+      "notFailed": "This text isn't failed anymore.",
+      "count": "{count} texts",
+      "countOne": "1 text",
+      "empty": "No texts match these filters.",
+      "emptyAll": "No texts yet. Reminders and answers to requests will show here.",
+      "prev": "Previous",
+      "next": "Next",
+      "page": "Page {page} of {pages}"
+    },
+    "record": {
+      "empty": "No texts for her yet.",
+      "title": "Her texts"
     }
   }
 }

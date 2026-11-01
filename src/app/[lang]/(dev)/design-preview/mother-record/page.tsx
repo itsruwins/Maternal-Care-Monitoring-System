@@ -5,10 +5,12 @@ import type { MotherRecord } from "@/features/mothers/types";
 import { StaffShell } from "@/features/shell/components/staff-shell";
 import { MotherAppointmentsPanelView } from "@/features/appointments/components/mother-appointments-panel";
 import { MotherFollowUpsPanelView } from "@/features/follow-ups/components/mother-follow-ups-panel";
+import { MotherSmsPanelView } from "@/features/sms/components/mother-sms-panel";
 import type { FollowUpItem } from "@/features/follow-ups/types";
 import { MotherVisitsPanelView } from "@/features/visits/components/mother-visits-panel";
 import { getServerI18n } from "@/i18n/server";
 import { SAMPLE_CLOSED, SAMPLE_OPEN, SAMPLE_TODAY } from "../follow-ups/sample";
+import { SAMPLE_SMS } from "../sms/sample";
 import { SAMPLE_APPOINTMENTS, SAMPLE_SLOTS } from "../staff-appointments/sample";
 import { dueDateFromLmp } from "@/lib/utils/pregnancy";
 
@@ -43,7 +45,7 @@ const HER_FOLLOW_UPS: FollowUpItem[] = [SAMPLE_OPEN[2], SAMPLE_OPEN[0], SAMPLE_C
 }));
 
 // Development only (preview): a mother's record with sample data (?tab=, ?login=none, ?current=none, ?lmp=YYYY-MM-DD,
-// ?admin=1 (Delete on follow-ups), ?followUps=none).
+// ?admin=1 (Delete on follow-ups, Retry on texts), ?followUps=none, ?sms=none).
 export default function MotherRecordPreview({ searchParams }: PageProps<"/[lang]/design-preview/mother-record">) {
   if (process.env.NODE_ENV === "production") notFound();
   return (
@@ -95,6 +97,7 @@ async function Preview({ searchParams }: { searchParams: Promise<Record<string, 
             isAdmin={isAdmin}
           />
         }
+        sms={<MotherSmsPanelView t={t} locale={locale} items={query.sms === "none" ? [] : SAMPLE_SMS} canRetry={isAdmin} />}
         visits={
           <MotherVisitsPanelView
             t={t}

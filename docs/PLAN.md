@@ -750,7 +750,7 @@ Sample missed-visit SMS (157 characters, one SMS; the longest service name with 
 
 | Topic | Decision |
 |---|---|
-| Testing while building | An admin **Send now** button runs the same sender on your laptop. Every run also asks HTTPSMS about texts it already took, so sending and delivery can be tested without a public address. At the end, **one test of the real schedule and the delivery webhook through a temporary Cloudflare tunnel** (`cloudflared`, installed only with your OK). |
+| Testing while building | An admin **Send now** button runs the same sender on your laptop. Every run also asks HTTPSMS about texts it already took, so sending and delivery can be tested without a public address. **Changed 2026-11-01:** instead of a tunnel test, the app was **deployed to Vercel** and its address put in Vault, so the real schedule runs from then on (step 6). |
 | Schedule | `pg_cron` + `pg_net` call the sender **every 5 minutes, day and night** (from `0018`; before that, during sending hours) with `CRON_SECRET`. The sender's address and `CRON_SECRET` are kept in **Supabase Vault** (you add them in the SQL Editor; never in a migration file). Without an address the job does nothing. |
 | No test mode (changed 2026-11-01) | **Texts always go to her number.** The Test / Live switch, the test number and "Send a test SMS" built in step 2 are removed (migration `0017`). Before that change goes in, you check the waiting texts and the demo ones are marked Skipped, so no made-up number gets a text. There is no pause switch: to stop the schedule, remove the Vault sender address. |
 | Sending hours (changed 2026-11-01) | **None: a due text goes on the next run, day or night** (`0018`). Reminders are still queued for 8:00 AM N days before and missed-visit notices for 8:00 AM the next morning, so night texts are only retries, late bookings, request answers given at night and Send now. |
@@ -811,7 +811,7 @@ Sample request answers (one SMS each with this service name; a longer name may m
    - `POST /api/webhooks/httpsms`: checks the token; sent, delivered, failed and expired update the text; phone offline / online update the status line on `/admin/sms`; texts it doesn't know are ignored. Tested locally with a hand-signed call (the key is read from `.env.local`, never printed).
    - **Her confirmed visit card:** "Text reminder on … to …", then "Reminder sent …".
    - **Landing page:** the SMS fact says Taglish. (Its sample text bubbles are written in each page's language; whether they switch to the real Taglish wording is your call at this step.)
-6. **Live test through a tunnel (with your OK):** install `cloudflared` and open a temporary tunnel to your dev server. You put its address in Vault (sender) and in HTTPSMS → Settings → Webhooks (with the signing key; events: sent, delivered, failed, expired, phone offline / online). We watch a scheduled run send a text due to a record with your own number (for example a request you answer for a test mother using your phone) and the webhook mark it Delivered, then remove the tunnel address again, so the job stays quiet until the app is deployed.
+6. **Live on Vercel (changed 2026-11-01, replaces the tunnel test):** the app is deployed to `taysanmaternacare.vercel.app` with the `.env.local` values plus `NEXT_PUBLIC_SITE_URL` as Vercel environment variables; the Supabase Auth site and redirect URLs point there; the Vault secrets `sms_sender_url` (`…/api/cron/send-sms`) and `cron_secret` are set, so the schedule sends with nobody clicking anything. After step 5 is pushed and deployed: HTTPSMS → Settings → Webhooks gets `https://taysanmaternacare.vercel.app/api/webhooks/httpsms` with the signing key (events: sent, delivered, failed, expired, phone offline / online), and we watch a text be marked Delivered by the webhook. New code reaches the live site only when you commit and push.
 7. **Review:** screenshots, contrast and accessibility checks, an independent design review, fixes, then `DESIGN.md` updated by the documenter. Review screenshots deleted afterwards. Then your testing and sign-off.
 
 **Needs from you:**
@@ -819,7 +819,7 @@ Sample request answers (one SMS each with this service name; a longer name may m
 - In `.env.local` (then restart the dev server): `HTTPSMS_API_KEY`, `HTTPSMS_FROM_NUMBER` (the phone's number as `+639…`), and two long random strings you make up: `CRON_SECRET` and `HTTPSMS_WEBHOOK_SIGNING_KEY` (the signing key is also typed into HTTPSMS in step 5).
 - Run `0016_phase7.sql`. If it can't turn on pg_net, enable it in Supabase → Database → Extensions first, then run the file again.
 - For step 3: the waiting-texts check, telling me which texts are demo ones.
-- For step 6: two Vault secrets, with the lines I'll give you.
+- For step 6: the Vercel deploy and the two Vault secrets (done 2026-11-01); after step 5, the HTTPSMS webhook form.
 
 **Not in Phase 7:** texts when staff cancel or move a confirmed visit (staff call her, as today; answers to her request do get a text), and mothers' replies in the app (they stay on the SMS phone).
 
@@ -839,6 +839,15 @@ Sample request answers (one SMS each with this service name; a longer name may m
 - **Request answers:** `REQUEST_CONFIRMED`, `REQUEST_NEW_TIME`, `REQUEST_DECLINED`, queued only when staff answer a waiting request; dropped if the appointment changes again before they go, Skipped when more than 1 day late (`answer_late`), when the time passed or when the appointment no longer matches. A reminder due the same day as the Confirmed text is saved Skipped (`covered_by_answer`).
 - **Then, the same day: no sending hours** (your choice): migration `0018_sms_any_time.sql`, run and checked by you (4 checks as expected), takes due texts at any hour and runs `send-sms` every 5 minutes all day (`*/5 * * * *`).
 
+**Step 6 done early (2026-11-01):** the app is live at `taysanmaternacare.vercel.app` (pushed as `cbd50b5`). Checked: the sender answers 401 without the secret and 405 for GET, preview pages are hidden; after you added both Vault secrets, the `send-sms` job got **200** every 5 minutes. Jennilyn's reminder #3 was Delivered (sent with Send now at 10:53 PM, 2nd try); reminder #2 (Nov 2, 8:00 AM) is the first fully automatic text. The HTTPSMS webhook waits for step 5.
+
+**Step 4 built (2026-11-01):** migration `0019_sms_log.sql`, run and checked by you (5 checks as expected), and approved by you.
+- **View `sms_log_item`** (runs as the reader: staff see every text, a mother her own): each text with her name, the service and the appointment; `shown_at` = when it went out, else when it is next due.
+- **`/admin/sms`:** the Send card became an "Automatic sending" bar (schedule, phone status, Send now); counts **Waiting / Sent today / Failed** that filter the list (tapping the one in use shows all); filters for name or number, status, type (visit reminders, missed-visit notices, request answers) and date range; all texts newest first, 20 per page, a table from 1280px and cards below; **Show text** opens the full message; **Retry** on failed texts at once, no confirm step (your choices).
+- **Her record → SMS log tab:** her texts as cards, newest first; Retry for admins (health workers see the tab without it).
+- **Staff appointment cards:** reminder line only (your choice), now also "trying again …" and "No reminder needed: her Confirmed text gave the time"; the card shows the newest reminder queued.
+- English and Filipino; previews `/design-preview/sms` and `/design-preview/mother-record?tab=sms&admin=1`.
+
 ## Phase 8 — Dashboards & reports
 
 - **Staff dashboard:** today's appointments, pending requests, missed needing follow-up, active pregnancies, mothers due within 30 days.
@@ -849,7 +858,7 @@ Sample request answers (one SMS each with this service name; a longer name may m
 
 - **Security:** RLS test per role, input validation, re-check login protection, security review.
 - **Quality:** accessibility pass (contrast, keyboard, screen reader), performance pass, testing on real phones.
-- **Deploy:** Vercel, environment variables, Supabase backups.
+- **Deploy:** Vercel and its environment variables were set up in Phase 7 (step 6); here: Supabase backups and a final check of the live settings.
 - **Hand-off:** demo seed data for the defense, short user guides per role, and support for the usability / reliability / maintainability evaluation.
 
 ---

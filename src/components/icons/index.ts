@@ -34,6 +34,7 @@ export {
   DeviceMobileIcon as PhoneIcon,
   PhoneCallIcon as CallIcon,
   PaperPlaneTiltIcon as SendIcon,
+  ArrowClockwiseIcon as RetryIcon,
   DoorOpenIcon as HomeVisitIcon,
   MapPinIcon as LocationIcon,
   HospitalIcon as HealthCenterIcon,

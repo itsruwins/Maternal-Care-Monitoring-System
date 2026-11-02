@@ -25,3 +25,19 @@ export function bucketName(start: string, end: string, grouping: "week" | "month
   const formatter = new Intl.DateTimeFormat(intlLocale(locale), { timeZone: "UTC", month: "short", day: "numeric" });
   return start === end ? formatter.format(day(start)) : formatter.formatRange(day(start), day(end));
 }
+
+/** A record's day, with the year (a report can span two): "Nov 5, 2026", never broken. `iso` is a date or an instant (shown in Manila time). */
+export function formatReportDay(iso: string, locale: Locale): string {
+  const options: Intl.DateTimeFormatOptions = { month: "short", day: "numeric", year: "numeric" };
+  const text = /^\d{4}-\d{2}-\d{2}$/.test(iso)
+    ? new Intl.DateTimeFormat(intlLocale(locale), { ...options, timeZone: "UTC" }).format(day(iso))
+    : new Intl.DateTimeFormat(intlLocale(locale), { ...options, timeZone: "Asia/Manila" }).format(new Date(iso));
+  return text.replace(/ /g, "\u00a0");
+}
+
+/** "9:00 AM" in Manila time, never broken before AM/PM. */
+export function formatReportClock(iso: string, locale: Locale): string {
+  return new Intl.DateTimeFormat(intlLocale(locale), { timeZone: "Asia/Manila", hour: "numeric", minute: "2-digit" })
+    .format(new Date(iso))
+    .replace(/\s+(?=[AP]M\b)/gi, " ");
+}

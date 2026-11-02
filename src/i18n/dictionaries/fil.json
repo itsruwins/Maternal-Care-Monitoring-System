@@ -441,10 +441,20 @@
       "service": "Serbisyo",
       "allServices": "Lahat ng serbisyo",
       "submit": "Ipakita",
-      "clear": "I-clear"
+      "clear": "I-clear",
+      "show": "Aling pagbubuntis",
+      "allShows": "Lahat sa panahong ito",
+      "shows": {
+        "still": "Buntis pa",
+        "added": "Bagong nairehistro",
+        "closed": "Isinara sa panahong ito"
+      },
+      "status": "Status",
+      "allStatuses": "Lahat ng status",
+      "type": "Uri ng text",
+      "allTypes": "Lahat ng uri"
     },
     "showing": "Ipinapakita: {period}",
-    "comingSoon": "Ginagawa pa ang listahang ito sa susunod na hakbang.",
     "summary": {
       "tilesLabel": "Kabuuan sa panahong ito",
       "tiles": {
@@ -492,6 +502,50 @@
         "notSent": "Hindi na ipinadala",
         "waiting": "Naghihintay"
       }
+    },
+    "detail": {
+      "count": {
+        "pregnancies": "{count} pagbubuntis",
+        "pregnanciesOne": "1 pagbubuntis",
+        "visits": "{count} bisita",
+        "visitsOne": "1 bisita",
+        "appointments": "{count} appointment",
+        "appointmentsOne": "1 appointment",
+        "services": "{count} naibigay na serbisyo",
+        "servicesOne": "1 naibigay na serbisyo",
+        "sms": "{count} text",
+        "smsOne": "1 text"
+      },
+      "empty": "Walang tugma sa mga filter na ito sa panahong ito.",
+      "columns": {
+        "mother": "Nanay",
+        "purok": "Purok",
+        "registered": "Nairehistro",
+        "lmp": "LMP",
+        "due": "Kabuwanan",
+        "gp": "G / P",
+        "status": "Status",
+        "date": "Petsa",
+        "when": "Petsa at oras",
+        "week": "Linggo",
+        "bp": "BP",
+        "weight": "Timbang",
+        "services": "Mga serbisyo",
+        "kind": "Bisita",
+        "recordedBy": "Itinala ni",
+        "service": "Serbisyo",
+        "details": "Dosis o detalye",
+        "followUp": "Follow-up",
+        "text": "Text"
+      },
+      "stillPregnant": "Buntis pa",
+      "gp": "G{gravida} P{para}",
+      "asked": "Hiniling: {when}",
+      "booked": "May appointment",
+      "walkIn": "Walk-in",
+      "followUpOpen": "Bukas pa",
+      "weight": "{kg} kg",
+      "missing": "Wala pa"
     }
   },
   "newPassword": {

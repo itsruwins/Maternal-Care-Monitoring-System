@@ -2,7 +2,7 @@
 
 Barangay Taysan, Legazpi City · Next.js 16 + Supabase · Hosted on Vercel
 
-Status: **Phases 0–7 done (Phase 7 signed off 2026-11-02). Phase 8 — Dashboards & reports: plan approved 2026-11-02; step 1 (staff dashboard) done; next: step 2 (Reports page and Summary).** Each phase ends with a demo and your sign-off before the next starts.
+Status: **Phases 0–7 done (Phase 7 signed off 2026-11-02). Phase 8 — Dashboards & reports: plan approved 2026-11-02; steps 1 (staff dashboard) and 2 (Reports page and Summary) done; next: step 3 (detail tabs).** Each phase ends with a demo and your sign-off before the next starts.
 
 ---
 
@@ -948,6 +948,13 @@ Sample request answers (one SMS each with this service name; a longer name may m
 - **Admin section (admins only):** Accounts (mothers with and without a login, website sign-ups this month, health workers, admins, inactive logins; rows open their lists) and SMS health (the phone line, now shared with the SMS log; "Sent in {month}: N of 200" with a thin bar; delivered / failed / not sent this month; the monthly-limit notice; waiting and failed texts open the SMS log). The limit is `SMS_MONTHLY_LIMIT` in `src/config/sms.ts`.
 - **Layout:** lists, admin cards and five tiles in a row from 1280px; below that they stack and the tiles go three then two (at 1024px the sidebar leaves too little room for two columns).
 - The Phase 2 welcome card is removed. Dev preview: `/design-preview/staff-dashboard` (`?admin=1`, `&phone=online|offline`, `&limit=1`, `&full=1`, `?empty=1`, `?more=1`).
+
+**Step 2 built (2026-11-02):** the Reports page and its Summary (`/staff/reports`, feature `features/reports`), approved by you. No migration.
+- **Tabs:** Summary, Pregnancies, Visits, Appointments, Services, SMS (admins only; the server also turns a health worker's `?tab=sms` back to Summary). Period and purok carry over between tabs; the service only to Visits, Appointments and Services.
+- **Filter card** (a GET form, so filters live in the address): Period (This month, Last month, This year, Custom dates), From and To only while Custom dates is picked, Purok (with "No purok yet"), Service on the tabs that use it, Show and Clear. Two fields per row from 640px, one row from 1280px, wrapping when a field would get narrower than 192px (custom dates plus service). Under it: the tab's name and "Showing Nov 1 – 30, 2026".
+- **Summary:** four totals (pregnant in the period, completed visits, missed appointments in rose-deep above zero, services given), then cards two across from 1280px: Pregnancies (active, newly registered, closed and by outcome), Visits (completed, mothers seen, walk-ins, and a chart per week Monday to Sunday up to 3 months, per month beyond), Appointments (each status, by its time or the asked time while a request), Services given (ranked bars, every service including 0), and for admins Text messages (sent, delivered, failed, not sent, waiting) across both columns.
+- **Charts:** plain HTML/CSS columns and bars in chart green (no library), each count written on it, the dates on hover, and a "Show as table" disclosure instead of a table beside the chart.
+- The detail tabs show a short "being built in the next step" note until step 3. The "Coming in Phase N" screen and its text are removed. Dev preview: `/design-preview/reports` (`?admin=1`, `?empty=1`, plus the page's own `?tab=&period=&from=&to=`).
 
 ## Phase 9 — Hardening & launch
 

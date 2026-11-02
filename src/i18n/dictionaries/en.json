@@ -441,10 +441,20 @@
       "service": "Service",
       "allServices": "All services",
       "submit": "Show",
-      "clear": "Clear"
+      "clear": "Clear",
+      "show": "Which pregnancies",
+      "allShows": "All in the period",
+      "shows": {
+        "still": "Still pregnant",
+        "added": "Newly registered",
+        "closed": "Closed in the period"
+      },
+      "status": "Status",
+      "allStatuses": "All statuses",
+      "type": "Kind of text",
+      "allTypes": "All kinds"
     },
     "showing": "Showing {period}",
-    "comingSoon": "This list is being built in the next step.",
     "summary": {
       "tilesLabel": "Totals for the period",
       "tiles": {
@@ -492,6 +502,50 @@
         "notSent": "Not sent",
         "waiting": "Waiting"
       }
+    },
+    "detail": {
+      "count": {
+        "pregnancies": "{count} pregnancies",
+        "pregnanciesOne": "1 pregnancy",
+        "visits": "{count} visits",
+        "visitsOne": "1 visit",
+        "appointments": "{count} appointments",
+        "appointmentsOne": "1 appointment",
+        "services": "{count} services given",
+        "servicesOne": "1 service given",
+        "sms": "{count} texts",
+        "smsOne": "1 text"
+      },
+      "empty": "Nothing matches these filters in this period.",
+      "columns": {
+        "mother": "Mother",
+        "purok": "Purok",
+        "registered": "Registered",
+        "lmp": "LMP",
+        "due": "Due date",
+        "gp": "G / P",
+        "status": "Status",
+        "date": "Date",
+        "when": "Date and time",
+        "week": "Week",
+        "bp": "BP",
+        "weight": "Weight",
+        "services": "Services",
+        "kind": "Visit",
+        "recordedBy": "Recorded by",
+        "service": "Service",
+        "details": "Dose or details",
+        "followUp": "Follow-up",
+        "text": "Text"
+      },
+      "stillPregnant": "Still pregnant",
+      "gp": "G{gravida} P{para}",
+      "asked": "Asked for {when}",
+      "booked": "Appointment",
+      "walkIn": "Walk-in",
+      "followUpOpen": "Still open",
+      "weight": "{kg} kg",
+      "missing": "Not set"
     }
   },
   "newPassword": {

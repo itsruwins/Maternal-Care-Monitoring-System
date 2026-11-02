@@ -1,10 +1,15 @@
 import { addDays, daysBetween, parseISODate } from "@/lib/utils/pregnancy";
-import type { ReportFilters, ReportPeriod, ReportTab } from "./types";
+import type { AppointmentStatus } from "@/types/database";
+import type { PregnancyShow, ReportFilters, ReportPeriod, ReportTab, SmsStatusFilter, SmsTypeFilter } from "./types";
 
 export const REPORT_TABS: ReportTab[] = ["summary", "pregnancies", "visits", "appointments", "services", "sms"];
 export const REPORT_PERIODS: ReportPeriod[] = ["this-month", "last-month", "this-year", "custom"];
 /** Tabs that take the service filter. */
 export const SERVICE_TABS: ReadonlySet<ReportTab> = new Set(["visits", "appointments", "services"]);
+export const PREGNANCY_SHOWS: PregnancyShow[] = ["still", "added", "closed"];
+export const APPOINTMENT_STATUSES: AppointmentStatus[] = ["REQUESTED", "CONFIRMED", "RESCHEDULED", "COMPLETED", "MISSED", "CANCELLED"];
+export const SMS_STATUSES: SmsStatusFilter[] = ["waiting", "sent", "delivered", "failed", "skipped"];
+export const SMS_TYPES: SmsTypeFilter[] = ["reminder", "missed", "answer"];
 /** Up to this many days the visits chart counts by week; longer, by month. */
 export const WEEKLY_UP_TO_DAYS = 92;
 
@@ -45,6 +50,9 @@ export function parseReportFilters(
   const period = one("period") as ReportPeriod;
   const purok = one("purok");
   const service = one("service");
+  const show = one("show");
+  const status = one("status");
+  const type = one("type");
 
   let range: { from: string; to: string };
   let chosen: ReportPeriod = REPORT_PERIODS.includes(period) ? period : "this-month";
@@ -58,12 +66,18 @@ export function parseReportFilters(
     }
   } else range = presetRange(chosen, today);
 
+  const shownTab: ReportTab = REPORT_TABS.includes(tab) && (tab !== "sms" || viewer.isAdmin) ? tab : "summary";
+  // Show, status and type belong to one tab each; elsewhere they're dropped.
+  const statuses: readonly string[] = shownTab === "appointments" ? APPOINTMENT_STATUSES : shownTab === "sms" ? SMS_STATUSES : [];
   return {
-    tab: REPORT_TABS.includes(tab) && (tab !== "sms" || viewer.isAdmin) ? tab : "summary",
+    tab: shownTab,
     period: chosen,
     ...range,
     purok: purok === "none" ? "none" : /^[1-9]\d{0,9}$/.test(purok) ? Number(purok) : "",
-    service: /^[1-9]\d{0,9}$/.test(service) ? Number(service) : "",
+    service: SERVICE_TABS.has(shownTab) && /^[1-9]\d{0,9}$/.test(service) ? Number(service) : "",
+    show: shownTab === "pregnancies" && PREGNANCY_SHOWS.includes(show as PregnancyShow) ? (show as PregnancyShow) : "",
+    status: statuses.includes(status) ? (status as ReportFilters["status"]) : "",
+    type: shownTab === "sms" && SMS_TYPES.includes(type as SmsTypeFilter) ? (type as SmsTypeFilter) : "",
   };
 }
 

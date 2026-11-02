@@ -19,7 +19,7 @@ export function ReportTabs({ t, filters, isAdmin }: { t: Dictionary; filters: Re
           return (
             <li key={tab}>
               <Link
-                href={reportsHref(filters, { tab, service: SERVICE_TABS.has(tab) ? filters.service : "" })}
+                href={reportsHref(filters, { tab, service: SERVICE_TABS.has(tab) ? filters.service : "", show: "", status: "", type: "" })}
                 scroll={false}
                 aria-current={active ? "page" : undefined}
                 className={cn(

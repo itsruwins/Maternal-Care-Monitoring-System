@@ -205,7 +205,7 @@
       "addressLabel": "Address",
       "hoursLabel": "Araw at oras ng klinika",
       "contactLabel": "Numero ng telepono",
-      "photoAlt": "Ang Bulkang Mayon sa itaas ng luntiang palayan sa Albay"
+      "photoAlt": "Mga bubong at puno ng niyog ng Legazpi mula sa mga burol ng Taysan, kasama ang dagat at kabundukan sa malayo"
     },
     "tips": {
       "title": "Mga paalala para sa malusog na pagbubuntis",
@@ -238,7 +238,7 @@
       "account": "Iyong account",
       "privacy": "Ikaw at ang mga awtorisadong staff ng health center lamang ang makakakita ng iyong records.",
       "staff": "Staff ng health center: mag-log in gamit ang account na ibinigay ng admin.",
-      "credits": "Mga larawan: Justyn Abacajan at Ron Dichoso (Pexels). Ilustrasyon: Pixabay. Mga icon: Phosphor at Health Icons."
+      "credits": "Mga larawan: Justyn Abacajan (Pexels) at Dexter P. Baldon (Wikimedia Commons, CC BY-SA 4.0). Ilustrasyon: Pixabay. Mga icon: Phosphor at Health Icons."
     }
   },
   "register": {

@@ -6,7 +6,7 @@ import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
 
 
-// Our own health center: the Mayon view every Taysan mother knows, beside the
+// Our own health center: the view from Taysan's hill over Legazpi, beside the
 // center's details (a detail not yet provided shows "To be announced").
 export function HealthCenter({ t, locale }: { t: Dictionary; locale: Locale }) {
   const c = t.landing.center;
@@ -21,11 +21,11 @@ export function HealthCenter({ t, locale }: { t: Dictionary; locale: Locale }) {
       <div className="mx-auto grid max-w-6xl overflow-hidden rounded-[2rem] bg-white shadow-[var(--shadow-raised)] lg:grid-cols-2">
         <div className="relative min-h-60 sm:min-h-80">
           <Image
-            src="/photos/mayon-rice-fields.jpg"
+            src="/photos/taysan-view.jpg"
             alt={c.photoAlt}
             fill
             sizes="(min-width: 1024px) 576px, 100vw"
-            className="object-cover object-[50%_42%]"
+            className="object-cover object-[45%_50%]"
           />
         </div>
 

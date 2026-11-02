@@ -4,7 +4,7 @@
 |---|---|---|---|
 | `public/brand/seal-*.png`, `apple-touch-icon.png` | `Files/Logo.jpg` (official Barangay 56 Taysan seal, provided by client), resized | — | Client-provided |
 | `public/photos/mother-smiling.jpg` | https://www.pexels.com/photo/smiling-pregnant-woman-in-outdoor-setting-30871380/ (Cebu City) | Justyn Abacajan | Pexels License (free, attribution not required) |
-| `public/photos/mayon-rice-fields.jpg` | https://www.pexels.com/photo/volcano-mayon-volcano-7963220/ (Daraga, Albay) | Ron Dichoso | Pexels License (free, attribution not required) |
+| `public/photos/taysan-view.jpg` | https://commons.wikimedia.org/wiki/File:Legazpi_City_view_from_Taysan.jpg ("Legazpi City view from Taysan", 2013), resized to 1600px | Dexter P. Baldon (Dexbaldon) | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/): credit required (footer credits line); a changed version stays CC BY-SA 4.0. Replaced the Pexels Mayon photo on 2026-11-02 |
 
 
 ## Illustrations and icons

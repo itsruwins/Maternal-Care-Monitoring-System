@@ -1,5 +1,6 @@
 "use server";
 
+import { sendSoon } from "@/features/sms/server/send-soon";
 import { isSlotTime, slotErrorOf, slotInstant } from "@/lib/appointments/slots";
 import { AREA_ROLES } from "@/lib/auth/roles";
 import { requireRole } from "@/lib/auth/session";
@@ -8,7 +9,8 @@ import { parseISODate } from "@/lib/utils/pregnancy";
 import type { ActionResult } from "../types";
 
 // Staff appointment actions. The database checks the slot rules and keeps the
-// SMS reminder queue in step (migration 0009).
+// SMS reminder queue in step (migration 0009); the text her answer or change
+// queues is sent right away (sendSoon), not on the next 5-minute run.
 
 type Client = Awaited<ReturnType<typeof createClient>>;
 
@@ -47,7 +49,9 @@ export async function confirmRequest(id: number): Promise<ActionResult> {
     .eq("status", "REQUESTED")
     .select("appointment_id");
   if (error) return { ok: false, error: slotErrorOf(error) };
-  return data?.length ? { ok: true, status: "CONFIRMED" } : { ok: false, error: "not_found" };
+  if (!data?.length) return { ok: false, error: "not_found" };
+  sendSoon();
+  return { ok: true, status: "CONFIRMED" };
 }
 
 /**
@@ -74,7 +78,9 @@ export async function proposeNewTime(id: number, input: { date: string; time: st
     .eq("status", appointment.status)
     .select("appointment_id");
   if (error) return { ok: false, error: slotErrorOf(error) };
-  return data?.length ? { ok: true, status } : { ok: false, error: "not_found" };
+  if (!data?.length) return { ok: false, error: "not_found" };
+  sendSoon();
+  return { ok: true, status };
 }
 
 export async function cancelAppointment(id: number, remark: string): Promise<ActionResult> {
@@ -90,7 +96,9 @@ export async function cancelAppointment(id: number, remark: string): Promise<Act
     .eq("status", appointment.status)
     .select("appointment_id");
   if (error) return { ok: false, error: slotErrorOf(error) };
-  return data?.length ? { ok: true, status: "CANCELLED" } : { ok: false, error: "not_found" };
+  if (!data?.length) return { ok: false, error: "not_found" };
+  sendSoon();
+  return { ok: true, status: "CANCELLED" };
 }
 
 /** Book directly for a mother's current pregnancy (starts CONFIRMED). */

@@ -6,7 +6,8 @@ import type { RunSummary } from "../types";
 import { getMessageStatus, httpsmsConfig, sendSms, type HttpsmsConfig } from "./httpsms";
 import { applyNews, finish, retryOrFail, type Admin, type TextNews } from "./save-result";
 
-// One sender run, used by the schedule (/api/cron/send-sms) and by Send now:
+// One sender run, used by the schedule (/api/cron/send-sms), by Send now, and
+// right after a staff answer or visit change (sendSoon, without step 3):
 // 1. Take the due texts (claim_due_sms: at most 20, too-late ones Skipped),
 //    each to her number.
 // 2. Sent with HTTPSMS's message id, or Failed with the reason. Network or
@@ -23,7 +24,7 @@ const CHECK_WINDOW_MS = 24 * 60 * 60_000;
 const CHECKS_PER_RUN = 20;
 
 
-export async function runSender(): Promise<RunSummary> {
+export async function runSender({ checkStatus = true }: { checkStatus?: boolean } = {}): Promise<RunSummary> {
   const summary: RunSummary = { sent: 0, retrying: 0, failed: 0, checked: 0, delivered: 0, stopped: null };
   const config = httpsmsConfig();
   if (!config) return { ...summary, stopped: "config" };
@@ -87,7 +88,7 @@ export async function runSender(): Promise<RunSummary> {
     }
   }
 
-  if (summary.stopped !== "auth") await checkSentTexts(admin, config, summary);
+  if (checkStatus && summary.stopped !== "auth") await checkSentTexts(admin, config, summary);
   return summary;
 }
 

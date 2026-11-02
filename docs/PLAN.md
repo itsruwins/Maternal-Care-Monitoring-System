@@ -863,6 +863,8 @@ Sample request answers (one SMS each with this service name; a longer name may m
 - **No cancel text** when her pregnancy is closed (that cancels her open visits) or when the visit time has passed; her own cancel, accept or decline sends none, as before.
 - Too-late rules as for request answers. SMS log: the two new types, the "Request answers" filter becomes "Answers and changes"; English and Filipino; previews.
 
+**Instant sending (2026-11-02, your choice):** when staff approve, decline, propose a new time, move or cancel, the app runs the sender right after saving (`sendSoon`, using Next's `after()`, so the staff screen isn't slowed), and the text goes within seconds. The 5-minute `send-sms` job stays for visit reminders (8:00 AM), missed-visit notices, retries and delivery checks, and picks up anything an instant send couldn't. Both take texts the same locked way, so a text is never sent twice. No migration.
+
 ## Phase 8 — Dashboards & reports
 
 - **Staff dashboard:** today's appointments, pending requests, missed needing follow-up, active pregnancies, mothers due within 30 days.

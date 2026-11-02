@@ -2,7 +2,7 @@
 
 Barangay Taysan, Legazpi City · Next.js 16 + Supabase · Hosted on Vercel
 
-Status: **Phase 0 approved. Phase 1 built (2026-10-26). Redesign (Phase 1R, Flo-inspired): built and reviewed 2026-10-27 (finish review: all fixes resolved; DESIGN.md rewritten). Waiting for your testing and sign-off.** Each phase ends with a demo and your sign-off before the next starts.
+Status: **Phases 0–7 done (Phase 7 signed off 2026-11-02). Next: Phase 8 — Dashboards & reports.** Each phase ends with a demo and your sign-off before the next starts.
 
 ---
 
@@ -878,6 +878,8 @@ Sample request answers (one SMS each with this service name; a longer name may m
 - Admins get "See in SMS log" on a failed reminder; the SMS count tiles are tappable.
 
 `DESIGN.md` was updated with the SMS log, chip outline, reminder line and header rules.
+
+**Phase 7 signed off (2026-11-02):** you tested the review fixes on the live screens.
 
 ## Phase 8 — Dashboards & reports
 

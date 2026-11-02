@@ -15,8 +15,8 @@ export type MyAppointment = {
   reminder: MyReminder | null;
 };
 
-/** at: when it goes out (or is tried again); sentAt once sent; number: where it goes. */
-export type MyReminder = { status: SmsDeliveryStatus; at: string; sentAt: string | null; number: string };
+/** at: when it goes out (or is tried again); sentAt once sent; number: where it goes; reason: why it failed (sms_reminder.status_reason). */
+export type MyReminder = { status: SmsDeliveryStatus; at: string; sentAt: string | null; number: string; reason: string | null };
 
 export type MyAppointments = {
   /** Her current pregnancy, or null (no requests then). */

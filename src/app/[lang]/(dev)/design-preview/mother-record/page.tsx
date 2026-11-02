@@ -14,6 +14,9 @@ import { SAMPLE_SMS } from "../sms/sample";
 import { SAMPLE_APPOINTMENTS, SAMPLE_SLOTS } from "../staff-appointments/sample";
 import { dueDateFromLmp } from "@/lib/utils/pregnancy";
 
+// The sample texts as hers: her number and her name in the greeting.
+const HER_SMS = SAMPLE_SMS.map((item) => ({ ...item, number: "09171234567", text: item.text.replace(/^Hi [^!]*!/, "Hi Ana!") }));
+
 export const metadata = { title: "Mother record preview", robots: { index: false } };
 
 const SAMPLE: MotherRecord = {
@@ -97,7 +100,7 @@ async function Preview({ searchParams }: { searchParams: Promise<Record<string, 
             isAdmin={isAdmin}
           />
         }
-        sms={<MotherSmsPanelView t={t} locale={locale} items={query.sms === "none" ? [] : SAMPLE_SMS} canRetry={isAdmin} />}
+        sms={<MotherSmsPanelView t={t} locale={locale} items={query.sms === "none" ? [] : HER_SMS} canRetry={isAdmin} />}
         visits={
           <MotherVisitsPanelView
             t={t}

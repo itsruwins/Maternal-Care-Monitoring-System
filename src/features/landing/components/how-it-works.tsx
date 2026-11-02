@@ -20,7 +20,7 @@ export function HowItWorks({ t }: { t: Dictionary }) {
 
   return (
     <section id="how" aria-labelledby="how-title" className="scroll-mt-6 px-4 py-16 sm:px-6 lg:py-24">
-      <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,28rem)] lg:gap-20">
+      <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,28rem)] lg:gap-20">
         <div>
           <h2 id="how-title" className="text-title font-extrabold">
             {how.title}

@@ -72,7 +72,7 @@ export function SendCard({
       {limitReachedAt && (
         <p role="status" className="mt-4 flex items-start gap-2.5 rounded-xl bg-blush px-4 py-3 text-sm leading-5 text-rose-deep">
           <DangerIcon weight="fill" aria-hidden className="mt-px size-[1.125rem] shrink-0" />
-          {format(s.limit, { date: formatSlotDate(limitReachedAt, locale, "short") })}
+          {format(s.limit, { date: formatSlotDate(limitReachedAt, locale, "short").replace(/ /g, "\u00a0") })}
         </p>
       )}
     </section>

@@ -915,7 +915,8 @@
     "reminder": {
       "waiting": "Text reminder on {when} to {number}",
       "sent": "Reminder sent {when}",
-      "failed": "We couldn't text your reminder.",
+      "failed": "We couldn't text your reminder, but your visit is still on.",
+      "failedNumber": "We couldn't text your reminder.",
       "checkNumber": "Check your mobile number in your profile."
     },
     "missed": {
@@ -1030,7 +1031,8 @@
       "SKIPPED": "Reminder not sent: no longer needed",
       "none": "No reminder",
       "retrying": "Reminder failed, trying again {when}",
-      "covered": "No reminder needed: her earlier text gave the time"
+      "covered": "No reminder needed: her earlier text gave the time",
+      "seeInLog": "See in SMS log"
     },
     "propose": {
       "title": "Offer another time",
@@ -1473,13 +1475,13 @@
   },
   "sms": {
     "title": "SMS log",
-    "intro": "Visit reminders, missed-visit notices and answers to appointment requests, sent to mothers through HTTPSMS.",
+    "intro": "Visit reminders, missed-visit notices, answers to requests, and notices when a visit is moved or cancelled, sent to mothers through HTTPSMS.",
     "send": {
       "title": "Automatic sending",
-      "intro": "The schedule sends every 5 minutes, day and night. Send now runs it right away.",
+      "intro": "Answers and visit changes go out right away. Reminders and missed-visit notices go out every 5 minutes, day and night; Send now runs them right away.",
       "now": "Send now",
       "sending": "Sending…",
-      "phoneUnknown": "SMS phone: no news yet",
+      "phoneUnknown": "SMS phone: no status yet",
       "phoneOnline": "SMS phone online since {time}",
       "phoneOffline": "SMS phone offline since {time}",
       "limit": "HTTPSMS refused texts on {date}: the monthly limit was reached. Texts keep waiting until it resets or the plan is upgraded."

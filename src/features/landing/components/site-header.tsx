@@ -16,8 +16,8 @@ export function SiteHeader({ className }: { className?: string }) {
 
   return (
     <header className={cn("px-4 pt-4 sm:px-6", className)}>
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3">
-        <BrandMark />
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-1.5 min-[400px]:gap-2 sm:gap-3">
+        <BrandMark compact wrap className="min-w-0" />
 
         <nav aria-label={t.landing.nav.label} className="hidden lg:block">
           <ul className="flex items-center gap-1">
@@ -34,10 +34,11 @@ export function SiteHeader({ className }: { className?: string }) {
           </ul>
         </nav>
 
-        <div className="flex items-center gap-1.5 sm:gap-2.5">
-          <LanguageSwitch />
+        <div className="flex shrink-0 items-center gap-1 min-[400px]:gap-1.5 sm:gap-2.5">
+          {/* Narrower EN/FIL below 400px so "Mag-log in" leaves room for the name. */}
+          <LanguageSwitch className="max-[399px]:[&>button]:min-w-9 max-[399px]:[&>button]:px-2" />
           <AuthDialogTrigger mode="login">
-            <Button variant="ghost" size="sm" className="h-10 px-3 text-[0.95rem] hover:bg-white/70 sm:px-4">
+            <Button variant="ghost" size="sm" className="h-10 px-1.5 text-[0.95rem] hover:bg-white/70 min-[400px]:px-2.5 sm:px-4">
               {t.nav.login}
             </Button>
           </AuthDialogTrigger>

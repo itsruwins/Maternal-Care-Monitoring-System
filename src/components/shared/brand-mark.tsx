@@ -5,29 +5,33 @@ import { cn } from "@/lib/utils/cn"
 
 // The barangay seal, small on a white disc, beside the text wordmark.
 // `compact` is for crowded top bars: a smaller wordmark at phone width and
-// the location line only from 640px.
+// the location line only from 640px. `wrap` lets the name sit on two lines
+// from 360px to 419px instead of being cut off (the landing header).
 export function BrandMark({
   className,
   href = "/",
   compact = false,
+  wrap = false,
 }: {
   className?: string
   href?: string
   compact?: boolean
+  wrap?: boolean
 }) {
   return (
     <Link
       href={href}
-      className={cn("group inline-flex items-center gap-2.5 rounded-full text-ink no-underline", className)}
+      className={cn("group inline-flex items-center gap-2.5 rounded-full text-ink no-underline", wrap && "max-[399px]:gap-2", className)}
     >
-      <span className="grid size-10 place-items-center rounded-full bg-white shadow-[var(--shadow-soft)]">
+      <span className="grid size-10 shrink-0 place-items-center rounded-full bg-white shadow-[var(--shadow-soft)]">
         <Image src="/brand/seal-96.png" alt="" width={32} height={32} className="size-8 rounded-full" priority />
       </span>
-      <span className="flex flex-col leading-none">
+      <span className="flex min-w-0 flex-col leading-none">
         <span
           className={cn(
-            "font-bold tracking-[-0.015em] whitespace-nowrap",
-            compact ? "text-[0.95rem] sm:text-[1.0625rem]" : "text-[1.0625rem]"
+            "truncate font-bold tracking-[-0.015em]",
+            compact ? "text-[0.95rem] sm:text-[1.0625rem]" : "text-[1.0625rem]",
+            wrap && "min-[360px]:max-[419px]:leading-[1.1] min-[360px]:max-[419px]:whitespace-normal"
           )}
         >
           {SITE.name}

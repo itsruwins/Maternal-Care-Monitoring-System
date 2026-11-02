@@ -83,6 +83,7 @@ export async function MotherRecordScreen({
           <MotherAppointmentsPanel
             motherId={mother.id}
             canBook={Boolean(mother.current)}
+            isAdmin={user.role === "ADMIN"}
           />
         ) : null
       }

@@ -27,6 +27,9 @@ export async function MyAppointmentsScreen() {
   return <MyAppointmentsView t={t} locale={locale} data={data} missed={missed} today={manilaTodayISO()} now={new Date().toISOString()} />;
 }
 
+/** "Wednesday, November 4 · 1:30 PM" that can only break after the weekday's comma. */
+const unbroken = (slot: string) => slot.replace(/(?<!,) /g, "\u00a0");
+
 const STATUS_STYLE: Record<AppointmentStatus, string> = {
   REQUESTED: "border border-dashed border-leaf text-leaf",
   CONFIRMED: "bg-mint text-leaf",
@@ -94,8 +97,8 @@ export function MyAppointmentsView({
             <DateTile iso={item.scheduledAt!} locale={locale} />
             <div className="min-w-0">
               <p className="font-semibold break-words">{item.service}</p>
-              <p className="tnum text-[0.95rem]">{formatSlot(item.scheduledAt!, locale)}</p>
-              <p className="mt-0.5 text-sm text-ink-soft">{format(a.youAsked, { when: formatSlot(item.requestedAt, locale, "short") })}</p>
+              <p className="tnum text-[0.95rem]">{unbroken(formatSlot(item.scheduledAt!, locale))}</p>
+              <p className="mt-0.5 text-sm text-ink-soft">{format(a.youAsked, { when: unbroken(formatSlot(item.requestedAt, locale, "short")) })}</p>
             </div>
           </div>
           {item.remarks && <p className="mt-3 text-sm break-words text-ink-soft">{item.remarks}</p>}
@@ -164,7 +167,9 @@ function UpcomingCard({ t, locale, item, today, now }: { t: Dictionary; locale: 
           <div className="min-w-0">
             <h3 className="font-semibold break-words">{item.service}</h3>
             <p className="tnum text-[0.95rem] text-ink-soft">
-              {formatSlotDate(at, locale)} · <span className="font-semibold text-ink">{formatSlotClock(at, locale)}</span>
+              {unbroken(formatSlotDate(at, locale))}
+              {"\u00a0·\u00a0"}
+              <span className="font-semibold text-ink">{formatSlotClock(at, locale)}</span>
             </p>
           </div>
           <StatusChip t={t} status={item.status} />
@@ -196,15 +201,20 @@ function ReminderNote({ t, locale, reminder }: { t: Dictionary; locale: Locale; 
   const r = t.myAppointments.reminder;
   if (reminder.status === "SKIPPED") return null;
   if (reminder.status === "FAILED") {
+    // Only a number the sender couldn't use is hers to fix; any other failure is on our side.
     return (
       <p className="flex items-start gap-1.5 text-sm text-rose-deep">
         <ReminderIcon aria-hidden className="mt-0.5 size-4 shrink-0" />
-        <span>
-          {r.failed}{" "}
-          <Link href="/mother/profile" className="font-semibold text-rose-deep underline decoration-1 underline-offset-4 hover:decoration-2">
-            {r.checkNumber}
-          </Link>
-        </span>
+        {reminder.reason === "bad_number" ? (
+          <span>
+            {r.failedNumber}{" "}
+            <Link href="/mother/profile" className="font-semibold text-rose-deep underline decoration-1 underline-offset-4 hover:decoration-2">
+              {r.checkNumber}
+            </Link>
+          </span>
+        ) : (
+          <span>{r.failed}</span>
+        )}
       </p>
     );
   }

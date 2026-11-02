@@ -45,7 +45,8 @@ const one = (params: Params, key: string) => {
 // /staff/appointments?view=queue|list|calendar. Reads the session and the
 // address: render inside <Suspense>.
 export async function AppointmentsScreen({ searchParams }: { searchParams: Promise<Params> }) {
-  await requireRole(AREA_ROLES.staff);
+  const user = await requireRole(AREA_ROLES.staff);
+  const isAdmin = user.role === "ADMIN";
   const params = await searchParams;
   const view: View = VIEWS.includes(one(params, "view") as View) ? (one(params, "view") as View) : "queue";
   const today = manilaTodayISO();
@@ -58,12 +59,16 @@ export async function AppointmentsScreen({ searchParams }: { searchParams: Promi
   } else if (view === "list") {
     const filters = parseAppointmentFilters(params);
     const [{ items, total }, services] = await Promise.all([listAppointments(filters), listServices()]);
-    body = <ListView t={t} locale={locale} items={items} total={total} filters={filters} services={services} slots={slots} today={today} now={now} />;
+    body = (
+      <ListView t={t} locale={locale} items={items} total={total} filters={filters} services={services} slots={slots} today={today} now={now} isAdmin={isAdmin} />
+    );
   } else {
     const month = /^\d{4}-(0[1-9]|1[0-2])$/.test(one(params, "month")) ? one(params, "month") : today.slice(0, 7);
     const day = /^\d{4}-\d{2}-\d{2}$/.test(one(params, "day")) && one(params, "day").startsWith(month) ? one(params, "day") : month === today.slice(0, 7) ? today : `${month}-01`;
     const { byDay, closedDays } = await listMonth(month);
-    body = <CalendarView t={t} locale={locale} month={month} day={day} today={today} byDay={byDay} closedDays={closedDays} slots={slots} now={now} />;
+    body = (
+      <CalendarView t={t} locale={locale} month={month} day={day} today={today} byDay={byDay} closedDays={closedDays} slots={slots} now={now} isAdmin={isAdmin} />
+    );
   }
 
   return <AppointmentsView t={t} view={view} requestCount={requestCount}>{body}</AppointmentsView>;
@@ -145,6 +150,7 @@ export function ListView({
   slots,
   today,
   now,
+  isAdmin = false,
 }: {
   t: Dictionary;
   locale: Locale;
@@ -156,6 +162,8 @@ export function ListView({
   today?: string;
   /** The current instant (ISO), for "Date passed" on requests. */
   now: string;
+  /** Admins: failed reminders link to the SMS log. */
+  isAdmin?: boolean;
 }) {
   const l = t.appointments.list;
   const hasFilters = Boolean(filters.status || filters.service || filters.from || filters.to);
@@ -249,7 +257,7 @@ export function ListView({
                         <div className="flex flex-col items-start gap-1.5">
                           <StatusChip t={t} status={item.status} />
                           {passed && <DatePassedLine t={t} />}
-                          <ReminderLine t={t} locale={locale} appointment={item} />
+                          <ReminderLine t={t} locale={locale} appointment={item} isAdmin={isAdmin} />
                         </div>
                       </td>
                       <td className="w-px px-5 py-3">
@@ -281,7 +289,7 @@ export function ListView({
           <ul className="flex flex-col gap-3 xl:hidden">
             {items.map((item) => (
               <li key={item.id}>
-                <AppointmentCard t={t} locale={locale} appointment={item} slots={slots} today={today} now={now} />
+                <AppointmentCard t={t} locale={locale} appointment={item} slots={slots} today={today} now={now} isAdmin={isAdmin} />
               </li>
             ))}
           </ul>
@@ -302,6 +310,7 @@ export function CalendarView({
   closedDays,
   slots,
   now,
+  isAdmin = false,
 }: {
   t: Dictionary;
   locale: Locale;
@@ -313,6 +322,8 @@ export function CalendarView({
   slots: SlotData;
   /** The current instant (ISO), for "Date passed" on requests. */
   now: string;
+  /** Admins: failed reminders link to the SMS log. */
+  isAdmin?: boolean;
 }) {
   const c = t.appointments.calendar;
   const tag = locale === "fil" ? "fil-PH" : "en-PH";
@@ -394,7 +405,7 @@ export function CalendarView({
           <ul className="flex flex-col gap-3">
             {dayItems.map((item) => (
               <li key={item.id}>
-                <AppointmentCard t={t} locale={locale} appointment={item} slots={slots} showDate={false} today={today} now={now} />
+                <AppointmentCard t={t} locale={locale} appointment={item} slots={slots} showDate={false} today={today} now={now} isAdmin={isAdmin} />
               </li>
             ))}
           </ul>

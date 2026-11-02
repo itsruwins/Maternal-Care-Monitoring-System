@@ -21,6 +21,7 @@ export function AppointmentCard({
   showDate = true,
   today,
   now,
+  isAdmin = false,
 }: {
   t: Dictionary;
   locale: Locale;
@@ -32,6 +33,8 @@ export function AppointmentCard({
   today?: string;
   /** The current instant (ISO); requests past their time say "Date passed". */
   now?: string;
+  /** Admins: a failed reminder links to the SMS log. */
+  isAdmin?: boolean;
 }) {
   const a = t.appointments;
   const isRequest = appointment.status === "REQUESTED";
@@ -66,7 +69,7 @@ export function AppointmentCard({
           <span className="font-medium text-ink">{a.remarks}:</span> {appointment.remarks}
         </p>
       )}
-      <ReminderLine t={t} locale={locale} appointment={appointment} />
+      <ReminderLine t={t} locale={locale} appointment={appointment} isAdmin={isAdmin} />
       {appointment.status === "MISSED" && (
         <div className="flex">
           <FollowUpsLink t={t} mother={appointment.mother} />

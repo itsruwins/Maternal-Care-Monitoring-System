@@ -1,11 +1,12 @@
 import Link from "next/link";
+import { CaretRightIcon } from "@/components/icons";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import { cn } from "@/lib/utils/cn";
 import { NO_SMS_FILTERS, SMS_LOG_PATH, smsLogHref } from "../paths";
 import type { SmsCounts, SmsLogFilters } from "../types";
 
-// Waiting / Sent today / Failed. Each count filters the list; tapping the one
-// in use shows all texts again.
+// Waiting / Sent today / Failed. Each count filters the list (the caret says it
+// opens a list); tapping the one in use shows all texts again.
 export function SmsCountTiles({ t, counts, filters, today }: { t: Dictionary; counts: SmsCounts; filters: SmsLogFilters; today: string }) {
   const c = t.sms.log.counts;
   const only = (status: SmsLogFilters["status"], day = "") =>
@@ -37,7 +38,10 @@ export function SmsCountTiles({ t, counts, filters, today }: { t: Dictionary; co
               )}
             >
               <span className={cn("tnum text-2xl font-extrabold", tile.alert ? "text-rose-deep" : "text-ink")}>{tile.count}</span>
-              <span className={cn("text-sm font-medium", tile.active ? "text-leaf" : "text-ink-soft")}>{c[tile.key]}</span>
+              <span className={cn("flex items-center gap-1 text-sm font-medium", tile.active ? "text-leaf" : "text-ink-soft")}>
+                {c[tile.key]}
+                <CaretRightIcon weight="bold" aria-hidden className="size-3.5 shrink-0 text-leaf" />
+              </span>
             </Link>
           </li>
         ))}

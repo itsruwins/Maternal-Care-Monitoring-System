@@ -17,10 +17,10 @@ const OPEN = new Set(["REQUESTED", "CONFIRMED", "RESCHEDULED"]);
 // open appointments with their actions (requests stay here after their time
 // passes, until staff move or cancel them), then past ones. Loads its own data
 // (the page has already checked the staff role).
-export async function MotherAppointmentsPanel({ motherId, canBook }: { motherId: number; canBook: boolean }) {
+export async function MotherAppointmentsPanel({ motherId, canBook, isAdmin }: { motherId: number; canBook: boolean; isAdmin: boolean }) {
   const today = manilaTodayISO();
   const [{ t, locale }, items, slots] = await Promise.all([getServerI18n(), listMotherAppointments(motherId), getStaffSlotData(today)]);
-  return <MotherAppointmentsPanelView t={t} locale={locale} motherId={motherId} canBook={canBook} items={items} slots={slots} now={new Date().toISOString()} today={today} />;
+  return <MotherAppointmentsPanelView t={t} locale={locale} motherId={motherId} canBook={canBook} items={items} slots={slots} now={new Date().toISOString()} today={today} isAdmin={isAdmin} />;
 }
 
 export function MotherAppointmentsPanelView({
@@ -32,6 +32,7 @@ export function MotherAppointmentsPanelView({
   slots,
   now,
   today,
+  isAdmin = false,
 }: {
   t: Dictionary;
   locale: Locale;
@@ -43,6 +44,8 @@ export function MotherAppointmentsPanelView({
   now: string;
   /** Manila date, for "Record visit" on today's appointments. */
   today?: string;
+  /** Admins: failed reminders link to the SMS log. */
+  isAdmin?: boolean;
 }) {
   const r = t.appointments.record;
   const upcoming = items.filter((item) => OPEN.has(item.status) && (item.status === "REQUESTED" || Date.parse(item.at) > Date.parse(now)));
@@ -72,7 +75,7 @@ export function MotherAppointmentsPanelView({
               <ul className="grid gap-3 lg:grid-cols-2">
                 {upcoming.map((item) => (
                   <li key={item.id}>
-                    <AppointmentCard t={t} locale={locale} appointment={item} slots={slots} showMother={false} today={today} now={now} />
+                    <AppointmentCard t={t} locale={locale} appointment={item} slots={slots} showMother={false} today={today} now={now} isAdmin={isAdmin} />
                   </li>
                 ))}
               </ul>

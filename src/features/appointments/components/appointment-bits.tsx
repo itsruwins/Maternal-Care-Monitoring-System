@@ -2,6 +2,7 @@ import Link from "next/link";
 import { CallIcon, ClockIcon, ReminderIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { recordFollowUpsHref } from "@/features/follow-ups/paths";
+import { NO_SMS_FILTERS, smsLogHref } from "@/features/sms/paths";
 import type { Locale } from "@/i18n/config";
 import { format } from "@/i18n/format";
 import type { Dictionary } from "@/i18n/get-dictionary";
@@ -28,28 +29,41 @@ export function StatusChip({ t, status }: { t: Dictionary; status: AppointmentSt
 }
 
 /** "Reminder queued for Wed, Nov 4 · 8:00 AM", "…trying again …", "No reminder needed: …" (confirmed visits only). */
-export function ReminderLine({ t, locale, appointment }: { t: Dictionary; locale: Locale; appointment: StaffAppointment }) {
+/** isAdmin: a failed reminder links to it in the SMS log (admins only). */
+export function ReminderLine({ t, locale, appointment, isAdmin = false }: { t: Dictionary; locale: Locale; appointment: StaffAppointment; isAdmin?: boolean }) {
   const r = t.appointments.reminder;
   const reminder = appointment.reminder;
   if (appointment.status !== "CONFIRMED" && !reminder) return null;
   const retrying = reminder?.status === "PENDING" && reminder.retryAt !== null;
+  // Date and time kept together, so a long line breaks after the label.
+  const slot = (at: string) => formatSlot(at, locale, "short").replace(/ /g, "\u00a0");
   const text = !reminder
     ? r.none
     : retrying
-      ? format(r.retrying, { when: formatSlot(reminder.retryAt!, locale, "short") })
+      ? format(r.retrying, { when: slot(reminder.retryAt!) })
       : reminder.status === "PENDING"
-        ? format(r.PENDING, { when: formatSlot(reminder.at, locale, "short") })
+        ? format(r.PENDING, { when: slot(reminder.at) })
         : reminder.status === "FAILED"
           ? r.FAILED
           : reminder.status === "SKIPPED"
             ? reminder.reason === "covered_by_answer"
               ? r.covered
               : r.SKIPPED
-            : format(r[reminder.status], { when: formatSlot(reminder.sentAt ?? reminder.at, locale, "short") });
+            : format(r[reminder.status], { when: slot(reminder.sentAt ?? reminder.at) });
+  const failed = reminder?.status === "FAILED";
   return (
-    <p className={cn("flex items-center gap-1.5 text-sm", reminder?.status === "FAILED" || retrying ? "text-rose-deep" : "text-ink-soft")}>
-      <ReminderIcon aria-hidden className="size-4 shrink-0" />
-      {text}
+    <p className={cn("flex items-start gap-1.5 text-sm", failed || retrying ? "text-rose-deep" : "text-ink-soft")}>
+      <ReminderIcon aria-hidden className="mt-0.5 size-4 shrink-0" />
+      <span>
+        {text}
+        {failed && isAdmin && (
+          <span className="block">
+            <Link href={smsLogHref(NO_SMS_FILTERS, { status: "failed", q: appointment.mother.contactNumber })} className="inline-flex min-h-11 items-center font-semibold whitespace-nowrap text-leaf underline decoration-1 underline-offset-4 hover:decoration-2">
+              {r.seeInLog}
+            </Link>
+          </span>
+        )}
+      </span>
     </p>
   );
 }

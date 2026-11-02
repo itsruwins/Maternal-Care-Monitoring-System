@@ -865,6 +865,20 @@ Sample request answers (one SMS each with this service name; a longer name may m
 
 **Instant sending (2026-11-02, your choice):** when staff approve, decline, propose a new time, move or cancel, the app runs the sender right after saving (`sendSoon`, using Next's `after()`, so the staff screen isn't slowed), and the text goes within seconds. The 5-minute `send-sms` job stays for visit reminders (8:00 AM), missed-visit notices, retries and delivery checks, and picks up anything an instant send couldn't. Both take texts the same locked way, so a text is never sent twice. No migration.
 
+**Step 6 done (2026-11-02):** the HTTPSMS webhook is saved and confirmed by you: texts are marked Delivered by it within seconds (Vercel Logs show its POST 200 calls). Migrations 0020 and 0021 run and checked by you; instant sending deployed and confirmed.
+
+**Landing photo (2026-11-02, your choice):** the health center banner shows "Legazpi City view from Taysan" (Dexter P. Baldon, Wikimedia Commons, CC BY-SA 4.0) instead of the Pexels Mayon photo; credited in the footer and `docs/assets.md`. No freely usable photo of the barangay itself was found; a photo of the actual health center can replace it later.
+
+**Step 7 review (2026-11-02):** desktop and phone screenshots (EN and FIL) of every Phase 7 screen were reviewed (not kept in the repo). Checks: production build, types and lint pass; every page has one h1, no heading skips, no unnamed controls; lowest contrast 4.52. The independent design review returned 7 fixes plus 6 optional ones; all were applied and confirmed in two more passes (verdict "ship"):
+- Her failed reminder depends on the reason: only a bad number links to her profile; otherwise "your visit is still on".
+- No sideways scroll on the landing page at 320–390px; the brand name wraps to two lines instead of being cut.
+- SMS log copy names moved/cancelled texts and instant sending; "SMS phone: no status yet".
+- Dates and times never break mid-slot (staff reminder line, her visit cards, FIL "para sa").
+- "Show text" and the admin "See in SMS log" link are 44px tap targets.
+- Admins get "See in SMS log" on a failed reminder; the SMS count tiles are tappable.
+
+`DESIGN.md` was updated with the SMS log, chip outline, reminder line and header rules.
+
 ## Phase 8 — Dashboards & reports
 
 - **Staff dashboard:** today's appointments, pending requests, missed needing follow-up, active pregnancies, mothers due within 30 days.
@@ -882,9 +896,9 @@ Sample request answers (one SMS each with this service name; a longer name may m
 
 ## Open items
 
-1. `SUPABASE_SECRET_KEY` in `.env.local` (Phase 0).
+1. ~~`SUPABASE_SECRET_KEY` in `.env.local` (Phase 0).~~ Resolved 2026-11-02 (in use locally and on Vercel).
 2. Health center contact number for the landing page (address and clinic hours received 2026-10-27).
-3. HTTPSMS phone + API key (Phase 7).
+3. ~~HTTPSMS phone + API key (Phase 7).~~ Resolved 2026-11-02 (texts are being delivered).
 4. Manuscript updates listed on ERD page 2 (scope, named activities, single health center) — outside the code, for you to handle.
 
 Resolved: database inspected (2026-10-26); the first admin gets both ADMIN and health worker profiles; language saved in a cookie; secrets in `.env.local`, no Edge Functions.

@@ -28,7 +28,7 @@ export async function getMyAppointments(user: CurrentUser): Promise<MyAppointmen
   const { data: reminders } = confirmed.length
     ? await supabase
         .from("sms_reminder")
-        .select("appointment_id, delivery_status, scheduled_at, sent_at, next_attempt_at, recipient_number")
+        .select("appointment_id, delivery_status, scheduled_at, sent_at, next_attempt_at, recipient_number, status_reason")
         .eq("reminder_type", "UPCOMING")
         .in("appointment_id", confirmed)
         .order("reminder_id", { ascending: false })
@@ -36,7 +36,13 @@ export async function getMyAppointments(user: CurrentUser): Promise<MyAppointmen
   const latest = new Map<number, MyReminder>();
   for (const r of reminders ?? []) {
     if (latest.has(r.appointment_id)) continue;
-    latest.set(r.appointment_id, { status: r.delivery_status, at: r.next_attempt_at ?? r.scheduled_at, sentAt: r.sent_at, number: r.recipient_number });
+    latest.set(r.appointment_id, {
+      status: r.delivery_status,
+      at: r.next_attempt_at ?? r.scheduled_at,
+      sentAt: r.sent_at,
+      number: r.recipient_number,
+      reason: r.status_reason,
+    });
   }
 
   const now = Date.now();

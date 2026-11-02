@@ -68,7 +68,7 @@ export function smsAbout(t: Dictionary, locale: Locale, item: SmsLogItem): strin
 export function SmsText({ t, text }: { t: Dictionary; text: string }) {
   return (
     <details className="group">
-      <summary className="inline-flex cursor-pointer list-none items-center gap-1 rounded-sm text-sm font-semibold text-leaf underline decoration-1 underline-offset-4 hover:decoration-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-leaf focus-visible:outline-solid [&::-webkit-details-marker]:hidden">
+      <summary className="inline-flex min-h-11 cursor-pointer list-none items-center gap-1 rounded-sm text-sm font-semibold text-leaf underline decoration-1 underline-offset-4 hover:decoration-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-leaf focus-visible:outline-solid [&::-webkit-details-marker]:hidden">
         {t.sms.log.showText}
         <CaretDownIcon weight="bold" aria-hidden className="size-3.5 transition-transform group-open:rotate-180" />
       </summary>

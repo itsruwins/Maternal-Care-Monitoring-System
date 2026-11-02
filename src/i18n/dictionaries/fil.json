@@ -130,7 +130,7 @@
         "text": "Hi Maria!\n\nPaalala: Prenatal Checkup mo sa Fri, Nov 6, 8:00 AM sa health center. Dalhin ang booklet mo. Salamat!\n\nFrom: Brgy. Taysan Health Center",
         "time": "8:00 AM",
         "facts": [
-          "Gumagana sa kahit anong cellphone, kahit walang internet",
+          "Gumagana sa kahit anong cellphone, walang internet",
           "Ipinapadala sa simpleng Taglish"
         ],
         "sample": "Halimbawa"
@@ -915,7 +915,8 @@
     "reminder": {
       "waiting": "Ite-text ang paalala sa {when} sa {number}",
       "sent": "Naipadala ang paalala {when}",
-      "failed": "Hindi namin naipadala ang text na paalala mo.",
+      "failed": "Hindi namin naipadala ang text na paalala mo, pero tuloy pa rin ang bisita mo.",
+      "failedNumber": "Hindi namin naipadala ang text na paalala mo.",
       "checkNumber": "Tingnan ang mobile number mo sa iyong profile."
     },
     "missed": {
@@ -1023,14 +1024,15 @@
     "followUps": "Tingnan ang follow-up",
     "followUpsFor": "Tingnan ang follow-up para kay {name}",
     "reminder": {
-      "PENDING": "Naka-queue ang paalala para sa {when}",
+      "PENDING": "Naka-queue ang paalala para\u00a0sa\u00a0{when}",
       "SENT": "Naipadala ang paalala {when}",
       "DELIVERED": "Natanggap ang paalala {when}",
       "FAILED": "Hindi naipadala ang paalala",
       "SKIPPED": "Hindi na ipinadala ang paalala",
       "none": "Walang paalala",
       "retrying": "Hindi naipadala ang paalala, susubukan ulit {when}",
-      "covered": "Hindi na kailangan ng paalala: nasa naunang text na ang oras"
+      "covered": "Hindi na kailangan ng paalala: nasa naunang text na ang oras",
+      "seeInLog": "Tingnan sa SMS log"
     },
     "propose": {
       "title": "Mag-alok ng ibang oras",
@@ -1473,13 +1475,13 @@
   },
   "sms": {
     "title": "SMS log",
-    "intro": "Mga paalala sa bisita, abiso sa hindi nakarating, at sagot sa hiling na appointment para sa mga nanay, ipinapadala sa HTTPSMS.",
+    "intro": "Mga paalala sa bisita, abiso sa hindi nakarating, sagot sa hiling, at abiso kapag inilipat o kinansela ang bisita, ipinapadala sa mga nanay sa HTTPSMS.",
     "send": {
       "title": "Awtomatikong pagpapadala",
-      "intro": "Nagpapadala ang schedule kada 5 minuto, araw at gabi. Pinatatakbo ito agad ng Ipadala ngayon.",
+      "intro": "Agad ipinapadala ang mga sagot at pagbabago sa bisita. Ang mga paalala at abiso sa hindi nakarating ay ipinapadala kada 5 minuto, araw at gabi; pinatatakbo ito agad ng Ipadala ngayon.",
       "now": "Ipadala ngayon",
       "sending": "Ipinapadala…",
-      "phoneUnknown": "SMS phone: wala pang balita",
+      "phoneUnknown": "SMS phone: wala pang status",
       "phoneOnline": "Online ang SMS phone mula {time}",
       "phoneOffline": "Offline ang SMS phone mula {time}",
       "limit": "Tinanggihan ng HTTPSMS ang mga text noong {date}: naabot na ang buwanang limit. Maghihintay ang mga text hanggang mag-reset ito o ma-upgrade ang plan."

@@ -10,11 +10,18 @@ export function formatPeriod(from: string, to: string, locale: Locale): string {
   return from === to ? formatter.format(day(from)) : formatter.formatRange(day(from), day(to));
 }
 
-/** A chart column's short label: "Nov 2" for a week (its first day), "Jan" for a month. */
-export function bucketLabel(start: string, grouping: "week" | "month", locale: Locale): string {
-  const options: Intl.DateTimeFormatOptions =
-    grouping === "week" ? { timeZone: "UTC", month: "short", day: "numeric" } : { timeZone: "UTC", month: "short" };
-  return new Intl.DateTimeFormat(intlLocale(locale), options).format(day(start));
+/**
+ * A chart column's label on two lines: a week as "Nov 2" over "–8" ("–Dec 6"
+ * across months; a one-day part-week has no second line), a month as "Jan".
+ */
+export function bucketLabel(start: string, end: string, grouping: "week" | "month", locale: Locale): [string, string | null] {
+  if (grouping === "month") {
+    return [new Intl.DateTimeFormat(intlLocale(locale), { timeZone: "UTC", month: "short" }).format(day(start)), null];
+  }
+  const monthDay = new Intl.DateTimeFormat(intlLocale(locale), { timeZone: "UTC", month: "short", day: "numeric" });
+  if (start === end) return [monthDay.format(day(start)), null];
+  const endText = start.slice(0, 7) === end.slice(0, 7) ? String(Number(end.slice(8))) : monthDay.format(day(end));
+  return [monthDay.format(day(start)), `\u2013${endText}`];
 }
 
 /** A chart column in full: "Nov 2 – 8" for a week, "January 2026" for a month. */

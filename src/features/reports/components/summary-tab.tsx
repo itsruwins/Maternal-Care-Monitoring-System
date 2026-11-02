@@ -39,7 +39,7 @@ export function SummaryTab({ t, locale, summary }: { t: Dictionary; locale: Loca
         </dl>
       </section>
 
-      <div className="grid grid-cols-1 gap-6 xl:grid-cols-2 xl:items-start">
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-2 xl:items-start print:block print:space-y-6">
         <ReportCard id="report-pregnancies" icon={PregnancyIcon} title={s.pregnancies.title}>
           <FigureList
             figures={[

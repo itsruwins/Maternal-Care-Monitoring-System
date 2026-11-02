@@ -234,4 +234,11 @@
   [data-report] [data-print-keep] {
     break-inside: avoid;
   }
+  /* A heading that must not end a page: one unbreakable block that reserves
+     room for about two rows under it (break-after: avoid isn't honoured here). */
+  [data-report] [data-print-head] {
+    break-inside: avoid;
+    padding-bottom: 6rem;
+    margin-bottom: -6rem;
+  }
 }

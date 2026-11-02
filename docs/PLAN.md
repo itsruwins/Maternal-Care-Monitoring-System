@@ -2,7 +2,7 @@
 
 Barangay Taysan, Legazpi City · Next.js 16 + Supabase · Hosted on Vercel
 
-Status: **Phases 0–7 done (Phase 7 signed off 2026-11-02). Phase 8 — Dashboards & reports: plan approved 2026-11-02; steps 1–3 (staff dashboard, Reports page and Summary, detail tabs) done; next: step 4 (print and CSV).** Each phase ends with a demo and your sign-off before the next starts.
+Status: **Phases 0–7 done (Phase 7 signed off 2026-11-02). Phase 8 — Dashboards & reports: plan approved 2026-11-02; steps 1–5 (staff dashboard, Reports page and Summary, detail tabs, print and CSV, review) done; next: your testing and sign-off.** Each phase ends with a demo and your sign-off before the next starts.
 
 ---
 
@@ -964,6 +964,27 @@ Sample request answers (one SMS each with this service name; a longer name may m
 - **SMS** (admins only): mother and purok, kind of text and the visit it's about, status chip and reason. New **Status** and **Kind of text** filters (the SMS log's choices). No phone numbers (not even read) and no message text.
 - Show, Status and Kind of text belong to their tab and reset when you switch tabs; period and purok carry over.
 - Dev preview: `/design-preview/reports?tab=…` shows six sample rows per tab (`&admin=1` for SMS, `&empty=1`).
+
+**Step 4 built (2026-11-02):** print and CSV, approved by you. No migration. **Print** and **Download CSV** sit beside the tab's heading (under it on phones).
+- **Print** (the current tab, portrait on whatever paper the printer uses, 12 mm margins, black on white): the sidebar, top bar, tabs, filters and buttons are hidden. Header: seal, "Barangay Taysan Health Center", address (the contact number only once a real one is set), "{Tab} report", period, the chosen filters, and when the page was loaded. Detail tabs print as the table (never the cards) in 10 pt, the header row repeating on each page and rows kept whole. The Summary prints its figures as label and count rows, the visits chart as its week or month table (no bars). Footer: "Prepared by:" over the staff member's name and position, and a blank "Noted by:" over "Name and position".
+- **CSV** (`GET /api/reports/csv`, the page's filters plus `lang`): checks the role itself (logged out 401; not staff, or a health worker asking for SMS, 403). UTF-8 with a byte-order mark, headers in the page's language, dates `2026-11-05` and times `14:30` (Manila) in their own columns, name and purok, no phone numbers, addresses or notes; text a spreadsheet would run as a formula is defused. Summary: Section, Item, Count rows. File names like `taysan-visits-2026-11-01-to-2026-11-30.csv`.
+- The staff shell hides its sidebar and top bar on paper (any staff page). New icons: Printer and Download.
+
+**Step 5 review (2026-11-02):**
+- **Checks:** production build, typecheck and lint pass. Audit on 48 pages (EN/FIL, desktop/phone, staff/admin): one h1 each, no heading skips, no unnamed controls, no sideways scroll; lowest text contrast 4.77.
+- **Print:** previewed on A4 and Letter for every tab.
+- **Design review:** returned 8 fixes, all applied and confirmed in a second pass (verdict "ship"):
+  - numbers only use tabular figures (dates, times, weeks, BP, weight);
+  - times, dates and "Walk-in" never split across lines;
+  - the chart's week labels show the range on two lines; the note says weeks run Monday to Sunday;
+  - the count tiles keep their last word with the arrow;
+  - Filipino week wording is "Ika-{n} linggo";
+  - recorded-by stays on one line;
+  - signature labels are English in both languages;
+  - on paper, headings always travel with their first rows and cards stack evenly.
+- **Extras:** better print page breaks, "Not recorded" for missing values, the phone tab row scrolls to the current tab, Filipino "Pumalya" for failed texts.
+- **Docs:** `DESIGN.md` + sidecar updated for Phase 8. Review screenshots deleted.
+- **Still needed:** your testing.
 
 ## Phase 9 — Hardening & launch
 

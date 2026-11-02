@@ -27,7 +27,7 @@ export function DueSoonList({ t, locale, items, total }: { t: Dictionary; locale
               >
                 {item.name}
               </Link>
-              <span className="tnum block text-sm text-ink-soft">
+              <span className="block text-sm text-ink-soft">
                 {[item.purok ?? d.noPurok, item.weeks !== null ? format(d.week, { weeks: item.weeks }) : null].filter(Boolean).join(" · ")}
               </span>
             </span>

@@ -9,6 +9,10 @@ const TILES = ["today", "requests", "followUps", "pregnant", "dueSoon"] as const
 // Counts that need someone: rose-deep above zero (The Rose Is an Accent Rule).
 const ALERTS: ReadonlySet<(typeof TILES)[number]> = new Set(["requests", "followUps"]);
 
+/** "Today's appointments" → "Today's " and "appointments". */
+const leadingWords = (label: string) => label.slice(0, label.lastIndexOf(" ") + 1);
+const lastWord = (label: string) => label.slice(label.lastIndexOf(" ") + 1);
+
 // Five count tiles in the SMS log's tile style, each opening its page. Five
 // across from 1280px (beside the sidebar there's no room at 1024px), three
 // then two from 768px, two per row on phones (the fifth takes the full row).
@@ -26,10 +30,13 @@ export function CountTiles({ t, counts }: { t: Dictionary; counts: DashboardCoun
                 className="flex h-full flex-col gap-0.5 rounded-2xl border-2 border-transparent bg-white px-4 py-3.5 no-underline shadow-[var(--shadow-soft)] transition-colors hover:border-line focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-leaf focus-visible:outline-solid sm:px-5"
               >
                 <span className={cn("tnum text-2xl font-extrabold", alert ? "text-rose-deep" : "text-ink")}>{counts[key]}</span>
-                {/* The caret follows the last word, even when the label wraps. */}
+                {/* The caret stays glued to the last word, even when the label wraps. */}
                 <span className="text-sm font-medium text-ink-soft">
-                  {c[key]}
-                  <CaretRightIcon weight="bold" aria-hidden className="ml-1 inline size-3.5 align-[-0.125em] text-leaf" />
+                  {leadingWords(c[key])}
+                  <span className="whitespace-nowrap">
+                    {lastWord(c[key])}
+                    <CaretRightIcon weight="bold" aria-hidden className="ml-1 inline size-3.5 align-[-0.125em] text-leaf" />
+                  </span>
                 </span>
               </Link>
             </li>

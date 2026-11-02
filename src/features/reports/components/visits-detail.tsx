@@ -15,7 +15,9 @@ export function VisitsDetail({ t, locale, rows }: { t: Dictionary; locale: Local
     <div className="flex flex-col items-start gap-0.5">
       <CellLink href={visitHref(row.id)}>{formatReportDay(row.at, locale)}</CellLink>
       <span className="text-sm text-ink-soft">
-        {formatReportClock(row.at, locale)} · {row.walkIn ? d.walkIn : d.booked}
+        <span className="tnum">{formatReportClock(row.at, locale)}</span>
+        {"\u00a0· "}
+        <span className="whitespace-nowrap">{row.walkIn ? d.walkIn : d.booked}</span>
       </span>
     </div>
   );
@@ -42,16 +44,16 @@ export function VisitsDetail({ t, locale, rows }: { t: Dictionary; locale: Local
               <th scope="col" className={TH}>{c.recordedBy}</th>
             </tr>
           </thead>
-          <tbody className="tnum divide-y divide-line">
+          <tbody className="divide-y divide-line">
             {rows.map((row) => (
               <tr key={row.id} className="align-top">
-                <td className={`${TD} whitespace-nowrap`}>{when(row)}</td>
+                <td className={`${TD} whitespace-nowrap print:whitespace-normal`}>{when(row)}</td>
                 <td className={`${TD} w-[22%]`}>{mother(row)}</td>
-                <td className={`${TD} whitespace-nowrap`}>{row.weeks}</td>
-                <td className={`${TD} whitespace-nowrap`}>{row.bp}</td>
-                <td className={`${TD} whitespace-nowrap`}>{weight(row)}</td>
+                <td className={`${TD} tnum whitespace-nowrap`}>{row.weeks}</td>
+                <td className={`${TD} tnum whitespace-nowrap`}>{row.bp}</td>
+                <td className={`${TD} tnum whitespace-nowrap`}>{weight(row)}</td>
                 <td className={TD}>{services(row)}</td>
-                <td className={TD}>{recordedBy(row)}</td>
+                <td className={`${TD} whitespace-nowrap`}>{recordedBy(row)}</td>
               </tr>
             ))}
           </tbody>

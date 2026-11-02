@@ -34,14 +34,14 @@ export function PregnanciesDetail({ t, locale, rows }: { t: Dictionary; locale: 
               <th scope="col" className={TH}>{c.status}</th>
             </tr>
           </thead>
-          <tbody className="tnum divide-y divide-line">
+          <tbody className="divide-y divide-line">
             {rows.map((row) => (
               <tr key={row.id} className="align-top">
                 <td className={TD}>{mother(row)}</td>
-                <td className={`${TD} whitespace-nowrap`}>{day(row.registered)}</td>
-                <td className={`${TD} whitespace-nowrap`}>{day(row.lmp)}</td>
-                <td className={`${TD} whitespace-nowrap font-semibold`}>{day(row.due)}</td>
-                <td className={`${TD} whitespace-nowrap`}>{gp(row)}</td>
+                <td className={`${TD} tnum whitespace-nowrap`}>{day(row.registered)}</td>
+                <td className={`${TD} tnum whitespace-nowrap`}>{day(row.lmp)}</td>
+                <td className={`${TD} tnum whitespace-nowrap font-semibold`}>{day(row.due)}</td>
+                <td className={`${TD} tnum whitespace-nowrap`}>{gp(row)}</td>
                 <td className={TD}>{status(row)}</td>
               </tr>
             ))}

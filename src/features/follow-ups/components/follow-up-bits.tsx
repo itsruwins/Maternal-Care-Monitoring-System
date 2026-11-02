@@ -63,14 +63,17 @@ export function TriesSummary({ t, locale, entries }: { t: Dictionary; locale: Lo
   );
 }
 
+/** The date or slot never breaks across lines (The Unbroken Time Rule); the line may break before it. */
+const unbroken = (text: string) => text.replace(/ /g, "\u00a0");
+
 /** How a closed item ended: "Came in Thu, Nov 5", "Rebooked for …", etc. */
 export function endingText(t: Dictionary, locale: Locale, ending: NonNullable<FollowUpItem["ending"]>): string {
   const f = t.followUps;
   switch (ending.how) {
     case "CAME_IN":
-      return format(f.endings.CAME_IN, { date: ending.at ? formatSlotDate(ending.at, locale, "short") : "" });
+      return format(f.endings.CAME_IN, { date: ending.at ? unbroken(formatSlotDate(ending.at, locale, "short")) : "" });
     case "REBOOKED":
-      return format(f.endings.REBOOKED, { when: ending.rebookedAt ? formatSlot(ending.rebookedAt, locale, "short") : "" });
+      return format(f.endings.REBOOKED, { when: ending.rebookedAt ? unbroken(formatSlot(ending.rebookedAt, locale, "short")) : "" });
     case "CLOSED":
       return ending.closeReason ? `${f.endings.CLOSED}: ${f.closeReasons[ending.closeReason]}` : f.endings.CLOSED;
     default:

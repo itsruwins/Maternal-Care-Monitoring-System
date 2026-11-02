@@ -15,7 +15,7 @@ export function FigureList({ figures, className }: { figures: Figure[]; classNam
   return (
     <dl className={cn("divide-y divide-line", className)}>
       {figures.map((figure) => (
-        <div key={figure.label} className="flex min-h-11 items-center justify-between gap-4 py-2 text-[0.95rem]">
+        <div key={figure.label} className="flex min-h-11 break-inside-avoid items-center justify-between gap-4 py-2 text-[0.95rem]">
           <dt className={cn("min-w-0 break-words", figure.sub ? "pl-4 text-ink-soft" : "font-medium text-ink")}>{figure.label}</dt>
           <dd className={cn("tnum shrink-0 font-bold", figure.alert && figure.value > 0 ? "text-rose-deep" : "text-ink")}>{figure.value}</dd>
         </div>

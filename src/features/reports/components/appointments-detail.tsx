@@ -49,10 +49,10 @@ export function AppointmentsDetail({ t, locale, rows }: { t: Dictionary; locale:
               <th scope="col" className={TH}>{c.followUp}</th>
             </tr>
           </thead>
-          <tbody className="tnum divide-y divide-line">
+          <tbody className="divide-y divide-line">
             {rows.map((row) => (
               <tr key={row.id} className="align-top">
-                <td className={`${TD} w-[22%]`}>{when(row)}</td>
+                <td className={`${TD} tnum w-[22%]`}>{when(row)}</td>
                 <td className={`${TD} w-[24%]`}>{mother(row)}</td>
                 <td className={TD}>{row.service}</td>
                 <td className={TD}>

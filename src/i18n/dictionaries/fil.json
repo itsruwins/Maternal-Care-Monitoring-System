@@ -381,7 +381,7 @@
       "title": "Kabuwanan sa loob ng 30 araw",
       "empty": "Walang kabuwanan sa susunod na 30 araw.",
       "noPurok": "Wala pang purok",
-      "week": "Ika-{weeks} lnggo",
+      "week": "Ika-{weeks} linggo",
       "dueOn": "Kabuwanan: {date}",
       "pastDue": "{days} araw nang lampas sa kabuwanan",
       "pastDueOne": "1 araw nang lampas sa kabuwanan",
@@ -394,7 +394,7 @@
       "title": "Admin",
       "accounts": {
         "title": "Mga account",
-        "mothers": "Mga ina",
+        "mothers": "Mga nanay",
         "withLogin": "May login",
         "withoutLogin": "Walang login",
         "signedUp": "Nag-sign up sa website noong {month}",
@@ -406,10 +406,10 @@
         "title": "Kalagayan ng SMS",
         "sentIn": "Naipadala noong {month}",
         "ofLimit": "{count} sa {limit}",
-        "monthLine": "Natanggap {delivered} · Hindi naipadala {failed} · Hindi na ipinadala {skipped}",
+        "monthLine": "Natanggap {delivered} · Pumalya {failed} · Hindi na ipinadala {skipped}",
         "planNote": "{limit} text kada buwan ang pinapayagan ng HTTPSMS plan, at kasama rito ang mga sagot niya.",
         "waiting": "Naghihintay ngayon",
-        "failed": "Mga hindi naipadala"
+        "failed": "Mga pumalya"
       }
     }
   },
@@ -472,11 +472,11 @@
       "visits": {
         "title": "Mga bisita",
         "completed": "Natapos na bisita",
-        "mothers": "Mga inang nakita",
+        "mothers": "Mga nanay na nakita",
         "walkIns": "Walk-in (walang appointment)",
         "chartWeek": "Bisita kada linggo",
         "chartMonth": "Bisita kada buwan",
-        "chartNote": "Lunes hanggang Linggo ang bawat linggo.",
+        "chartNote": "Lunes hanggang Linggo ang bawat linggo; puwedeng kulang ang una at huli.",
         "visitsCount": "{count} bisita",
         "visitsOne": "1 bisita",
         "showTable": "Ipakita bilang talaan",
@@ -498,7 +498,7 @@
         "note": "Ayon sa petsa ng pagpapadala, o kung kailan ito dapat ipadala.",
         "sent": "Naipadala",
         "delivered": "Natanggap",
-        "failed": "Hindi naipadala",
+        "failed": "Pumalya",
         "notSent": "Hindi na ipinadala",
         "waiting": "Naghihintay"
       }
@@ -545,7 +545,7 @@
       "walkIn": "Walk-in",
       "followUpOpen": "Bukas pa",
       "weight": "{kg} kg",
-      "missing": "Wala pa"
+      "missing": "Hindi naitala"
     },
     "actionsLabel": "I-print o i-download",
     "print": {
@@ -557,7 +557,7 @@
       "period": "Panahon: {period}",
       "filters": "Mga filter: {list}",
       "printed": "Na-print noong {when}",
-      "preparedBy": "Inihanda ni:",
+      "preparedBy": "Prepared by:",
       "notedBy": "Noted by:",
       "nameAndPosition": "Pangalan at posisyon"
     },
@@ -1327,7 +1327,7 @@
     "completedAtVisit": "Natapos sa bisita niya",
     "recent": "Mga kamakailang bisita",
     "recentEmpty": "Wala pang naitalang bisita.",
-    "weekShort": "Ika-{weeks} lnggo",
+    "weekShort": "Ika-{weeks} linggo",
     "servicesCount": "{count} serbisyo",
     "servicesOne": "1 serbisyo",
     "noServices": "Walang serbisyo",
@@ -1703,7 +1703,7 @@
       "counts": {
         "waiting": "Naghihintay",
         "sentToday": "Naipadala ngayon",
-        "failed": "Hindi naipadala"
+        "failed": "Pumalya"
       },
       "search": {
         "label": "Hanapin ang nanay",
@@ -1722,7 +1722,7 @@
         "waiting": "Naghihintay",
         "sent": "Naipadala o natanggap",
         "delivered": "Natanggap",
-        "failed": "Hindi naipadala",
+        "failed": "Pumalya",
         "skipped": "Hindi na ipinadala"
       },
       "typeFilter": {
@@ -1744,7 +1744,7 @@
         "retrying": "Susubukan ulit",
         "SENT": "Naipadala",
         "DELIVERED": "Natanggap",
-        "FAILED": "Hindi naipadala",
+        "FAILED": "Pumalya",
         "SKIPPED": "Hindi na ipinadala"
       },
       "when": {

@@ -647,6 +647,56 @@ components:
     typography: "{typography.label}"
     rounded: "{rounded.xl}"
     padding: "10px 14px"
+  greeting-panel:
+    backgroundColor: "{colors.blush}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.3xl}"
+    padding: "24px"
+  figure-row:
+    backgroundColor: "transparent"
+    textColor: "{colors.ink}"
+    typography: "{typography.ui}"
+    rounded: "{rounded.xl}"
+    height: "44px"
+  due-soon-card:
+    backgroundColor: "{colors.white}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.3xl}"
+    padding: "0 20px"
+  sms-usage-panel:
+    backgroundColor: "{colors.milk}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.xl}"
+    padding: "16px"
+  sms-usage-meter:
+    backgroundColor: "{colors.mint}"
+    rounded: "{rounded.full}"
+    height: "8px"
+  sms-usage-meter-fill:
+    backgroundColor: "{colors.leaf}"
+    rounded: "{rounded.full}"
+    height: "8px"
+  report-total-tile:
+    backgroundColor: "{colors.white}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.2xl}"
+    padding: "14px 16px"
+  report-card:
+    backgroundColor: "{colors.white}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.3xl}"
+    padding: "20px"
+  report-detail-card:
+    backgroundColor: "{colors.white}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.2xl}"
+    padding: "16px"
+  chart-column:
+    backgroundColor: "{colors.chart-green}"
+    width: "24px"
+  service-bar:
+    backgroundColor: "{colors.chart-green}"
+    height: "16px"
 ---
 
 # Design System: Taysan MaternaCare
@@ -671,6 +721,8 @@ Following up a missed visit stays gentle on both sides. Staff see open items old
 
 Text reminders stay out of the way until something needs a person. Admins get an SMS log: an Automatic sending card with the SMS phone's status, three tappable count tiles, a filter card and the texts as a table or cards, each with a status chip whose outline says how settled it is (dashed waiting, solid sent, filled done). Staff see one bell line per visit; the mother sees one quiet line about her reminder, and is asked to act only when the fault is her number.
 
+Dashboards and reports are where the counts live, and they stay as quiet as the rest. Staff open on a short rose greeting, five tappable count tiles in the SMS log's style, today's appointments beside the pregnancies due within 30 days and, for admins, two cards of line-divided figures (accounts and SMS health). Reports are one page of link tabs and a filter card over either a Summary (four totals, then a card of figures per subject, a chart-green column chart and ranked service bars) or a detail tab (a table on wide screens, cards on phones). The same page prints: on paper it becomes a plain black-on-white report with the health center's letterhead and signature lines, and every chart becomes a table.
+
 **Key Characteristics:**
 - Greens do the work; rose is a small accent; text only in ink, ink-soft, leaf or rose-deep.
 - Inter only, extra-bold display and section titles, tabular numerals for every date and count.
@@ -683,41 +735,42 @@ Text reminders stay out of the way until something needs a person. Admins get an
 - Visits: unit-inside vital fields, pill service toggles, a soft cream double-check before any hard error, and labelled two-line trend charts.
 - Follow-ups: oldest first, a rose-deep "Missed N days ago" clue, a leaf Log follow-up beside a mint Rebook, outcome and ending chips in mint or cream, and a blush heart notice for her.
 - SMS: dashed, solid or filled status chips, tappable count tiles with a leaf caret, a folded "Show text", and rose-deep only for a text that failed or is being tried again.
+- Dashboards and reports: count tiles with the caret glued to the last word, line-divided figure rows with bold tabular counts, rose-deep only for a count above zero that needs someone, chart-green columns and bars that always write their counts, and a black-on-white print with a letterhead and signature lines.
 
 ## Colors
 
 A warm, quiet green-and-cream palette with one dusty-rose accent; every text colour clears 4.5:1 on its ground. Two disabled states sit below that on purpose and are accepted: a taken time chip faded on cream (1.77:1) and a closed staff calendar day (2.16:1). Both are disabled, and each also says so another way (struck through, or the Closed label).
 
 ### Primary
-- **Leaf Green** (leaf): primary buttons, links, the dashed Waiting and solid-outline Sent SMS chips, the count tiles' carets, "See in SMS log", the online dot on the SMS phone line, the selected language pill, the current step, the "Sample" pill on floating hero cards; the chosen day card, time chip and month day in the slot picker, and the selected day in the staff calendar. White on leaf is 7.6:1; leaf on mint is 6.2:1.
+- **Leaf Green** (leaf): primary buttons, links, the dashed Waiting and solid-outline Sent SMS chips, the count tiles' carets, "See in SMS log", the online dot on the SMS phone line, the selected language pill, the current step, the "Sample" pill on floating hero cards; the chosen day card, time chip and month day in the slot picker, and the selected day in the staff calendar; on the dashboard, the carets on count tiles and figure rows, the "See all" link and the filled part of the SMS usage meter. White on leaf is 7.6:1; leaf on mint is 6.2:1.
 - **Deep Leaf** (leaf-deep): hover state of primary buttons and links only.
 - **Fern** (fern): fill and decoration only: filled icon circles, completed stepper lines, habit check marks; the open-day dot in the month view, the duotone sun and cloud-sun beside Morning and Afternoon, the leaf accent on service art. Too light for text.
-- **Mint** (mint): the green tint: default icon circles, soft buttons (the slider −/+), done status chips, service tiles, the tips band (at 60%); in the app, the active nav pill, the Active status badge, the Health worker role badge and the selected role choice; the active record tab, the countdown pill, the Live birth outcome chip, a shown purok's icon circle and the checked login option card (at 50%); in booking, the mint service-art blob, the month label in the day strip, the date tile on visit cards, the Confirmed and Completed chips, the calendar's per-day count badges and the open-day hover (at 40%); in visits, the time tile on today's appointments, a service toggle that is on (and its hover at 40%), and the checkup and "Visit saved" icon circles on staff pages; in follow-ups, the Rebook button, the "Reached her" outcome chip, the "Rebooked for …" and "Came in on …" ending chips, and a chosen method or outcome card (at 50%); in SMS, the Delivered chip, the chosen count tile (with a leaf border) and the soft Retry button.
+- **Mint** (mint): the green tint: default icon circles, soft buttons (the slider −/+), done status chips, service tiles, the tips band (at 60%); in the app, the active nav pill, the Active status badge, the Health worker role badge and the selected role choice; the active record tab, the countdown pill, the Live birth outcome chip, a shown purok's icon circle and the checked login option card (at 50%); in booking, the mint service-art blob, the month label in the day strip, the date tile on visit cards, the Confirmed and Completed chips, the calendar's per-day count badges and the open-day hover (at 40%); in visits, the time tile on today's appointments, a service toggle that is on (and its hover at 40%), and the checkup and "Visit saved" icon circles on staff pages; in follow-ups, the Rebook button, the "Reached her" outcome chip, the "Rebooked for …" and "Came in on …" ending chips, and a chosen method or outcome card (at 50%); in SMS, the Delivered chip, the chosen count tile (with a leaf border) and the soft Retry button; in dashboards and reports, the small icon circle on every admin and report card, the current report tab and the track of the SMS usage meter.
 
 ### Secondary
 - **Dusty Rose** (rose): fill and decoration only: the slider fill, the closing heart, selection highlight (at 45%), SMS-thread dividers (at 40%), the small plus and sparkle accents on service art. Never text.
-- **Blush** (blush): the rose tint: danger-sign card, SMS thread panel, blush icon circles, error notices, the destructive button, the top of the rose hero gradient; in the app, the initials avatar and the Mother role badge; the "Week N" pregnancy chip, the overdue countdown pill and the Today danger panel (at 60%); the blush service-art blob, the Rescheduled ("New time sent") and Missed chips, the new-time proposal panel (at 70%), the closed-day icon circle and every inline form error notice; in visits, the week tile on each of her visit rows and the checkup icon circle on her visit page; her missed-visit notice (at 70%); in SMS, the Failed chip and the monthly-limit notice.
-- **Rose Deep** (rose-deep): rose text and glyphs: danger signs and the danger panel's action line, form errors, the landing baby glyph, reminder flags, the Week chip and overdue countdown; in booking, the Closed label on calendar days, the "still has bookings" warning on a closed day, a failed reminder line, the Cancel action, and the solid request-count badge (white numerals); in follow-ups, the "Missed N days ago" line with its bold clock, the open count on the Open tab and the record's Follow-ups tab, the "Date passed" line on a request that went by, the heart and bullets of her missed-visit notice, and Delete on a log entry; in SMS, the Failed chip and its reason, the dashed "Trying again" chip and its reason line, a Failed count above zero, the offline dot on the SMS phone line and the monthly-limit notice; the staff reminder line when a text failed or is being tried again, and her reminder note when it failed (with an underlined profile link only for a bad number). 5.8:1 on white, 4.77:1 on blush (the visit week tile is the lowest text pair in the app).
+- **Blush** (blush): the rose tint: danger-sign card, SMS thread panel, blush icon circles, error notices, the destructive button, the top of the rose hero gradient; in the app, the initials avatar and the Mother role badge; the "Week N" pregnancy chip, the overdue countdown pill and the Today danger panel (at 60%); the blush service-art blob, the Rescheduled ("New time sent") and Missed chips, the new-time proposal panel (at 70%), the closed-day icon circle and every inline form error notice; in visits, the week tile on each of her visit rows and the checkup icon circle on her visit page; her missed-visit notice (at 70%); in SMS, the Failed chip and the monthly-limit notice; the staff dashboard's greeting panel (the rose gradient, without the curve).
+- **Rose Deep** (rose-deep): rose text and glyphs: danger signs and the danger panel's action line, form errors, the landing baby glyph, reminder flags, the Week chip and overdue countdown; in booking, the Closed label on calendar days, the "still has bookings" warning on a closed day, a failed reminder line, the Cancel action, and the solid request-count badge (white numerals); in follow-ups, the "Missed N days ago" line with its bold clock, the open count on the Open tab and the record's Follow-ups tab, the "Date passed" line on a request that went by, the heart and bullets of her missed-visit notice, and Delete on a log entry; in SMS, the Failed chip and its reason, the dashed "Trying again" chip and its reason line, a Failed count above zero, the offline dot on the SMS phone line and the monthly-limit notice; the staff reminder line when a text failed or is being tried again, and her reminder note when it failed (with an underlined profile link only for a bad number). In dashboards and reports it marks only a count above zero that needs someone (Waiting requests, Needs follow-up, Missed appointments, Failed texts), the "Past due by N days" line with its bold clock, a month's text count once it reaches the plan limit, and a missed appointment's "Still open" follow-up. 5.8:1 on white, 4.77:1 on blush (the visit week tile is the lowest text pair in the app).
 
 ### Neutral
-- **Milk** (milk): the page ground and the browser theme colour; inside white cards, the vital-value tiles, the "chart after your second visit" note and the hover on search-result rows.
+- **Milk** (milk): the page ground and the browser theme colour; inside white cards, the vital-value tiles, the "chart after your second visit" note, the SMS usage panel on the admin dashboard, and the hover on search-result rows and on figure rows that open a list.
 - **White** (white): cards, dialogs, inputs, the footer; the staff sidebar, top bars, bottom nav, menus and sheets.
 - **Cream** (cream): quiet fills: services band, unavailable day cards and taken time chips (at 70%), the beige-tone service-art blob, the Cancelled chip, info tiles inside cards, the dialog and sheet close button, sample chips; the hover fill for nav and menu rows and the Inactive status badge; the outcome chip for every outcome except live birth, the Hidden purok badge and the login info notice; the visit form's double-check notice (ink text, filled leaf info icon); the "Couldn't reach her" outcome chip and the ending chip of a follow-up closed without a visit; the "Not sent" SMS chip and the opened "Show text" panel.
 - **Beige** (beige): warm tiles and the "To be announced" chip; the end of the beige hero tone; the Admin role badge and the pending-password chip; a hidden purok's icon circle and the past-pregnancies icon circle.
 - **Sage** (sage): soft borders (outline button, dashed timeline), scrollbar thumb, the dot on an SMS phone line with no status yet. Not text.
-- **Ink** (ink): body and heading text, 14.4:1 on white; the dialog overlay at 40%.
+- **Ink** (ink): body and heading text, 14.4:1 on white; the dialog overlay at 40%; the small hover readout over a report column (white text); the rules under the printed letterhead and over the signature names.
 - **Ink Soft** (ink-soft): secondary text, placeholders, leading input icons. 6.1:1 on white, 5.3:1 on cream, 4.5:1 on beige, at least 4.67:1 across the rose hero.
-- **Line** (line): decorative hairlines and dividers only: sidebar and top-bar edges, table and list row dividers, menu separators; chart gridlines, the border of an off service toggle, a service-entry card and the chart readout.
+- **Line** (line): decorative hairlines and dividers only: sidebar and top-bar edges, table and list row dividers, menu separators; chart gridlines, the border of an off service toggle, a service-entry card and the chart readout; figure-row hairlines, the hover border of count tiles and, on paper, the border of each summary block.
 - **Field** (field): input borders, 3:1 on white and milk.
 
 ### Tertiary (charts only)
-- **Chart Green** (chart-green): the first series in a trend chart (weight; the top blood-pressure number). 4.9:1 on white. A data colour, never UI chrome or text.
+- **Chart Green** (chart-green): the first series in a trend chart (weight; the top blood-pressure number), and the one series in the reports' visits columns and service bars. 4.9:1 on white. A data colour, never UI chrome or text.
 - **Chart Rose** (chart-rose): the second series (the bottom blood-pressure number). About 2.5:1 on white, chosen for colour-blind separation from chart green; it is never the only carrier of a value (see The Said Twice Chart Rule).
 
 Tinted panels use radial gradients that stay inside the palette: rose (blush → #f2dfd6 → #eedfd2), green (#eef2ec → mint → #d6e0d8) and beige (#f7f1e6 → #efe6d6 → beige). The rose end was lightened to #eedfd2 so ink-soft keeps 4.5:1 at the bottom of the hero.
 
 ### Named Rules
-**The Rose Is an Accent Rule.** Rose appears only on hearts, the baby (glyph or picture), danger signs, errors, soft tints and the few things that need her or the staff's attention (a new time to answer, a missed visit and how long ago it was, a request whose date has passed, a closed day, the waiting-request and open follow-up counts, a text that failed or is being tried again). Once a follow-up is sorted it leaves rose: reached, rebooked and came-in states are mint, the rest cream. It never becomes a primary button, a section heading colour or a large flat fill beyond blush; the solid rose-deep count badge stays 24px.
+**The Rose Is an Accent Rule.** Rose appears only on hearts, the baby (glyph or picture), danger signs, errors, soft tints and the few things that need her or the staff's attention (a new time to answer, a missed visit and how long ago it was, a request whose date has passed, a closed day, the waiting-request and open follow-up counts, a text that failed or is being tried again). Once a follow-up is sorted it leaves rose: reached, rebooked and came-in states are mint, the rest cream. It never becomes a primary button, a section heading colour or a large flat fill beyond blush; the solid rose-deep count badge stays 24px. On dashboards and reports a count turns rose-deep only above zero, and only when it needs someone (waiting requests, open follow-ups, missed appointments, failed texts); every other count stays ink.
 
 **The Light Colours Don't Speak Rule.** Fern, sage and rose are fills and decoration only. Text and meaningful glyphs use ink, ink-soft, leaf or rose-deep.
 
@@ -730,6 +783,8 @@ Tinted panels use radial gradients that stay inside the palette: rose (blush →
 **The Said Twice Chart Rule.** Chart series colours never carry a value alone. A chart with two series names each line at its end in 13px ink-soft semibold (no separate legend), the readout repeats every value in ink bold beside a short swatch, and a "Show as table" disclosure lists them all. Chart green and chart rose stay inside charts.
 
 **The Visit Status Rule.** A visit's status is a 28px chip from the same tints, identical for mothers and staff: Requested is a dashed leaf border with leaf text and no fill (asked, not yet real); Confirmed and Completed are mint with leaf; Rescheduled ("New time sent") and Missed are blush with rose-deep; Cancelled is cream with ink-soft. The Today week strip repeats the map on its date circles.
+
+**The Black on White Rule.** Everything inside a printed report is black on no fill: chips, tints, chart green, rose-deep alerts and shadows all drop, and links print as plain text. A printed value is always written, never carried by colour.
 
 **The Outline Says How Settled Rule.** A chip's edge tells how far along it is, across visits and texts alike. A dashed outline with no fill is not settled yet: a Requested visit and a Waiting text in leaf, a text "Trying again" in rose-deep. A solid 1px leaf outline with no fill is a text Sent but not yet confirmed. A fill is an outcome: Delivered mint with leaf, Failed blush with rose-deep, Not sent cream with ink-soft (and the visit fills above).
 
@@ -756,16 +811,18 @@ In visits: vital-sign fields set the typed value at 18px semibold with the unit 
 
 In follow-ups: the mother's name and the service are semibold (the service medium in the table) over the missed date and time in 14px ink-soft tabular; the "Missed N days ago" clue is 14px semibold rose-deep; the try count is semibold over "Last: …" in 14px ink-soft; a log entry leads with its date and method in semibold tabular. On her record the groups ("Needs follow-up", "Closed") are 18px bold and each card's "Follow-ups" label is 14px semibold ink-soft. Her missed-visit notice title is 18px bold; its list and body are UI size.
 
+In dashboards and reports: the greeting takes the Headline style over today's long date in ink-soft tabular. Section headings (Today's appointments, Due within 30 days, Admin, the report's tab name) and every admin or report card title are 18px bold; the report's "Showing {period}" sits under its heading in UI-size medium ink-soft. Count tiles and summary totals set the number at 24px extra-bold tabular over the label in 14px medium ink-soft. Figure rows are UI size: the label medium ink (a sub-row regular ink-soft, indented 16px) and the count bold tabular at the right. Due-soon rows give the name in semibold over purok and week in 14px ink-soft, and "Due {date}" in semibold tabular over the days line in 14px. Detail tables are UI size with caption semibold ink-soft heads, under a 14px ink-soft count line. The visits chart writes counts above its columns and dates below them in 12px tabular ink-soft (counts semibold). On paper the letterhead name is 16px bold, the report title 20px bold, the rest 14px, and detail tables drop to 10pt.
+
 Implementation note: the class merger (`cn`) registers the caption, title and display size utilities as font sizes, so they survive next to a text colour class. Any new custom text-size token must be added there too, or it will be dropped silently. (The `title` utility carries the Headline size.)
 
 ### Named Rules
 **The Extra-Bold Title Rule.** Every display, section and dialog title is weight 800 with negative tracking. Body never goes above 600 except numbers and key values (700).
 
-**The Tabular Numbers Rule.** Every date, week count and time uses tabular lining numerals so values never jitter as they change.
+**The Tabular Numbers Rule.** Every date, week count and time uses tabular lining numerals so values never jitter as they change. The tabular class goes on the numeric element itself (a date, time, week, BP, weight or count cell), never on a whole row, card or block of mixed text: tabular figures also widen hyphens and dashes, so names and sentences inside a tabular container space oddly.
 
 **The Gentle Wrap Rule.** Headings h1–h3 balance their lines; paragraphs and list items wrap pretty. No orphaned last words.
 
-**The Unbroken Time Rule.** A time never breaks from its AM or PM: the shared date and time formatters put a no-break space before it, and times written into copy do the same. A short date and time inside a labelled line ("Next visit: Thu, Oct 29 · 9:00 AM") is joined with no-break spaces throughout, so the line breaks after the label, never before "· 9:00 AM"; a status after it, like "(Requested)", may still wrap. A Filipino hyphenated word that must stay whole (makipag-ugnayan) takes a word joiner after its hyphen. Reminder lines (staff and hers) and every SMS log slot (send and retry times, "Service · date · time", the phone-status time, the limit notice's date) join every space with a no-break space, so the sentence wraps only before the slot. Her long date lines ("Wednesday, November 4 · 1:30 PM") go through `unbroken()`, which swaps every space not after a comma for a no-break space, so the line can only break after the weekday. In JSX the joiner is a string expression, `{"\u00a0·\u00a0"}`; a `\u00a0` typed as bare JSX text is not an escape and prints as six characters. A short word that leads into a date is joined to it in the dictionary (Filipino "para sa {when}" uses no-break spaces), so no single word is left alone at a line end.
+**The Unbroken Time Rule.** A time never breaks from its AM or PM: the shared date and time formatters put a no-break space before it, and times written into copy do the same. A short date and time inside a labelled line ("Next visit: Thu, Oct 29 · 9:00 AM") is joined with no-break spaces throughout, so the line breaks after the label, never before "· 9:00 AM"; a status after it, like "(Requested)", may still wrap. A Filipino hyphenated word that must stay whole (makipag-ugnayan) takes a word joiner after its hyphen. Reminder lines (staff and hers) and every SMS log slot (send and retry times, "Service · date · time", the phone-status time, the limit notice's date) join every space with a no-break space, so the sentence wraps only before the slot. Her long date lines ("Wednesday, November 4 · 1:30 PM") go through `unbroken()`, which swaps every space not after a comma for a no-break space, so the line can only break after the weekday. In JSX the joiner is a string expression, `{"\u00a0·\u00a0"}`; a `\u00a0` typed as bare JSX text is not an escape and prints as six characters. A short word that leads into a date is joined to it in the dictionary (Filipino "para sa {when}" uses no-break spaces), so no single word is left alone at a line end. Report dates come from the report formatters, which join a day with no-break spaces ("Nov 5, 2026") and keep a time with its AM or PM; a date and time in one cell are joined with a no-break middle dot. A short tag that must stay whole takes whitespace-nowrap (Walk-in, the Filipino "May appointment"), and a count tile's last word is wrapped with its caret so the caret never starts a line alone.
 
 **The Sentence Case Label Rule.** Small labels stay in sentence case at normal tracking: sidebar group labels, table column heads, badges, form labels and bottom-nav labels. No uppercase or letter-spaced micro-labels; the week strip's weekday letters are the one exception.
 
@@ -798,6 +855,10 @@ Desktop gets a real web layout: header with brand, section links, language switc
 - **SMS log (admin):** title and intro (up to 60ch), the Automatic sending card (Send now beside the text from 640px, full width below it on phones), three count tiles in one row at every width, the filter card, a result count, then the texts: a table from 1280px, cards below it, two per row from 768px, and the shared pager. The filter card spans the search across two columns with status, type and the date range two per row from 640px and four columns from 1280px; below 640px those four fold behind the "Filters" disclosure, as on the mother list. Search keeps a full-width row (fit-width from 1280px) with a ghost Clear when filters are set.
 - **SMS log tab (mother record):** the record's "SMS log" tab holds an 18px bold "Her texts" heading over her texts as the same cards without her name, two per row from 1280px; Retry shows for admins only; with none, a centred white empty card.
 - **Rebook:** back link, title and intro, the mother's summary card, an ink-soft suggested-date line, then the shared staff booking form without step numbers. A missed visit already sorted shows one card saying how it ended instead.
+- **Staff dashboard (Home):** blocks 24px apart: the greeting panel, then five count tiles 12px apart, two per row on phones (the fifth spans the row), three from 768px and five from 1280px (beside the sidebar there is no room at 1024px). Then Today's appointments beside Due within 30 days from 1280px, top-aligned, stacked below, each under an 18px bold heading. Admins get an "Admin" heading over Accounts and SMS health, side by side from 1280px.
+- **Reports:** title and intro, the report tab bar, the filter card, then the report: its tab name with "Showing {period}" below it on the left and Print and Download CSV on the right, wrapping under it when there is no room. On phones the tab bar bleeds to the screen edge, scrolls sideways and fades its ends (16px on the left, 24px on the right) below 640px. The filter card is one column on phones and two per row from 640px with Show (and a ghost Clear) across the full width; from 1280px it becomes one wrapping row where each field keeps at least 192px and Show fits its label. From / To join Period only while "Custom dates" is chosen.
+- **Report Summary:** four totals two per row, four from 1280px; then the subject cards one column, two across from 1280px and top-aligned; the admin Text messages card spans both columns with its five figures in one row.
+- **Report detail tabs:** a count line, then a table from 1280px and cards below it, two per row from 768px. On paper the table always prints (see Printed Report).
 
 ### Named Rules
 **The Web, Not App Rule.** Desktop is a website, not a stretched phone. Phone-width layouts borrow Flo's patterns, but there are no app-store badges, install prompts or device frames; the product says it works in the phone's browser.
@@ -816,6 +877,8 @@ Desktop gets a real web layout: header with brand, section links, language switc
 
 **The Brand Gives Way Rule.** In the landing header the brand mark may shrink (min-w-0) and the action group may not (shrink-0), so Log in is never pushed off screen. The compact wordmark wraps to two lines (1.1 line height) from 360 to 419px instead of truncating, and truncates only below 360px. Below 400px the header tightens: 6px gaps between brand and actions (4px inside the action group), 6px side padding on Log in, a narrower EN/FIL switch (36px pill buttons with 8px padding) and an 8px gap inside the brand mark.
 
+**The Current Tab Shows Rule.** A tab bar that scrolls sideways on phones scrolls its current tab into view when the page loads (record tabs and report tabs), so the place she is in is never off screen; the report bar also fades its ends to say there is more.
+
 **The Zero Minimum Rule.** A grid whose children hold long no-wrap content names its phone column as `grid-cols-1` (minmax(0, 1fr)); an implicit column sizes to min-content and pushes the page sideways (the How-it-works SMS bubble was the case). `truncate` works only when every flex parent between it and the bounded box has min-w-0.
 
 ## Elevation & Depth
@@ -827,7 +890,7 @@ A hybrid: tonal layering does most of the work (milk ground, cream and mint band
 - **Raised** (`0 2px 4px rgb(31 45 39 / 0.04), 0 14px 32px -10px rgb(31 45 39 / 0.16)`): primary content cards: slider card, records card, health center card, auth card, floating hero cards, toasts, slider thumb.
 - **Float** (`0 4px 10px rgb(31 45 39 / 0.05), 0 28px 60px -18px rgb(31 45 39 / 0.28)`): the highest layer: dialogs and bottom sheets, the weeks card; in the app, the mother bottom nav, the booking summary bar, the staff menu sheet and the profile menu.
 
-In the signed-in app, content cards, filter cards, tables and list cards rest on milk with the soft shadow, not raised; the white sidebar and top bars are flat with a line border instead of a shadow. In pickers the chosen day card, time chip and month day take the soft shadow under their leaf fill; service tiles rest flat with a line border and lift 2px with the soft shadow and a leaf border on hover. In visits, every card rests with the soft shadow; only the "Visit saved" confirmation is raised. The chart readout takes the soft shadow and a line border; service toggles and service-entry cards are flat with borders.
+In the signed-in app, content cards, filter cards, tables and list cards rest on milk with the soft shadow, not raised; the white sidebar and top bars are flat with a line border instead of a shadow. In pickers the chosen day card, time chip and month day take the soft shadow under their leaf fill; service tiles rest flat with a line border and lift 2px with the soft shadow and a leaf border on hover. In visits, every card rests with the soft shadow; only the "Visit saved" confirmation is raised. The chart readout takes the soft shadow and a line border; service toggles and service-entry cards are flat with borders. On the dashboard and reports every tile, card, filter card and table card rests on milk with the soft shadow; count tiles add a 2px border, clear at rest and line on hover. Paper has no shadows at all (see The Black on White Rule).
 - **Leaf glow** (`0 1px 2px rgb(31 45 39 / 0.12), 0 8px 18px -8px rgb(62 90 77 / 0.55)`): under the primary button only.
 
 ### Named Rules
@@ -848,6 +911,8 @@ In visits: section cards, the visit lists and the mother's history use 36px; tod
 In follow-ups: the filter card, the table card, list and record cards, method and outcome choice cards and the "No more follow-up needed" option use 28px; the missed-visit notice is 36px on My Appointments and 20px as the Today insight; outcome chips are pills, while ending chips keep a 28px radius so a long "Rebooked for …" can wrap.
 
 In SMS: the Automatic sending card, count tiles, filter card, table card and text cards use 28px; the monthly-limit notice and the opened text panel use 20px; status chips, the phone-status dot and Retry are pills or circles.
+
+In dashboards and reports: the greeting panel, the due-soon card, the admin cards and the report subject cards use 36px; count tiles, summary totals, the filter card, the detail table card, detail cards and empty notes use 28px; the SMS usage panel, a linked figure row's hover and the column readout use 20px. Chart columns round 4px at the top and sit square on the baseline; service bars round 4px at their end; the usage meter is a pill. On paper every corner is square.
 
 Hero panels curve: the bottom edge bulges down as an elliptical radius (50% wide by 28, 44 or 72px tall). The illustration sits in an arch (fully rounded top, 40px bottom corners) with a thin white ring. A large, faint white ring (22–28px border at 35–40% white) sits half off the corner of tinted panels for depth without content. SMS bubbles take one tighter corner on the speaker's side.
 
@@ -911,7 +976,7 @@ Calm, round and tactile, with a small squeeze on press.
 - **Menu sheet:** below 1024px the sidebar opens as a white sheet from the left (up to 320px, 86% of the viewport) over a 40% ink overlay, sliding in over 300ms with expo-out, with the same 44px cream close button as dialogs.
 - **Mother bottom nav:** a snug white pill (only as wide as its tabs, never wider than the screen less 32px) at 95% white with a line border, backdrop blur and the float shadow, 6px padding and 4px gaps. Tabs are icon-only 48px pills (24px regular icon, ink-soft, cream hover); the current tab opens into a mint pill with a filled icon and its name in UI-size leaf semibold. The name slides open by animating its grid column from 0fr to 1fr with fade and margin over 420ms on cubic-bezier(0.32, 0.72, 0, 1); reduced motion turns the transition off. Folded names stay in the accessible name.
 - **Profile menu:** a 44px initials avatar (blush, rose-deep bold) opens a white menu (28px radius, float shadow, at least 224px wide) with the name in UI semibold and role · @username in caption ink-soft, a line separator, then 44px rows with ink-soft icons and a cream highlight.
-- **Record tabs:** plain links in a white pill bar (6px padding, soft shadow); 40px pill tabs in UI-size text, ink-soft medium with a cream hover, mint with leaf semibold when current. On phones the bar scrolls sideways to the screen edge.
+- **Record tabs:** plain links in a white pill bar (6px padding, soft shadow); 40px pill tabs in UI-size text, ink-soft medium with a cream hover, mint with leaf semibold when current. On phones the bar scrolls sideways to the screen edge with the current tab scrolled into view (see The Current Tab Shows Rule). The report tabs are the same bar.
 - **Back link:** a leaf 14px semibold underlined link with a bold left caret above the page ("Mothers").
 - **Compact brand mark:** in crowded top bars the wordmark drops to UI size at phone width (17px from 640px) and the location line appears only from 640px.
 
@@ -1008,6 +1073,42 @@ A quiet record of every text, built from the same cards, chips and filters.
 - **Retry:** on failed texts only, for admins: a small soft (mint) button with a bold retry icon, no confirmation; full width at 44px at the foot of a card, and at the end of a table row. Results come as toasts.
 - **Empty:** a centred white 28px card in ink-soft, worded for "no texts yet" or "nothing matches".
 
+### Staff Dashboard
+A glance, then the way in: every count opens the list behind it.
+- **Greeting panel:** the rose gradient of the curved hero, without the curve, at 36px (24px padding, 32px from 640px) with the faint white corner ring: a large white icon circle holding a rose-deep heart beside "Hello, {name}" in the Headline style, and today's long date in ink-soft.
+- **Count tiles:** the SMS count tile, five times (Today's appointments, Waiting requests, Needs follow-up, Pregnant now, Due within 30 days), as a list inside a labelled nav: 28px white, soft shadow, a 2px border clear at rest and line on hover, the leaf focus outline; the count in 24px extra-bold tabular over the label in 14px medium ink-soft with a bold 14px leaf caret glued to its last word. Waiting requests and Needs follow-up turn rose-deep above zero.
+- **Due within 30 days:** one 36px white card of line-divided rows, past due first, then soonest: the name as a semibold link to her Pregnancy tab (leaf with an underline on hover) over purok and week in 14px ink-soft; on the right (below on phones) "Due {date}" in semibold tabular over the days line, ink-soft ("In 12 days", "Tomorrow", "Due today") or rose-deep semibold with a bold clock once past due. A leaf underlined "See all N" with a bold caret closes the card when there are more than shown; with none, a centred white 28px note.
+- **Admin cards:** Accounts and SMS health are 36px white cards with a small mint icon circle beside an 18px bold title, then figure rows (below). SMS health adds the SMS phone line and a 20px milk usage panel: "Sent in {month}" against "{count} of {limit}" (rose-deep at the limit), an 8px mint meter with a leaf fill, the month's delivered / failed / not sent line and the plan note in 14px ink-soft. The blush monthly-limit notice appears only when the limit was hit this month. Its last rows are Waiting now and Failed texts (the alert row).
+- **Figure rows:** 44px rows with a hairline between: the label on the left (medium ink; a sub-row indented 16px in regular ink-soft) and the count in bold tabular on the right. A row that opens a list is a whole-row link with a milk hover at 20px and a bold leaf caret; rows without a list keep an invisible caret so every count lines up. Report cards use the same rows without links.
+
+### Reports
+One page for counts and lists, to read, print or download.
+- **Report tabs:** Summary, Pregnancies, Visits, Appointments, Services and (admins only) SMS, in the record-tab bar; the period and purok carry over between tabs.
+- **Filter card:** a plain GET form in the shared 28px filter card: Period (This month, Last month, This year, Custom dates, with From and To for custom), Purok, then each tab's own selects (which pregnancies, service, status, kind of text), all 48px native fields with labels above; Show is the 48px primary and Clear a ghost link back to this month.
+- **Actions:** Print and Download CSV are 44px secondary pills with bold printer and download icons; Download CSV is a plain link. Hidden on paper.
+- **Summary totals:** four 28px white tiles with the soft shadow, not links, so they carry no border or caret: the number in 24px extra-bold tabular over the label in 14px medium ink-soft. Missed appointments turns rose-deep above zero.
+- **Report cards:** 36px white cards (20px padding, 24px from 640px) led by a small mint icon circle and an 18px bold title, an optional 14px ink-soft note on what is counted, then figure rows. Pregnancies indents its four outcomes under "Closed in the period"; Visits adds the column chart under a line divider; Appointments lists the six statuses with Missed as the alert; Services given holds the service bars; Text messages (admins) has Failed as the alert.
+- **Detail tabs:** an ink-soft count line ("12 visits"), then from 1280px one 28px white table card: caption semibold ink-soft heads that never wrap, UI-size body, line dividers, top-aligned rows. The mother cell is her name as a semibold ink link to her record (leaf underline on hover) over her purok in 14px ink-soft; a visit or service date is a medium tabular link to the visit. Below 1280px each row is a 28px white card (16px padding, 20px from 640px): an optional top block (a status chip with its detail lines, the date and time, or the service and its date), a line divider, her name, then a label / value grid with ink-soft labels. States reuse the visit status, follow-up ending and SMS status chips; an open follow-up on a missed appointment is "Still open" in rose-deep semibold over its tries in 14px ink-soft. With nothing to show, a centred white 28px note.
+- **Words:** a missing value reads "Not recorded" ("Hindi naitala"); in Filipino a failed text is "Pumalya" and a pregnancy week on the dashboard is "Ika-{n} linggo"; a visit is "Walk-in" or "Appointment" ("May appointment"), each kept whole.
+
+### Visits Chart and Service Bars
+Bars for counts in a period, as quiet as the trend chart and saying every value in writing.
+- **Visits chart:** one series of chart-green columns, at most 24px wide with 4px gaps, rounded 4px at the top and square on a 1px baseline (ink-soft at 40%). The plot is 160px tall and its bars use up to 132px, so each count fits above its column. Columns are weeks, Monday to Sunday (with a 14px ink-soft note that the first and last may be part-weeks), or months for long periods; the caption is semibold ink.
+- **Date labels:** at most seven under the baseline, the rest thinned out. A week reads on two lines, its start over its end ("Nov 2" over "–8", "–Dec 6" across months; a one-day part-week has one line); a month is "Jan".
+- **Hover and reading:** hovering a column fades it to 80% and shows a small 20px ink readout with white text (the dates, then the count in bold tabular). Each column also carries its dates and count as screen-reader text, and "Show as table" is the trend chart's leaf disclosure over a compact table of every column.
+- **Service bars:** services most first, each name in UI size above a 16px chart-green bar rounded 4px at its end and scaled to the largest, with the count in 14px bold tabular beside it; a service given 0 times shows only its 0. One series, so no legend. With no services at all, a UI-size ink-soft line.
+
+### Printed Report
+Print turns the same page into a plain paper report; there is no separate print layout.
+- **Page:** 12mm margins. The staff sidebar and top bar, the page title, tabs, filter card and actions hide with the print variant; the content drops its column width and padding and the ground turns white.
+- **Letterhead (paper only):** the 56px seal beside the health center's name in 16px bold, its address and, once a real one is set, its contact number; then "{Tab} report" in 20px bold, the period, the filters in use joined by middle dots (the purok always), and when it was printed; an ink rule below.
+- **Summary on paper:** the four totals stay four across as square blocks with a line border; the subject cards stack as square line-bordered blocks (16px padding, 24px apart); service bars become name and count rows; the column chart gives way to its table, printed as its own copy because a closed disclosure doesn't print.
+- **Detail on paper:** always the table, in 10pt, its header repeated on each page, cells tightened to 6px with no outer side padding; a visit's date cell may wrap.
+- **Signature lines:** after the report, two columns 48px apart in 14px: "Prepared by:" over 40px of space, an ink rule, the staff member's name in semibold and the position; "Noted by:" over a blank ink rule with "Name and position". The two labels are English in both languages. The footer is kept whole.
+- **Breaks:** table rows, figure rows and the footer never break inside. A heading block (a report card's icon, title and note; the chart's caption) is marked as a print heading: unbreakable, with about 6rem reserved under it by padding that a negative margin cancels, so it always travels with its first rows.
+
+**The Heading Travels Rule.** On paper a heading never ends a page. Mark the heading block as a print heading (unbreakable, about 6rem reserved below); Chrome ignores break-after: avoid, so never rely on it.
+
 ## Do's and Don'ts
 
 ### Do:
@@ -1043,6 +1144,13 @@ A quiet record of every text, built from the same cards, chips and filters.
 - **Do** join every space in a reminder line or SMS slot with a no-break space, and join a short leading word to its date in the dictionary.
 - **Do** ask the mother to act on a failed text only when her number was the cause; otherwise reassure her the visit stands.
 - **Do** give phone grids with long no-wrap children an explicit minmax(0, 1fr) column, and min-w-0 on every flex parent of a truncated line.
+- **Do** turn a dashboard or report count rose-deep only above zero, and only when it needs someone; every other count stays ink.
+- **Do** put the tabular class on the numeric element (a date, time, week, BP, weight or count), never on a container of mixed text.
+- **Do** keep short tags whole with whitespace-nowrap (Walk-in, May appointment) and glue a trailing caret to the last word of its label.
+- **Do** wrap a printable view in the report wrapper, hide the shell and controls with the print variant, and mark each heading block as a print heading so it travels with its first rows.
+- **Do** give every chart a printed table; a closed disclosure doesn't print.
+- **Do** write "Not recorded" ("Hindi naitala") for a missing value, and keep the signature labels "Prepared by:" and "Noted by:" in English in both languages.
+- **Do** scroll a sideways tab bar's current tab into view on phones.
 
 ### Don't:
 - **Don't** set text in fern, sage or rose; they are too light.
@@ -1063,3 +1171,7 @@ A quiet record of every text, built from the same cards, chips and filters.
 - **Don't** let a time wrap between the number and AM or PM.
 - **Don't** type `\u00a0` as bare JSX text; put it in a string expression.
 - **Don't** let a header's actions shrink; the brand mark wraps or truncates first.
+- **Don't** rely on break-after: avoid to keep a heading with its rows; Chrome ignores it.
+- **Don't** print colour, fills or shadows inside a report, or let a printed value depend on colour.
+- **Don't** put a second colour in a one-series chart; columns and service bars are chart green, and rose stays an accent outside charts.
+- **Don't** set the tabular class on a whole row, card or table body.

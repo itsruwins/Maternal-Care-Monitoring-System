@@ -23,16 +23,19 @@ export function ReportCard({
   return (
     <section
       aria-labelledby={id}
-      data-print-keep
       className={cn("min-w-0 rounded-3xl bg-white p-5 shadow-[var(--shadow-soft)] sm:p-6 print:rounded-none print:border print:border-line print:p-4", className)}
     >
-      <div className="flex items-center gap-3">
-        <IconCircle icon={icon} tone="mint" size="sm" />
-        <h3 id={id} className="text-lg font-bold">
-          {title}
-        </h3>
+      {/* On paper a long card may break across pages, but its heading always
+          travels with its first rows (see [data-print-head] in globals.css). */}
+      <div data-print-head>
+        <div className="flex items-center gap-3">
+          <IconCircle icon={icon} tone="mint" size="sm" />
+          <h3 id={id} className="text-lg font-bold">
+            {title}
+          </h3>
+        </div>
+        {note && <p className="mt-2 text-sm text-ink-soft">{note}</p>}
       </div>
-      {note && <p className="mt-2 text-sm text-ink-soft">{note}</p>}
       <div className="mt-2">{children}</div>
     </section>
   );

@@ -59,7 +59,7 @@ export function MotherCell({ t, mother, href }: { t: Dictionary; mother: ReportM
 /** A plain link in a cell (a visit's date opening the visit). */
 export function CellLink({ href, children }: { href: string; children: ReactNode }) {
   return (
-    <Link href={href} className={cn(LINK, "font-medium")}>
+    <Link href={href} className={cn(LINK, "tnum font-medium")}>
       {children}
     </Link>
   );
@@ -84,7 +84,7 @@ export function DetailCard({
           {fields.map((field) => (
             <div key={field.label} className="contents">
               <dt className="text-ink-soft">{field.label}</dt>
-              <dd className="tnum min-w-0 break-words text-ink">{field.value}</dd>
+              <dd className="min-w-0 break-words text-ink">{field.value}</dd>
             </div>
           ))}
         </dl>

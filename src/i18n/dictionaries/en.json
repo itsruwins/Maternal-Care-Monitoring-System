@@ -476,7 +476,7 @@
         "walkIns": "Walk-ins (no appointment)",
         "chartWeek": "Visits per week",
         "chartMonth": "Visits per month",
-        "chartNote": "Weeks run Monday to Sunday.",
+        "chartNote": "Weeks run Monday to Sunday; the first and last may be part-weeks.",
         "visitsCount": "{count} visits",
         "visitsOne": "1 visit",
         "showTable": "Show as table",
@@ -545,7 +545,7 @@
       "walkIn": "Walk-in",
       "followUpOpen": "Still open",
       "weight": "{kg} kg",
-      "missing": "Not set"
+      "missing": "Not recorded"
     },
     "actionsLabel": "Print or download",
     "print": {

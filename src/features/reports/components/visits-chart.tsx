@@ -44,11 +44,11 @@ export function VisitsChart({
           </th>
         </tr>
       </thead>
-      <tbody className="tnum divide-y divide-line">
+      <tbody className="divide-y divide-line">
         {buckets.map((bucket) => (
           <tr key={bucket.start}>
             <td className="py-1.5">{bucketName(bucket.start, bucket.end, grouping, locale)}</td>
-            <td className="py-1.5 text-right font-semibold">{bucket.count}</td>
+            <td className="tnum py-1.5 text-right font-semibold">{bucket.count}</td>
           </tr>
         ))}
       </tbody>
@@ -57,7 +57,7 @@ export function VisitsChart({
 
   return (
     <figure className="mt-4 border-t border-line pt-4">
-      <figcaption>
+      <figcaption data-print-head>
         <span className="block font-semibold text-ink">{grouping === "week" ? v.chartWeek : v.chartMonth}</span>
         {grouping === "week" && <span className="block text-sm text-ink-soft">{v.chartNote}</span>}
       </figcaption>
@@ -89,8 +89,16 @@ export function VisitsChart({
       </ul>
       <ul aria-hidden className="mt-1.5 flex gap-1 print:hidden">
         {buckets.map((bucket, index) => (
-          <li key={bucket.start} className="min-w-0 flex-1 overflow-visible text-center text-xs whitespace-nowrap text-ink-soft">
-            {index % every === 0 ? bucketLabel(bucket.start, grouping, locale) : ""}
+          <li key={bucket.start} className="min-w-0 flex-1 overflow-visible text-center text-xs leading-4 whitespace-nowrap text-ink-soft">
+            {index % every === 0 &&
+              bucketLabel(bucket.start, bucket.end, grouping, locale).map(
+                (line, i) =>
+                  line && (
+                    <span key={i} className="block">
+                      {line}
+                    </span>
+                  ),
+              )}
           </li>
         ))}
       </ul>

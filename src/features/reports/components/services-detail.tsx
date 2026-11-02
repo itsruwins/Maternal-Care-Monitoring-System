@@ -31,14 +31,14 @@ export function ServicesDetail({ t, locale, rows }: { t: Dictionary; locale: Loc
               <th scope="col" className={TH}>{c.recordedBy}</th>
             </tr>
           </thead>
-          <tbody className="tnum divide-y divide-line">
+          <tbody className="divide-y divide-line">
             {rows.map((row) => (
               <tr key={row.id} className="align-top">
                 <td className={`${TD} whitespace-nowrap`}>{date(row)}</td>
                 <td className={`${TD} w-[24%]`}>{mother(row)}</td>
                 <td className={`${TD} font-medium`}>{row.service}</td>
                 <td className={TD}>{details(row)}</td>
-                <td className={TD}>{recordedBy(row)}</td>
+                <td className={`${TD} whitespace-nowrap`}>{recordedBy(row)}</td>
               </tr>
             ))}
           </tbody>

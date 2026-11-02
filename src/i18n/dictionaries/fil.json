@@ -364,11 +364,6 @@
       "ADMIN": "Admin",
       "HEALTH_WORKER": "Health worker",
       "MOTHER": "Nanay"
-    },
-    "comingSoon": {
-      "badge": "Phase {phase}",
-      "title": "Malapit na",
-      "body": "Nakaplano na ang bahaging ito ng Taysan MaternaCare at gagawin sa Phase {phase}."
     }
   },
   "dashboard": {
@@ -415,6 +410,87 @@
         "planNote": "{limit} text kada buwan ang pinapayagan ng HTTPSMS plan, at kasama rito ang mga sagot niya.",
         "waiting": "Naghihintay ngayon",
         "failed": "Mga hindi naipadala"
+      }
+    }
+  },
+  "reports": {
+    "title": "Mga ulat",
+    "intro": "Mga bilang at listahan para sa isang panahon, na mababasa rito, maipi-print o mada-download.",
+    "tabsLabel": "Mga ulat",
+    "tabs": {
+      "summary": "Buod",
+      "pregnancies": "Pagbubuntis",
+      "visits": "Bisita",
+      "appointments": "Appointment",
+      "services": "Serbisyo",
+      "sms": "SMS"
+    },
+    "filters": {
+      "period": "Panahon",
+      "periods": {
+        "this-month": "Ngayong buwan",
+        "last-month": "Nakaraang buwan",
+        "this-year": "Ngayong taon",
+        "custom": "Piliing petsa"
+      },
+      "from": "Mula",
+      "to": "Hanggang",
+      "purok": "Purok",
+      "allPuroks": "Lahat ng purok",
+      "noPurok": "Wala pang purok",
+      "service": "Serbisyo",
+      "allServices": "Lahat ng serbisyo",
+      "submit": "Ipakita",
+      "clear": "I-clear"
+    },
+    "showing": "Ipinapakita: {period}",
+    "comingSoon": "Ginagawa pa ang listahang ito sa susunod na hakbang.",
+    "summary": {
+      "tilesLabel": "Kabuuan sa panahong ito",
+      "tiles": {
+        "pregnant": "Buntis sa panahong ito",
+        "visits": "Natapos na bisita",
+        "missed": "Hindi napuntahang appointment",
+        "services": "Naibigay na serbisyo"
+      },
+      "pregnancies": {
+        "title": "Pagbubuntis",
+        "active": "Buntis sa anumang oras sa panahong ito",
+        "added": "Bagong nairehistro",
+        "closed": "Isinara sa panahong ito"
+      },
+      "visits": {
+        "title": "Mga bisita",
+        "completed": "Natapos na bisita",
+        "mothers": "Mga inang nakita",
+        "walkIns": "Walk-in (walang appointment)",
+        "chartWeek": "Bisita kada linggo",
+        "chartMonth": "Bisita kada buwan",
+        "chartNote": "Lunes hanggang Linggo ang bawat linggo.",
+        "visitsCount": "{count} bisita",
+        "visitsOne": "1 bisita",
+        "showTable": "Ipakita bilang talaan",
+        "colWeek": "Linggo",
+        "colMonth": "Buwan",
+        "colVisits": "Bisita"
+      },
+      "appointments": {
+        "title": "Mga appointment",
+        "note": "Ayon sa oras ng appointment (o sa hiniling na oras habang hiling pa ito)."
+      },
+      "services": {
+        "title": "Naibigay na serbisyo",
+        "note": "Bawat serbisyong naitala sa mga bisita sa panahong ito.",
+        "none": "Walang naibigay na serbisyo sa panahong ito."
+      },
+      "sms": {
+        "title": "Mga text",
+        "note": "Ayon sa petsa ng pagpapadala, o kung kailan ito dapat ipadala.",
+        "sent": "Naipadala",
+        "delivered": "Natanggap",
+        "failed": "Hindi naipadala",
+        "notSent": "Hindi na ipinadala",
+        "waiting": "Naghihintay"
       }
     }
   },

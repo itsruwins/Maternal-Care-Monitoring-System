@@ -2,7 +2,7 @@
 
 Barangay Taysan, Legazpi City · Next.js 16 + Supabase · Hosted on Vercel
 
-Status: **Phases 0–7 done (Phase 7 signed off 2026-11-02). Phase 8 — Dashboards & reports: plan approved 2026-11-02; next: step 1 (staff dashboard).** Each phase ends with a demo and your sign-off before the next starts.
+Status: **Phases 0–7 done (Phase 7 signed off 2026-11-02). Phase 8 — Dashboards & reports: plan approved 2026-11-02; step 1 (staff dashboard) done; next: step 2 (Reports page and Summary).** Each phase ends with a demo and your sign-off before the next starts.
 
 ---
 
@@ -940,6 +940,14 @@ Sample request answers (one SMS each with this service name; a longer name may m
    - Review screenshots deleted afterwards, then your testing and sign-off.
 
 **Needs from you:** nothing to run. The health center's contact number whenever it's decided (until then the printed header leaves it out).
+
+**Step 1 built (2026-11-02):** the staff dashboard (`/staff`, feature `features/dashboard`), approved by you. No migration.
+- **Top:** the rose welcome panel, shortened (your choice): heart, "Hello, {name}" and today's date.
+- **Count tiles** in the SMS log's style: Today's appointments (→ Visits), Waiting requests (→ Requests), Needs follow-up (→ Follow-ups), Pregnant now (→ Mothers, pregnant now), Due within 30 days (→ Mothers, new Due month option "Within 30 days", past due included). Requests and follow-ups turn rose-deep above zero.
+- **Lists:** today's appointments (the Visits page's cards, now a shared component the dashboard takes as a slot) and Due within 30 days (past due first with "Past due by N days", then soonest; 8 rows, then "See all N").
+- **Admin section (admins only):** Accounts (mothers with and without a login, website sign-ups this month, health workers, admins, inactive logins; rows open their lists) and SMS health (the phone line, now shared with the SMS log; "Sent in {month}: N of 200" with a thin bar; delivered / failed / not sent this month; the monthly-limit notice; waiting and failed texts open the SMS log). The limit is `SMS_MONTHLY_LIMIT` in `src/config/sms.ts`.
+- **Layout:** lists, admin cards and five tiles in a row from 1280px; below that they stack and the tiles go three then two (at 1024px the sidebar leaves too little room for two columns).
+- The Phase 2 welcome card is removed. Dev preview: `/design-preview/staff-dashboard` (`?admin=1`, `&phone=online|offline`, `&limit=1`, `&full=1`, `?empty=1`, `?more=1`).
 
 ## Phase 9 — Hardening & launch
 

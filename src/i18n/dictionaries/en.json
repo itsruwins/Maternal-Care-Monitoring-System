@@ -364,11 +364,6 @@
       "ADMIN": "Admin",
       "HEALTH_WORKER": "Health worker",
       "MOTHER": "Mother"
-    },
-    "comingSoon": {
-      "badge": "Phase {phase}",
-      "title": "Coming soon",
-      "body": "This part of Taysan MaternaCare is planned and will be built in Phase {phase}."
     }
   },
   "dashboard": {
@@ -415,6 +410,87 @@
         "planNote": "The HTTPSMS plan allows {limit} texts a month, and her replies count too.",
         "waiting": "Waiting now",
         "failed": "Failed texts"
+      }
+    }
+  },
+  "reports": {
+    "title": "Reports",
+    "intro": "Counts and lists for a period, to read here, print or download.",
+    "tabsLabel": "Reports",
+    "tabs": {
+      "summary": "Summary",
+      "pregnancies": "Pregnancies",
+      "visits": "Visits",
+      "appointments": "Appointments",
+      "services": "Services",
+      "sms": "SMS"
+    },
+    "filters": {
+      "period": "Period",
+      "periods": {
+        "this-month": "This month",
+        "last-month": "Last month",
+        "this-year": "This year",
+        "custom": "Custom dates"
+      },
+      "from": "From",
+      "to": "To",
+      "purok": "Purok",
+      "allPuroks": "All puroks",
+      "noPurok": "No purok yet",
+      "service": "Service",
+      "allServices": "All services",
+      "submit": "Show",
+      "clear": "Clear"
+    },
+    "showing": "Showing {period}",
+    "comingSoon": "This list is being built in the next step.",
+    "summary": {
+      "tilesLabel": "Totals for the period",
+      "tiles": {
+        "pregnant": "Pregnant in the period",
+        "visits": "Completed visits",
+        "missed": "Missed appointments",
+        "services": "Services given"
+      },
+      "pregnancies": {
+        "title": "Pregnancies",
+        "active": "Pregnant at any time in the period",
+        "added": "Newly registered",
+        "closed": "Closed in the period"
+      },
+      "visits": {
+        "title": "Visits",
+        "completed": "Completed visits",
+        "mothers": "Mothers seen",
+        "walkIns": "Walk-ins (no appointment)",
+        "chartWeek": "Visits per week",
+        "chartMonth": "Visits per month",
+        "chartNote": "Weeks run Monday to Sunday.",
+        "visitsCount": "{count} visits",
+        "visitsOne": "1 visit",
+        "showTable": "Show as table",
+        "colWeek": "Week",
+        "colMonth": "Month",
+        "colVisits": "Visits"
+      },
+      "appointments": {
+        "title": "Appointments",
+        "note": "By the appointment's time (or the time she asked for, while it's a request)."
+      },
+      "services": {
+        "title": "Services given",
+        "note": "Each service recorded at the period's visits.",
+        "none": "No services were given in this period."
+      },
+      "sms": {
+        "title": "Text messages",
+        "note": "Dated when they went out, or when they were due.",
+        "sent": "Sent",
+        "delivered": "Delivered",
+        "failed": "Failed",
+        "notSent": "Not sent",
+        "waiting": "Waiting"
       }
     }
   },

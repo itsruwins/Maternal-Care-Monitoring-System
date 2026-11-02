@@ -21,7 +21,11 @@ export function ReportCard({
   children: ReactNode;
 }) {
   return (
-    <section aria-labelledby={id} className={cn("min-w-0 rounded-3xl bg-white p-5 shadow-[var(--shadow-soft)] sm:p-6", className)}>
+    <section
+      aria-labelledby={id}
+      data-print-keep
+      className={cn("min-w-0 rounded-3xl bg-white p-5 shadow-[var(--shadow-soft)] sm:p-6 print:rounded-none print:border print:border-line print:p-4", className)}
+    >
       <div className="flex items-center gap-3">
         <IconCircle icon={icon} tone="mint" size="sm" />
         <h3 id={id} className="text-lg font-bold">

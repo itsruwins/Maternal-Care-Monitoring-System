@@ -546,6 +546,36 @@
       "followUpOpen": "Bukas pa",
       "weight": "{kg} kg",
       "missing": "Wala pa"
+    },
+    "actionsLabel": "I-print o i-download",
+    "print": {
+      "button": "I-print",
+      "csv": "I-download ang CSV",
+      "center": "Barangay Taysan Health Center",
+      "contact": "Numero ng telepono: {number}",
+      "title": "Ulat: {tab}",
+      "period": "Panahon: {period}",
+      "filters": "Mga filter: {list}",
+      "printed": "Na-print noong {when}",
+      "preparedBy": "Inihanda ni:",
+      "notedBy": "Noted by:",
+      "nameAndPosition": "Pangalan at posisyon"
+    },
+    "csv": {
+      "time": "Oras",
+      "gravida": "Gravida",
+      "para": "Para",
+      "outcomeDate": "Petsa ng resulta",
+      "weightKg": "Timbang (kg)",
+      "visitDate": "Petsa ng bisita",
+      "visitTime": "Oras ng bisita",
+      "reason": "Dahilan",
+      "section": "Bahagi",
+      "item": "Item",
+      "count": "Bilang",
+      "totals": "Kabuuan",
+      "denied": "Hindi mo puwedeng i-download ang ulat na ito.",
+      "failed": "Hindi mabasa ang ulat. Subukan ulit."
     }
   },
   "newPassword": {

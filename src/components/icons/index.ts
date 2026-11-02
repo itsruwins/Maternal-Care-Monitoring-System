@@ -85,4 +85,7 @@ export {
   ChatsCircleIcon,
   SunIcon,
   CloudSunIcon,
+  // Reports
+  PrinterIcon,
+  DownloadSimpleIcon as DownloadIcon,
 } from "@phosphor-icons/react/ssr";

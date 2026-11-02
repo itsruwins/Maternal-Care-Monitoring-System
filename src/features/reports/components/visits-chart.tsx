@@ -15,7 +15,7 @@ const MAX_LABELS = 7;
 // Completed visits per week (or month), one series: plain columns in chart
 // green, at most 24px wide, rounded 4px at the top and square on the
 // baseline. Each count is written above its column, hovering a column shows
-// its dates, and "Show as table" lists every column.
+// its dates, and "Show as table" lists every column. On paper, only the table.
 export function VisitsChart({
   t,
   locale,
@@ -32,6 +32,29 @@ export function VisitsChart({
   const every = Math.ceil(buckets.length / MAX_LABELS);
   const visits = (count: number) => (count === 1 ? v.visitsOne : format(v.visitsCount, { count }));
 
+  const table = (
+    <table className="mt-2 w-full text-left">
+      <thead className="text-caption text-ink-soft">
+        <tr>
+          <th scope="col" className="py-1.5 font-semibold">
+            {grouping === "week" ? v.colWeek : v.colMonth}
+          </th>
+          <th scope="col" className="py-1.5 text-right font-semibold">
+            {v.colVisits}
+          </th>
+        </tr>
+      </thead>
+      <tbody className="tnum divide-y divide-line">
+        {buckets.map((bucket) => (
+          <tr key={bucket.start}>
+            <td className="py-1.5">{bucketName(bucket.start, bucket.end, grouping, locale)}</td>
+            <td className="py-1.5 text-right font-semibold">{bucket.count}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+
   return (
     <figure className="mt-4 border-t border-line pt-4">
       <figcaption>
@@ -39,7 +62,7 @@ export function VisitsChart({
         {grouping === "week" && <span className="block text-sm text-ink-soft">{v.chartNote}</span>}
       </figcaption>
 
-      <ul className="mt-3 flex h-40 items-end gap-1 border-b border-ink-soft/40">
+      <ul className="mt-3 flex h-40 items-end gap-1 border-b border-ink-soft/40 print:hidden">
         {buckets.map((bucket) => (
           <li key={bucket.start} className="group relative flex h-full min-w-0 flex-1 flex-col items-center justify-end">
             <span aria-hidden className="tnum mb-1 text-xs font-semibold text-ink-soft">
@@ -64,7 +87,7 @@ export function VisitsChart({
           </li>
         ))}
       </ul>
-      <ul aria-hidden className="mt-1.5 flex gap-1">
+      <ul aria-hidden className="mt-1.5 flex gap-1 print:hidden">
         {buckets.map((bucket, index) => (
           <li key={bucket.start} className="min-w-0 flex-1 overflow-visible text-center text-xs whitespace-nowrap text-ink-soft">
             {index % every === 0 ? bucketLabel(bucket.start, grouping, locale) : ""}
@@ -72,32 +95,15 @@ export function VisitsChart({
         ))}
       </ul>
 
-      <details className="group mt-4 text-sm">
+      <details className="group mt-4 text-sm print:hidden">
         <summary className="inline-flex min-h-11 cursor-pointer list-none items-center gap-1.5 rounded-sm font-semibold text-leaf underline decoration-1 underline-offset-4 hover:decoration-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-leaf focus-visible:outline-solid [&::-webkit-details-marker]:hidden">
           <CaretRightIcon weight="bold" aria-hidden className="size-3.5 transition-transform group-open:rotate-90" />
           {v.showTable}
         </summary>
-        <table className="mt-2 w-full text-left">
-          <thead className="text-caption text-ink-soft">
-            <tr>
-              <th scope="col" className="py-1.5 font-semibold">
-                {grouping === "week" ? v.colWeek : v.colMonth}
-              </th>
-              <th scope="col" className="py-1.5 text-right font-semibold">
-                {v.colVisits}
-              </th>
-            </tr>
-          </thead>
-          <tbody className="tnum divide-y divide-line">
-            {buckets.map((bucket) => (
-              <tr key={bucket.start}>
-                <td className="py-1.5">{bucketName(bucket.start, bucket.end, grouping, locale)}</td>
-                <td className="py-1.5 text-right font-semibold">{bucket.count}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        {table}
       </details>
+      {/* A closed <details> doesn't print, so paper gets its own copy. */}
+      <div aria-hidden className="hidden print:block">{table}</div>
     </figure>
   );
 }

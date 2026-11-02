@@ -2,7 +2,7 @@
 
 Barangay Taysan, Legazpi City · Next.js 16 + Supabase · Hosted on Vercel
 
-Status: **Phases 0–7 done (Phase 7 signed off 2026-11-02). Phase 8 — Dashboards & reports: plan approved 2026-11-02; steps 1 (staff dashboard) and 2 (Reports page and Summary) done; next: step 3 (detail tabs).** Each phase ends with a demo and your sign-off before the next starts.
+Status: **Phases 0–7 done (Phase 7 signed off 2026-11-02). Phase 8 — Dashboards & reports: plan approved 2026-11-02; steps 1–3 (staff dashboard, Reports page and Summary, detail tabs) done; next: step 4 (print and CSV).** Each phase ends with a demo and your sign-off before the next starts.
 
 ---
 
@@ -955,6 +955,15 @@ Sample request answers (one SMS each with this service name; a longer name may m
 - **Summary:** four totals (pregnant in the period, completed visits, missed appointments in rose-deep above zero, services given), then cards two across from 1280px: Pregnancies (active, newly registered, closed and by outcome), Visits (completed, mothers seen, walk-ins, and a chart per week Monday to Sunday up to 3 months, per month beyond), Appointments (each status, by its time or the asked time while a request), Services given (ranked bars, every service including 0), and for admins Text messages (sent, delivered, failed, not sent, waiting) across both columns.
 - **Charts:** plain HTML/CSS columns and bars in chart green (no library), each count written on it, the dates on hover, and a "Show as table" disclosure instead of a table beside the chart.
 - The detail tabs show a short "being built in the next step" note until step 3. The "Coming in Phase N" screen and its text are removed. Dev preview: `/design-preview/reports` (`?admin=1`, `?empty=1`, plus the page's own `?tab=&period=&from=&to=`).
+
+**Step 3 built (2026-11-02):** the detail tabs, approved by you. No migration. Every row for the period, no paging, oldest first; a table from 1280px, cards below (two across from 768px); a count line above, and "Nothing matches these filters in this period." when empty. A mother's name opens her record on the matching tab; a visit's date opens the visit.
+- **Pregnancies** (soonest due date first): mother and purok, registered, LMP, due date, G/P, status ("Still pregnant", or the outcome and its date). New filter **Which pregnancies**: All in the period, Still pregnant (not closed by the period's end), Newly registered, Closed in the period.
+- **Visits:** date and time with Appointment or Walk-in, mother and purok, week, BP, weight, services, recorded by. No notes. With a service chosen: the visits that included it (all their services still listed).
+- **Appointments:** date and time (a request without a time: "Asked for …"), mother and purok, service, status chip, and for a missed one its follow-up ("Still open" in rose-deep with its tries and last result, or how it ended). New **Status** filter.
+- **Services:** one row per service given: date, mother and purok, service, dose or details, recorded by. No result notes.
+- **SMS** (admins only): mother and purok, kind of text and the visit it's about, status chip and reason. New **Status** and **Kind of text** filters (the SMS log's choices). No phone numbers (not even read) and no message text.
+- Show, Status and Kind of text belong to their tab and reset when you switch tabs; period and purok carry over.
+- Dev preview: `/design-preview/reports?tab=…` shows six sample rows per tab (`&admin=1` for SMS, `&empty=1`).
 
 ## Phase 9 — Hardening & launch
 

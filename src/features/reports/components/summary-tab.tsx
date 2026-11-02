@@ -29,9 +29,9 @@ export function SummaryTab({ t, locale, summary }: { t: Dictionary; locale: Loca
   return (
     <div className="flex flex-col gap-6">
       <section aria-label={s.tilesLabel}>
-        <dl className="grid grid-cols-2 gap-3 xl:grid-cols-4">
+        <dl className="grid grid-cols-2 gap-3 xl:grid-cols-4 print:grid-cols-4">
           {tiles.map((tile) => (
-            <div key={tile.key} className="flex flex-col-reverse justify-end gap-0.5 rounded-2xl bg-white px-4 py-3.5 shadow-[var(--shadow-soft)] sm:px-5">
+            <div key={tile.key} className="flex flex-col-reverse justify-end gap-0.5 rounded-2xl bg-white px-4 py-3.5 shadow-[var(--shadow-soft)] sm:px-5 print:rounded-none print:border print:border-line">
               <dt className="text-sm font-medium text-ink-soft">{s.tiles[tile.key]}</dt>
               <dd className={cn("tnum text-2xl font-extrabold", tile.alert && tile.value > 0 ? "text-rose-deep" : "text-ink")}>{tile.value}</dd>
             </div>

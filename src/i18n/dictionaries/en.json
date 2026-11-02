@@ -546,6 +546,36 @@
       "followUpOpen": "Still open",
       "weight": "{kg} kg",
       "missing": "Not set"
+    },
+    "actionsLabel": "Print or download",
+    "print": {
+      "button": "Print",
+      "csv": "Download CSV",
+      "center": "Barangay Taysan Health Center",
+      "contact": "Contact number: {number}",
+      "title": "{tab} report",
+      "period": "Period: {period}",
+      "filters": "Filters: {list}",
+      "printed": "Printed {when}",
+      "preparedBy": "Prepared by:",
+      "notedBy": "Noted by:",
+      "nameAndPosition": "Name and position"
+    },
+    "csv": {
+      "time": "Time",
+      "gravida": "Gravida",
+      "para": "Para",
+      "outcomeDate": "Outcome date",
+      "weightKg": "Weight (kg)",
+      "visitDate": "Visit date",
+      "visitTime": "Visit time",
+      "reason": "Reason",
+      "section": "Section",
+      "item": "Item",
+      "count": "Count",
+      "totals": "Totals",
+      "denied": "You can't download this report.",
+      "failed": "The report couldn't be read. Try again."
     }
   },
   "newPassword": {

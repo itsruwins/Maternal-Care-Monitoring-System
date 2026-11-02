@@ -26,3 +26,11 @@ export const motherRecordHref = (motherId: number, tab: "pregnancy" | "visits" |
 
 /** One visit's page. */
 export const visitHref = (visitId: number) => `/staff/visits/${visitId}`;
+
+export const REPORT_CSV_PATH = "/api/reports/csv";
+
+/** The CSV download for these filters, in the page's language. */
+export function reportCsvHref(filters: ReportFilters, locale: string): string {
+  const query = reportsHref(filters).split("?")[1];
+  return `${REPORT_CSV_PATH}?${query ? `${query}&` : ""}lang=${locale}`;
+}

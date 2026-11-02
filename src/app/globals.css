@@ -213,3 +213,25 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Printing a report (Phase 8): black on white, no shadows or fills, links as
+   plain text, rows kept whole. The shell hides itself with print:hidden. */
+@media print {
+  @page {
+    margin: 12mm;
+  }
+  [data-report] *,
+  [data-report] *::before,
+  [data-report] *::after {
+    color: #000 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+  [data-report] a {
+    text-decoration: none;
+  }
+  [data-report] tr,
+  [data-report] [data-print-keep] {
+    break-inside: avoid;
+  }
+}

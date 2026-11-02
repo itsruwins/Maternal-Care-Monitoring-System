@@ -6,10 +6,11 @@ import { cn } from "@/lib/utils/cn";
 import type { ReportMother } from "../types";
 
 // Small pieces shared by the detail tabs: a table from 1280px, cards below
-// (two columns from 768px), like the SMS log.
+// (two columns from 768px), like the SMS log. On paper, always the table in
+// 10 pt (its header repeats on each page).
 
-export const TH = "px-3 py-3.5 font-semibold whitespace-nowrap first:pl-5 last:pr-5";
-export const TD = "px-3 py-4 first:pl-5 last:pr-5";
+export const TH = "px-3 py-3.5 font-semibold whitespace-nowrap first:pl-5 last:pr-5 print:px-1.5 print:py-1 print:first:pl-0 print:last:pr-0";
+export const TD = "px-3 py-4 first:pl-5 last:pr-5 print:px-1.5 print:py-1.5 print:first:pl-0 print:last:pr-0";
 const LINK = "rounded-sm font-semibold text-ink no-underline hover:text-leaf hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-leaf focus-visible:outline-solid";
 
 type CountKey = "pregnancies" | "visits" | "appointments" | "services" | "sms";
@@ -35,10 +36,10 @@ export function DetailFrame({
   return (
     <div className="flex flex-col gap-4">
       <p className="tnum text-sm text-ink-soft">{count === 1 ? d.count[`${countKey}One`] : format(d.count[countKey], { count })}</p>
-      <div className="hidden overflow-hidden rounded-2xl bg-white shadow-[var(--shadow-soft)] xl:block">
-        <table className="w-full text-left text-[0.95rem]">{table}</table>
+      <div className="hidden overflow-hidden rounded-2xl bg-white shadow-[var(--shadow-soft)] xl:block print:block print:overflow-visible print:rounded-none">
+        <table className="w-full text-left text-[0.95rem] print:text-[10pt]">{table}</table>
       </div>
-      <ul className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:hidden">{cards}</ul>
+      <ul className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:hidden print:hidden">{cards}</ul>
     </div>
   );
 }

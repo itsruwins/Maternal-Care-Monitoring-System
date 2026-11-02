@@ -37,7 +37,18 @@ async function Preview({ searchParams }: { searchParams: PageProps<"/[lang]/desi
           : { username: "joy.dela.cruz", role: "HEALTH_WORKER", firstName: "Joy", fullName: "Joy Dela Cruz" }
       }
     >
-      <ReportsView t={t} locale={locale} filters={filters} puroks={SAMPLE_PUROKS} services={SAMPLE_SERVICES} isAdmin={admin} summary={summary} rows={rows} />
+      <ReportsView
+        t={t}
+        locale={locale}
+        filters={filters}
+        puroks={SAMPLE_PUROKS}
+        services={SAMPLE_SERVICES}
+        isAdmin={admin}
+        summary={summary}
+        rows={rows}
+        preparer={admin ? { name: "Maria Santos", position: "Public Health Nurse" } : { name: "Joy Dela Cruz", position: "Midwife" }}
+        printedAt="2026-11-02T07:15:00Z"
+      />
     </StaffShell>
   );
 }

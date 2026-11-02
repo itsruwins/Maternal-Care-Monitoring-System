@@ -41,18 +41,18 @@ export function StaffShell({ user, children }: { user: ShellUser; children: Reac
   );
 
   return (
-    <div className="flex min-h-dvh bg-milk">
-      {/* Sidebar (desktop) */}
-      <aside className="sticky top-0 hidden h-dvh w-72 shrink-0 flex-col overflow-y-auto border-r border-line bg-white lg:flex">
+    <div className="flex min-h-dvh bg-milk print:block print:min-h-0 print:bg-white">
+      {/* Sidebar (desktop). Printing shows only the page itself. */}
+      <aside className="sticky top-0 hidden h-dvh w-72 print:hidden shrink-0 flex-col overflow-y-auto border-r border-line bg-white lg:flex">
         <div className="px-5 pt-5 pb-6">
           <BrandMark href="/staff" />
         </div>
         {sidebar()}
       </aside>
 
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div className="flex min-w-0 flex-1 flex-col print:block">
         {/* Top bar */}
-        <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-line bg-white px-4 sm:px-6 lg:px-8">
+        <header className="sticky top-0 z-30 flex h-16 print:hidden items-center gap-3 border-b border-line bg-white px-4 sm:px-6 lg:px-8">
           <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
             <SheetTrigger
               aria-label={t.shell.menu}
@@ -78,7 +78,7 @@ export function StaffShell({ user, children }: { user: ShellUser; children: Reac
           </div>
         </header>
 
-        <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">{children}</main>
+        <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8 print:max-w-none print:p-0">{children}</main>
       </div>
     </div>
   );

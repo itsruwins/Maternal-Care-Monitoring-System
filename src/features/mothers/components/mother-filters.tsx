@@ -58,6 +58,7 @@ export function MotherFiltersForm({
           <Label htmlFor="mothers-due">{s.due}</Label>
           <NativeSelect id="mothers-due" name="due" defaultValue={filters.due}>
             <option value="">{s.anyMonth}</option>
+            <option value="soon">{s.dueSoon}</option>
             {dueMonths.map((month) => (
               <option key={month} value={month}>
                 {formatMonth(month, locale)}

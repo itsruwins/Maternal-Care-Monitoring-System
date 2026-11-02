@@ -8,7 +8,7 @@ export type MotherFilters = {
   q: string;
   /** A purok id, "none" (no purok yet) or "" (all). */
   purok: number | "none" | "";
-  /** Due month "YYYY-MM" or "". */
+  /** Due month "YYYY-MM", "soon" (within 30 days, past due included) or "". */
   due: string;
   status: MotherStatusFilter;
   page: number;

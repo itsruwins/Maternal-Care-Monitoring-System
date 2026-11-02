@@ -3,6 +3,8 @@
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 export const PREGNANCY_DAYS = 280; // 40 weeks from the last menstrual period (Naegele's rule)
+/** "Due within 30 days" (staff dashboard and the Mothers filter): due by today + 30, past due included. */
+export const DUE_SOON_DAYS = 30;
 
 export function parseISODate(value: string): Date | null {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;

@@ -2,7 +2,7 @@
 
 Barangay Taysan, Legazpi City · Next.js 16 + Supabase · Hosted on Vercel
 
-Status: **Phases 0–7 done (Phase 7 signed off 2026-11-02). Next: Phase 8 — Dashboards & reports.** Each phase ends with a demo and your sign-off before the next starts.
+Status: **Phases 0–7 done (Phase 7 signed off 2026-11-02). Phase 8 — Dashboards & reports: plan approved 2026-11-02; next: step 1 (staff dashboard).** Each phase ends with a demo and your sign-off before the next starts.
 
 ---
 
@@ -887,6 +887,60 @@ Sample request answers (one SMS each with this service name; a longer name may m
 - **Reports** (date range + filters): active pregnancies, completed visits, upcoming and missed appointments, services given, SMS delivery. Print-friendly view + CSV export.
 - **Admin dashboard:** account counts and SMS health.
 
+**Decisions (asked 2026-11-02):**
+
+| Topic | Decision |
+|---|---|
+| Where | **`/staff` becomes the dashboard for all staff.** Admins see the same page plus an **Admin** section below it. There's no separate `/admin` page (it keeps redirecting to Accounts). |
+| Staff dashboard | **5 count tiles**, each linking to its page: Today's appointments, Waiting requests, Needs follow-up, Pregnant now, Due within 30 days. Below them, **2 lists**: Today's appointments (with Record visit) and Due within 30 days. |
+| Past due | Open pregnancies whose due date has passed are **in the due list and its count**, listed first with a rose-deep "Past due by N days". |
+| Reports page | `/staff/reports`: one filter card shared by link tabs: **Summary**, Pregnancies, Visits, Appointments, Services, SMS. |
+| Who sees what | Health workers and admins see every report. The **SMS tab is admins only**, like the SMS log. |
+| Period | **This month** to start (Manila time). Presets: This month, Last month, This year, Custom (from–to). |
+| Filters | **Purok** on every tab; **service** on Visits, Appointments and Services; **status** on Appointments and SMS; **type** on SMS. |
+| Pregnancies | **Active at any time in the period**: registered by the period's end and not closed before its start. The Summary also counts new and closed pregnancies, the closed ones by outcome. |
+| Appointments | **Every appointment in the period**, with counts by status and a status filter. A missed one shows its follow-up result. |
+| Visits columns | Date, mother, purok, week, BP, weight, services, appointment or walk-in, recorded by. **No visit notes.** |
+| Charts | **2 plain-SVG bar charts on the Summary** (visits per week, services by type). Values are written on the bars and a table sits beside them. No chart library. |
+| CSV | **Name + purok + the report's columns.** No mobile number, address or notes. UTF-8 so ñ opens correctly in Excel; column headers in the app's language. |
+| Print | The **Print** button prints the current tab. The sidebar, top bar, filters and buttons are hidden, and the data prints as black-on-white tables. Header: seal, health center name and address (the **contact number only once a real one is set**), report title, period and filters, print date. Footer: **"Prepared by: {name}"** and a blank **"Noted by"** line. |
+| Admin: accounts | Counts of mothers (total, with a login, without one, signed up on the website this month), health workers, admins and inactive accounts. Each links to the matching list where one exists. Read from our own tables only. |
+| Admin: SMS health | Phone status; this month's sent, delivered, failed and skipped; waiting now; failed texts link to the SMS log; **"Sent this month: N of 200"**, with a note that replies count too (HTTPSMS free plan). The limit is one config value. |
+
+**Database:** no migration expected. The current tables, the views `follow_up_item` and `sms_log_item`, and the current RLS cover every number. If a gap turns up, we stop and decide first.
+
+**Build, in steps (each ends with screenshots for you):**
+1. **Staff dashboard** (`/staff`, feature `features/dashboard`):
+   - The greeting, the 5 tiles and the 2 lists. Tile links:
+     - Today → Visits
+     - Requests → the Appointments Requests tab
+     - Needs follow-up → Follow-ups
+     - Pregnant now → the Mothers list filtered to pregnant now
+     - Due → the Mothers list with a new "Due within 30 days" option on its Due filter (it also takes past-due pregnancies)
+   - **Admin section:** an Accounts card and an SMS health card.
+   - The Phase 2 welcome card is removed if nothing else uses it.
+   - Dev preview: `/design-preview/staff-dashboard` (`?admin=1`).
+2. **Reports page and Summary** (feature `features/reports`):
+   - The tabs and the filter card (a plain GET form, so filters live in the address).
+   - The Summary counts and the 2 bar charts.
+   - The SMS tab and its numbers are checked on the server too, not just hidden.
+   - "Coming in Phase N" is removed once nothing uses it.
+3. **Detail tabs:**
+   - Pregnancies, Visits, Appointments, Services, SMS.
+   - Tables from 1280px, cards below.
+   - **No paging:** a tab shows every row for the period, so Print prints everything.
+4. **Print and CSV:**
+   - Print styles plus the header and footer.
+   - `GET /api/reports/csv?tab=…&…` with the same filters. It checks the role itself (the proxy skips `/api`) and reads in batches, so the database's 1,000-row limit never cuts a file short.
+   - File names like `taysan-visits-2026-11-01-to-2026-11-30.csv`.
+5. **Review:**
+   - Desktop and phone screenshots in EN and FIL, plus contrast, heading and label checks, and a print preview on A4 and Letter.
+   - An independent design review, fixes with your approval, and a second pass.
+   - `DESIGN.md` updated by the documenter.
+   - Review screenshots deleted afterwards, then your testing and sign-off.
+
+**Needs from you:** nothing to run. The health center's contact number whenever it's decided (until then the printed header leaves it out).
+
 ## Phase 9 — Hardening & launch
 
 - **Security:** RLS test per role, input validation, re-check login protection, security review.
@@ -899,7 +953,7 @@ Sample request answers (one SMS each with this service name; a longer name may m
 ## Open items
 
 1. ~~`SUPABASE_SECRET_KEY` in `.env.local` (Phase 0).~~ Resolved 2026-11-02 (in use locally and on Vercel).
-2. Health center contact number for the landing page (address and clinic hours received 2026-10-27).
+2. Health center contact number for the landing page (address and clinic hours received 2026-10-27). Also used by Phase 8's printed report header, which leaves it out until it's set.
 3. ~~HTTPSMS phone + API key (Phase 7).~~ Resolved 2026-11-02 (texts are being delivered).
 4. Manuscript updates listed on ERD page 2 (scope, named activities, single health center) — outside the code, for you to handle.
 

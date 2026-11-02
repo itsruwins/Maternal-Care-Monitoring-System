@@ -3,15 +3,15 @@
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { DangerIcon, PhoneIcon, SendIcon, SmsIcon, SpinnerIcon } from "@/components/icons";
+import { DangerIcon, SendIcon, SmsIcon, SpinnerIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { IconCircle } from "@/components/ui/icon-circle";
 import { useDictionary } from "@/i18n/dictionary-provider";
 import { format } from "@/i18n/format";
-import { formatSlot, formatSlotDate } from "@/lib/appointments/format";
-import { cn } from "@/lib/utils/cn";
+import { formatSlotDate } from "@/lib/appointments/format";
 import { sendNow } from "../actions/sending";
 import type { RunSummary } from "../types";
+import { PhoneStatusLine } from "./phone-status-line";
 
 // Automatic sending: what the schedule does, the SMS phone and plan status,
 // and Send now (the same run, right away). Results show as toasts.
@@ -40,12 +40,6 @@ export function SendCard({
       router.refresh();
     });
 
-  const phoneLine =
-    phoneOnline === null || !phoneStatusAt
-      ? s.phoneUnknown
-      : // The date and time stay on one line.
-        format(phoneOnline ? s.phoneOnline : s.phoneOffline, { time: formatSlot(phoneStatusAt, locale, "short").replace(/ /g, "\u00a0") });
-
   return (
     <section aria-labelledby="sms-send-title" className="rounded-2xl bg-white p-5 shadow-[var(--shadow-soft)] sm:p-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
@@ -54,14 +48,7 @@ export function SendCard({
           <div className="flex flex-col gap-1">
             <h2 id="sms-send-title" className="text-lg font-bold">{s.title}</h2>
             <p className="text-sm text-ink-soft">{s.intro}</p>
-            <p className="mt-1 flex items-center gap-2 text-sm font-medium text-ink-soft">
-              <PhoneIcon aria-hidden className="size-5 shrink-0" />
-              <span
-                aria-hidden
-                className={cn("size-2 shrink-0 rounded-full", phoneOnline === null ? "bg-sage" : phoneOnline ? "bg-leaf" : "bg-rose-deep")}
-              />
-              {phoneLine}
-            </p>
+            <PhoneStatusLine t={t} locale={locale} online={phoneOnline} at={phoneStatusAt} className="mt-1" />
           </div>
         </div>
         <Button type="button" disabled={running} aria-busy={running} onClick={runNow} className="w-full shrink-0 sm:w-auto">

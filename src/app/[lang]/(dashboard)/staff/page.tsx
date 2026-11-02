@@ -1,12 +1,11 @@
 import { Suspense } from "react";
-import { Welcome } from "@/features/shell/components/welcome";
-import { AREA_ROLES } from "@/lib/auth/roles";
-
+import { DashboardScreen } from "@/features/dashboard/components/dashboard-screen";
+import { TodayAppointmentsPanel } from "@/features/visits/components/today-appointments-panel";
 
 export default function StaffHomePage() {
   return (
-    <Suspense fallback={null}>
-      <Welcome roles={AREA_ROLES.staff} kind="staff" />
+    <Suspense fallback={<div aria-hidden className="h-96 animate-pulse rounded-3xl bg-white/60" />}>
+      <DashboardScreen todayList={<TodayAppointmentsPanel />} />
     </Suspense>
   );
 }

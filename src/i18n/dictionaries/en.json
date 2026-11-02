@@ -369,14 +369,53 @@
       "badge": "Phase {phase}",
       "title": "Coming soon",
       "body": "This part of Taysan MaternaCare is planned and will be built in Phase {phase}."
+    }
+  },
+  "dashboard": {
+    "greeting": "Hello, {name}",
+    "countsLabel": "At a glance",
+    "counts": {
+      "today": "Today's appointments",
+      "requests": "Waiting requests",
+      "followUps": "Needs follow-up",
+      "pregnant": "Pregnant now",
+      "dueSoon": "Due within 30 days"
     },
-    "staffHome": {
-      "greeting": "Hello, {name}",
-      "body": "Your tools appear here as each phase is built. For now you can manage your profile, and admins can manage accounts and activity types."
+    "todayTitle": "Today's appointments",
+    "due": {
+      "title": "Due within 30 days",
+      "empty": "No one is due in the next 30 days.",
+      "noPurok": "No purok yet",
+      "week": "Wk {weeks}",
+      "dueOn": "Due {date}",
+      "pastDue": "Past due by {days} days",
+      "pastDueOne": "Past due by 1 day",
+      "dueToday": "Due today",
+      "tomorrow": "Tomorrow",
+      "inDays": "In {days} days",
+      "seeAll": "See all {count}"
     },
-    "motherHome": {
-      "greeting": "Hello, {name}",
-      "body": "Your pregnancy summary, next visit and reminders will appear here soon."
+    "admin": {
+      "title": "Admin",
+      "accounts": {
+        "title": "Accounts",
+        "mothers": "Mothers",
+        "withLogin": "With a login",
+        "withoutLogin": "Without a login",
+        "signedUp": "Signed up on the website in {month}",
+        "healthWorkers": "Health workers",
+        "admins": "Admins",
+        "inactive": "Inactive logins"
+      },
+      "sms": {
+        "title": "SMS health",
+        "sentIn": "Sent in {month}",
+        "ofLimit": "{count} of {limit}",
+        "monthLine": "Delivered {delivered} · Failed {failed} · Not sent {skipped}",
+        "planNote": "The HTTPSMS plan allows {limit} texts a month, and her replies count too.",
+        "waiting": "Waiting now",
+        "failed": "Failed texts"
+      }
     }
   },
   "newPassword": {
@@ -609,6 +648,7 @@
       "noPurok": "No purok yet",
       "due": "Due month",
       "anyMonth": "Any month",
+      "dueSoon": "Within 30 days",
       "status": "Pregnancy",
       "all": "All",
       "pregnant": "Pregnant now",

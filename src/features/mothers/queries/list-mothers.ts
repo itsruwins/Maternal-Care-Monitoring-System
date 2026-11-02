@@ -1,5 +1,6 @@
 import "server-only";
 import { createClient } from "@/lib/supabase/server";
+import { addDays, DUE_SOON_DAYS } from "@/lib/utils/pregnancy";
 import { MOTHERS_PAGE_SIZE } from "../constants";
 import { summarizePregnancies } from "../pregnancy-summary";
 import type { MotherFilters, MotherListItem, MotherStatusFilter } from "../types";
@@ -19,7 +20,7 @@ export function parseMotherFilters(params: Record<string, string | string[] | un
     // Keep letters, numbers, spaces, dots, underscores and dashes (safe in filters).
     q: one("q").replace(/[^\p{L}\p{N} ._-]/gu, "").trim().slice(0, 60),
     purok: purok === "none" ? "none" : /^[1-9]\d{0,9}$/.test(purok) ? Number(purok) : "",
-    due: /^\d{4}-(0[1-9]|1[0-2])$/.test(one("due")) ? one("due") : "",
+    due: one("due") === "soon" || /^\d{4}-(0[1-9]|1[0-2])$/.test(one("due")) ? one("due") : "",
     status: STATUSES.includes(status) ? status : "",
     page: Number.isFinite(page) && page > 0 ? page : 1,
   };
@@ -70,7 +71,10 @@ export async function listMothers(
   if (filters.purok === "none") query = query.is("purok_id", null);
   else if (filters.purok) query = query.eq("purok_id", filters.purok);
   if (onlyPregnant) query = query.eq("pregnancy.pregnancy_status", "ACTIVE");
-  if (filters.due) {
+  if (filters.due === "soon") {
+    // Due within 30 days, past due included (the staff dashboard's count).
+    query = query.lte("pregnancy.expected_delivery_date", addDays(today, DUE_SOON_DAYS)!);
+  } else if (filters.due) {
     query = query
       .gte("pregnancy.expected_delivery_date", `${filters.due}-01`)
       .lt("pregnancy.expected_delivery_date", nextMonthStart(filters.due));

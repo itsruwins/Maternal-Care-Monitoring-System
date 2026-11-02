@@ -369,14 +369,53 @@
       "badge": "Phase {phase}",
       "title": "Malapit na",
       "body": "Nakaplano na ang bahaging ito ng Taysan MaternaCare at gagawin sa Phase {phase}."
+    }
+  },
+  "dashboard": {
+    "greeting": "Kumusta, {name}",
+    "countsLabel": "Buod ngayon",
+    "counts": {
+      "today": "Mga appointment ngayon",
+      "requests": "Naghihintay na hiling",
+      "followUps": "Kailangang i-⁠follow up",
+      "pregnant": "Buntis ngayon",
+      "dueSoon": "Kabuwanan sa loob ng 30 araw"
     },
-    "staffHome": {
-      "greeting": "Hello, {name}",
-      "body": "Lalabas dito ang mga gamit mo habang ginagawa ang bawat phase. Sa ngayon, maaari mong ayusin ang iyong profile, at ang mga admin ay maaaring mag-ayos ng mga account at serbisyo."
+    "todayTitle": "Mga appointment ngayon",
+    "due": {
+      "title": "Kabuwanan sa loob ng 30 araw",
+      "empty": "Walang kabuwanan sa susunod na 30 araw.",
+      "noPurok": "Wala pang purok",
+      "week": "Ika-{weeks} lnggo",
+      "dueOn": "Kabuwanan: {date}",
+      "pastDue": "{days} araw nang lampas sa kabuwanan",
+      "pastDueOne": "1 araw nang lampas sa kabuwanan",
+      "dueToday": "Kabuwanan ngayon",
+      "tomorrow": "Bukas",
+      "inDays": "{days} araw pa",
+      "seeAll": "Tingnan lahat ({count})"
     },
-    "motherHome": {
-      "greeting": "Hello, {name}",
-      "body": "Malapit nang lumabas dito ang buod ng iyong pagbubuntis, susunod na bisita at mga paalala."
+    "admin": {
+      "title": "Admin",
+      "accounts": {
+        "title": "Mga account",
+        "mothers": "Mga ina",
+        "withLogin": "May login",
+        "withoutLogin": "Walang login",
+        "signedUp": "Nag-sign up sa website noong {month}",
+        "healthWorkers": "Mga health worker",
+        "admins": "Mga admin",
+        "inactive": "Mga hindi aktibong login"
+      },
+      "sms": {
+        "title": "Kalagayan ng SMS",
+        "sentIn": "Naipadala noong {month}",
+        "ofLimit": "{count} sa {limit}",
+        "monthLine": "Natanggap {delivered} · Hindi naipadala {failed} · Hindi na ipinadala {skipped}",
+        "planNote": "{limit} text kada buwan ang pinapayagan ng HTTPSMS plan, at kasama rito ang mga sagot niya.",
+        "waiting": "Naghihintay ngayon",
+        "failed": "Mga hindi naipadala"
+      }
     }
   },
   "newPassword": {
@@ -609,6 +648,7 @@
       "noPurok": "Wala pang purok",
       "due": "Buwan ng kabuwanan",
       "anyMonth": "Kahit anong buwan",
+      "dueSoon": "Sa loob ng 30 araw",
       "status": "Pagbubuntis",
       "all": "Lahat",
       "pregnant": "Buntis ngayon",

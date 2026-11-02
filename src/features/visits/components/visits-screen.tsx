@@ -1,17 +1,18 @@
 import Link from "next/link";
-import { CheckCircleIcon, CheckupIcon, PlusIcon } from "@/components/icons";
+import { PlusIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import type { Locale } from "@/i18n/config";
 import { format } from "@/i18n/format";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import { getServerI18n } from "@/i18n/server";
-import { formatSlot, formatSlotClock } from "@/lib/appointments/format";
+import { formatSlot } from "@/lib/appointments/format";
 import { AREA_ROLES } from "@/lib/auth/roles";
 import { requireRole } from "@/lib/auth/session";
 import { manilaTodayISO } from "@/lib/utils/manila-date";
 import { formatDate } from "@/lib/utils/pregnancy";
 import { listRecentVisits, listTodayAppointments } from "../queries/visits";
 import type { RecentVisit, TodayAppointment } from "../types";
+import { TodayAppointmentsList } from "./today-appointments-list";
 
 // /staff/visits: today's appointments (Record visit; done ones link to the
 // visit), Walk-in visit, and the latest visits. Reads the session: render
@@ -61,49 +62,7 @@ export function VisitsView({
             {formatDate(today, locale)}
           </span>
         </h2>
-        {todays.length === 0 ? (
-          <p className="rounded-2xl bg-white px-6 py-8 text-center text-ink-soft shadow-[var(--shadow-soft)]">{v.todayEmpty}</p>
-        ) : (
-          <ul className="grid gap-3 md:grid-cols-2">
-            {todays.map((item) => (
-              <li key={item.id} className="flex flex-wrap items-center gap-x-4 gap-y-3 rounded-2xl bg-white p-4 shadow-[var(--shadow-soft)]">
-                <span className="tnum grid h-14 w-20 shrink-0 place-items-center rounded-2xl bg-mint text-[0.95rem] font-bold text-leaf">
-                  {formatSlotClock(item.at, locale)}
-                </span>
-                <span className="min-w-0 flex-1">
-                  <Link
-                    href={`/staff/mothers/${item.mother.id}`}
-                    className="block font-semibold break-words text-ink no-underline hover:text-leaf hover:underline"
-                  >
-                    {item.mother.name}
-                  </Link>
-                  <span className="block text-sm break-words text-ink-soft">{item.service}</span>
-                </span>
-                {item.visitId || item.dayVisitId ? (
-                  <Link
-                    href={`/staff/visits/${item.visitId ?? item.dayVisitId}`}
-                    className="inline-flex w-full shrink-0 items-center gap-1.5 text-sm font-semibold text-leaf underline decoration-1 underline-offset-4 sm:w-auto"
-                  >
-                    <CheckCircleIcon weight="fill" aria-hidden className="size-5" />
-                    {item.visitId ? v.recorded : v.completedAtVisit}
-                  </Link>
-                ) : item.status === "COMPLETED" ? (
-                  <span className="inline-flex w-full shrink-0 items-center gap-1.5 text-sm font-semibold text-leaf sm:w-auto">
-                    <CheckCircleIcon weight="fill" aria-hidden className="size-5" />
-                    {t.appointments.statuses.COMPLETED}
-                  </span>
-                ) : (
-                  <Button asChild size="sm" className="h-11 w-full shrink-0 sm:h-9 sm:w-auto">
-                    <Link href={`/staff/visits/new?appointment=${item.id}`}>
-                      <CheckupIcon weight="bold" aria-hidden />
-                      {v.record}
-                    </Link>
-                  </Button>
-                )}
-              </li>
-            ))}
-          </ul>
-        )}
+        <TodayAppointmentsList t={t} locale={locale} items={todays} />
       </section>
 
       <section aria-labelledby="visits-recent" className="flex flex-col gap-3">

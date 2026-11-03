@@ -2,7 +2,7 @@
 
 Barangay Taysan, Legazpi City · Next.js 16 + Supabase · Hosted on Vercel
 
-Status: **Phases 0–8 done (Phase 8 signed off 2026-11-03). Phase 9 — Hardening & launch: plan approved 2026-11-03; step 1 (security review and fixes) done; next: step 2 (abuse limits).** Each phase ends with a demo and your sign-off before the next starts.
+Status: **Phases 0–8 done (Phase 8 signed off 2026-11-03). Phase 9 — Hardening & launch: plan approved 2026-11-03; steps 1–2 (security review and fixes, abuse limits) done; next: step 3 (RLS test script).** Each phase ends with a demo and your sign-off before the next starts.
 
 ---
 
@@ -168,6 +168,7 @@ Supabase Auth only signs in with email, and no username login exists in the data
   - `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`: already there
   - `SUPABASE_SECRET_KEY`: Phase 0 (username login, staff accounts, password resets)
   - `HTTPSMS_API_KEY`, `HTTPSMS_FROM_NUMBER`, `CRON_SECRET`, `HTTPSMS_WEBHOOK_SIGNING_KEY`: Phase 7 (`CRON_SECRET` is also kept in Supabase Vault as `cron_secret`, beside the sender address `sms_sender_url`)
+  - `RATE_LIMIT_SECRET`: Phase 9 (a long random string; key for hashing network addresses in the abuse limits)
 - **The secret key is read in one file only**, `src/lib/supabase/admin.ts`, marked `server-only`.
 - **On Vercel:** the same values go in Project Settings → Environment Variables.
 - **Schema changes:** written as numbered files in `supabase/migrations/`. You review and run them yourself in the SQL Editor.
@@ -1043,6 +1044,13 @@ Sample request answers (one SMS each with this service name; a longer name may m
 - **Checked:** 35 pages in dev and 7 in production with no CSP violations; redirect tricks stay on the site; build, types and lint pass.
 - **Checks passed (2026-11-03):** re-linking, removing and adding a record with another login are blocked, and ordinary edits still work (0022). Supabase's public sign-up answers 422 `signup_disabled`, and sign-up through the app still works. "Reset password" on a mother's record still works (tested by you). Your test sign-up account is kept.
 - **Accepted:** an unknown username answers a little faster; the username check stays public. Supabase's minimum password length is checked in step 7.
+
+**Step 2 built (2026-11-03):** abuse limits per network address, your choices: generous limits, failed logins only, keyed hash, "please wait" message.
+- **Migration `0023_rate_limits.sql`** (run and checked by you, 5 checks as expected): server-only `rate_limit_hit` log (RLS on, no policies) that stores only an HMAC-SHA256 of the address with `RATE_LIMIT_SECRET`. The `clean-rate-limits` job (3:00 AM Manila) deletes rows older than a day here and in `login_attempt`.
+- **Limits** (`lib/auth/rate-limit.ts`): login 20 failed tries per address in 15 minutes (on top of the 5-per-username lock); sign-up 20 per hour; forgot password 10 per hour. If the log can't be read, the try is allowed, so an outage never locks everyone out.
+- **Messages:** login reuses "Too many failed attempts. Try again in N minutes."; sign-up and forgot password say "Too many … from this network. Please wait N minutes and try again." (EN and FIL).
+- **Tested locally against the live database** with made-up usernames: the username lock after 5 failures; the address limit after 20 failed tries even with new usernames; the forgot-password limit on the 11th request (EN and FIL). No emails sent.
+- **On Vercel:** `RATE_LIMIT_SECRET` added by you (the same value as in `.env.local`).
 
 ---
 

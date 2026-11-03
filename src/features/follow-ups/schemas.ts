@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "@/lib/validation/zod";
 
 // Error messages are dictionary keys (followUpErrors.*). The database checks
 // the same rules again, plus the date range (migration 0015).

@@ -1,6 +1,6 @@
-import { z } from "zod";
+import { z } from "@/lib/validation/zod";
 import { purokIdField } from "@/lib/puroks/purok-field";
-import { MOBILE_PATTERN, normalizeMobile, USERNAME_PATTERN } from "@/lib/validation/account-rules";
+import { MAX_LENGTH, MOBILE_PATTERN, normalizeMobile, USERNAME_PATTERN } from "@/lib/validation/account-rules";
 import { manilaTodayISO } from "@/lib/utils/manila-date";
 import { parseISODate } from "@/lib/utils/pregnancy";
 import { countField, isPlausibleBirthDate, isPlausibleDueDate, lmpField } from "@/lib/validation/mother-rules";
@@ -8,6 +8,10 @@ import { countField, isPlausibleBirthDate, isPlausibleDueDate, lmpField } from "
 // Error messages are dictionary keys (mothers.errors.*).
 
 const required = z.string().trim().min(1, "required");
+const namePart = required.max(MAX_LENGTH.namePart, "tooLong");
+const middleName = z.string().trim().max(MAX_LENGTH.namePart, "tooLong");
+const street = required.max(MAX_LENGTH.street, "tooLong");
+const fullName = required.max(MAX_LENGTH.fullName, "tooLong");
 const mobile = z.string().transform(normalizeMobile).pipe(z.string().regex(MOBILE_PATTERN, "phoneInvalid"));
 
 /** Optional login fields: a username (also the temporary password) and email. */
@@ -16,6 +20,7 @@ const loginFields = {
   email: z
     .string()
     .trim()
+    .max(MAX_LENGTH.email, "tooLong")
     .transform((value) => value.toLowerCase())
     .refine((value) => value === "" || z.email().safeParse(value).success, "emailInvalid"),
 };
@@ -30,14 +35,14 @@ export const loginSchema = z.object(loginFields).superRefine((data, ctx) => {
 // if ticked, a login.
 export const registerMotherSchema = z
   .object({
-    firstName: required,
-    middleName: z.string().trim(),
-    lastName: required,
+    firstName: namePart,
+    middleName,
+    lastName: namePart,
     dateOfBirth: required.refine((value) => isPlausibleBirthDate(value), "dobInvalid"),
     contactNumber: mobile,
     purokId: purokIdField,
-    street: required,
-    emergencyName: required,
+    street,
+    emergencyName: fullName,
     emergencyNumber: mobile,
     gravida: countField("gravidaInvalid", 1),
     para: countField("paraInvalid", 0),
@@ -63,14 +68,14 @@ export type LoginField = keyof z.input<typeof loginSchema>;
 // --- Her record (staff editing) ---------------------------------------------
 
 export const motherDetailsSchema = z.object({
-  firstName: required,
-  middleName: z.string().trim(),
-  lastName: required,
+  firstName: namePart,
+  middleName,
+  lastName: namePart,
   dateOfBirth: required.refine((value) => isPlausibleBirthDate(value), "dobInvalid"),
   contactNumber: mobile,
   purokId: purokIdField,
-  street: required,
-  emergencyName: required,
+  street,
+  emergencyName: fullName,
   emergencyNumber: mobile,
 });
 

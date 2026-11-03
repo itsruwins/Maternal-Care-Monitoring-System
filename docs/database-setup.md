@@ -25,6 +25,7 @@ Run these in **Supabase Dashboard → SQL Editor**, in order. Each file is safe 
 | 19 | `supabase/migrations/0019_sms_log.sql` | Phase 7 step 4: the `sms_log_item` view (each text with her name, the service and the appointment; staff read all, a mother her own) for the SMS log and her record's SMS log tab, and an index for newest first. Changes no data |
 | 20 | `supabase/migrations/0020_sms_layout.sql` | Phase 7: every text in three parts ("Hi {name}!", the message, "From: Brgy. Taysan Health Center") with blank lines between; `sms_plain()` keeps line breaks; the Declined text ends "Thank you!"; texts still waiting get the new layout too |
 | 21 | `supabase/migrations/0021_sms_visit_changes.sql` | Phase 7: texts when staff (admins or health workers) move or cancel a visit: "New time proposed" when she must accept it in the app, new types Visit moved (no login, confirmed at once) and Visit cancelled; no cancel text when her pregnancy is closed or the visit time has passed. Changes no data |
+| 22 | `supabase/migrations/0022_guard_mother_login.sql` | Phase 9 security fix: a mother record's login can be set only while it has none, and only to a MOTHER login no other record uses; after that nobody logged in can change or remove it (the sign-up trigger and the server's secret key are not affected). Changes no data |
 | — | `supabase/seed/first-admin.sql` | First admin (follow the steps at the top of the file) |
 
 ## Rules
@@ -253,6 +254,78 @@ union all
 select 4, 'app can call the queuing function',
        has_function_privilege('authenticated', 'public.sync_appointment_reminder()', 'execute')::text, 'false'
 order by n;
+```
+
+## 0022 check query (after running it)
+
+It acts as a logged-in staff member inside the check and undoes every change, so nothing is saved.
+
+```sql
+create temp table if not exists guard_0022 (n int, check_name text, result text, expected text);
+truncate guard_0022;
+
+do $$
+declare
+  staff_id uuid := (select user_id from public.user_account
+                    where role in ('ADMIN', 'HEALTH_WORKER') and account_status = 'ACTIVE'
+                    order by role = 'HEALTH_WORKER' desc limit 1);
+  admin_id uuid := (select user_id from public.user_account where role = 'ADMIN' limit 1);
+  linked bigint := (select mother_id from public.mother where user_id is not null limit 1);
+  unlinked bigint := (select mother_id from public.mother where user_id is null limit 1);
+  changed int;
+  r1 text; r2 text; r3 text; r4 text;
+begin
+  perform set_config('request.jwt.claims', json_build_object('sub', staff_id, 'role', 'authenticated')::text, true);
+  execute 'set local role authenticated';
+
+  -- 1. Point a record that has a login at the admin's login.
+  begin
+    update public.mother set user_id = admin_id where mother_id = linked;
+    get diagnostics changed = row_count;
+    r1 := case when linked is null then 'skipped: no mother with a login' when changed = 0 then 'no row changed' else 'ALLOWED' end;
+    raise exception 'undo';
+  exception when others then r1 := coalesce(r1, sqlerrm);
+  end;
+
+  -- 2. Give a record without a login the admin's login.
+  begin
+    update public.mother set user_id = admin_id where mother_id = unlinked;
+    get diagnostics changed = row_count;
+    r2 := case when unlinked is null then 'skipped: no mother without a login' when changed = 0 then 'no row changed' else 'ALLOWED' end;
+    raise exception 'undo';
+  exception when others then r2 := coalesce(r2, sqlerrm);
+  end;
+
+  -- 3. Remove a record's login.
+  begin
+    update public.mother set user_id = null where mother_id = linked;
+    get diagnostics changed = row_count;
+    r3 := case when linked is null then 'skipped: no mother with a login' when changed = 0 then 'no row changed' else 'ALLOWED' end;
+    raise exception 'undo';
+  exception when others then r3 := coalesce(r3, sqlerrm);
+  end;
+
+  -- 4. An ordinary edit of her details still works.
+  begin
+    update public.mother set first_name = first_name where mother_id = coalesce(linked, unlinked);
+    get diagnostics changed = row_count;
+    r4 := case when changed = 0 then 'no row changed' else 'ALLOWED' end;
+    raise exception 'undo';
+  exception when others then r4 := coalesce(r4, sqlerrm);
+  end;
+
+  execute 'reset role';
+  insert into guard_0022 values
+    (1, 'trigger installed',
+        (select count(*) from pg_trigger where tgrelid = 'public.mother'::regclass
+           and tgname = 'trg_mother_guard_login_link' and tgenabled = 'O')::text, '1'),
+    (2, 'staff re-link a login to the admin', r1, 'login_link_locked'),
+    (3, 'staff give a record the admin login', r2, 'login_link_invalid'),
+    (4, 'staff remove a record''s login', r3, 'login_link_locked'),
+    (5, 'staff edit her details', r4, 'ALLOWED');
+end $$;
+
+select * from guard_0022 order by n;
 ```
 
 ## Environment variables (`.env.local`, never committed)

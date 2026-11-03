@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { z } from "zod";
+import { z } from "@/lib/validation/zod";
 import { CHANGE_PASSWORD_PATH, mustChangePassword } from "@/lib/auth/password-flag";
 import { ROLE_HOME } from "@/lib/auth/roles";
 import { createAdminClient } from "@/lib/supabase/admin";

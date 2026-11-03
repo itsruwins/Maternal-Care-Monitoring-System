@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { AuthCard } from "@/features/auth/components/auth-card";
 import { ResetLinkExpired, ResetPasswordForm } from "@/features/auth/components/reset-password-form";
 import { getServerI18n } from "@/i18n/server";
+import { openedResetLink } from "@/lib/auth/reset-link";
 import { getCurrentUser } from "@/lib/auth/session";
 
 export async function generateMetadata() {
@@ -22,8 +23,9 @@ export default async function ResetPasswordPage() {
   );
 }
 
-// Only someone signed in through a valid reset link can set a new password.
+// Only someone signed in through a reset link in the last 15 minutes can set
+// a new password here.
 async function ResetGate() {
   const user = await getCurrentUser();
-  return user ? <ResetPasswordForm /> : <ResetLinkExpired />;
+  return user && (await openedResetLink(user.id)) ? <ResetPasswordForm /> : <ResetLinkExpired />;
 }

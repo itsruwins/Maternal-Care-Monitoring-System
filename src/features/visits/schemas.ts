@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "@/lib/validation/zod";
 import { HARD, type VitalKey } from "@/lib/visits/vitals";
 
 // Error messages are dictionary keys (visits.errors.*).

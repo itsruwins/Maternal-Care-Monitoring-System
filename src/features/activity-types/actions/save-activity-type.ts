@@ -2,6 +2,7 @@
 
 import { requireRole } from "@/lib/auth/session";
 import { createClient } from "@/lib/supabase/server";
+import { isIdOrNull } from "@/lib/validation/ids";
 import { activityTypeSchema, type ActivityTypeField } from "../schemas";
 import type { ActivityTypeErrorKey, ActivityTypeFormState } from "../types";
 
@@ -15,6 +16,7 @@ export async function saveActivityType(
   formData: FormData,
 ): Promise<ActivityTypeFormState> {
   await requireRole(["ADMIN"]);
+  if (!isIdOrNull(id)) return { error: "generic" };
 
   const raw = Object.fromEntries(FIELDS.map((field) => [field, String(formData.get(field) ?? "")]));
   const parsed = activityTypeSchema.safeParse(raw);

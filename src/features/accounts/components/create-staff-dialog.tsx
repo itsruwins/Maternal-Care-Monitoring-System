@@ -12,6 +12,7 @@ import { InputIcon } from "@/components/ui/input-icon";
 import { useDictionary } from "@/i18n/dictionary-provider";
 import { format } from "@/i18n/format";
 import { cn } from "@/lib/utils/cn";
+import { MAX_LENGTH } from "@/lib/validation/account-rules";
 import { createStaffAccount } from "../actions/create-staff";
 import type { CreateStaffField, FormState } from "../types";
 import { StaffFields } from "./staff-fields";
@@ -105,6 +106,7 @@ export function CreateStaffDialog() {
                   id="new-staff-email"
                   name="email"
                   type="email"
+                  maxLength={MAX_LENGTH.email}
                   inputMode="email"
                   autoComplete="off"
                   aria-invalid={Boolean(errors.email)}

@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "@/lib/validation/zod";
 import { SERVICE_ICONS } from "@/lib/appointments/service-icons";
 
 // Error messages are dictionary keys (activityTypes.errors.*).

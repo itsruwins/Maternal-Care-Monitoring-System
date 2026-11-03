@@ -27,6 +27,7 @@ import { addDays, dueDateFromLmp, isPlausibleLmp, parseISODate } from "@/lib/uti
 import type { PurokOption } from "@/lib/puroks/types";
 import { useToday } from "@/lib/utils/use-today";
 import { cn } from "@/lib/utils/cn";
+import { inputMaxLength } from "@/lib/validation/account-rules";
 import { registerMother } from "../actions/register";
 import { useUsernameAvailability } from "../hooks/use-username-availability";
 import { REGISTER_STEPS, registerSchema, type RegisterData, type RegisterField, type RegisterInput } from "../schemas";
@@ -150,6 +151,7 @@ export function RegisterForm({ puroks }: { puroks: PurokOption[] }) {
       const input = (
         <Input
           id={`reg-${name}`}
+          maxLength={inputMaxLength(name)}
           aria-invalid={Boolean(formState.errors[name])}
           aria-describedby={describedBy}
           {...props}

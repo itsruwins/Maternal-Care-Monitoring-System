@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { InputIcon } from "@/components/ui/input-icon";
 import { NativeSelect } from "@/components/ui/native-select";
 import { useDictionary } from "@/i18n/dictionary-provider";
+import { MAX_LENGTH } from "@/lib/validation/account-rules";
 import { POSITION_KEYS, positionKeyOf } from "../constants";
 import type { AccountErrorKey, StaffField } from "../types";
 
@@ -40,17 +41,17 @@ export function StaffFields({
     <div className="grid gap-5 sm:grid-cols-2">
       <FormField id={id("firstName")} label={c.firstName} error={err("firstName")}>
         {(describedBy) => (
-          <Input id={id("firstName")} name="firstName" defaultValue={defaults.firstName} autoComplete="off" aria-invalid={Boolean(errors.firstName)} aria-describedby={describedBy} />
+          <Input id={id("firstName")} name="firstName" maxLength={MAX_LENGTH.namePart} defaultValue={defaults.firstName} autoComplete="off" aria-invalid={Boolean(errors.firstName)} aria-describedby={describedBy} />
         )}
       </FormField>
       <FormField id={id("middleName")} label={c.middleName} error={err("middleName")}>
         {(describedBy) => (
-          <Input id={id("middleName")} name="middleName" defaultValue={defaults.middleName ?? ""} autoComplete="off" aria-describedby={describedBy} />
+          <Input id={id("middleName")} name="middleName" maxLength={MAX_LENGTH.namePart} defaultValue={defaults.middleName ?? ""} autoComplete="off" aria-describedby={describedBy} />
         )}
       </FormField>
       <FormField id={id("lastName")} label={c.lastName} error={err("lastName")} className="sm:col-span-2">
         {(describedBy) => (
-          <Input id={id("lastName")} name="lastName" defaultValue={defaults.lastName} autoComplete="off" aria-invalid={Boolean(errors.lastName)} aria-describedby={describedBy} />
+          <Input id={id("lastName")} name="lastName" maxLength={MAX_LENGTH.namePart} defaultValue={defaults.lastName} autoComplete="off" aria-invalid={Boolean(errors.lastName)} aria-describedby={describedBy} />
         )}
       </FormField>
       <FormField id={id("position")} label={c.position} error={err("position")} className="sm:col-span-2">
@@ -71,6 +72,7 @@ export function StaffFields({
             <Input
               id={id("positionOther")}
               name="positionOther"
+              maxLength={MAX_LENGTH.position}
               defaultValue={startKey === "other" ? defaults.position : ""}
               aria-invalid={Boolean(errors.positionOther)}
               aria-describedby={describedBy}

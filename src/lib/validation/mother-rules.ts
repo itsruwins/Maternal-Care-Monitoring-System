@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "@/lib/validation/zod";
 import { daysBetween, isPlausibleLmp, parseISODate, todayISO } from "@/lib/utils/pregnancy";
 
 // Rules shared by the mother sign-up and staff registering a mother.

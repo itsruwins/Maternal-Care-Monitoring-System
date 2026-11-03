@@ -4,6 +4,7 @@ import { resetPasswordToDefault } from "@/lib/auth/reset-to-default";
 import { requireRole } from "@/lib/auth/session";
 import { createClient } from "@/lib/supabase/server";
 import type { AccountStatus } from "@/types/database";
+import { isUuid } from "@/lib/validation/ids";
 import { positionValue, staffProfileSchema } from "../schemas";
 import type { AccountErrorKey, ActionResult, FormState, StaffField } from "../types";
 
@@ -12,6 +13,7 @@ import type { AccountErrorKey, ActionResult, FormState, StaffField } from "../ty
 
 export async function setAccountStatus(userId: string, status: AccountStatus): Promise<ActionResult> {
   const me = await requireRole(["ADMIN"]);
+  if (!isUuid(userId)) return { ok: false, error: "generic" };
   if (userId === me.id) return { ok: false, error: "self" };
   if (status !== "ACTIVE" && status !== "INACTIVE") return { ok: false, error: "generic" };
 
@@ -22,6 +24,7 @@ export async function setAccountStatus(userId: string, status: AccountStatus): P
 
 export async function resetAccountPassword(userId: string): Promise<ActionResult> {
   const me = await requireRole(["ADMIN"]);
+  if (!isUuid(userId)) return { ok: false, error: "generic" };
   if (userId === me.id) return { ok: false, error: "self" };
 
   const result = await resetPasswordToDefault(userId);
@@ -37,6 +40,7 @@ export async function updateStaffProfile(
   formData: FormData,
 ): Promise<FormState<StaffField>> {
   const me = await requireRole(["ADMIN"]);
+  if (!isUuid(userId)) return { error: "generic" };
   if (userId === me.id) return { error: "self" };
 
   const raw = Object.fromEntries(STAFF_FIELDS.map((field) => [field, String(formData.get(field) ?? "")]));

@@ -2,7 +2,7 @@
 
 Barangay Taysan, Legazpi City · Next.js 16 + Supabase · Hosted on Vercel
 
-Status: **Phases 0–7 done (Phase 7 signed off 2026-11-02). Phase 8 — Dashboards & reports: plan approved 2026-11-02; steps 1–5 (staff dashboard, Reports page and Summary, detail tabs, print and CSV, review) done; next: your testing and sign-off.** Each phase ends with a demo and your sign-off before the next starts.
+Status: **Phases 0–8 done (Phase 8 signed off 2026-11-03). Phase 9 — Hardening & launch: plan approved 2026-11-03; next: step 1 (security review).** Each phase ends with a demo and your sign-off before the next starts.
 
 ---
 
@@ -986,12 +986,51 @@ Sample request answers (one SMS each with this service name; a longer name may m
 - **Docs:** `DESIGN.md` + sidecar updated for Phase 8. Review screenshots deleted.
 - **Still needed:** your testing.
 
+**Phase 8 signed off (2026-11-03):** you tested the dashboard, Reports tabs, print and CSV.
+
 ## Phase 9 — Hardening & launch
 
 - **Security:** RLS test per role, input validation, re-check login protection, security review.
 - **Quality:** accessibility pass (contrast, keyboard, screen reader), performance pass, testing on real phones.
 - **Deploy:** Vercel and its environment variables were set up in Phase 7 (step 6); here: Supabase backups and a final check of the live settings.
 - **Hand-off:** demo seed data for the defense, short user guides per role, and support for the usability / reliability / maintainability evaluation.
+
+**Decisions (asked 2026-11-03):**
+
+| Topic | Decision |
+|---|---|
+| RLS tests | **One SQL script run in a transaction that is rolled back** (`supabase/tests/rls-by-role.sql`). You run it in the SQL Editor. It makes fake users and rows, acts as each role (admin, health worker, mother, another mother, logged out), and prints PASS/FAIL per check. Nothing is saved and no text is queued. |
+| Security headers | **Basic headers plus a CSP without nonces**, in `next.config.ts`. The basic headers block framing and add nosniff, Referrer-Policy, Permissions-Policy and HSTS. The CSP limits scripts, connections and images to our site and Supabase. Pages stay static (a nonce CSP would make every page dynamic). |
+| Abuse limits | **A per-IP limit on login, sign-up and forgot-password** (migration `0022`, a 1-day attempt log). The 5-failure / 15-minute username lock stays. |
+| Automated tests | **Vitest for the core rules**: AOG/EDD, slots, SMS text and length, vital-sign limits, account rules, CSV defusing and the redirect check. One devDependency and `npm test`. No database. |
+| Accessibility | **axe-core plus the contrast/heading/label script** on every page (EN/FIL, desktop and phone). axe loads from a scratchpad, not the project. **A keyboard walk-through** of the key flows, and **your short VoiceOver/TalkBack checklist**. |
+| Performance | **Lighthouse with phone throttling** on the live public pages, plus **a check of the production build** for heavy client bundles. The top fixes come to you for approval. |
+| Real phones | **You, a BHW and 1–2 mothers**, working from a short checklist per role. |
+| Backups | **Free plan: a manual dump runbook** (`docs/backup.md`), run monthly and before every migration, with one restore test into a scratch project. The project is also checked so it won't pause. |
+| Reset emails | **Gmail SMTP**, which you enter in Supabase → Authentication → SMTP. A real reset to a non-team address is tested. |
+| README | **Replaced with a short project README**: env names only, scripts, migrations and doc links. |
+| Contact number | **Still pending**, so it stays hidden (Open item 2). |
+| Left out (your choice) | Demo seed data, user guides per role, and evaluation support. |
+
+**Build, in steps (each ends with a note for your OK):**
+1. **Security review and fixes:**
+   - Every server action, route handler, query and the proxy are read, plus the RLS policies in the migrations.
+   - The findings come to you, and each fix needs your approval.
+   - Already found: an open redirect in `/auth/callback` (`?next=/\evil.example` leaves the site).
+   - Also in this step: the security headers and CSP, and an input-validation pass (every action parses with Zod, with length caps and numeric IDs).
+2. **Abuse limits:** migration `0022_rate_limits.sql` (you run it, with check queries). The per-IP caps go into login, sign-up and forgot-password. The username lock is re-tested.
+3. **RLS test script:** you run it and share the results. Any gap gets fixed in a new migration, with your OK.
+4. **Vitest unit tests** for the core rules, plus `npm test`.
+5. **Accessibility pass:** axe and the scripts, the keyboard walk-through, then your screen-reader checklist. Fixes need your approval.
+6. **Performance pass:** Lighthouse and the bundle check (you stop your dev server for the build). Fixes need your approval.
+7. **Live settings and docs:**
+   - **Supabase:** Auth URLs, email confirmation off, Auth rate limits, Gmail SMTP and a real reset test, cron jobs, Vault names, project pausing.
+   - **Vercel:** env variable names for Production and Preview.
+   - **Docs:** `docs/backup.md` with a restore test, and the new README.
+8. **Real-phone testing:** the checklist per role, then fixes for what you report.
+9. **Review:** screenshots of the changed screens (EN/FIL, desktop/phone), contrast, heading and label checks, the independent design review with a second pass, `DESIGN.md` by the documenter, and the screenshots deleted. Then your testing and sign-off.
+
+**Needs from you:** run `0022` (and any RLS fix); run the RLS script; set up Gmail SMTP; take the backup and do the restore test; do the screen-reader check and the real-phone testing.
 
 ---
 

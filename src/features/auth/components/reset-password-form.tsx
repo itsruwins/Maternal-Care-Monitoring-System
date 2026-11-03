@@ -9,6 +9,7 @@ import { IconCircle } from "@/components/ui/icon-circle";
 import { Input } from "@/components/ui/input";
 import { InputIcon } from "@/components/ui/input-icon";
 import { useDictionary } from "@/i18n/dictionary-provider";
+import { MAX_LENGTH } from "@/lib/validation/account-rules";
 import { updatePassword } from "../actions/password";
 import type { ResetPasswordState } from "../types";
 import { submitWithoutReset } from "@/lib/forms/submit-without-reset";
@@ -20,7 +21,7 @@ export function ResetPasswordForm() {
   if (state.error === "expired") return <ResetLinkExpired />;
 
   const fieldError = (field: "password" | "confirm") =>
-    state.field === field && (state.error === "passwordShort" || state.error === "passwordMismatch")
+    state.field === field && (state.error === "passwordShort" || state.error === "passwordLong" || state.error === "passwordMismatch")
       ? t.reset.errors[state.error]
       : null;
 
@@ -32,6 +33,7 @@ export function ResetPasswordForm() {
             <Input
               id="reset-password"
               name="password"
+              maxLength={MAX_LENGTH.password}
               type="password"
               autoComplete="new-password"
               aria-invalid={Boolean(fieldError("password"))}
@@ -47,6 +49,7 @@ export function ResetPasswordForm() {
             <Input
               id="reset-confirm"
               name="confirm"
+              maxLength={MAX_LENGTH.password}
               type="password"
               autoComplete="new-password"
               aria-invalid={Boolean(fieldError("confirm"))}

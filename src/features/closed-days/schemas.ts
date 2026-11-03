@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "@/lib/validation/zod";
 import { parseISODate } from "@/lib/utils/pregnancy";
 
 // Error messages are dictionary keys (closedDays.errors.*).

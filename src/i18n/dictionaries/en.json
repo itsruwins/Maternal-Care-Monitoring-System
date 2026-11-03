@@ -294,9 +294,11 @@
     },
     "errors": {
       "required": "This is required.",
+      "tooLong": "This is too long.",
       "usernameFormat": "Use 8 to 30 small letters, numbers, dots or underscores, starting and ending with a letter or number.",
       "usernameTaken": "This username is taken. Try another.",
       "passwordShort": "Use at least 8 characters.",
+      "passwordLong": "Use at most 72 characters.",
       "passwordMismatch": "The passwords don't match.",
       "emailInvalid": "Enter a valid email, or leave it blank.",
       "emailTaken": "This email is already used by another account.",
@@ -335,6 +337,7 @@
     "requestNew": "Request a new link",
     "errors": {
       "passwordShort": "Use at least 8 characters.",
+      "passwordLong": "Use at most 72 characters.",
       "passwordMismatch": "The passwords don't match.",
       "generic": "We couldn't save your password. Please try again."
     }
@@ -588,6 +591,7 @@
     "note": "Your temporary password was your username. Pick something only you know.",
     "errors": {
       "passwordShort": "Use at least 8 characters.",
+      "passwordLong": "Use at most 72 characters.",
       "passwordMismatch": "The passwords don't match.",
       "sameAsUsername": "Your new password can't be the same as your username.",
       "generic": "We couldn't save your password. Please try again."
@@ -682,6 +686,7 @@
     },
     "errors": {
       "required": "This is required.",
+      "tooLong": "This is too long.",
       "usernameFormat": "Use 8 to 30 small letters, numbers, dots or underscores, starting and ending with a letter or number.",
       "usernameTaken": "This username is already taken.",
       "phoneInvalid": "Enter an 11-digit number starting with 09.",
@@ -1662,10 +1667,12 @@
     },
     "errors": {
       "required": "This is required.",
+      "tooLong": "This is too long.",
       "phoneInvalid": "Enter an 11-digit number starting with 09.",
       "emailInvalid": "Enter a valid email address.",
       "emailTaken": "This email is already used by another account.",
       "passwordShort": "Use at least 8 characters.",
+      "passwordLong": "Use at most 72 characters.",
       "passwordMismatch": "The passwords don't match.",
       "currentWrong": "Your current password is not correct.",
       "sameAsUsername": "Your password can't be the same as your username.",

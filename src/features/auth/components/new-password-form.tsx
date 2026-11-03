@@ -7,6 +7,7 @@ import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
 import { InputIcon } from "@/components/ui/input-icon";
 import { useDictionary } from "@/i18n/dictionary-provider";
+import { MAX_LENGTH } from "@/lib/validation/account-rules";
 import { setNewPassword } from "../actions/password";
 import type { NewPasswordState } from "../types";
 import { submitWithoutReset } from "@/lib/forms/submit-without-reset";
@@ -32,6 +33,7 @@ export function NewPasswordForm() {
             <Input
               id="new-password"
               name="password"
+              maxLength={MAX_LENGTH.password}
               type="password"
               autoComplete="new-password"
               aria-invalid={Boolean(fieldError("password"))}
@@ -47,6 +49,7 @@ export function NewPasswordForm() {
             <Input
               id="new-confirm"
               name="confirm"
+              maxLength={MAX_LENGTH.password}
               type="password"
               autoComplete="new-password"
               aria-invalid={Boolean(fieldError("confirm"))}

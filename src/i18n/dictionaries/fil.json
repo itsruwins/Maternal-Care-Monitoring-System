@@ -294,9 +294,11 @@
     },
     "errors": {
       "required": "Kailangan ito.",
+      "tooLong": "Masyadong mahaba ito.",
       "usernameFormat": "Gumamit ng 8 hanggang 30 maliliit na titik, numero, tuldok o underscore, na nagsisimula at nagtatapos sa titik o numero.",
       "usernameTaken": "May gumagamit na ng username na ito. Subukan ang iba.",
       "passwordShort": "Gumamit ng hindi bababa sa 8 character.",
+      "passwordLong": "Hanggang 72 character lang.",
       "passwordMismatch": "Hindi magkapareho ang password.",
       "emailInvalid": "Maglagay ng tamang email, o iwanang blangko.",
       "emailTaken": "Ginagamit na ng ibang account ang email na ito.",
@@ -335,6 +337,7 @@
     "requestNew": "Humingi ng bagong link",
     "errors": {
       "passwordShort": "Gumamit ng hindi bababa sa 8 character.",
+      "passwordLong": "Hanggang 72 character lang.",
       "passwordMismatch": "Hindi magkapareho ang password.",
       "generic": "Hindi namin na-save ang password mo. Pakisubukang muli."
     }
@@ -588,6 +591,7 @@
     "note": "Ang pansamantala mong password ay ang iyong username. Pumili ng ikaw lang ang nakakaalam.",
     "errors": {
       "passwordShort": "Gumamit ng hindi bababa sa 8 character.",
+      "passwordLong": "Hanggang 72 character lang.",
       "passwordMismatch": "Hindi magkapareho ang mga password.",
       "sameAsUsername": "Hindi puwedeng kapareho ng username ang bagong password.",
       "generic": "Hindi namin na-save ang password mo. Pakisubukang muli."
@@ -682,6 +686,7 @@
     },
     "errors": {
       "required": "Kailangan ito.",
+      "tooLong": "Masyadong mahaba ito.",
       "usernameFormat": "Gumamit ng 8 hanggang 30 maliliit na titik, numero, tuldok o underscore, na nagsisimula at nagtatapos sa titik o numero.",
       "usernameTaken": "May gumagamit na ng username na ito.",
       "phoneInvalid": "Maglagay ng 11-digit na numerong nagsisimula sa 09.",
@@ -1662,10 +1667,12 @@
     },
     "errors": {
       "required": "Kailangan ito.",
+      "tooLong": "Masyadong mahaba ito.",
       "phoneInvalid": "Maglagay ng 11-digit na numerong nagsisimula sa 09.",
       "emailInvalid": "Maglagay ng tamang email address.",
       "emailTaken": "Ginagamit na ng ibang account ang email na ito.",
       "passwordShort": "Gumamit ng hindi bababa sa 8 character.",
+      "passwordLong": "Hanggang 72 character lang.",
       "passwordMismatch": "Hindi magkapareho ang mga password.",
       "currentWrong": "Mali ang iyong kasalukuyang password.",
       "sameAsUsername": "Hindi puwedeng kapareho ng username ang password.",

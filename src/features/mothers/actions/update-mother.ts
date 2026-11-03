@@ -3,6 +3,7 @@
 import { AREA_ROLES } from "@/lib/auth/roles";
 import { requireRole } from "@/lib/auth/session";
 import { createClient } from "@/lib/supabase/server";
+import { isId } from "@/lib/validation/ids";
 import { fieldErrorsOf, readFields } from "../form-errors";
 import { motherDetailsSchema, type MotherDetailsField } from "../schemas";
 import type { FormState } from "../types";
@@ -26,6 +27,7 @@ export async function updateMotherDetails(
   formData: FormData,
 ): Promise<FormState<MotherDetailsField>> {
   await requireRole(AREA_ROLES.staff);
+  if (!isId(motherId)) return { error: "generic" };
   const parsed = motherDetailsSchema.safeParse(readFields(formData, FIELDS));
   if (!parsed.success) return { fieldErrors: fieldErrorsOf<MotherDetailsField>(parsed.error.issues) };
   const data = parsed.data;

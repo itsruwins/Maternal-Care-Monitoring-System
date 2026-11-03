@@ -5,6 +5,7 @@ import { AREA_ROLES } from "@/lib/auth/roles";
 import { requireRole } from "@/lib/auth/session";
 import { createClient } from "@/lib/supabase/server";
 import { parseISODate } from "@/lib/utils/pregnancy";
+import { isId, textArg } from "@/lib/validation/ids";
 import type { ActionResult } from "../types";
 
 // The mother's own appointment actions. The database checks every rule
@@ -12,10 +13,10 @@ import type { ActionResult } from "../types";
 
 export async function requestVisit(input: { serviceId: number; date: string; time: string; note: string }): Promise<ActionResult> {
   const user = await requireRole(AREA_ROLES.mother);
-  if (!Number.isInteger(input.serviceId) || !parseISODate(input.date) || !isSlotTime(input.time)) {
+  if (!isId(input?.serviceId) || typeof input.date !== "string" || !parseISODate(input.date) || !isSlotTime(input.time)) {
     return { ok: false, error: "slot_invalid" };
   }
-  const note = input.note.trim().slice(0, 300);
+  const note = textArg(input.note).trim().slice(0, 300);
 
   const supabase = await createClient();
   const { data: mother } = await supabase.from("mother").select("mother_id").eq("user_id", user.id).maybeSingle();
@@ -37,6 +38,7 @@ export async function requestVisit(input: { serviceId: number; date: string; tim
 
 export async function cancelMyAppointment(appointmentId: number): Promise<ActionResult> {
   await requireRole(AREA_ROLES.mother);
+  if (!isId(appointmentId)) return { ok: false, error: "not_found" };
   const supabase = await createClient();
   const { error } = await supabase.rpc("cancel_my_appointment", { p_appointment_id: appointmentId });
   return error ? { ok: false, error: slotErrorOf(error) } : { ok: true };
@@ -44,6 +46,7 @@ export async function cancelMyAppointment(appointmentId: number): Promise<Action
 
 export async function respondToNewTime(appointmentId: number, accept: boolean): Promise<ActionResult> {
   await requireRole(AREA_ROLES.mother);
+  if (!isId(appointmentId) || typeof accept !== "boolean") return { ok: false, error: "not_found" };
   const supabase = await createClient();
   const { error } = await supabase.rpc("respond_to_new_time", { p_appointment_id: appointmentId, p_accept: accept });
   return error ? { ok: false, error: slotErrorOf(error) } : { ok: true };

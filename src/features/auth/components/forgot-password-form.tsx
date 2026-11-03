@@ -9,6 +9,7 @@ import { IconCircle } from "@/components/ui/icon-circle";
 import { Input } from "@/components/ui/input";
 import { InputIcon } from "@/components/ui/input-icon";
 import { useDictionary } from "@/i18n/dictionary-provider";
+import { MAX_LENGTH } from "@/lib/validation/account-rules";
 import { requestPasswordReset } from "../actions/password";
 import type { ForgotPasswordState } from "../types";
 import { submitWithoutReset } from "@/lib/forms/submit-without-reset";
@@ -41,6 +42,7 @@ export function ForgotPasswordForm() {
             <Input
               id="forgot-identifier"
               name="identifier"
+              maxLength={MAX_LENGTH.email}
               autoComplete="username"
               autoCapitalize="none"
               spellCheck={false}

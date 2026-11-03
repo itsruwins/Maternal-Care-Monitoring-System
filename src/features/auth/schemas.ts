@@ -1,7 +1,7 @@
-import { z } from "zod";
+import { z } from "@/lib/validation/zod";
 import { purokIdField } from "@/lib/puroks/purok-field";
 import { countField, isPlausibleBirthDate, isPlausibleDueDate, lmpField } from "@/lib/validation/mother-rules";
-import { MIN_PASSWORD_LENGTH, MOBILE_PATTERN, normalizeMobile, USERNAME_PATTERN } from "@/lib/validation/account-rules";
+import { MAX_LENGTH, MIN_PASSWORD_LENGTH, MOBILE_PATTERN, normalizeMobile, USERNAME_PATTERN } from "@/lib/validation/account-rules";
 
 // Error messages are dictionary keys, translated in the UI:
 // auth.errors.* for login, register.errors.* for sign-up, reset.errors.* for passwords.
@@ -35,23 +35,24 @@ export const registerSchema = z
       .trim()
       .transform((value) => value.toLowerCase())
       .pipe(z.string().regex(USERNAME_PATTERN, "usernameFormat")),
-    password: z.string().min(MIN_PASSWORD_LENGTH, "passwordShort"),
+    password: z.string().min(MIN_PASSWORD_LENGTH, "passwordShort").max(MAX_LENGTH.password, "passwordLong"),
     confirmPassword: z.string(),
     email: z
       .string()
       .trim()
+      .max(MAX_LENGTH.email, "tooLong")
       .transform((value) => value.toLowerCase())
       .refine((value) => value === "" || z.email().safeParse(value).success, "emailInvalid"),
     // Step 2: about you
-    firstName: required,
-    middleName: optionalText,
-    lastName: required,
+    firstName: required.max(MAX_LENGTH.namePart, "tooLong"),
+    middleName: optionalText.max(MAX_LENGTH.namePart, "tooLong"),
+    lastName: required.max(MAX_LENGTH.namePart, "tooLong"),
     dateOfBirth: required.refine((value) => isPlausibleBirthDate(value), "dobInvalid"),
     contactNumber: mobile,
     // Step 3: address
     purokId: purokIdField,
-    street: required,
-    emergencyName: required,
+    street: required.max(MAX_LENGTH.street, "tooLong"),
+    emergencyName: required.max(MAX_LENGTH.fullName, "tooLong"),
     emergencyNumber: mobile,
     // Step 4: pregnancy
     gravida: countField("gravidaInvalid", 1),
@@ -83,12 +84,12 @@ export const REGISTER_STEPS = [
 ] as const satisfies readonly { key: string; fields: readonly RegisterField[] }[];
 
 export const forgotPasswordSchema = z.object({
-  identifier: z.string().trim().min(1, "required"),
+  identifier: z.string().trim().min(1, "required").max(MAX_LENGTH.email, "tooLong"),
 });
 
 export const resetPasswordSchema = z
   .object({
-    password: z.string().min(MIN_PASSWORD_LENGTH, "passwordShort"),
+    password: z.string().min(MIN_PASSWORD_LENGTH, "passwordShort").max(MAX_LENGTH.password, "passwordLong"),
     confirm: z.string(),
   })
   .refine((data) => data.password === data.confirm, { path: ["confirm"], message: "passwordMismatch" });

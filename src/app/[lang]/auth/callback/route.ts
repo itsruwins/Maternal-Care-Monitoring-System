@@ -1,26 +1,31 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { RESET_LINK_COOKIE, resetLinkCookieOptions } from "@/lib/auth/reset-link";
+import { safeNext } from "@/lib/auth/safe-next";
 import { createClient } from "@/lib/supabase/server";
+
+const RESET_PATH = "/reset-password";
 
 // Landing point for links in Supabase emails (password reset).
 // Exchanges the one-time code for a session, then continues to `next`.
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
   const code = searchParams.get("code");
-  const next = safeNext(searchParams.get("next"));
+  const next = safeNext(searchParams.get("next"), request.url, RESET_PATH);
 
   if (code) {
     const supabase = await createClient();
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
-    if (!error) return NextResponse.redirect(new URL(next, request.url));
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+    if (!error) {
+      const response = NextResponse.redirect(next);
+      // Lets /reset-password set a new password for the next 15 minutes.
+      if (next.pathname === RESET_PATH && data.user) {
+        response.cookies.set(RESET_LINK_COOKIE, data.user.id, resetLinkCookieOptions);
+      }
+      return response;
+    }
   }
 
-  const failed = new URL(next, request.url);
-  failed.searchParams.set("error", "expired");
-  return NextResponse.redirect(failed);
+  next.searchParams.set("error", "expired");
+  return NextResponse.redirect(next);
 }
 
-// Only allow relative paths on this site (never an outside address).
-function safeNext(value: string | null): string {
-  if (!value || !value.startsWith("/") || value.startsWith("//")) return "/reset-password";
-  return value;
-}

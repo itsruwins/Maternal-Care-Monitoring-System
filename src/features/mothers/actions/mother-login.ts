@@ -6,6 +6,7 @@ import { requireRole } from "@/lib/auth/session";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import type { AccountStatus } from "@/types/database";
+import { isId } from "@/lib/validation/ids";
 import { fieldErrorsOf, readFields } from "../form-errors";
 import { loginSchema, type LoginField } from "../schemas";
 import { createMotherLogin, removeMotherLogin } from "../server/mother-login";
@@ -16,6 +17,7 @@ import type { FormState, MotherActionResult } from "../types";
 // from here.
 
 async function linkedUserId(motherId: number): Promise<string | null> {
+  if (!isId(motherId)) return null;
   const supabase = await createClient();
   const { data } = await supabase.from("mother").select("user_id").eq("mother_id", motherId).maybeSingle();
   return data?.user_id ?? null;
@@ -30,6 +32,7 @@ export async function createLoginForMother(
   formData: FormData,
 ): Promise<CreateLoginState> {
   await requireRole(AREA_ROLES.staff);
+  if (!isId(motherId)) return { error: "generic" };
   const parsed = loginSchema.safeParse(readFields(formData, ["username", "email"] as const));
   if (!parsed.success) return { fieldErrors: fieldErrorsOf<LoginField>(parsed.error.issues) };
 
@@ -59,7 +62,7 @@ export async function resetMotherPassword(motherId: number): Promise<MotherActio
   await requireRole(AREA_ROLES.staff);
   const userId = await linkedUserId(motherId);
   if (!userId) return { ok: false, error: "generic" };
-  const result = await resetPasswordToDefault(userId);
+  const result = await resetPasswordToDefault(userId, "MOTHER");
   if (result.ok) return { ok: true, username: result.username };
   return { ok: false, error: result.error === "usernameTooShort" ? "usernameTooShort" : "generic" };
 }

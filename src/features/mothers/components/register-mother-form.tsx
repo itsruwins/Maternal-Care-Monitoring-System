@@ -27,6 +27,7 @@ import { submitWithoutReset } from "@/lib/forms/submit-without-reset";
 import type { PurokOption } from "@/lib/puroks/types";
 import { cn } from "@/lib/utils/cn";
 import { dueDateFromLmp, parseISODate } from "@/lib/utils/pregnancy";
+import { inputMaxLength } from "@/lib/validation/account-rules";
 import { registerMotherAtCenter, type RegisterMotherState } from "../actions/register-mother";
 import type { RegisterMotherField } from "../schemas";
 
@@ -70,6 +71,7 @@ function RegisterMotherForm({ puroks, today, onAnother }: { puroks: PurokOption[
           <Input
             id={id(name)}
             name={name}
+            maxLength={inputMaxLength(name)}
             aria-invalid={Boolean(errors[name])}
             aria-describedby={describedBy}
             {...props}

@@ -11,6 +11,7 @@ import { PurokSelect } from "@/components/shared/purok-select";
 import { useDictionary } from "@/i18n/dictionary-provider";
 import { format } from "@/i18n/format";
 import type { PurokOption } from "@/lib/puroks/types";
+import { inputMaxLength, MAX_LENGTH } from "@/lib/validation/account-rules";
 import { changeMyEmail, changeMyPassword, updateMyDetails } from "../actions/update-profile";
 import type { DetailsField, PasswordField } from "../schemas";
 import type { MyProfile, ProfileErrorKey, ProfileFormState } from "../types";
@@ -56,7 +57,7 @@ export function DetailsForm({ profile, puroks }: { profile: MyProfile; puroks: P
   const text = (field: DetailsField, label: string, value: string | undefined, extra: ComponentProps<typeof Input> = {}, span = false) => (
     <FormField id={`me-${field}`} label={label} error={err(field)} className={span ? "sm:col-span-2" : undefined}>
       {(describedBy) => (
-        <Input id={`me-${field}`} name={field} defaultValue={value} aria-invalid={Boolean(errors[field])} aria-describedby={describedBy} {...extra} />
+        <Input id={`me-${field}`} name={field} maxLength={inputMaxLength(field)} defaultValue={value} aria-invalid={Boolean(errors[field])} aria-describedby={describedBy} {...extra} />
       )}
     </FormField>
   );
@@ -141,6 +142,7 @@ export function PasswordForm() {
             id={`me-${name}`}
             name={name}
             type="password"
+            maxLength={inputMaxLength(name)}
             autoComplete={autoComplete}
             aria-invalid={Boolean(errors[name])}
             aria-describedby={describedBy}
@@ -183,6 +185,7 @@ export function EmailForm({ email }: { email: string | null }) {
               id="me-email"
               name="email"
               type="email"
+              maxLength={MAX_LENGTH.email}
               inputMode="email"
               autoComplete="email"
               defaultValue={email ?? ""}

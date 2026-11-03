@@ -6,6 +6,7 @@ import { AREA_ROLES } from "@/lib/auth/roles";
 import { requireRole } from "@/lib/auth/session";
 import { createClient } from "@/lib/supabase/server";
 import { parseISODate } from "@/lib/utils/pregnancy";
+import { isId, textArg } from "@/lib/validation/ids";
 import type { ActionResult } from "../types";
 
 // Staff appointment actions. The database checks the slot rules and keeps the
@@ -22,6 +23,7 @@ function withRemark(existing: string | null, remark: string): string | null {
 }
 
 async function load(supabase: Client, id: number) {
+  if (!isId(id)) return null;
   const { data } = await supabase
     .from("appointment")
     .select("appointment_id, status, requested_datetime, remarks, pregnancy:pregnancy_id(mother:mother_id(user_id))")
@@ -60,7 +62,7 @@ export async function confirmRequest(id: number): Promise<ActionResult> {
  */
 export async function proposeNewTime(id: number, input: { date: string; time: string; remark: string }): Promise<ActionResult> {
   await requireRole(AREA_ROLES.staff);
-  if (!parseISODate(input.date) || !isSlotTime(input.time)) return { ok: false, error: "slot_invalid" };
+  if (typeof input?.date !== "string" || !parseISODate(input.date) || !isSlotTime(input.time)) return { ok: false, error: "slot_invalid" };
   const supabase = await createClient();
   const appointment = await load(supabase, id);
   if (!appointment || !["REQUESTED", "CONFIRMED", "RESCHEDULED"].includes(appointment.status)) return { ok: false, error: "not_found" };
@@ -72,7 +74,7 @@ export async function proposeNewTime(id: number, input: { date: string; time: st
       status,
       scheduled_datetime: slotInstant(input.date, input.time),
       reviewed_by: await reviewer(supabase),
-      remarks: withRemark(appointment.remarks, input.remark),
+      remarks: withRemark(appointment.remarks, textArg(input.remark)),
     })
     .eq("appointment_id", id)
     .eq("status", appointment.status)
@@ -91,7 +93,7 @@ export async function cancelAppointment(id: number, remark: string): Promise<Act
 
   const { data, error } = await supabase
     .from("appointment")
-    .update({ status: "CANCELLED", reviewed_by: await reviewer(supabase), remarks: withRemark(appointment.remarks, remark) })
+    .update({ status: "CANCELLED", reviewed_by: await reviewer(supabase), remarks: withRemark(appointment.remarks, textArg(remark)) })
     .eq("appointment_id", id)
     .eq("status", appointment.status)
     .select("appointment_id");
@@ -110,7 +112,7 @@ export async function bookAppointment(input: {
   remark: string;
 }): Promise<ActionResult> {
   const user = await requireRole(AREA_ROLES.staff);
-  if (!Number.isInteger(input.pregnancyId) || !Number.isInteger(input.serviceId) || !parseISODate(input.date) || !isSlotTime(input.time)) {
+  if (!isId(input?.pregnancyId) || !isId(input.serviceId) || typeof input.date !== "string" || !parseISODate(input.date) || !isSlotTime(input.time)) {
     return { ok: false, error: "slot_invalid" };
   }
   const supabase = await createClient();
@@ -123,7 +125,7 @@ export async function bookAppointment(input: {
     requested_datetime: at,
     scheduled_datetime: at,
     status: "CONFIRMED",
-    remarks: withRemark(null, input.remark),
+    remarks: withRemark(null, textArg(input.remark)),
   });
   return error ? { ok: false, error: slotErrorOf(error) } : { ok: true, status: "CONFIRMED" };
 }

@@ -25,11 +25,11 @@ export type RegisterResult =
 export type ForgotPasswordState = { sent?: boolean; error?: "required" };
 
 export type NewPasswordState = {
-  error?: "passwordShort" | "passwordMismatch" | "sameAsUsername" | "generic";
+  error?: "passwordShort" | "passwordLong" | "passwordMismatch" | "sameAsUsername" | "generic";
   field?: "password" | "confirm";
 };
 
 export type ResetPasswordState = {
-  error?: "passwordShort" | "passwordMismatch" | "generic" | "expired";
+  error?: "passwordShort" | "passwordLong" | "passwordMismatch" | "generic" | "expired";
   field?: "password" | "confirm";
 };

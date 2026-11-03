@@ -1,5 +1,5 @@
-import { z } from "zod";
-import { MOBILE_PATTERN, normalizeMobile, USERNAME_PATTERN } from "@/lib/validation/account-rules";
+import { z } from "@/lib/validation/zod";
+import { MAX_LENGTH, MOBILE_PATTERN, normalizeMobile, USERNAME_PATTERN } from "@/lib/validation/account-rules";
 import { POSITION_KEYS, POSITION_VALUES, STAFF_ROLES } from "./constants";
 
 // Error messages are dictionary keys (accounts.errors.*).
@@ -8,11 +8,11 @@ const required = z.string().trim().min(1, "required");
 const mobile = z.string().transform(normalizeMobile).pipe(z.string().regex(MOBILE_PATTERN, "phoneInvalid"));
 
 const staffProfileFields = {
-  firstName: required,
-  middleName: z.string().trim(),
-  lastName: required,
+  firstName: required.max(MAX_LENGTH.namePart, "tooLong"),
+  middleName: z.string().trim().max(MAX_LENGTH.namePart, "tooLong"),
+  lastName: required.max(MAX_LENGTH.namePart, "tooLong"),
   position: z.enum([...POSITION_KEYS, "other"]),
-  positionOther: z.string().trim(),
+  positionOther: z.string().trim().max(MAX_LENGTH.position, "tooLong"),
   contactNumber: mobile,
 };
 
@@ -37,6 +37,7 @@ export const createStaffSchema = z
     email: z
       .string()
       .trim()
+      .max(MAX_LENGTH.email, "tooLong")
       .transform((value) => value.toLowerCase())
       .refine((value) => value === "" || z.email().safeParse(value).success, "emailInvalid"),
   })

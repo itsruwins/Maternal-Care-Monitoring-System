@@ -3,6 +3,7 @@
 import { AREA_ROLES } from "@/lib/auth/roles";
 import { requireRole } from "@/lib/auth/session";
 import { createClient } from "@/lib/supabase/server";
+import { isId, isIdOrNull } from "@/lib/validation/ids";
 import { visitSchema } from "../schemas";
 import type { RecordVisitResult, VisitErrorKey, VisitField, VisitInput } from "../types";
 
@@ -12,7 +13,7 @@ const DB_ERRORS: VisitErrorKey[] = ["no_active_pregnancy", "aog_out_of_range", "
 // The database checks the pregnancy, the appointment and the typo limits again.
 export async function recordVisit(input: VisitInput): Promise<RecordVisitResult> {
   await requireRole(AREA_ROLES.staff);
-  if (!Number.isInteger(input.pregnancyId) || (input.appointmentId !== null && !Number.isInteger(input.appointmentId))) {
+  if (!isId(input?.pregnancyId) || !isIdOrNull(input.appointmentId)) {
     return { ok: false, error: "generic" };
   }
   const parsed = visitSchema.safeParse(input);
@@ -51,7 +52,7 @@ export async function recordVisit(input: VisitInput): Promise<RecordVisitResult>
 // workers only on the day it was recorded, admins any time.
 export async function updateVisit(visitId: number, input: Omit<VisitInput, "pregnancyId" | "appointmentId">): Promise<RecordVisitResult> {
   await requireRole(AREA_ROLES.staff);
-  if (!Number.isInteger(visitId)) return { ok: false, error: "generic" };
+  if (!isId(visitId)) return { ok: false, error: "generic" };
   const parsed = visitSchema.safeParse(input);
   if (!parsed.success) {
     const fieldErrors: Partial<Record<VisitField, VisitErrorKey>> = {};

@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { MUST_CHANGE_PASSWORD_KEY } from "@/lib/auth/password-flag";
 import { isPlaceholderEmail } from "@/lib/auth/placeholder-email";
+import { clearResetLink, openedResetLink } from "@/lib/auth/reset-link";
 import { ROLE_HOME } from "@/lib/auth/roles";
 import { getCurrentUser } from "@/lib/auth/session";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -19,7 +20,8 @@ export async function requestPasswordReset(
   formData: FormData,
 ): Promise<ForgotPasswordState> {
   const parsed = forgotPasswordSchema.safeParse({ identifier: String(formData.get("identifier") ?? "") });
-  if (!parsed.success) return { error: "required" };
+  // Too long to be a username or email: answer as usual, without looking it up.
+  if (!parsed.success) return parsed.error.issues[0].message === "required" ? { error: "required" } : { sent: true };
 
   const identifier = parsed.data.identifier.toLowerCase();
   const email = identifier.includes("@") ? identifier : await emailForUsername(identifier);
@@ -37,6 +39,7 @@ export async function requestPasswordReset(
 }
 
 // Set a new password for the user signed in through the reset link.
+// (A logged-in user changes it on the Profile page, with the current one.)
 export async function updatePassword(
   _previous: ResetPasswordState,
   formData: FormData,
@@ -53,13 +56,15 @@ export async function updatePassword(
     };
   }
 
+  // Only right after opening a reset link (see lib/auth/reset-link.ts).
   const user = await getCurrentUser();
-  if (!user) return { error: "expired" };
+  if (!user || !(await openedResetLink(user.id))) return { error: "expired" };
 
   const supabase = await createClient();
   const { error } = await supabase.auth.updateUser({ password: parsed.data.password });
   if (error) return { error: "generic" };
 
+  await clearResetLink();
   redirect(ROLE_HOME[user.role]);
 }
 

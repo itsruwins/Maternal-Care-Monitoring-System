@@ -33,7 +33,7 @@ export async function addClosedDay(_previous: ClosedDayFormState, formData: Form
 // Open a future closed day again.
 export async function removeClosedDay(date: string): Promise<{ ok: boolean }> {
   await requireRole(["ADMIN"]);
-  if (!parseISODate(date) || date < manilaTodayISO()) return { ok: false };
+  if (typeof date !== "string" || !parseISODate(date) || date < manilaTodayISO()) return { ok: false };
   const supabase = await createClient();
   const { data, error } = await supabase.from("closed_day").delete().eq("closed_date", date).select("closed_date");
   return { ok: !error && Boolean(data?.length) };

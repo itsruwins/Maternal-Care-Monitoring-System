@@ -2,6 +2,7 @@
 
 import { requireRole } from "@/lib/auth/session";
 import { createClient } from "@/lib/supabase/server";
+import { isId } from "@/lib/validation/ids";
 
 export type RetrySmsResult = { ok: true } | { ok: false; error: "too_late" | "not_failed" | "generic" };
 
@@ -9,7 +10,7 @@ export type RetrySmsResult = { ok: true } | { ok: false; error: "too_late" | "no
 // her current number, and the schedule sends it within 5 minutes.
 export async function retrySms(reminderId: number): Promise<RetrySmsResult> {
   await requireRole(["ADMIN"]);
-  if (!Number.isInteger(reminderId) || reminderId < 1) return { ok: false, error: "generic" };
+  if (!isId(reminderId)) return { ok: false, error: "generic" };
   const supabase = await createClient();
   const { error } = await supabase.rpc("retry_sms", { p_reminder_id: reminderId });
   if (!error) return { ok: true };

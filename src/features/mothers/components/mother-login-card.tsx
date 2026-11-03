@@ -14,6 +14,7 @@ import { useDictionary } from "@/i18n/dictionary-provider";
 import { format } from "@/i18n/format";
 import { submitWithoutReset } from "@/lib/forms/submit-without-reset";
 import { formatDateTime } from "@/lib/utils/date-time";
+import { MAX_LENGTH } from "@/lib/validation/account-rules";
 import { createLoginForMother, resetMotherPassword, setMotherLoginStatus, type CreateLoginState } from "../actions/mother-login";
 import type { MotherActionResult, MotherLogin } from "../types";
 
@@ -67,6 +68,7 @@ function CreateLoginForm({ motherId }: { motherId: number }) {
               id="mother-login-email"
               name="email"
               type="email"
+              maxLength={MAX_LENGTH.email}
               autoComplete="off"
               aria-invalid={Boolean(errors.email)}
               aria-describedby={describedBy}

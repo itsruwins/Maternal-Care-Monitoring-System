@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "@/lib/validation/zod";
 
 // Error messages are dictionary keys (puroks.errors.*).
 export const purokSchema = z.object({

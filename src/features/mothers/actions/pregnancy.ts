@@ -4,6 +4,7 @@ import { AREA_ROLES } from "@/lib/auth/roles";
 import { requireRole } from "@/lib/auth/session";
 import { createClient } from "@/lib/supabase/server";
 import { manilaTodayISO } from "@/lib/utils/manila-date";
+import { isId, isIdOrNull } from "@/lib/validation/ids";
 import { fieldErrorsOf, readFields } from "../form-errors";
 import {
   closePregnancySchema,
@@ -31,6 +32,7 @@ export async function saveCurrentPregnancy(
   formData: FormData,
 ): Promise<FormState<CurrentPregnancyField>> {
   await requireRole(AREA_ROLES.staff);
+  if (!isId(motherId) || !isIdOrNull(pregnancyId)) return { error: "generic" };
   const parsed = currentPregnancySchema.safeParse(readFields(formData, CURRENT_FIELDS));
   if (!parsed.success) return { fieldErrors: fieldErrorsOf<CurrentPregnancyField>(parsed.error.issues) };
   const data = parsed.data;
@@ -69,6 +71,7 @@ export async function closePregnancy(
   formData: FormData,
 ): Promise<FormState<ClosePregnancyField>> {
   await requireRole(AREA_ROLES.staff);
+  if (!isId(motherId) || !isId(pregnancyId)) return { error: "generic" };
   const parsed = closePregnancySchema.safeParse(readFields(formData, CLOSE_FIELDS));
   if (!parsed.success) return { fieldErrors: fieldErrorsOf<ClosePregnancyField>(parsed.error.issues) };
   const data = parsed.data;
@@ -106,6 +109,7 @@ export async function savePastPregnancy(
   formData: FormData,
 ): Promise<FormState<PastPregnancyField>> {
   await requireRole(AREA_ROLES.staff);
+  if (!isId(motherId) || !isIdOrNull(pregnancyId)) return { error: "generic" };
   const parsed = pastPregnancySchema.safeParse(readFields(formData, PAST_FIELDS));
   if (!parsed.success) return { fieldErrors: fieldErrorsOf<PastPregnancyField>(parsed.error.issues) };
   const data = parsed.data;

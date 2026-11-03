@@ -13,6 +13,7 @@ import { useDictionary } from "@/i18n/dictionary-provider";
 import { submitWithoutReset } from "@/lib/forms/submit-without-reset";
 import type { PurokOption } from "@/lib/puroks/types";
 import { cn } from "@/lib/utils/cn";
+import { inputMaxLength } from "@/lib/validation/account-rules";
 import { updateMotherDetails } from "../actions/update-mother";
 import type { MotherDetailsField } from "../schemas";
 import type { FormState, MotherRecord } from "../types";
@@ -47,6 +48,7 @@ export function MotherDetailsForm({ mother, puroks, today }: { mother: MotherRec
           <Input
             id={`mother-${name}`}
             name={name}
+            maxLength={inputMaxLength(name)}
             defaultValue={defaultValue}
             aria-invalid={Boolean(errors[name])}
             aria-describedby={describedBy}

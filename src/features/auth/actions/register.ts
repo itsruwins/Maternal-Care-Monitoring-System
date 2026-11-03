@@ -3,40 +3,42 @@
 import { redirect } from "next/navigation";
 import { ROLE_HOME } from "@/lib/auth/roles";
 import { placeholderEmail } from "@/lib/auth/placeholder-email";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { registerSchema, type RegisterInput } from "../schemas";
 import type { RegisterResult } from "../types";
 
-// Mother self sign-up. Validates again on the server, then creates the login.
-// The database trigger (migration 0004) creates user_account + mother +
-// pregnancy in the same step, or fails the whole sign-up.
+// Mother self sign-up. Validates again on the server, then creates the login
+// with the secret key: Supabase's public sign-up is turned off (Phase 9), so
+// every sign-up passes these checks. The database trigger (migration 0004)
+// creates user_account + mother + pregnancy in the same step, or fails the
+// whole sign-up. Then she is signed in.
 export async function registerMother(input: RegisterInput): Promise<RegisterResult> {
   const parsed = registerSchema.safeParse(input);
   if (!parsed.success) return { ok: false, error: "invalid" };
   const data = parsed.data;
+  const email = data.email || placeholderEmail(data.username);
 
-  const supabase = await createClient();
-  const { error } = await supabase.auth.signUp({
-    email: data.email || placeholderEmail(data.username),
+  const { error } = await createAdminClient().auth.admin.createUser({
+    email,
     password: data.password,
-    options: {
-      data: {
-        registration: "mother_self_signup",
-        username: data.username,
-        first_name: data.firstName,
-        middle_name: data.middleName,
-        last_name: data.lastName,
-        date_of_birth: data.dateOfBirth,
-        purok_id: data.purokId,
-        street_address: data.street,
-        contact_number: data.contactNumber,
-        emergency_contact_name: data.emergencyName,
-        emergency_contact_no: data.emergencyNumber,
-        gravida: data.gravida,
-        para: data.para,
-        lmp_date: data.lmp,
-        expected_delivery_date: data.edd,
-      },
+    email_confirm: true,
+    user_metadata: {
+      registration: "mother_self_signup",
+      username: data.username,
+      first_name: data.firstName,
+      middle_name: data.middleName,
+      last_name: data.lastName,
+      date_of_birth: data.dateOfBirth,
+      purok_id: data.purokId,
+      street_address: data.street,
+      contact_number: data.contactNumber,
+      emergency_contact_name: data.emergencyName,
+      emergency_contact_no: data.emergencyNumber,
+      gravida: data.gravida,
+      para: data.para,
+      lmp_date: data.lmp,
+      expected_delivery_date: data.edd,
     },
   });
 
@@ -49,6 +51,7 @@ export async function registerMother(input: RegisterInput): Promise<RegisterResu
         : { ok: false, error: "usernameTaken", field: "username" };
     }
     // The trigger rejected it: most often the username was taken a moment ago.
+    const supabase = await createClient();
     const { data: available } = await supabase.rpc("is_username_available", {
       p_username: data.username,
     });
@@ -56,5 +59,8 @@ export async function registerMother(input: RegisterInput): Promise<RegisterResu
     return { ok: false, error: "generic" };
   }
 
-  redirect(ROLE_HOME.MOTHER);
+  // Her account exists now; if signing in fails for some reason, she can log in herself.
+  const supabase = await createClient();
+  const { error: signInError } = await supabase.auth.signInWithPassword({ email, password: data.password });
+  redirect(signInError ? "/login" : ROLE_HOME.MOTHER);
 }

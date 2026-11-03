@@ -14,7 +14,7 @@ import { format } from "@/i18n/format";
 import { submitWithoutReset } from "@/lib/forms/submit-without-reset";
 import { dueDateFromLmp, formatDate, parseISODate } from "@/lib/utils/pregnancy";
 import { closePregnancy, savePastPregnancy, saveCurrentPregnancy } from "../actions/pregnancy";
-import { OUTCOMES } from "../schemas";
+import { OUTCOMES } from "../constants";
 import type { FormState, MotherErrorKey, PregnancyRecord } from "../types";
 
 type Errors = Partial<Record<string, MotherErrorKey>>;

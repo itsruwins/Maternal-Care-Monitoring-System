@@ -24,7 +24,7 @@ export function BrandMark({
       className={cn("group inline-flex items-center gap-2.5 rounded-full text-ink no-underline", wrap && "max-[399px]:gap-2", className)}
     >
       <span className="grid size-10 shrink-0 place-items-center rounded-full bg-white shadow-[var(--shadow-soft)]">
-        <Image src="/brand/seal-96.png" alt="" width={32} height={32} className="size-8 rounded-full" priority />
+        <Image src="/brand/seal-96.png" alt="" width={32} height={32} className="size-8 rounded-full" loading="eager" />
       </span>
       <span className="flex min-w-0 flex-col leading-none">
         <span

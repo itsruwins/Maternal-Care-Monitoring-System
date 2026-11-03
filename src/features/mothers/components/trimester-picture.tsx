@@ -13,7 +13,8 @@ export function TrimesterPicture({ trimester, className, priority }: { trimester
         alt=""
         fill
         sizes="(min-width: 640px) 224px, 160px"
-        priority={priority}
+        loading={priority ? "eager" : undefined}
+        fetchPriority={priority ? "high" : undefined}
         className="object-cover"
       />
     </span>

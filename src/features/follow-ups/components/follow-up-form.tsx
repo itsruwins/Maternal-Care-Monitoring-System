@@ -9,7 +9,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { useDictionary } from "@/i18n/dictionary-provider";
 import { cn } from "@/lib/utils/cn";
 import { logFollowUp, updateFollowUp } from "../actions/follow-ups";
-import { CLOSE_REASONS, FOLLOW_UP_METHODS, FOLLOW_UP_RESULTS, NOTES_MAX, type FollowUpField } from "../schemas";
+import { CLOSE_REASONS, FOLLOW_UP_METHODS, FOLLOW_UP_RESULTS, NOTES_MAX } from "../constants";
+import type { FollowUpField } from "../schemas";
 import type { FollowUpEntry, FollowUpErrorKey } from "../types";
 import { METHOD_ICONS } from "./follow-up-bits";
 

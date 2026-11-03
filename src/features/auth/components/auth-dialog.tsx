@@ -1,15 +1,31 @@
 "use client";
 
 import { createContext, useCallback, useContext, useRef, useState, type ReactNode } from "react";
+import dynamic from "next/dynamic";
 import { Slot } from "radix-ui";
-import { HeartIcon } from "@/components/icons";
+import { HeartIcon, SpinnerIcon } from "@/components/icons";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { IconCircle } from "@/components/ui/icon-circle";
 import { useDictionary } from "@/i18n/dictionary-provider";
 import type { PurokOption } from "@/lib/puroks/types";
 import { cn } from "@/lib/utils/cn";
 import { LoginForm } from "./login-form";
-import { RegisterForm } from "./register-form";
+
+// The sign-up form (with Zod and the username check) loads only when someone
+// heads for Sign up, so the landing page and Log in stay light. Hovering or
+// focusing a Sign up button starts the download early.
+const loadRegisterForm = () => import("./register-form");
+const RegisterForm = dynamic(() => loadRegisterForm().then((m) => m.RegisterForm), { loading: RegisterFormLoading });
+
+function RegisterFormLoading() {
+  const { t } = useDictionary();
+  return (
+    <div role="status" className="flex min-h-80 items-center justify-center gap-2 text-ink-soft">
+      <SpinnerIcon className="size-5 animate-spin" aria-hidden />
+      {t.common.loading}
+    </div>
+  );
+}
 
 type Mode = "login" | "signup";
 
@@ -27,15 +43,24 @@ export function AuthDialogProvider({ children, puroks }: { children: ReactNode; 
   const contentRef = useRef<HTMLDivElement>(null);
 
   const show = useCallback((next: Mode) => {
+    if (next === "signup") void loadRegisterForm();
     setMode(next);
     setOpen(true);
   }, []);
 
   // Put the cursor in the first field: when the dialog opens, and after a switch.
+  // The sign-up form may still be loading, so keep looking for a few seconds.
   const focusFirstField = () => {
-    requestAnimationFrame(() => contentRef.current?.querySelector<HTMLInputElement>("input")?.focus());
+    const started = Date.now();
+    const tryFocus = () => {
+      const input = contentRef.current?.querySelector<HTMLInputElement>("input");
+      if (input) input.focus();
+      else if (contentRef.current && Date.now() - started < 5000) setTimeout(tryFocus, 50);
+    };
+    requestAnimationFrame(tryFocus);
   };
   const switchTo = (next: Mode) => {
+    if (next === "signup") void loadRegisterForm();
     setMode(next);
     contentRef.current?.scrollTo({ top: 0 });
     focusFirstField();
@@ -98,8 +123,9 @@ export function AuthDialogProvider({ children, puroks }: { children: ReactNode; 
 export function AuthDialogTrigger({ mode, children }: { mode: Mode; children: ReactNode }) {
   const show = useContext(AuthDialogContext);
   if (!show) throw new Error("AuthDialogTrigger must be inside <AuthDialogProvider>.");
+  const preload = mode === "signup" ? () => void loadRegisterForm() : undefined;
   return (
-    <Slot.Root aria-haspopup="dialog" onClick={() => show(mode)}>
+    <Slot.Root aria-haspopup="dialog" onClick={() => show(mode)} onPointerEnter={preload} onFocus={preload}>
       {children}
     </Slot.Root>
   );

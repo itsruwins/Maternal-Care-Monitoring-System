@@ -31,7 +31,7 @@ export function ServiceTiles({
               compact ? "gap-1.5 px-3 pt-3 pb-3.5" : "gap-2 px-3 pt-4 pb-5 sm:px-4",
             )}
           >
-            <ServiceIllustration icon={service.icon} priority={!compact} className={compact ? "max-w-32" : "max-w-52"} />
+            <ServiceIllustration icon={service.icon} eager={!compact} className={compact ? "max-w-32" : "max-w-52"} />
             <span className={cn("font-bold text-balance text-ink", compact ? "text-[0.95rem] leading-5" : "text-base leading-6 sm:text-lg")}>{service.name}</span>
           </button>
         </li>

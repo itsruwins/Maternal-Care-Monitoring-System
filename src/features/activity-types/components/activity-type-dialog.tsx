@@ -13,7 +13,8 @@ import { useDictionary } from "@/i18n/dictionary-provider";
 import { format } from "@/i18n/format";
 import { SERVICE_ICONS } from "@/lib/appointments/service-icons";
 import { saveActivityType } from "../actions/save-activity-type";
-import { MAX_REMINDER_DAYS, type ActivityTypeField } from "../schemas";
+import { MAX_REMINDER_DAYS } from "../constants";
+import type { ActivityTypeField } from "../schemas";
 import type { ActivityType, ActivityTypeFormState } from "../types";
 import { submitWithoutReset } from "@/lib/forms/submit-without-reset";
 

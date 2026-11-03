@@ -4,6 +4,7 @@ import { MAX_LENGTH, MOBILE_PATTERN, normalizeMobile, USERNAME_PATTERN } from "@
 import { manilaTodayISO } from "@/lib/utils/manila-date";
 import { parseISODate } from "@/lib/utils/pregnancy";
 import { countField, isPlausibleBirthDate, isPlausibleDueDate, lmpField } from "@/lib/validation/mother-rules";
+import { OUTCOMES } from "./constants";
 
 // Error messages are dictionary keys (mothers.errors.*).
 
@@ -83,7 +84,7 @@ export type MotherDetailsField = keyof z.input<typeof motherDetailsSchema>;
 
 // --- Pregnancies ---------------------------------------------------------------
 
-export const OUTCOMES = ["LIVE_BIRTH", "STILLBIRTH", "MISCARRIAGE", "OTHER"] as const;
+export { OUTCOMES };
 const remarks = z.string().trim().max(300, "tooLong");
 const pastDate = (message: string) =>
   required.refine((value) => parseISODate(value) !== null && value <= manilaTodayISO(), message);

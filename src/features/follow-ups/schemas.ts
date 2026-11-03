@@ -1,11 +1,10 @@
 import { z } from "@/lib/validation/zod";
+import { CLOSE_REASONS, FOLLOW_UP_METHODS, FOLLOW_UP_RESULTS, NOTES_MAX } from "./constants";
+
+export { CLOSE_REASONS, FOLLOW_UP_METHODS, FOLLOW_UP_RESULTS, NOTES_MAX };
 
 // Error messages are dictionary keys (followUpErrors.*). The database checks
 // the same rules again, plus the date range (migration 0015).
-export const FOLLOW_UP_METHODS = ["CALL", "SMS", "HOME_VISIT"] as const;
-export const FOLLOW_UP_RESULTS = ["REACHED", "NOT_REACHED"] as const;
-export const CLOSE_REASONS = ["MOVED_AWAY", "CARE_ELSEWHERE", "OTHER"] as const;
-export const NOTES_MAX = 500;
 
 export const followUpSchema = z
   .object({

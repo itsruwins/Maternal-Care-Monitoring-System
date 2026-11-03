@@ -51,7 +51,8 @@ export function HeroVisual({
               alt={copy.photoAlt}
               width={1008}
               height={1280}
-              priority
+              loading="eager"
+              fetchPriority="high"
               sizes="(min-width: 1024px) 384px, (min-width: 640px) 368px, 86vw"
               className="h-auto w-full"
             />

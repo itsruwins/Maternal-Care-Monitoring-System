@@ -10,9 +10,11 @@ import { getDictionary } from "@/i18n/get-dictionary";
 import "../globals.css";
 
 // Inter, like Flo. The optical-size axis tightens large headings automatically.
+// Only "latin" is preloaded (English and Filipino need nothing else); the other
+// sets still load on demand if a page ever shows one of their characters.
 const inter = Inter({
   variable: "--font-inter",
-  subsets: ["latin", "latin-ext"],
+  subsets: ["latin"],
   axes: ["opsz"],
 });
 

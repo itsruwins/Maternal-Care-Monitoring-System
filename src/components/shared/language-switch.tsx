@@ -29,7 +29,6 @@ export function LanguageSwitch({ className }: { className?: string }) {
             key={option}
             type="button"
             aria-pressed={active}
-            aria-label={option === "en" ? t.common.english : t.common.filipino}
             disabled={pending}
             onClick={() => {
               if (active) return;
@@ -44,7 +43,9 @@ export function LanguageSwitch({ className }: { className?: string }) {
               pending && "cursor-progress"
             )}
           >
+            {/* Read as "EN English": the visible text first, for voice control. */}
             {SHORT[option]}
+            <span className="sr-only"> {option === "en" ? t.common.english : t.common.filipino}</span>
           </button>
         );
       })}

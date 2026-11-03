@@ -45,6 +45,13 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
   return (
     <html lang={locale} className={`${inter.variable} h-full`}>
       <body className="flex min-h-full flex-col">
+        {/* Hidden until the first Tab press; jumps past the header and menus to <main id="main">. */}
+        <a
+          href="#main"
+          className="sr-only rounded-full bg-white font-semibold text-ink shadow-[var(--shadow-raised)] focus:not-sr-only focus:fixed focus:px-5 focus:py-3 focus:top-3 focus:left-3 focus:z-[100] focus:outline-2 focus:outline-offset-2 focus:outline-leaf focus:outline-solid"
+        >
+          {dictionary.common.skipToContent}
+        </a>
         <DictionaryProvider locale={locale} dictionary={dictionary}>
           {children}
         </DictionaryProvider>

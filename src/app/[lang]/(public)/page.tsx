@@ -25,7 +25,7 @@ export default async function LandingPage() {
     <div className="relative">
       {/* The header sits on top of the rose hero */}
       <SiteHeader className="absolute inset-x-0 top-0 z-20" />
-      <main>
+      <main id="main" tabIndex={-1} className="outline-none">
         <CurvedHero tone="rose" curve="lg" className="pt-16 pb-16 sm:pt-18 lg:pb-24">
           <Hero />
         </CurvedHero>

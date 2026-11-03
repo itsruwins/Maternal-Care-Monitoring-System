@@ -2,7 +2,7 @@
 
 Barangay Taysan, Legazpi City · Next.js 16 + Supabase · Hosted on Vercel
 
-Status: **Phases 0–8 done (Phase 8 signed off 2026-11-03). Phase 9 — Hardening & launch: plan approved 2026-11-03; steps 1–4 (security review and fixes, abuse limits, RLS test script, unit tests) done; next: step 5 (accessibility pass).** Each phase ends with a demo and your sign-off before the next starts.
+Status: **Phases 0–8 done (Phase 8 signed off 2026-11-03). Phase 9 — Hardening & launch: plan approved 2026-11-03; steps 1–5 (security review and fixes, abuse limits, RLS test script, unit tests, accessibility pass) done; next: step 6 (performance pass).** Each phase ends with a demo and your sign-off before the next starts.
 
 ---
 
@@ -1068,6 +1068,25 @@ Sample request answers (one SMS each with this service name; a longer name may m
 - **Covered:** due date (LMP + 280, leap years), weeks of pregnancy, LMP, birth date and due date limits, gravida/para; slot times, Manila time, open days, the 3-month window, slot errors; SMS length (160 / 153 per part, max 2, double-width characters), characters a plain text can't carry, +63 numbers; vital-sign flags and the next checkup interval; usernames, mobile numbers, length limits; CSV formula defusing and quoting; the redirect check; action id/text checks. The slot hours and vital-sign limits are checked against migrations 0009 and 0014.
 - **Fixed:** `parseISODate` rolled impossible dates (Feb 30, Apr 31, Feb 29 in 2026) into the next month. They now count as not a date. In Reports, a custom range with such a date now falls back to This month instead of failing.
 - **Moved:** the CSV cell rule to `features/reports/csv-cell.ts` (unchanged), so the tests can load it.
+
+**Step 5 built (2026-11-03):** accessibility pass to WCAG 2.2 AA, approved by you. No package and no migration.
+- **Scanned:** the public pages and every design preview, in EN and FIL, at desktop, phone and 320 px widths. The scan used axe-core plus our own checks: headings, page language, visible labels, sideways scrolling, and contrast on gradients.
+- **Skip link:** "Skip to content" ("Lumaktaw sa nilalaman") appears on the first Tab and jumps to the main content. Every layout's `<main>` now has `id="main"`.
+- **Focus stays in place:**
+  - In Book appointment and Request a visit, picking a service moves focus to the Day heading.
+  - "Change" moves focus back to the service list.
+- **Day row:** it's one Tab stop now. ← → Home End move between days. Each day reads like "Wed 28, 12 open, Wednesday, October 28".
+- **Spoken names match the visible text:**
+  - The language switch reads "EN English" and "FIL Filipino".
+  - The account button reads "(initials), Account menu".
+- **Landing Health center:** each row is now its own label-and-value list.
+- **Passed with no change:**
+  - contrast, heading order, touch-target size, and no sideways scrolling at 320 px
+  - dialogs and the account menu: focus stays inside, and Escape returns it to the button
+  - the phone summary bar never covers the focused item
+  - reduced motion
+- **Judged fine:** the blood-pressure box names, the role choice in New staff account, and Chrome's date input.
+- **Checked by you:** the keyboard check on localhost and the VoiceOver (Mac) and TalkBack (Android) checklist all passed. Types, lint and the 67 unit tests pass.
 
 ---
 

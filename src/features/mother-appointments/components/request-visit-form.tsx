@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { DangerIcon, PencilIcon, SpinnerIcon } from "@/components/icons";
@@ -32,6 +32,14 @@ export function RequestVisitForm({ data }: { data: BookingData }) {
   const [pending, startTransition] = useTransition();
   const service = data.services.find((s) => s.id === serviceId) ?? null;
   const ready = Boolean(service && date && time);
+  // Picking a service (or "Change") swaps the section, so the focused button
+  // disappears: move focus to the next step's heading instead.
+  const focusAfter = useRef<string | null>(null);
+  useEffect(() => {
+    if (!focusAfter.current) return;
+    document.getElementById(focusAfter.current)?.focus();
+    focusAfter.current = null;
+  }, [serviceId]);
 
   const send = () => {
     if (!serviceId || !date || !time) return;
@@ -56,10 +64,17 @@ export function RequestVisitForm({ data }: { data: BookingData }) {
   if (!service) {
     return (
       <section aria-labelledby="choose-service" className="flex flex-col gap-4">
-        <h2 id="choose-service" className="text-xl font-bold">
+        <h2 id="choose-service" tabIndex={-1} className="text-xl font-bold outline-none">
           {n.chooseService}
         </h2>
-        <ServiceTiles services={data.services} onPick={setServiceId} label={n.chooseService} />
+        <ServiceTiles
+          services={data.services}
+          onPick={(id) => {
+            focusAfter.current = "request-day";
+            setServiceId(id);
+          }}
+          label={n.chooseService}
+        />
       </section>
     );
   }
@@ -83,6 +98,7 @@ export function RequestVisitForm({ data }: { data: BookingData }) {
             variant="secondary"
             size="sm"
             onClick={() => {
+              focusAfter.current = "choose-service";
               setServiceId(null);
               setDate(null);
               setTime(null);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { DangerIcon, PencilIcon, SpinnerIcon } from "@/components/icons";
@@ -52,6 +52,14 @@ export function BookAppointmentForm({
   const [error, setError] = useState<SlotError | "required" | null>(null);
   const [pending, startTransition] = useTransition();
   const service = services.find((s) => s.id === serviceId) ?? null;
+  // Picking a service (or "Change") swaps the section, so the focused button
+  // disappears: move focus to the next step's heading instead.
+  const focusAfter = useRef<string | null>(null);
+  useEffect(() => {
+    if (!focusAfter.current) return;
+    document.getElementById(focusAfter.current)?.focus();
+    focusAfter.current = null;
+  }, [serviceId]);
 
   const submit = () => {
     if (!serviceId || !date || !time) {
@@ -93,12 +101,15 @@ export function BookAppointmentForm({
           aria-labelledby="book-service"
           className="rounded-3xl bg-white p-5 shadow-[var(--shadow-soft)] sm:p-7"
         >
-          <h2 id="book-service" className="mb-4 text-lg font-bold">
+          <h2 id="book-service" tabIndex={-1} className="mb-4 text-lg font-bold outline-none">
             {heading.service}
           </h2>
           <ServiceTiles
             services={services}
-            onPick={setServiceId}
+            onPick={(id) => {
+              focusAfter.current = "book-day";
+              setServiceId(id);
+            }}
             label={heading.service}
             compact
           />
@@ -112,6 +123,7 @@ export function BookAppointmentForm({
             variant="secondary"
             size="sm"
             onClick={() => {
+              focusAfter.current = "book-service";
               setServiceId(null);
               setDate(null);
               setTime(null);

@@ -11,7 +11,7 @@ export default function AuthLayout({ children }: LayoutProps<"/[lang]">) {
           <LanguageSwitch />
         </div>
       </header>
-      <main className="flex flex-1 flex-col justify-center px-4 py-10 sm:px-6 sm:py-14">{children}</main>
+      <main id="main" tabIndex={-1} className="flex flex-1 flex-col justify-center px-4 py-10 outline-none sm:px-6 sm:py-14">{children}</main>
     </div>
   );
 }

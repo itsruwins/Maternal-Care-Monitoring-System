@@ -35,11 +35,12 @@ export function HealthCenter({ t, locale }: { t: Dictionary; locale: Locale }) {
           </h2>
           <p className="mt-3 max-w-[46ch] text-base leading-7 text-ink-soft">{c.body}</p>
 
-          <dl className="mt-8 flex flex-col gap-5">
+          {/* One small list per row, so the icon sits outside it (a list may hold only labels and values). */}
+          <div className="mt-8 flex flex-col gap-5">
             {rows.map((row) => (
               <div key={row.label} className="flex items-center gap-4">
                 <IconCircle icon={row.icon} tone="mint" weight="duotone" />
-                <div className="flex flex-col gap-1">
+                <dl className="flex flex-col gap-1">
                   <dt className="text-sm font-medium text-ink-soft">{row.label}</dt>
                   <dd className="text-base font-semibold">
                     {isPlaceholder(row.value) ? (
@@ -50,10 +51,10 @@ export function HealthCenter({ t, locale }: { t: Dictionary; locale: Locale }) {
                       row.value
                     )}
                   </dd>
-                </div>
+                </dl>
               </div>
             ))}
-          </dl>
+          </div>
         </div>
       </div>
     </section>

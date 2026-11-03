@@ -6,6 +6,7 @@ import {
   useMemo,
   useRef,
   useState,
+  type KeyboardEvent,
   type ReactNode,
 } from "react";
 import {
@@ -94,6 +95,36 @@ export function SlotPicker({
       if (isWeekday(day)) list.push(day);
     return list;
   }, [first, last]);
+
+  // The row is one Tab stop: Left/Right move between open days, Home/End jump
+  // to the first or last. The stop is the day last focused, else the picked
+  // day, else the first open day.
+  const openDays = days.filter((day) => stateOf(day) === "open");
+  const [focusedDay, setFocusedDay] = useState<string | null>(null);
+  const tabDay =
+    (focusedDay && openDays.includes(focusedDay) ? focusedDay : null) ??
+    (date && openDays.includes(date) ? date : null) ??
+    openDays[0] ??
+    null;
+  const onDayKey = (event: KeyboardEvent<HTMLButtonElement>, day: string) => {
+    const index = openDays.indexOf(day);
+    const next =
+      event.key === "ArrowRight"
+        ? openDays[index + 1]
+        : event.key === "ArrowLeft"
+          ? openDays[index - 1]
+          : event.key === "Home"
+            ? openDays[0]
+            : event.key === "End"
+              ? openDays[openDays.length - 1]
+              : undefined;
+    if (!["ArrowRight", "ArrowLeft", "Home", "End"].includes(event.key)) return;
+    event.preventDefault();
+    if (next)
+      strip.current
+        ?.querySelector<HTMLButtonElement>(`[data-day="${next}"] button`)
+        ?.focus();
+  };
 
   const [monthOpen, setMonthOpen] = useState(false);
   const strip = useRef<HTMLOListElement>(null);
@@ -202,7 +233,11 @@ export function SlotPicker({
                     type="button"
                     disabled={state !== "open"}
                     aria-pressed={isSelected}
-                    aria-label={`${fullDate.format(parseISODate(day)!)}, ${status}`}
+                    // Starts with the visible text ("Fri 6, 12 open") for voice control.
+                    aria-label={`${weekday.format(parseISODate(day)!)} ${Number(day.slice(8))}, ${status}, ${fullDate.format(parseISODate(day)!)}`}
+                    tabIndex={day === tabDay ? 0 : -1}
+                    onFocus={() => setFocusedDay(day)}
+                    onKeyDown={(event) => onDayKey(event, day)}
                     onClick={() => onDate(day)}
                     className={cn(
                       "flex h-24 w-[4.75rem] flex-col items-center justify-between rounded-2xl border px-1 py-2.5 transition-colors",
@@ -224,12 +259,15 @@ export function SlotPicker({
                     >
                       {weekday.format(parseISODate(day)!)}
                     </span>
+                    {/* A space, so the text reads "Fri 6 12 open" (no gap on screen: flex). */}
+                    {" "}
                     <span
                       aria-hidden
                       className="tnum text-xl leading-none font-bold"
                     >
                       {Number(day.slice(8))}
                     </span>
+                    {" "}
                     <span
                       aria-hidden
                       className={cn(
@@ -397,7 +435,10 @@ function Part({
     </fieldset>
   ) : (
     <section aria-labelledby={id} className={className}>
-      <div id={id}>{title}</div>
+      {/* Focusable so a form can move focus here once a service is picked. */}
+      <div id={id} tabIndex={-1} className="outline-none">
+        {title}
+      </div>
       {children}
     </section>
   );

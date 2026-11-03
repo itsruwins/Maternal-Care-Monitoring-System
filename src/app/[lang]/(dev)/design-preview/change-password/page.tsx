@@ -18,7 +18,7 @@ export default async function ChangePasswordPreview() {
           <BrandMark />
         </div>
       </header>
-      <main className="flex flex-1 flex-col justify-center px-4 py-10 sm:px-6 sm:py-14">
+      <main id="main" tabIndex={-1} className="flex flex-1 outline-none flex-col justify-center px-4 py-10 sm:px-6 sm:py-14">
         <AuthCard title={t.newPassword.title} subtitle={t.newPassword.subtitle}>
           <div className="flex flex-col gap-4">
             <NewPasswordForm />

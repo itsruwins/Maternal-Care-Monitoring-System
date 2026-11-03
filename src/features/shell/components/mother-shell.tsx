@@ -34,7 +34,7 @@ export function MotherShell({ user, children, previewPath }: { user: ShellUser; 
         </div>
       </header>
 
-      <main className="mx-auto w-full max-w-5xl flex-1 px-4 pt-6 pb-32 sm:px-6">{children}</main>
+      <main id="main" tabIndex={-1} className="mx-auto w-full max-w-5xl flex-1 px-4 pt-6 pb-32 outline-none sm:px-6">{children}</main>
 
       {/* Floating bottom navigation (all screen sizes): a snug white pill.
           Tabs are icons; the selected one grows into a mint pill with its name.

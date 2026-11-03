@@ -2,7 +2,7 @@
 
 Barangay Taysan, Legazpi City · Next.js 16 + Supabase · Hosted on Vercel
 
-Status: **Phases 0–8 done (Phase 8 signed off 2026-11-03). Phase 9 — Hardening & launch: plan approved 2026-11-03; steps 1–8 (security review and fixes, abuse limits, RLS test script, unit tests, accessibility pass, performance pass, live settings and docs, real-phone testing) done; next: step 9 (review and close).** Each phase ends with a demo and your sign-off before the next starts.
+Status: **Phases 0–9 done (Phase 9 signed off 2026-11-03). Phase 9 — Hardening & launch: steps 1–9 (security review and fixes, abuse limits, RLS test script, unit tests, accessibility pass, performance pass, live settings and docs, real-phone testing, review) done. Remaining: the Open items below.** Each phase ends with a demo and your sign-off before the next starts.
 
 ---
 
@@ -1031,7 +1031,7 @@ Sample request answers (one SMS each with this service name; a longer name may m
 8. **Real-phone testing:** the checklist per role, then fixes for what you report.
 9. **Review:** screenshots of the changed screens (EN/FIL, desktop/phone), contrast, heading and label checks, the independent design review with a second pass, `DESIGN.md` by the documenter, and the screenshots deleted. Then your testing and sign-off.
 
-**Needs from you:** run `0022` (and any RLS fix); run the RLS script; set up Gmail SMTP; take the backup and do the restore test; do the screen-reader check and the real-phone testing.
+**Needs from you:** run `0022` (and any RLS fix), `0024` and `0025` (done); run the RLS script; set up Gmail SMTP; take the backup and do the restore test; do the screen-reader check and the real-phone testing.
 
 **Step 1 built (2026-11-03):** security review of every server action, route handler, query, the proxy and the RLS in the migrations; all 7 fixes approved by you.
 - **Health worker → admin takeover closed:** "Reset password" on a mother's record only resets a MOTHER login. Migration `0022_guard_mother_login.sql` (run by you) lets a record's login be set only while it has none, to an unused MOTHER login, and never changed after. Step 2's rate limits therefore use `0023`.
@@ -1146,6 +1146,27 @@ Sample request answers (one SMS each with this service name; a longer name may m
   - The Filipino word for "mother" is now **nanay** everywhere ("Mga nanay", "Magparehistro ng nanay"…; 23 places changed from *ina*).
   - The outdated "coming in Phase 3" sentence on a mother's account page (Admin → Accounts) now reads "Her details and pregnancies are on her record under Mothers." / "Nasa kanyang record sa Mga nanay ang kanyang detalye at pagbubuntis."
   - Types and the 67 tests pass.
+  - **Staff bookings now text her** (your report): booking or rebooking a missed visit only queued the reminder for the day before. Migration `0024_sms_visit_booked.sql` (run by you, checks passed) adds the **Visit booked** text, sent right away: "Naka-schedule na ang {service} mo sa {date, time} sa health center. Salamat!" The usual reminder is Skipped when it would go the same day. `bookAppointment` now sends at once (sendSoon). Label: Visit booked / Naka-schedule na bisita.
+  - **Every text starts "Hi, {name}!"** (with a comma, your choice), the missed-visit notice and waiting texts too.
+  - Tested by you on the live site: worked.
+
+**Step 9 built (2026-11-03):** review of the Phase 9 screens.
+- **Screenshots:** 27 screens and states, EN/FIL, desktop/phone, from the design previews (deleted afterwards).
+- **Accessibility:** axe plus the contrast/heading/label script on every page (EN/FIL, desktop/phone): clean. Known, left as is: Record visit's blood-pressure pair is named by aria-label under the visible group label.
+- **Independent design review:** 5 passes, ended "ship". Fixed (your OK):
+  - Booking copy: "she gets a text right away"; the SMS log intro mentions booked.
+  - Filipino "inang" → "nanay na" (8 lines).
+  - Migration `0025_sms_website_wording.sql` (run by you, checks passed): the New-time text says "Mag-log in sa website…" (never "app").
+  - Forgot password "sent": the stale subtitle is gone.
+  - Dates never split (`formatDate`); SMS previews keep dates and hyphenated words whole (screen only).
+  - Back links: 44px targets, no layout shift.
+  - "Visit booked" sample texts in the previews.
+  - Today tiles: no cut-off word; Next visit shows the date over the time.
+  - Pager: "Pahina / 1 ng 3", never a lone number; Accounts uses "ng". Below 360px, Previous/Next show only their arrows, so it fits a 320px phone; tabular figures only on the numbers.
+- **Docs:** `DESIGN.md` + sidecar updated by the documenter.
+- Types, lint and the 67 tests pass.
+
+**Phase 9 signed off (2026-11-03):** you ran `0025` (checks passed) and approved the review fixes.
 
 ---
 

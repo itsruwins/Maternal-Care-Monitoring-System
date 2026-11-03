@@ -66,7 +66,7 @@ export function RecordVisitView({
     <div className="flex flex-col gap-6">
       <Link
         href="/staff/visits"
-        className="inline-flex items-center gap-1.5 self-start text-sm font-semibold text-leaf underline decoration-1 underline-offset-4 hover:decoration-2"
+        className="-my-3 inline-flex min-h-11 items-center gap-1.5 self-start text-sm font-semibold text-leaf underline decoration-1 underline-offset-4 hover:decoration-2"
       >
         <CaretLeftIcon weight="bold" aria-hidden className="size-4" />
         {f.back}

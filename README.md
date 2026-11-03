@@ -40,7 +40,7 @@ Only one `next dev` per folder at a time. Design previews of every screen (sampl
 
 ## Database
 
-- **Migrations:** `supabase/migrations/0001…0024`, run in order in the Supabase SQL Editor. Order, what each does and the check queries: **[docs/database-setup.md](docs/database-setup.md)**. Migrations are never edited after running; fixes go in a new file.
+- **Migrations:** `supabase/migrations/0001…0025`, run in order in the Supabase SQL Editor. Order, what each does and the check queries: **[docs/database-setup.md](docs/database-setup.md)**. Migrations are never edited after running; fixes go in a new file.
 - **First admin:** `supabase/seed/first-admin.sql`.
 - **Access-rule test:** `supabase/tests/rls-by-role.sql` (acts as each role, prints PASS/FAIL, undoes itself). Run it after any change to the rules; expect 118 PASS.
 - **Backups and restore:** **[docs/backup.md](docs/backup.md)**, monthly and before every migration.

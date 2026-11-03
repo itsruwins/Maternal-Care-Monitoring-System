@@ -53,7 +53,10 @@ export function isPlausibleLmp(lmpISO: string, onISO: string = todayISO()): bool
   return days !== null && days >= 0 && days <= 44 * 7;
 }
 
-/** Format a date for display in the chosen language (e.g. "Mar 8, 2027" / "Mar 8, 2027"). */
+/**
+ * Format a date for display in the chosen language (e.g. "March 8, 2027" / "Marso 8, 2027"),
+ * with no-break spaces so it never splits across lines. For screens only.
+ */
 export function formatDate(iso: string, locale: string, style: "long" | "short" = "long"): string {
   const date = parseISODate(iso);
   if (!date) return iso;
@@ -62,7 +65,9 @@ export function formatDate(iso: string, locale: string, style: "long" | "short" 
     year: "numeric",
     month: style === "long" ? "long" : "short",
     day: "numeric",
-  }).format(date);
+  })
+    .format(date)
+    .replace(/\s+/g, "\u00a0");
 }
 
 export type Trimester = 1 | 2 | 3;

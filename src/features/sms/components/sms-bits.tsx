@@ -64,6 +64,14 @@ export function smsAbout(t: Dictionary, locale: Locale, item: SmsLogItem): strin
   return format(t.sms.log.about, { service: item.service, when: slot(item.visitAt, locale) });
 }
 
+// Shown on screen only; the text itself is sent with plain characters (a no-break
+// space or word joiner isn't a plain SMS character). "Tue, Nov 3, 10:00 AM" or
+// "Fri, Oct 30" inside a text stays on one line.
+const SMS_DATE = /\b(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun), (?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{1,2}(?:, \d{1,2}:\d{2} [AP]M)?/g;
+// Hyphenated words ("Mag-log", "Naka-schedule") stay whole: a word joiner after the hyphen.
+const keepSmsTextTogether = (text: string) =>
+  text.replace(SMS_DATE, (date) => date.replace(/ /g, "\u00a0")).replace(/(\p{L})-(?=\p{L})/gu, "$1-\u2060");
+
 /** "Show text": the full message, folded (plain <details>, works without JavaScript). */
 export function SmsText({ t, text }: { t: Dictionary; text: string }) {
   return (
@@ -72,7 +80,7 @@ export function SmsText({ t, text }: { t: Dictionary; text: string }) {
         {t.sms.log.showText}
         <CaretDownIcon weight="bold" aria-hidden className="size-3.5 transition-transform group-open:rotate-180" />
       </summary>
-      <p className="mt-2 rounded-xl bg-cream px-3.5 py-2.5 text-sm leading-6 break-words whitespace-pre-wrap">{text}</p>
+      <p className="mt-2 rounded-xl bg-cream px-3.5 py-2.5 text-sm leading-6 break-words whitespace-pre-wrap">{keepSmsTextTogether(text)}</p>
     </details>
   );
 }

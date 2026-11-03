@@ -1298,7 +1298,7 @@
     "bookPage": {
       "title": "Book an appointment",
       "back": "Appointments",
-      "intro": "For a mother with a current pregnancy. It starts as confirmed and the reminder is queued.",
+      "intro": "For a mother with a current pregnancy. It starts as confirmed and she gets a text right away.",
       "mother": "1. Mother",
       "searchLabel": "Find a mother",
       "searchPlaceholder": "Name or mobile number",
@@ -1313,7 +1313,7 @@
       "remarkLabel": "Remarks (optional)",
       "submit": "Book appointment",
       "submitting": "Booking…",
-      "done": "Booked for {when}. The reminder is queued.",
+      "done": "Booked for {when}. She'll get a text right away.",
       "required": "Choose a mother, a service, a day and a time.",
       "week": "Week {weeks}"
     },
@@ -1633,7 +1633,7 @@
       "back": "Follow-ups",
       "backRecord": "Her record",
       "title": "Book a new appointment",
-      "intro": "For {name}, who missed her {service} on {when}. It starts as confirmed and the reminder is queued.",
+      "intro": "For {name}, who missed her {service} on {when}. It starts as confirmed and she gets a text right away.",
       "suggestion": "Suggested: {date}, the first open weekday.",
       "sortedTitle": "Already sorted out",
       "sortedBody": "This missed visit is closed: {ending}.",
@@ -1685,7 +1685,7 @@
   },
   "sms": {
     "title": "SMS log",
-    "intro": "Visit reminders, missed-visit notices, answers to requests, and notices when a visit is moved or cancelled, sent to mothers through HTTPSMS.",
+    "intro": "Visit reminders, missed-visit notices, answers to requests, and notices when a visit is booked, moved or cancelled, sent to mothers through HTTPSMS.",
     "send": {
       "title": "Automatic sending",
       "intro": "Answers and visit changes go out right away. Reminders and missed-visit notices go out every 5 minutes, day and night; Send now runs them right away.",

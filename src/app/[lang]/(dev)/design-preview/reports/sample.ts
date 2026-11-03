@@ -142,7 +142,7 @@ export function sampleRows(filters: ReportFilters, { admin, empty }: { admin: bo
         { type: "UPCOMING", status: "DELIVERED", reason: null, retrying: false },
         { type: "MISSED_NOTICE", status: "SENT", reason: null, retrying: false },
         { type: "REQUEST_CONFIRMED", status: "FAILED", reason: "bad_number", retrying: false },
-        { type: "UPCOMING", status: "PENDING", reason: null, retrying: false },
+        { type: "VISIT_BOOKED", status: "DELIVERED", reason: null, retrying: false },
         { type: "VISIT_MOVED", status: "SKIPPED", reason: "visit_changed", retrying: false },
         { type: "UPCOMING", status: "PENDING", reason: "phone_offline", retrying: true },
       ] as const;

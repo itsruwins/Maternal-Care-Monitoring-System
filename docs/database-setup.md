@@ -28,6 +28,7 @@ Run these in **Supabase Dashboard → SQL Editor**, in order. Each file is safe 
 | 22 | `supabase/migrations/0022_guard_mother_login.sql` | Phase 9 security fix: a mother record's login can be set only while it has none, and only to a MOTHER login no other record uses; after that nobody logged in can change or remove it (the sign-up trigger and the server's secret key are not affected). Changes no data |
 | 23 | `supabase/migrations/0023_rate_limits.sql` | Phase 9: the server-only `rate_limit_hit` log for abuse limits per network address (login 20 failed tries in 15 minutes, sign-up 20 an hour, forgot password 10 an hour; only a keyed hash of the address is stored); the `clean-rate-limits` job deletes rows older than a day here and in `login_attempt`, every day at 3:00 AM Manila |
 | 24 | `supabase/migrations/0024_sms_visit_booked.sql` | Phase 9: new text type Visit booked, sent right away when staff (admins or health workers) book a visit, including a rebook after a missed visit; the usual reminder is Skipped when it would go the same day. Every text now starts "Hi, {name}!" (with a comma), texts still waiting too |
+| 25 | `supabase/migrations/0025_sms_website_wording.sql` | Phase 9 review: the "New time proposed" text says "Mag-log in sa website para tanggapin o tanggihan." instead of "Buksan ang app…" (it's a website, nothing to install); texts still waiting get the new wording too |
 | — | `supabase/seed/first-admin.sql` | First admin (follow the steps at the top of the file) |
 
 ## Rules
@@ -420,6 +421,24 @@ select reminder_id, reminder_type, scheduled_at, length(message_text) as chars, 
 from public.sms_reminder
 where delivery_status = 'PENDING'
 order by scheduled_at;
+```
+
+## 0025 check query (after running it)
+
+```sql
+select 1 as n, 'New time text says website' as check_name,
+       (select strpos(prosrc, 'Mag-log in sa website para tanggapin o tanggihan.') > 0
+               and strpos(prosrc, 'Buksan ang app') = 0 and strpos(prosrc, 'VISIT_BOOKED') > 0
+        from pg_proc where proname = 'sync_appointment_reminder')::text as result,
+       'true' as expected
+union all
+select 2, 'waiting texts that still say app',
+       (select count(*) from public.sms_reminder
+        where delivery_status = 'PENDING' and message_text like '%Buksan ang app%')::text, '0'
+union all
+select 3, 'app can call the queuing function',
+       has_function_privilege('authenticated', 'public.sync_appointment_reminder()', 'execute')::text, 'false'
+order by n;
 ```
 
 ## Environment variables (`.env.local`, never committed)

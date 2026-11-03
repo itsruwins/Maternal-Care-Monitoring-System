@@ -37,6 +37,9 @@ export function ForgotPasswordForm() {
 
   return (
     <form action={formAction} onSubmit={submitWithoutReset(formAction)} noValidate className="flex flex-col gap-5">
+      {/* The card's subtitle, kept here so it goes away with the form once the email is sent
+          (pulled up to sit 8px under the title, as AuthCard places a subtitle). */}
+      <p className="-mt-5 mb-2 text-[0.95rem] leading-6 text-ink-soft">{t.forgot.subtitle}</p>
       <FormField id="forgot-identifier" label={t.forgot.identifier} error={state.error === "required" ? t.forgot.required : null}>
         {(describedBy) => (
           <InputIcon icon={UserIcon}>

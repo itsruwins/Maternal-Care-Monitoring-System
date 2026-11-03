@@ -627,7 +627,7 @@
     "never": "Hindi pa",
     "empty": "Walang account na tumugma sa hinahanap mo.",
     "results": "{count} account",
-    "page": "Pahina {page} sa {pages}",
+    "page": "Pahina {page} ng {pages}",
     "prev": "Nakaraan",
     "next": "Susunod",
     "open": "Buksan si {name}",
@@ -747,7 +747,7 @@
     "showName": "Ipakita ang {name}",
     "shown": "Nakikita",
     "hidden": "Nakatago",
-    "hiddenNote": "Hindi na mapipili ang mga nakatagong purok. Mananatili ito sa mga inang nakatala na rito.",
+    "hiddenNote": "Hindi na mapipili ang mga nakatagong purok. Mananatili ito sa mga nanay na nakatala na rito.",
     "hiddenToast": "Nakatago na ang {name}.",
     "shownToast": "Nakikita na ulit ang {name}.",
     "count": "{count} purok",
@@ -806,7 +806,7 @@
   },
   "mothers": {
     "title": "Mga nanay",
-    "intro": "Lahat ng inang nakarehistro sa health center o sa website.",
+    "intro": "Lahat ng nanay na nakarehistro sa health center o sa website.",
     "search": {
       "label": "Maghanap",
       "placeholder": "Pangalan o mobile number",
@@ -826,7 +826,7 @@
     },
     "results": "{count} nanay",
     "resultsOne": "1 nanay",
-    "empty": "Walang inang tugma sa mga filter na ito.",
+    "empty": "Walang nanay na tugma sa mga filter na ito.",
     "emptyAll": "Wala pang nakarehistrong nanay.",
     "columns": {
       "name": "Pangalan",
@@ -858,7 +858,7 @@
     "register": {
       "open": "Magparehistro ng nanay",
       "title": "Magparehistro ng nanay",
-      "intro": "Para sa inang pumunta sa health center. Kung nag-sign up na siya sa website, nasa listahan na siya.",
+      "intro": "Para sa nanay na pumunta sa health center. Kung nag-sign up na siya sa website, nasa listahan na siya.",
       "back": "Mga nanay",
       "sections": {
         "about": "Tungkol sa kanya",
@@ -1244,7 +1244,7 @@
     },
     "propose": {
       "title": "Mag-alok ng ibang oras",
-      "subtitle": "Hihilingin sa kanyang tanggapin ito. Agad nakukumpirma ang mga inang walang login.",
+      "subtitle": "Hihilingin sa kanyang tanggapin ito. Agad nakukumpirma ang mga nanay na walang login.",
       "current": "Kasalukuyang oras: {when}",
       "remarkLabel": "Mensahe para sa kanya (hindi kailangan)",
       "remarkHint": "Halimbawa: puno na ang umaga sa araw na iyon.",
@@ -1298,7 +1298,7 @@
     "bookPage": {
       "title": "Mag-book ng appointment",
       "back": "Mga appointment",
-      "intro": "Para sa inang may kasalukuyang pagbubuntis. Kumpirmado agad ito at naka-queue ang paalala.",
+      "intro": "Para sa nanay na may kasalukuyang pagbubuntis. Kumpirmado agad ito at ite-text agad siya.",
       "mother": "1. Nanay",
       "searchLabel": "Maghanap ng nanay",
       "searchPlaceholder": "Pangalan o mobile number",
@@ -1313,7 +1313,7 @@
       "remarkLabel": "Tala (hindi kailangan)",
       "submit": "Mag-book",
       "submitting": "Nagbu-book…",
-      "done": "Naka-book sa {when}. Naka-queue ang paalala.",
+      "done": "Naka-book sa {when}. Ite-text agad siya.",
       "required": "Pumili ng nanay, serbisyo, araw at oras.",
       "week": "Ika-{weeks} linggo"
     },
@@ -1343,7 +1343,7 @@
       "title": "Itala ang bisita",
       "back": "Mga bisita",
       "findTitle": "Sino ang bumibisita?",
-      "findHint": "Mga inang may kasalukuyang pagbubuntis.",
+      "findHint": "Mga nanay na may kasalukuyang pagbubuntis.",
       "searchLabel": "Maghanap ng nanay",
       "searchPlaceholder": "Pangalan o mobile number",
       "search": "Maghanap",
@@ -1505,7 +1505,7 @@
   },
   "followUps": {
     "title": "Mga follow-up",
-    "intro": "Mga inang hindi nakapunta sa bisita. Kumustahin sila, itala ang nangyari, at mag-book ng bagong oras.",
+    "intro": "Mga nanay na hindi nakapunta sa bisita. Kumustahin sila, itala ang nangyari, at mag-book ng bagong oras.",
     "tabsLabel": "Mga listahan ng follow-up",
     "tabs": {
       "open": "Hindi pa tapos",
@@ -1633,7 +1633,7 @@
       "back": "Mga follow-up",
       "backRecord": "Record niya",
       "title": "Mag-book ng bagong appointment",
-      "intro": "Para kay {name}, na hindi nakapunta sa {service} niya noong {when}. Kumpirmado agad ito at naka-queue ang paalala.",
+      "intro": "Para kay {name}, na hindi nakapunta sa {service} niya noong {when}. Kumpirmado agad ito at ite-text agad siya.",
       "suggestion": "Mungkahi: {date}, ang pinakamalapit na bukas na araw.",
       "sortedTitle": "Naayos na",
       "sortedBody": "Tapos na ang follow-up sa bisitang ito: {ending}.",
@@ -1685,7 +1685,7 @@
   },
   "sms": {
     "title": "SMS log",
-    "intro": "Mga paalala sa bisita, abiso sa hindi nakarating, sagot sa hiling, at abiso kapag inilipat o kinansela ang bisita, ipinapadala sa mga nanay sa HTTPSMS.",
+    "intro": "Mga paalala sa bisita, abiso sa hindi nakarating, sagot sa hiling, at abiso kapag na-book, inilipat o kinansela ang bisita, ipinapadala sa mga nanay sa HTTPSMS.",
     "send": {
       "title": "Awtomatikong pagpapadala",
       "intro": "Agad ipinapadala ang mga sagot at pagbabago sa bisita. Ang mga paalala at abiso sa hindi nakarating ay ipinapadala kada 5 minuto, araw at gabi; pinatatakbo ito agad ng Ipadala ngayon.",

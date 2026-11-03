@@ -29,7 +29,7 @@ import type { Dictionary } from "@/i18n/get-dictionary";
 import { getServerI18n } from "@/i18n/server";
 import { AREA_ROLES } from "@/lib/auth/roles";
 import { requireRole } from "@/lib/auth/session";
-import { formatSlot, formatSlotClock } from "@/lib/appointments/format";
+import { formatSlot, formatSlotClock, formatSlotDate } from "@/lib/appointments/format";
 import { manilaSlot } from "@/lib/appointments/slots";
 import { manilaTodayISO } from "@/lib/utils/manila-date";
 import { addDays, daysBetween, formatDate, gestationalAge, parseISODate, PREGNANCY_DAYS, trimesterFromWeeks, weekOf } from "@/lib/utils/pregnancy";
@@ -172,12 +172,15 @@ function weekDays(t: Dictionary, today: string, intlLocale: string, visits: MyVi
 function Insights({ t, locale, weeks, next, missed }: { t: Dictionary; locale: Locale; weeks: number; next: MyVisit | null; missed: MissedVisit[] }) {
   const c = t.today.cards;
   const nextStatus = next && next.status !== "CONFIRMED" ? ` (${t.myAppointments.statuses[next.status]})` : "";
-  const nextBody = next ? `${formatSlot(next.at, locale, "short")}${nextStatus}` : c.nextVisitNone;
+  // The tile is narrow: the date on one line, the time under it ("Thu, Oct 29" / "9:00 AM"), each kept whole.
+  const nextBody = next
+    ? `${formatSlotDate(next.at, locale, "short").replace(/\s+/g, "\u00a0")}\n${formatSlotClock(next.at, locale)}${nextStatus}`
+    : c.nextVisitNone;
   const card = (href: string, title: string, tone: "white" | "mint" | "blush", visual: ReactNode, body?: string) => (
     <Link href={href} className="block h-full rounded-xl no-underline outline-offset-4 focus-visible:outline-2 focus-visible:outline-leaf">
       <InsightCard title={title} tone={tone} visual={visual} className="h-full min-h-40 w-full gap-3 transition-transform hover:-translate-y-0.5">
         {/* flex-1: the text sits right under the title, the icon at the bottom */}
-        {body && <p className="line-clamp-3 flex-1 text-sm text-ink-soft">{body}</p>}
+        {body && <p className="line-clamp-3 flex-1 text-sm wrap-break-word whitespace-pre-line text-ink-soft">{body}</p>}
       </InsightCard>
     </Link>
   );

@@ -9,7 +9,8 @@ export const DUE_SOON_DAYS = 30;
 export function parseISODate(value: string): Date | null {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
   const date = new Date(`${value}T00:00:00Z`);
-  return Number.isNaN(date.getTime()) ? null : date;
+  // A day the month doesn't have (Feb 30) would roll over to the next month.
+  return Number.isNaN(date.getTime()) || toISODate(date) !== value ? null : date;
 }
 
 export function toISODate(date: Date): string {

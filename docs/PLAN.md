@@ -2,7 +2,7 @@
 
 Barangay Taysan, Legazpi City · Next.js 16 + Supabase · Hosted on Vercel
 
-Status: **Phases 0–8 done (Phase 8 signed off 2026-11-03). Phase 9 — Hardening & launch: plan approved 2026-11-03; steps 1–3 (security review and fixes, abuse limits, RLS test script) done; next: step 4 (Vitest unit tests).** Each phase ends with a demo and your sign-off before the next starts.
+Status: **Phases 0–8 done (Phase 8 signed off 2026-11-03). Phase 9 — Hardening & launch: plan approved 2026-11-03; steps 1–4 (security review and fixes, abuse limits, RLS test script, unit tests) done; next: step 5 (accessibility pass).** Each phase ends with a demo and your sign-off before the next starts.
 
 ---
 
@@ -1062,6 +1062,12 @@ Sample request answers (one SMS each with this service name; a longer name may m
   - Visitors can't read the services list or the closed days, and mothers can't read the staff profiles. None of their pages need them.
   - Health workers see only their own login account. The server reads login details itself.
   - Visitors can run only `current_user_role` (gives nothing when logged out) and `is_username_available`. The second is needed for sign-up and is limited by the per-username login lock.
+
+**Step 4 built (2026-11-03):** Vitest unit tests, run with `npm test` (not part of the Vercel build). 67 tests in 9 files under `tests/unit/` (mirroring `src`), all passing, with no database. The same result in UTC, Los Angeles and UTC+14.
+- **Package:** `vitest` 4.1.12, pinned exactly (5.x needs `@types/node` 22 or newer). Set up in `vitest.config.ts` (`@` alias, node environment).
+- **Covered:** due date (LMP + 280, leap years), weeks of pregnancy, LMP, birth date and due date limits, gravida/para; slot times, Manila time, open days, the 3-month window, slot errors; SMS length (160 / 153 per part, max 2, double-width characters), characters a plain text can't carry, +63 numbers; vital-sign flags and the next checkup interval; usernames, mobile numbers, length limits; CSV formula defusing and quoting; the redirect check; action id/text checks. The slot hours and vital-sign limits are checked against migrations 0009 and 0014.
+- **Fixed:** `parseISODate` rolled impossible dates (Feb 30, Apr 31, Feb 29 in 2026) into the next month. They now count as not a date. In Reports, a custom range with such a date now falls back to This month instead of failing.
+- **Moved:** the CSV cell rule to `features/reports/csv-cell.ts` (unchanged), so the tests can load it.
 
 ---
 

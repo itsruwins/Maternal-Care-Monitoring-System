@@ -4,6 +4,7 @@ import type { Locale } from "@/i18n/config";
 import { format } from "@/i18n/format";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import { manilaTodayISO } from "@/lib/utils/manila-date";
+import { type Cell, csvCell } from "../csv-cell";
 import { bucketName } from "../format";
 import type { ReportFilters, ReportMother, ReportRows, ReportSummary } from "../types";
 
@@ -11,8 +12,6 @@ import type { ReportFilters, ReportMother, ReportRows, ReportSummary } from "../
 // Excel), CRLF lines, headers in the app's language. Dates are YYYY-MM-DD and
 // times 24-hour HH:mm (Manila), in their own columns, so Excel sorts them.
 // Name and purok, never a phone number, address or notes.
-
-type Cell = string | number | null;
 
 /** "2026-11-05" in Manila for an instant ("2026-11-05" stays as is). */
 const csvDate = (iso: string | null) => (iso ? (/^\d{4}-\d{2}-\d{2}$/.test(iso) ? iso : manilaTodayISO(new Date(iso))) : "");
@@ -25,14 +24,7 @@ export const csvFileName = (filters: ReportFilters) => `taysan-${filters.tab}-${
 
 export function reportCsv(t: Dictionary, locale: Locale, data: { summary: ReportSummary } | { rows: ReportRows }): string {
   const table = "summary" in data ? summaryTable(t, locale, data.summary) : rowsTable(t, locale, data.rows);
-  return "﻿" + table.map((row) => row.map(cell).join(",")).join("\r\n") + "\r\n";
-}
-
-/** Quotes a cell when needed, and defuses text a spreadsheet would run as a formula. */
-function cell(value: Cell): string {
-  let text = value === null ? "" : String(value);
-  if (typeof value === "string" && /^[=+@\t\r]|^-(?!\d)/.test(text)) text = `'${text}`;
-  return /[",\r\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+  return "﻿" + table.map((row) => row.map(csvCell).join(",")).join("\r\n") + "\r\n";
 }
 
 function rowsTable(t: Dictionary, locale: Locale, data: ReportRows): Cell[][] {

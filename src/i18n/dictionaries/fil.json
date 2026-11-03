@@ -324,7 +324,7 @@
     "submit": "Ipadala ang reset link",
     "submitting": "Ipinapadala…",
     "sentTitle": "Tingnan ang iyong email",
-    "sent": "Kung may email ang account na ito, nagpadala kami ng link para mapalitan ang password. Walang email ang account mo? Magpa-reset sa health worker sa health center.",
+    "sent": "Kung may email ang account na ito, nagpadala kami ng link para mapalitan ang password. Wala sa inbox? Tingnan din ang Spam folder. Walang email ang account mo? Magpa-reset sa health worker sa health center.",
     "back": "Bumalik sa log in",
     "required": "Ilagay ang iyong username o email.",
     "tooMany": "Masyadong maraming request mula sa network na ito. Maghintay ng {minutes} minuto at subukang muli."

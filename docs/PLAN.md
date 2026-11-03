@@ -2,7 +2,7 @@
 
 Barangay Taysan, Legazpi City · Next.js 16 + Supabase · Hosted on Vercel
 
-Status: **Phases 0–8 done (Phase 8 signed off 2026-11-03). Phase 9 — Hardening & launch: plan approved 2026-11-03; steps 1–5 (security review and fixes, abuse limits, RLS test script, unit tests, accessibility pass) done; next: step 6 (performance pass).** Each phase ends with a demo and your sign-off before the next starts.
+Status: **Phases 0–8 done (Phase 8 signed off 2026-11-03). Phase 9 — Hardening & launch: plan approved 2026-11-03; steps 1–7 (security review and fixes, abuse limits, RLS test script, unit tests, accessibility pass, performance pass, live settings and docs) done; next: step 8 (real-phone testing).** Each phase ends with a demo and your sign-off before the next starts.
 
 ---
 
@@ -1088,6 +1088,57 @@ Sample request answers (one SMS each with this service name; a longer name may m
 - **Judged fine:** the blood-pressure box names, the role choice in New staff account, and Chrome's date input.
 - **Checked by you:** the keyboard check on localhost and the VoiceOver (Mac) and TalkBack (Android) checklist all passed. Types, lint and the 67 unit tests pass.
 
+**Step 6 built (2026-11-03):** performance pass, approved by you. No package and no migration.
+- **Measured:** Lighthouse 13.5.0 (run with npx from a scratch folder, not added to the project), phone and desktop, 3 runs each, middle result.
+  - The 5 public pages on the live site.
+  - 4 mother pages and 5 staff pages, logged in by you in a separate Chrome window. Its profile was deleted afterwards.
+  - The production build and `next analyze` (built into Next 16). Every page is partly prerendered: the shell is ready ahead of time and the data streams in.
+- **Found:** about 3.5–4.8 s to the main content on phones. Causes:
+  - every page preloaded a 131 KB font set that English and Filipino never use
+  - the landing picture loaded at low priority
+  - Zod (about 131 KB before compression) on 5 pages and the Supabase browser client on 2, mostly for code those pages never run
+- **Fixed:**
+  1. **Fonts:** only the latin set is preloaded. The other sets still load on demand.
+  2. **Pictures:** the deprecated `priority` is replaced with `loading="eager"`, plus `fetchPriority="high"` on the landing and Today pictures.
+  3. **Zod:** the plain lists moved to `constants.ts` in follow-ups, activity-types and mothers. The Sign up form in the landing dialog loads only when Sign up is hovered, focused or opened, with a short "Loading…" placeholder, and the cursor still lands in Username.
+  4. **Username check:** it's one plain request to `is_username_available`. `lib/supabase/client.ts` is removed, and no page ships the Supabase client any more.
+- **JavaScript per page (before compression):** landing 532 → 424 KB, Register 498 → 354, a mother's record 486 → 349, Follow-ups 462 → 349, Activity types 455 → 349.
+- **Result on phones (live, before → after):**
+
+  | Page | Score | Main content (LCP) | Busy time | Data downloaded |
+  |---|---|---|---|---|
+  | Landing EN | 81 → 96 | 4.6 → 2.8 s | 114 → 4 ms | 713 → 399 KB |
+  | Landing FIL | 80 → 97 | 4.8 → 2.2 s | 150 → 39 ms | 714 → 400 KB |
+  | Login | 90 → 99 | 2.7 → 2.0 s | 210 → 23 ms | 722 → 518 KB |
+  | Register | 93 → 96 | 3.2 → 2.7 s | 86 → 22 ms | 710 → 506 KB |
+  | Forgot password | 93 → 98 | 3.1 → 2.3 s | 57 → 23 ms | 703 → 388 KB |
+
+  Desktop is 97–100, and layout shift is zero.
+- **Left as is:** the Next/React base (about 212 KB) and Tailwind's class merger (27 KB) on every page; Landing EN and Register about 0.2–0.3 s over 2.5 s on the slow-phone setting.
+- **Checked:** types, lint, 67 tests and the build. Sign up, the username check and the changed pages work in dev and in the production build.
+
+**Step 7 built (2026-11-03):** live settings and docs, approved by you. No migration. One code change: the spam-folder sentence.
+- **Supabase checked** (SQL check plus screenshots):
+  - **Cron:** all 3 jobs are scheduled. `send-sms` succeeded 288 of 288 times in a day, and `mark-missed-appointments` ran. `clean-rate-limits` first runs tonight at 3:00 AM Manila, so it still needs a re-check.
+  - **Vault:** `cron_secret` and `sms_sender_url` exist.
+  - **Texts:** every send-sms call answered 200.
+  - **Project:** Healthy and in steady use, so the free-plan pause doesn't apply while the job runs.
+- **Changed by you:**
+  - Redirect URL `http://localhost:3000/**` added.
+  - Minimum password length 6 → 8, with no extra requirements (default passwords are usernames).
+  - Gmail SMTP on, from the health-center account (`smtp.gmail.com`, port 587, an App Password).
+  - Email limit 2 → 30 per hour.
+- **Kept (checked):** the Site URL; sign-ups off; confirm email off; sign-ins at 30 per 5 minutes (your choice).
+- **Reset email:**
+  - A real reset to a non-team address arrived in the Inbox and worked.
+  - It now uses a custom template: the seal, a green button, a "Good to know" box, a Filipino section, a backup link and a footer. The subject is "Set a new password · Taysan MaternaCare".
+  - After one test landed in Spam, the hidden preview line was removed and the seal's empty alt text set.
+  - The template is kept only in the Supabase dashboard (your choice).
+  - The app's "Check your email" message now adds "Check your Spam folder too" (EN/FIL).
+- **Vercel:** all 9 names are present, stored as sensitive, on Production and Preview (your choice). The README warns that previews use live data and send real texts.
+- **Docs:** the README is replaced (local setup, the 9 variable names, live settings, folders, known limits); new `docs/backup.md` (backup into an encrypted `.dmg`, restore test, recovery checklist, log); `docs/database-setup.md` gets a backup-before-migration rule. `libpq` (pg_dump, psql 18.6) is installed on your Mac.
+- **Skipped (your choice):** the first backup and the restore test (Open item 5).
+
 ---
 
 ## Open items
@@ -1096,5 +1147,6 @@ Sample request answers (one SMS each with this service name; a longer name may m
 2. Health center contact number for the landing page (address and clinic hours received 2026-10-27). Also used by Phase 8's printed report header, which leaves it out until it's set.
 3. ~~HTTPSMS phone + API key (Phase 7).~~ Resolved 2026-11-02 (texts are being delivered).
 4. Manuscript updates listed on ERD page 2 (scope, named activities, single health center) — outside the code, for you to handle.
+5. No database backup taken yet (skipped in Phase 9 step 7 on 2026-11-03, your choice). Follow `docs/backup.md`: take the first backup, then do a restore test before hand-over. Until then, a lost or damaged Supabase project loses every record.
 
 Resolved: database inspected (2026-10-26); the first admin gets both ADMIN and health worker profiles; language saved in a cookie; secrets in `.env.local`, no Edge Functions.

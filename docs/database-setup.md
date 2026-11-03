@@ -32,6 +32,7 @@ Run these in **Supabase Dashboard → SQL Editor**, in order. Each file is safe 
 ## Rules
 
 - Migrations are never edited after they've been run. Fixes go in a new numbered file.
+- **Take a backup before running any new migration:** see [backup.md](backup.md).
 - If a file fails, stop and send the error message. Don't run the next file.
 
 ## Daily missed check (pg_cron, from 0015)

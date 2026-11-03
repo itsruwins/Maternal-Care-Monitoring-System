@@ -2,7 +2,7 @@
 
 Barangay Taysan, Legazpi City · Next.js 16 + Supabase · Hosted on Vercel
 
-Status: **Phases 0–8 done (Phase 8 signed off 2026-11-03). Phase 9 — Hardening & launch: plan approved 2026-11-03; steps 1–2 (security review and fixes, abuse limits) done; next: step 3 (RLS test script).** Each phase ends with a demo and your sign-off before the next starts.
+Status: **Phases 0–8 done (Phase 8 signed off 2026-11-03). Phase 9 — Hardening & launch: plan approved 2026-11-03; steps 1–3 (security review and fixes, abuse limits, RLS test script) done; next: step 4 (Vitest unit tests).** Each phase ends with a demo and your sign-off before the next starts.
 
 ---
 
@@ -1051,6 +1051,17 @@ Sample request answers (one SMS each with this service name; a longer name may m
 - **Messages:** login reuses "Too many failed attempts. Try again in N minutes."; sign-up and forgot password say "Too many … from this network. Please wait N minutes and try again." (EN and FIL).
 - **Tested locally against the live database** with made-up usernames: the username lock after 5 failures; the address limit after 20 failed tries even with new usernames; the forgot-password limit on the 11th request (EN and FIL). No emails sent.
 - **On Vercel:** `RATE_LIMIT_SECRET` added by you (the same value as in `.env.local`).
+
+**Step 3 built (2026-11-03):** RLS test script `supabase/tests/rls-by-role.sql` (not a migration). It makes made-up records (an admin, a health worker, an inactive health worker, a mother with a login and a mother without one, plus pregnancies, appointments, a visit, and a missed visit with a follow-up). Then it acts as each of them and as a logged-out visitor, tries reads, changes and function calls, and lists PASS, FAIL, SKIP or INFO for each check. Everything is undone at the end, so nothing is saved and no text goes out. Run it in the SQL Editor whenever the access rules change.
+- **Result (run by you, 3 runs):** 118 PASS, 0 FAIL, 0 SKIP, 5 INFO. No access gap was found, so no fix migration was needed.
+- **Script fixes along the way:**
+  - The script now makes its own missed visit and follow-up, so the 2 follow-up checks actually run instead of SKIP. The past-appointment check is switched off briefly inside the undone run to allow this.
+  - The visitor function list leaves out functions that can't be called directly. This drops Supabase's own `rls_auto_enable`.
+  - A mother sees her own missed visit in the follow-up list view, with all follow-up details empty. That view follows the reader's own rules and only staff pages read it, so the test now checks "only her own, no details" (health workers do see the details). The database stays as it is. Limiting the view to staff would make the SMS functions that read it drop a mother's missed-visit text when her own action runs them.
+- **INFO (judged fine):**
+  - Visitors can't read the services list or the closed days, and mothers can't read the staff profiles. None of their pages need them.
+  - Health workers see only their own login account. The server reads login details itself.
+  - Visitors can run only `current_user_role` (gives nothing when logged out) and `is_username_available`. The second is needed for sign-up and is limited by the per-username login lock.
 
 ---
 

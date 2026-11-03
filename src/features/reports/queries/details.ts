@@ -41,7 +41,7 @@ const SMS_STATUSES: Record<SmsStatusFilter, SmsDeliveryStatus[]> = {
 const SMS_TYPES: Record<SmsTypeFilter, ReminderType[]> = {
   reminder: ["UPCOMING"],
   missed: ["MISSED_NOTICE"],
-  answer: ["REQUEST_CONFIRMED", "REQUEST_NEW_TIME", "REQUEST_DECLINED", "VISIT_MOVED", "VISIT_CANCELLED"],
+  answer: ["REQUEST_CONFIRMED", "REQUEST_NEW_TIME", "REQUEST_DECLINED", "VISIT_BOOKED", "VISIT_MOVED", "VISIT_CANCELLED"],
 };
 
 /** The rows of the filters' detail tab (null on the Summary). */

@@ -38,6 +38,7 @@ export type ReminderType =
   | "REQUEST_CONFIRMED"
   | "REQUEST_NEW_TIME"
   | "REQUEST_DECLINED"
+  | "VISIT_BOOKED"
   | "VISIT_MOVED"
   | "VISIT_CANCELLED";
 export type SmsDeliveryStatus = "PENDING" | "SENT" | "DELIVERED" | "FAILED" | "SKIPPED";

@@ -38,7 +38,7 @@ const STATUSES: Record<SmsLogStatus, SmsDeliveryStatus[]> = {
 const TYPES: Record<SmsLogType, ReminderType[]> = {
   reminder: ["UPCOMING"],
   missed: ["MISSED_NOTICE"],
-  answer: ["REQUEST_CONFIRMED", "REQUEST_NEW_TIME", "REQUEST_DECLINED", "VISIT_MOVED", "VISIT_CANCELLED"],
+  answer: ["REQUEST_CONFIRMED", "REQUEST_NEW_TIME", "REQUEST_DECLINED", "VISIT_BOOKED", "VISIT_MOVED", "VISIT_CANCELLED"],
 };
 
 const dayStart = (date: string) => `${date}T00:00:00+08:00`;

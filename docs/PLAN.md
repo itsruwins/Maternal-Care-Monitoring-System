@@ -2,7 +2,7 @@
 
 Barangay Taysan, Legazpi City · Next.js 16 + Supabase · Hosted on Vercel
 
-Status: **Phases 0–8 done (Phase 8 signed off 2026-11-03). Phase 9 — Hardening & launch: plan approved 2026-11-03; steps 1–7 (security review and fixes, abuse limits, RLS test script, unit tests, accessibility pass, performance pass, live settings and docs) done; next: step 8 (real-phone testing).** Each phase ends with a demo and your sign-off before the next starts.
+Status: **Phases 0–8 done (Phase 8 signed off 2026-11-03). Phase 9 — Hardening & launch: plan approved 2026-11-03; steps 1–8 (security review and fixes, abuse limits, RLS test script, unit tests, accessibility pass, performance pass, live settings and docs, real-phone testing) done; next: step 9 (review and close).** Each phase ends with a demo and your sign-off before the next starts.
 
 ---
 
@@ -1138,6 +1138,14 @@ Sample request answers (one SMS each with this service name; a longer name may m
 - **Vercel:** all 9 names are present, stored as sensitive, on Production and Preview (your choice). The README warns that previews use live data and send real texts.
 - **Docs:** the README is replaced (local setup, the 9 variable names, live settings, folders, known limits); new `docs/backup.md` (backup into an encrypted `.dmg`, restore test, recovery checklist, log); `docs/database-setup.md` gets a backup-before-migration rule. `libpq` (pg_dump, psql 18.6) is installed on your Mac.
 - **Skipped (your choice):** the first backup and the restore test (Open item 5).
+
+**Step 8 built (2026-11-03):** testing on real phones, done by you with a BHW and the mothers on their own phones, on the live site, with real accounts that stay. Real texts went to the testers with their consent.
+- **Checklists** (given in chat): admin in English; BHW and mothers in Filipino. Covered sign-up, Today, request, confirm, new time, booking, visit recording, follow-ups, Visits charts, the language switch and password reset. Test-only bookings were cancelled afterwards.
+- **Result:** every step OK, as reported by you.
+- **Fixed afterwards (your choices):**
+  - The Filipino word for "mother" is now **nanay** everywhere ("Mga nanay", "Magparehistro ng nanay"…; 23 places changed from *ina*).
+  - The outdated "coming in Phase 3" sentence on a mother's account page (Admin → Accounts) now reads "Her details and pregnancies are on her record under Mothers." / "Nasa kanyang record sa Mga nanay ang kanyang detalye at pagbubuntis."
+  - Types and the 67 tests pass.
 
 ---
 

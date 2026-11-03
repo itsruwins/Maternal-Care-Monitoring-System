@@ -15,7 +15,7 @@ import { SAMPLE_APPOINTMENTS, SAMPLE_SLOTS } from "../staff-appointments/sample"
 import { dueDateFromLmp } from "@/lib/utils/pregnancy";
 
 // The sample texts as hers: her number and her name in the greeting.
-const HER_SMS = SAMPLE_SMS.map((item) => ({ ...item, number: "09171234567", text: item.text.replace(/^Hi [^!]*!/, "Hi Ana!") }));
+const HER_SMS = SAMPLE_SMS.map((item) => ({ ...item, number: "09171234567", text: item.text.replace(/^Hi, [^!]*!/, "Hi, Ana!") }));
 
 export const metadata = { title: "Mother record preview", robots: { index: false } };
 

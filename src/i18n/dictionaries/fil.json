@@ -128,7 +128,7 @@
         "sender": "Brgy. Taysan Health Center",
         "meta": "Text message · Ngayon",
         "newBadge": "Bagong paalala",
-        "text": "Hi Maria!\n\nPaalala: Prenatal Checkup mo sa Fri, Nov 6, 8:00 AM sa health center. Dalhin ang booklet mo. Salamat!\n\nFrom: Brgy. Taysan Health Center",
+        "text": "Hi, Maria!\n\nPaalala: Prenatal Checkup mo sa Fri, Nov 6, 8:00 AM sa health center. Dalhin ang booklet mo. Salamat!\n\nFrom: Brgy. Taysan Health Center",
         "time": "8:00 AM",
         "facts": [
           "Gumagana sa kahit anong cellphone, walang internet",
@@ -684,7 +684,7 @@
       "save": "I-save",
       "saving": "Sine-save…",
       "saved": "Na-save ang profile.",
-      "motherNote": "Ang records ng nanay (detalye at pagbubuntis) ay inaayos sa bahaging Mga nanay, darating sa Phase 3.",
+      "motherNote": "Nasa kanyang record sa Mga nanay ang kanyang detalye at pagbubuntis.",
       "pendingPassword": "Hinihintay ang unang pagpalit ng password"
     },
     "errors": {
@@ -725,7 +725,7 @@
       "saved": "Na-save ang serbisyo.",
       "added": "Naidagdag ang serbisyo.",
       "icon": "Larawan",
-      "iconHint": "Makikita sa mga tile ng serbisyo kapag humihiling ng bisita ang mga ina."
+      "iconHint": "Makikita sa mga tile ng serbisyo kapag humihiling ng bisita ang mga nanay."
     },
     "errors": {
       "required": "Kailangan ito.",
@@ -737,7 +737,7 @@
   },
   "puroks": {
     "title": "Mga Purok",
-    "intro": "Ang mga purok na pinagpipilian ng mga ina kapag nag-sign up o ipinarehistro. Palitan ang pangalan para tumugma sa listahan ng barangay.",
+    "intro": "Ang mga purok na pinagpipilian ng mga nanay kapag nag-sign up o ipinarehistro. Palitan ang pangalan para tumugma sa listahan ng barangay.",
     "add": "Magdagdag ng purok",
     "rename": "Palitan ang pangalan",
     "renameName": "Palitan ang pangalan ng {name}",
@@ -752,7 +752,7 @@
     "shownToast": "Nakikita na ulit ang {name}.",
     "count": "{count} purok",
     "empty": "Wala pang purok. Idagdag ang una.",
-    "noDelete": "Hindi mabubura ang mga purok dahil ginagamit ito ng mga tala ng mga ina. Itago na lang ito.",
+    "noDelete": "Hindi mabubura ang mga purok dahil ginagamit ito ng mga tala ng mga nanay. Itago na lang ito.",
     "dialog": {
       "addTitle": "Bagong purok",
       "renameTitle": "Palitan ang pangalan ng purok",
@@ -805,7 +805,7 @@
     }
   },
   "mothers": {
-    "title": "Mga Ina",
+    "title": "Mga nanay",
     "intro": "Lahat ng inang nakarehistro sa health center o sa website.",
     "search": {
       "label": "Maghanap",
@@ -824,10 +824,10 @@
       "submit": "Maghanap",
       "clear": "I-clear"
     },
-    "results": "{count} ina",
-    "resultsOne": "1 ina",
+    "results": "{count} nanay",
+    "resultsOne": "1 nanay",
     "empty": "Walang inang tugma sa mga filter na ito.",
-    "emptyAll": "Wala pang nakarehistrong ina.",
+    "emptyAll": "Wala pang nakarehistrong nanay.",
     "columns": {
       "name": "Pangalan",
       "purok": "Purok",
@@ -856,10 +856,10 @@
     "prev": "Nakaraan",
     "next": "Susunod",
     "register": {
-      "open": "Magparehistro ng ina",
-      "title": "Magparehistro ng ina",
+      "open": "Magparehistro ng nanay",
+      "title": "Magparehistro ng nanay",
       "intro": "Para sa inang pumunta sa health center. Kung nag-sign up na siya sa website, nasa listahan na siya.",
-      "back": "Mga Ina",
+      "back": "Mga nanay",
       "sections": {
         "about": "Tungkol sa kanya",
         "address": "Tirahan at emergency contact",
@@ -877,15 +877,15 @@
       "usernameHint": "8 hanggang 30 maliliit na titik, numero, tuldok o underscore. Ito rin ang pansamantala niyang password. Halimbawa: ana.reyes",
       "email": "Email (hindi kailangan)",
       "emailHint": "Gagamitin lang para mabawi ang nakalimutang password.",
-      "submit": "Iparehistro ang ina",
+      "submit": "Iparehistro ang nanay",
       "submitting": "Ipinaparehistro…",
       "cancel": "Kanselahin",
       "doneTitle": "Nakarehistro na si {name}",
-      "doneBody": "Nasa listahan na siya ng mga ina.",
+      "doneBody": "Nasa listahan na siya ng mga nanay.",
       "doneLogin": "Ang username niya ay {username}. Ito rin ang pansamantala niyang password. Pipili siya ng sarili niyang password sa unang log in.",
       "doneNoLogin": "Wala pa siyang login. Puwede itong gawin mamaya mula sa tala niya.",
-      "doneBack": "Bumalik sa mga ina",
-      "doneAnother": "Magparehistro ng isa pang ina"
+      "doneBack": "Bumalik sa mga nanay",
+      "doneAnother": "Magparehistro ng isa pang nanay"
     },
     "errors": {
       "required": "Kailangan ito.",
@@ -900,7 +900,7 @@
       "usernameTaken": "May gumagamit na ng username na ito. Subukan ang iba.",
       "emailInvalid": "Maglagay ng tamang email, o iwanang blangko.",
       "emailTaken": "Ginagamit na ng ibang account ang email na ito.",
-      "duplicate": "May nakarehistro nang ina na may ganitong pangalan at petsa ng kapanganakan. Hanapin siya sa listahan.",
+      "duplicate": "May nakarehistro nang nanay na may ganitong pangalan at petsa ng kapanganakan. Hanapin siya sa listahan.",
       "generic": "May nangyaring mali at walang na-save. Pakisubukang muli.",
       "tooLong": "Masyadong mahaba ito.",
       "dateInvalid": "Maglagay ng tamang petsa, o iwanang blangko.",
@@ -912,7 +912,7 @@
       "usernameTooShort": "Masyadong maikli ang username niya para maging pansamantalang password. Humingi ng tulong sa admin."
     },
     "record": {
-      "back": "Mga Ina",
+      "back": "Mga nanay",
       "open": "Buksan ang tala ni {name}",
       "tabs": {
         "overview": "Buod",
@@ -1114,7 +1114,7 @@
     "cancel": "Kanselahin ang bisita",
     "cancelRequest": "Kanselahin ang hiling",
     "cancelTitle": "Kanselahin ang bisitang ito?",
-    "cancelBody": "Magagamit na ng ibang ina ang oras na ito.",
+    "cancelBody": "Magagamit na ng ibang nanay ang oras na ito.",
     "cancelled": "Nakansela ang bisita.",
     "keep": "Huwag kanselahin",
     "callToCancel": "Para magkansela sa mismong araw, makipag-⁠ugnayan sa health center.",
@@ -1277,7 +1277,7 @@
       "empty": "Walang appointment na tugma sa mga filter na ito.",
       "columns": {
         "when": "Petsa at oras",
-        "mother": "Ina",
+        "mother": "Nanay",
         "service": "Serbisyo",
         "status": "Status",
         "reminder": "Paalala"
@@ -1299,12 +1299,12 @@
       "title": "Mag-book ng appointment",
       "back": "Mga appointment",
       "intro": "Para sa inang may kasalukuyang pagbubuntis. Kumpirmado agad ito at naka-queue ang paalala.",
-      "mother": "1. Ina",
-      "searchLabel": "Maghanap ng ina",
+      "mother": "1. Nanay",
+      "searchLabel": "Maghanap ng nanay",
       "searchPlaceholder": "Pangalan o mobile number",
       "search": "Maghanap",
       "change": "Palitan",
-      "noMatches": "Walang tugmang ina na may kasalukuyang pagbubuntis.",
+      "noMatches": "Walang tugmang nanay na may kasalukuyang pagbubuntis.",
       "pickMother": "Piliin siya sa mga resulta.",
       "service": "2. Serbisyo",
       "servicePlain": "Serbisyo",
@@ -1314,7 +1314,7 @@
       "submit": "Mag-book",
       "submitting": "Nagbu-book…",
       "done": "Naka-book sa {when}. Naka-queue ang paalala.",
-      "required": "Pumili ng ina, serbisyo, araw at oras.",
+      "required": "Pumili ng nanay, serbisyo, araw at oras.",
       "week": "Ika-{weeks} linggo"
     },
     "record": {
@@ -1344,10 +1344,10 @@
       "back": "Mga bisita",
       "findTitle": "Sino ang bumibisita?",
       "findHint": "Mga inang may kasalukuyang pagbubuntis.",
-      "searchLabel": "Maghanap ng ina",
+      "searchLabel": "Maghanap ng nanay",
       "searchPlaceholder": "Pangalan o mobile number",
       "search": "Maghanap",
-      "noMatches": "Walang tugmang ina na may kasalukuyang pagbubuntis.",
+      "noMatches": "Walang tugmang nanay na may kasalukuyang pagbubuntis.",
       "change": "Palitan",
       "appointment": "Appointment",
       "linkAppointment": "Ito ang kanyang {service} na appointment nang {time}",
@@ -1512,7 +1512,7 @@
       "closed": "Tapos na"
     },
     "search": {
-      "label": "Maghanap ng ina",
+      "label": "Maghanap ng nanay",
       "placeholder": "Pangalan o mobile number",
       "filters": "Mga filter",
       "purok": "Purok",
@@ -1536,7 +1536,7 @@
     "prev": "Nakaraan",
     "next": "Susunod",
     "columns": {
-      "mother": "Ina",
+      "mother": "Nanay",
       "missed": "Bisitang hindi napuntahan",
       "tries": "Mga follow-up",
       "ending": "Paano natapos",
@@ -1746,6 +1746,7 @@
         "REQUEST_CONFIRMED": "Kumpirmadong hiling",
         "REQUEST_NEW_TIME": "Bagong oras na mungkahi",
         "REQUEST_DECLINED": "Hindi naaprubahang hiling",
+        "VISIT_BOOKED": "Naka-schedule na bisita",
         "VISIT_MOVED": "Inilipat na bisita",
         "VISIT_CANCELLED": "Kinanselang bisita"
       },

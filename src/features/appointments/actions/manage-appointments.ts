@@ -10,8 +10,8 @@ import { isId, textArg } from "@/lib/validation/ids";
 import type { ActionResult } from "../types";
 
 // Staff appointment actions. The database checks the slot rules and keeps the
-// SMS reminder queue in step (migration 0009); the text her answer or change
-// queues is sent right away (sendSoon), not on the next 5-minute run.
+// SMS reminder queue in step (migration 0009); the text a booking, answer or
+// change queues is sent right away (sendSoon), not on the next 5-minute run.
 
 type Client = Awaited<ReturnType<typeof createClient>>;
 
@@ -127,5 +127,7 @@ export async function bookAppointment(input: {
     status: "CONFIRMED",
     remarks: withRemark(null, textArg(input.remark)),
   });
-  return error ? { ok: false, error: slotErrorOf(error) } : { ok: true, status: "CONFIRMED" };
+  if (error) return { ok: false, error: slotErrorOf(error) };
+  sendSoon();
+  return { ok: true, status: "CONFIRMED" };
 }

@@ -27,6 +27,7 @@ Run these in **Supabase Dashboard → SQL Editor**, in order. Each file is safe 
 | 21 | `supabase/migrations/0021_sms_visit_changes.sql` | Phase 7: texts when staff (admins or health workers) move or cancel a visit: "New time proposed" when she must accept it in the app, new types Visit moved (no login, confirmed at once) and Visit cancelled; no cancel text when her pregnancy is closed or the visit time has passed. Changes no data |
 | 22 | `supabase/migrations/0022_guard_mother_login.sql` | Phase 9 security fix: a mother record's login can be set only while it has none, and only to a MOTHER login no other record uses; after that nobody logged in can change or remove it (the sign-up trigger and the server's secret key are not affected). Changes no data |
 | 23 | `supabase/migrations/0023_rate_limits.sql` | Phase 9: the server-only `rate_limit_hit` log for abuse limits per network address (login 20 failed tries in 15 minutes, sign-up 20 an hour, forgot password 10 an hour; only a keyed hash of the address is stored); the `clean-rate-limits` job deletes rows older than a day here and in `login_attempt`, every day at 3:00 AM Manila |
+| 24 | `supabase/migrations/0024_sms_visit_booked.sql` | Phase 9: new text type Visit booked, sent right away when staff (admins or health workers) book a visit, including a rebook after a missed visit; the usual reminder is Skipped when it would go the same day. Every text now starts "Hi, {name}!" (with a comma), texts still waiting too |
 | — | `supabase/seed/first-admin.sql` | First admin (follow the steps at the top of the file) |
 
 ## Rules
@@ -385,6 +386,40 @@ union all
 select 5, 'login_attempt time index',
        (select count(*) from pg_indexes where indexname = 'login_attempt_time_idx')::text, '1'
 order by n;
+```
+
+## 0024 check query (after running it)
+
+```sql
+select 1 as n, 'new text type' as check_name,
+       (select count(*) from unnest(enum_range(null::public.reminder_type)) as v
+        where v::text = 'VISIT_BOOKED')::text as result,
+       '1' as expected
+union all
+select 2, 'queuing sends Visit booked and the comma',
+       (select strpos(prosrc, 'VISIT_BOOKED') > 0 and strpos(prosrc, 'Naka-schedule na ang') > 0
+               and strpos(prosrc, '''Hi, ''') > 0 and strpos(prosrc, '''Hi ''') = 0
+        from pg_proc where proname = 'sync_appointment_reminder')::text, 'true'
+union all
+select 3, 'too-late rules know the new type',
+       (select strpos(prosrc, 'VISIT_BOOKED') > 0 from pg_proc where proname = 'sms_skip_reason')::text, 'true'
+union all
+select 4, 'missed notice has the comma',
+       (select strpos(prosrc, '''Hi, ''') > 0 from pg_proc where proname = 'mark_missed_appointments')::text, 'true'
+union all
+select 5, 'waiting texts without the comma',
+       (select count(*) from public.sms_reminder
+        where delivery_status = 'PENDING' and message_text like 'Hi %')::text, '0'
+union all
+select 6, 'app can call the queuing function',
+       has_function_privilege('authenticated', 'public.sync_appointment_reminder()', 'execute')::text, 'false'
+order by n;
+
+-- The waiting texts as they will go out
+select reminder_id, reminder_type, scheduled_at, length(message_text) as chars, message_text
+from public.sms_reminder
+where delivery_status = 'PENDING'
+order by scheduled_at;
 ```
 
 ## Environment variables (`.env.local`, never committed)

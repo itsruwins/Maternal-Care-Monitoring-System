@@ -18,11 +18,13 @@ export type RegisterResult =
   | { ok: true }
   | {
       ok: false;
-      error: "usernameTaken" | "emailTaken" | "generic" | "invalid";
+      error: "usernameTaken" | "emailTaken" | "generic" | "invalid" | "tooMany";
       field?: "username" | "email";
+      /** With "tooMany": minutes to wait. */
+      minutes?: number;
     };
 
-export type ForgotPasswordState = { sent?: boolean; error?: "required" };
+export type ForgotPasswordState = { sent?: boolean; error?: "required" | "tooMany"; minutes?: number };
 
 export type NewPasswordState = {
   error?: "passwordShort" | "passwordLong" | "passwordMismatch" | "sameAsUsername" | "generic";

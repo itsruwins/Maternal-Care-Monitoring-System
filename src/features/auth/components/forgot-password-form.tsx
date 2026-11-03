@@ -2,13 +2,14 @@
 
 import { useActionState } from "react";
 import Link from "next/link";
-import { ArrowLeftIcon, EmailIcon, SpinnerIcon, UserIcon } from "@/components/icons";
+import { ArrowLeftIcon, DangerIcon, EmailIcon, SpinnerIcon, UserIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form-field";
 import { IconCircle } from "@/components/ui/icon-circle";
 import { Input } from "@/components/ui/input";
 import { InputIcon } from "@/components/ui/input-icon";
 import { useDictionary } from "@/i18n/dictionary-provider";
+import { format } from "@/i18n/format";
 import { MAX_LENGTH } from "@/lib/validation/account-rules";
 import { requestPasswordReset } from "../actions/password";
 import type { ForgotPasswordState } from "../types";
@@ -36,7 +37,7 @@ export function ForgotPasswordForm() {
 
   return (
     <form action={formAction} onSubmit={submitWithoutReset(formAction)} noValidate className="flex flex-col gap-5">
-      <FormField id="forgot-identifier" label={t.forgot.identifier} error={state.error ? t.forgot.required : null}>
+      <FormField id="forgot-identifier" label={t.forgot.identifier} error={state.error === "required" ? t.forgot.required : null}>
         {(describedBy) => (
           <InputIcon icon={UserIcon}>
             <Input
@@ -46,13 +47,19 @@ export function ForgotPasswordForm() {
               autoComplete="username"
               autoCapitalize="none"
               spellCheck={false}
-              aria-invalid={Boolean(state.error)}
+              aria-invalid={state.error === "required"}
               aria-describedby={describedBy}
               className="pl-11"
             />
           </InputIcon>
         )}
       </FormField>
+      {state.error === "tooMany" && (
+        <p role="alert" className="flex items-start gap-2.5 rounded-xl bg-blush px-4 py-3 text-sm leading-5 text-rose-deep">
+          <DangerIcon weight="fill" aria-hidden className="mt-px size-[1.125rem] shrink-0" />
+          {format(t.forgot.tooMany, { minutes: state.minutes ?? 60 })}
+        </p>
+      )}
       <Button type="submit" size="lg" disabled={pending} aria-busy={pending} className="w-full">
         {pending && <SpinnerIcon className="animate-spin" aria-hidden />}
         {pending ? t.forgot.submitting : t.forgot.submit}

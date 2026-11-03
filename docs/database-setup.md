@@ -26,6 +26,7 @@ Run these in **Supabase Dashboard → SQL Editor**, in order. Each file is safe 
 | 20 | `supabase/migrations/0020_sms_layout.sql` | Phase 7: every text in three parts ("Hi {name}!", the message, "From: Brgy. Taysan Health Center") with blank lines between; `sms_plain()` keeps line breaks; the Declined text ends "Thank you!"; texts still waiting get the new layout too |
 | 21 | `supabase/migrations/0021_sms_visit_changes.sql` | Phase 7: texts when staff (admins or health workers) move or cancel a visit: "New time proposed" when she must accept it in the app, new types Visit moved (no login, confirmed at once) and Visit cancelled; no cancel text when her pregnancy is closed or the visit time has passed. Changes no data |
 | 22 | `supabase/migrations/0022_guard_mother_login.sql` | Phase 9 security fix: a mother record's login can be set only while it has none, and only to a MOTHER login no other record uses; after that nobody logged in can change or remove it (the sign-up trigger and the server's secret key are not affected). Changes no data |
+| 23 | `supabase/migrations/0023_rate_limits.sql` | Phase 9: the server-only `rate_limit_hit` log for abuse limits per network address (login 20 failed tries in 15 minutes, sign-up 20 an hour, forgot password 10 an hour; only a keyed hash of the address is stored); the `clean-rate-limits` job deletes rows older than a day here and in `login_attempt`, every day at 3:00 AM Manila |
 | — | `supabase/seed/first-admin.sql` | First admin (follow the steps at the top of the file) |
 
 ## Rules
@@ -328,6 +329,63 @@ end $$;
 select * from guard_0022 order by n;
 ```
 
+Check 3 is skipped when every mother already has a login. Check 6 covers the same rule for new records (expected `login_link_invalid`; nothing is saved):
+
+```sql
+create temp table if not exists guard_0022b (check_name text, result text, expected text);
+truncate guard_0022b;
+
+do $$
+declare
+  staff_id uuid := (select user_id from public.user_account
+                    where role in ('ADMIN', 'HEALTH_WORKER') and account_status = 'ACTIVE'
+                    order by role = 'HEALTH_WORKER' desc limit 1);
+  admin_id uuid := (select user_id from public.user_account where role = 'ADMIN' limit 1);
+  model bigint := (select mother_id from public.mother limit 1);
+  r text;
+begin
+  perform set_config('request.jwt.claims', json_build_object('sub', staff_id, 'role', 'authenticated')::text, true);
+  execute 'set local role authenticated';
+  begin
+    insert into public.mother (user_id, first_name, last_name, date_of_birth, contact_number, purok_id,
+                               street_address, emergency_contact_name, emergency_contact_no, registration_date)
+    select admin_id, 'Guard', 'Check', date_of_birth, contact_number, purok_id,
+           street_address, emergency_contact_name, emergency_contact_no, current_date
+    from public.mother where mother_id = model;
+    r := 'ALLOWED';
+    raise exception 'undo';
+  exception when others then r := coalesce(r, sqlerrm);
+  end;
+  execute 'reset role';
+  insert into guard_0022b values ('staff add a record with the admin login', r, 'login_link_invalid');
+end $$;
+
+select * from guard_0022b;
+```
+
+## 0023 check query (after running it)
+
+```sql
+select 1 as n, 'attempt log has RLS on' as check_name,
+       (select relrowsecurity from pg_class where oid = 'public.rate_limit_hit'::regclass)::text as result,
+       'true' as expected
+union all
+select 2, 'app users can read the log',
+       (has_table_privilege('authenticated', 'public.rate_limit_hit', 'select')
+        or has_table_privilege('anon', 'public.rate_limit_hit', 'select'))::text, 'false'
+union all
+select 3, 'clean-up job schedule',
+       (select schedule || case when active then ' (active)' else ' (off)' end
+        from cron.job where jobname = 'clean-rate-limits'), '0 19 * * * (active)'
+union all
+select 4, 'app users can run the clean-up',
+       has_function_privilege('authenticated', 'public.clean_rate_limits()', 'execute')::text, 'false'
+union all
+select 5, 'login_attempt time index',
+       (select count(*) from pg_indexes where indexname = 'login_attempt_time_idx')::text, '1'
+order by n;
+```
+
 ## Environment variables (`.env.local`, never committed)
 
 | Name | Used for | Phase |
@@ -338,5 +396,6 @@ select * from guard_0022 order by n;
 | `HTTPSMS_API_KEY`, `HTTPSMS_FROM_NUMBER` | Sending texts through HTTPSMS (the from number as `+639…`) | 7 |
 | `CRON_SECRET` | The `send-sms` job's Bearer token (the same value is in Vault as `cron_secret`) | 7 |
 | `HTTPSMS_WEBHOOK_SIGNING_KEY` | Checks the token on HTTPSMS delivery updates (`/api/webhooks/httpsms`); also typed into HTTPSMS → Settings → Webhooks | 7 |
+| `RATE_LIMIT_SECRET` | Key for hashing network addresses in the abuse limits (`rate_limit_hit`); a long random string | 9 |
 
 On Vercel, add the same values under Project Settings → Environment Variables.

@@ -23,6 +23,7 @@ import { Input } from "@/components/ui/input";
 import { InputIcon } from "@/components/ui/input-icon";
 import { PurokSelect } from "@/components/shared/purok-select";
 import { useDictionary } from "@/i18n/dictionary-provider";
+import { format } from "@/i18n/format";
 import { addDays, dueDateFromLmp, isPlausibleLmp, parseISODate } from "@/lib/utils/pregnancy";
 import type { PurokOption } from "@/lib/puroks/types";
 import { useToday } from "@/lib/utils/use-today";
@@ -127,6 +128,8 @@ export function RegisterForm({ puroks }: { puroks: PurokOption[] }) {
           if (result.field) {
             goTo(0);
             setError(result.field, { message: result.error });
+          } else if (result.error === "tooMany") {
+            setSubmitError(format(t.register.errors.tooMany, { minutes: result.minutes ?? 60 }));
           } else {
             setSubmitError(t.register.errors[result.error === "invalid" ? "generic" : result.error]);
           }

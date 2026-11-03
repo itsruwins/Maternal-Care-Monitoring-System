@@ -309,7 +309,8 @@
       "gravidaInvalid": "Maglagay ng 1 o higit pa.",
       "paraInvalid": "Maglagay ng 0 o higit pa.",
       "paraTooHigh": "Hindi puwedeng mas marami ang panganganak kaysa sa pagbubuntis.",
-      "generic": "Hindi namin nagawa ang account mo. Pakisubukang muli."
+      "generic": "Hindi namin nagawa ang account mo. Pakisubukang muli.",
+      "tooMany": "Masyadong maraming sign-up mula sa network na ito. Maghintay ng {minutes} minuto at subukang muli."
     },
     "haveAccount": "May account ka na?",
     "login": "Mag-log in",
@@ -324,7 +325,8 @@
     "sentTitle": "Tingnan ang iyong email",
     "sent": "Kung may email ang account na ito, nagpadala kami ng link para mapalitan ang password. Walang email ang account mo? Magpa-reset sa health worker sa health center.",
     "back": "Bumalik sa log in",
-    "required": "Ilagay ang iyong username o email."
+    "required": "Ilagay ang iyong username o email.",
+    "tooMany": "Masyadong maraming request mula sa network na ito. Maghintay ng {minutes} minuto at subukang muli."
   },
   "reset": {
     "title": "Gumawa ng bagong password",

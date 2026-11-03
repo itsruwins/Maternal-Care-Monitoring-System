@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { MUST_CHANGE_PASSWORD_KEY } from "@/lib/auth/password-flag";
 import { isPlaceholderEmail } from "@/lib/auth/placeholder-email";
+import { rateLimitWait, recordRateLimitHit } from "@/lib/auth/rate-limit";
 import { clearResetLink, openedResetLink } from "@/lib/auth/reset-link";
 import { ROLE_HOME } from "@/lib/auth/roles";
 import { getCurrentUser } from "@/lib/auth/session";
@@ -22,6 +23,12 @@ export async function requestPasswordReset(
   const parsed = forgotPasswordSchema.safeParse({ identifier: String(formData.get("identifier") ?? "") });
   // Too long to be a username or email: answer as usual, without looking it up.
   if (!parsed.success) return parsed.error.issues[0].message === "required" ? { error: "required" } : { sent: true };
+
+  // At most 10 requests per network address per hour. The limit is per
+  // address, so saying so reveals nothing about any account.
+  const wait = await rateLimitWait("reset");
+  if (wait > 0) return { error: "tooMany", minutes: wait };
+  await recordRateLimitHit("reset");
 
   const identifier = parsed.data.identifier.toLowerCase();
   const email = identifier.includes("@") ? identifier : await emailForUsername(identifier);

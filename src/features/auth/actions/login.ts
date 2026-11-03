@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { z } from "@/lib/validation/zod";
 import { CHANGE_PASSWORD_PATH, mustChangePassword } from "@/lib/auth/password-flag";
+import { rateLimitWait, recordRateLimitHit } from "@/lib/auth/rate-limit";
 import { ROLE_HOME } from "@/lib/auth/roles";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
@@ -37,9 +38,14 @@ export async function login(_previous: LoginState, formData: FormData): Promise<
   }
 
   const { username, password } = parsed.data;
+
+  // 1. Too many failed tries from this network address? (20 in 15 minutes)
+  const addressWait = await rateLimitWait("login");
+  if (addressWait > 0) return { error: "locked", lockMinutes: addressWait, username: typedUsername };
+
   const admin = createAdminClient();
 
-  // 1. Locked? (5 failures in the last 15 minutes)
+  // 2. Username locked? (5 failures in the last 15 minutes)
   const since = new Date(Date.now() - LOCK_MINUTES * 60_000).toISOString();
   const { count, error: countError } = await admin
     .from("login_attempt")
@@ -52,7 +58,7 @@ export async function login(_previous: LoginState, formData: FormData): Promise<
     return { error: "locked", lockMinutes: LOCK_MINUTES, username: typedUsername };
   }
 
-  // 2. Find the account and its login email.
+  // 3. Find the account and its login email.
   const { data: account, error: accountError } = await admin
     .from("user_account")
     .select("user_id, role, account_status")
@@ -70,7 +76,7 @@ export async function login(_previous: LoginState, formData: FormData): Promise<
     return { error: "invalid", username: typedUsername };
   }
 
-  // 3. Check the password (this also sets the session cookie).
+  // 4. Check the password (this also sets the session cookie).
   const supabase = await createClient();
   const { data: signIn, error: signInError } = await supabase.auth.signInWithPassword({ email, password });
 
@@ -82,13 +88,13 @@ export async function login(_previous: LoginState, formData: FormData): Promise<
     return { error: "generic", username: typedUsername };
   }
 
-  // 4. Deactivated accounts can't stay logged in.
+  // 5. Deactivated accounts can't stay logged in.
   if (account.account_status !== "ACTIVE") {
     await supabase.auth.signOut();
     return { error: "inactive", username: typedUsername };
   }
 
-  // 5. Success: clear failures, record the login time.
+  // 6. Success: clear failures, record the login time.
   await Promise.all([
     admin.from("login_attempt").delete().eq("username", username),
     admin
@@ -107,10 +113,12 @@ export async function logout(): Promise<void> {
   redirect("/");
 }
 
+// A failed try counts for the username and for the network address.
 async function recordFailure(admin: AdminClient, username: string): Promise<void> {
   const dayAgo = new Date(Date.now() - 24 * 60 * 60_000).toISOString();
   await Promise.all([
     admin.from("login_attempt").insert({ username }),
+    recordRateLimitHit("login"),
     // Housekeeping: drop this username's failures older than a day.
     admin.from("login_attempt").delete().eq("username", username).lt("attempted_at", dayAgo),
   ]);

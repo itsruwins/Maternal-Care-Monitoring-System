@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { ROLE_HOME } from "@/lib/auth/roles";
 import { placeholderEmail } from "@/lib/auth/placeholder-email";
+import { rateLimitWait, recordRateLimitHit } from "@/lib/auth/rate-limit";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { registerSchema, type RegisterInput } from "../schemas";
@@ -18,6 +19,11 @@ export async function registerMother(input: RegisterInput): Promise<RegisterResu
   if (!parsed.success) return { ok: false, error: "invalid" };
   const data = parsed.data;
   const email = data.email || placeholderEmail(data.username);
+
+  // At most 20 sign-ups per network address per hour (each try counts).
+  const wait = await rateLimitWait("signup");
+  if (wait > 0) return { ok: false, error: "tooMany", minutes: wait };
+  await recordRateLimitHit("signup");
 
   const { error } = await createAdminClient().auth.admin.createUser({
     email,

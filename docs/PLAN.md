@@ -2,7 +2,7 @@
 
 Barangay Taysan, Legazpi City · Next.js 16 + Supabase · Hosted on Vercel
 
-Status: **Phases 0–8 done (Phase 8 signed off 2026-11-03). Phase 9 — Hardening & launch: plan approved 2026-11-03; next: step 1 (security review).** Each phase ends with a demo and your sign-off before the next starts.
+Status: **Phases 0–8 done (Phase 8 signed off 2026-11-03). Phase 9 — Hardening & launch: plan approved 2026-11-03; step 1 (security review and fixes) done; next: step 2 (abuse limits).** Each phase ends with a demo and your sign-off before the next starts.
 
 ---
 
@@ -1031,6 +1031,18 @@ Sample request answers (one SMS each with this service name; a longer name may m
 9. **Review:** screenshots of the changed screens (EN/FIL, desktop/phone), contrast, heading and label checks, the independent design review with a second pass, `DESIGN.md` by the documenter, and the screenshots deleted. Then your testing and sign-off.
 
 **Needs from you:** run `0022` (and any RLS fix); run the RLS script; set up Gmail SMTP; take the backup and do the restore test; do the screen-reader check and the real-phone testing.
+
+**Step 1 built (2026-11-03):** security review of every server action, route handler, query, the proxy and the RLS in the migrations; all 7 fixes approved by you.
+- **Health worker → admin takeover closed:** "Reset password" on a mother's record only resets a MOTHER login. Migration `0022_guard_mother_login.sql` (run by you) lets a record's login be set only while it has none, to an unused MOTHER login, and never changed after. Step 2's rate limits therefore use `0023`.
+- **Open redirect fixed:** `/auth/callback` only continues to paths on this site (`lib/auth/safe-next.ts`).
+- **Sign-up through the server only:** the login is created with the secret key, and Supabase's public sign-up is turned off (by you, after the push).
+- **Security headers:** CSP without nonces (self + Supabase), no framing, nosniff, Referrer-Policy, Permissions-Policy, no `X-Powered-By`. Zod runs in `jitless` mode (`lib/validation/zod.ts`) because the production CSP has no `eval`.
+- **Length limits** on names, address, emergency contact, position, email (254) and passwords (72), on the server and the inputs; EN/FIL messages.
+- **ID checks:** shared `isId` / `isUuid` / `textArg` (`lib/validation/ids.ts`) in every action that takes an ID.
+- **Reset form:** `/reset-password` works only within 15 minutes of opening a reset link (httpOnly cookie, `lib/auth/reset-link.ts`).
+- **Checked:** 35 pages in dev and 7 in production with no CSP violations; redirect tricks stay on the site; build, types and lint pass.
+- **Checks passed (2026-11-03):** re-linking, removing and adding a record with another login are blocked, and ordinary edits still work (0022). Supabase's public sign-up answers 422 `signup_disabled`, and sign-up through the app still works. "Reset password" on a mother's record still works (tested by you). Your test sign-up account is kept.
+- **Accepted:** an unknown username answers a little faster; the username check stays public. Supabase's minimum password length is checked in step 7.
 
 ---
 

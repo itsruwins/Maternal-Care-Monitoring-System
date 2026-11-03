@@ -270,6 +270,14 @@ export type LoginAttemptRow = {
   attempted_at: string;
 };
 
+/** A counted login, sign-up or reset try per hashed network address (0023). */
+export type RateLimitHitRow = {
+  rate_limit_hit_id: number;
+  action: "login" | "signup" | "reset";
+  key_hash: string;
+  hit_at: string;
+};
+
 /** One service given at a visit, as record_visit / update_visit take it. */
 export type VisitServiceInput = { activity_type_id: number; dose_or_details: string; result_notes: string | null };
 
@@ -323,6 +331,7 @@ export type Database = {
         ]
       >;
       login_attempt: TableDef<LoginAttemptRow, "login_attempt_id" | "attempted_at">;
+      rate_limit_hit: TableDef<RateLimitHitRow, "rate_limit_hit_id" | "hit_at">;
       purok: TableDef<PurokRow, "purok_id" | "sort_order" | "is_active" | "created_at">;
       closed_day: TableDef<ClosedDayRow, "created_at">;
       sms_setting: TableDef<SmsSettingRow, "setting_id">;

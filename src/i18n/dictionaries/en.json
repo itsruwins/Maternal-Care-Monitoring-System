@@ -309,7 +309,8 @@
       "gravidaInvalid": "Enter 1 or more.",
       "paraInvalid": "Enter 0 or more.",
       "paraTooHigh": "Past births can't be more than your number of pregnancies.",
-      "generic": "We couldn't create your account. Please try again."
+      "generic": "We couldn't create your account. Please try again.",
+      "tooMany": "Too many sign-ups from this network. Please wait {minutes} minutes and try again."
     },
     "haveAccount": "Already have an account?",
     "login": "Log in",
@@ -324,7 +325,8 @@
     "sentTitle": "Check your email",
     "sent": "If this account has an email on file, we sent a link to reset your password. No email on your account? Ask a health worker at the health center to reset it.",
     "back": "Back to log in",
-    "required": "Enter your username or email."
+    "required": "Enter your username or email.",
+    "tooMany": "Too many requests from this network. Please wait {minutes} minutes and try again."
   },
   "reset": {
     "title": "Set a new password",

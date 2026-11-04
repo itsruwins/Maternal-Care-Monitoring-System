@@ -42,6 +42,7 @@ async function Preview({ searchParams }: { searchParams: Promise<Record<string, 
               { name: "Prenatal Checkup", icon: "checkup", details: "Routine check", resultNotes: null },
               { name: "Tetanus Toxoid Vaccination", icon: "vaccine", details: "TT2", resultNotes: "Left arm" },
             ],
+            previous: { at: "2026-10-02T01:10:00Z", bpSystolic: 108, bpDiastolic: 68, weightKg: 57.4 },
           }}
         />
       ) : (

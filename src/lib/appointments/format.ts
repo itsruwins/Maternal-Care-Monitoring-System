@@ -14,6 +14,11 @@ export function formatSlotDate(iso: string, locale: string, style: "long" | "sho
   }).format(new Date(iso));
 }
 
+/** "Nov 4" (month and day only). */
+export function formatMonthDay(iso: string, locale: string): string {
+  return new Intl.DateTimeFormat(tag(locale), { timeZone: "Asia/Manila", month: "short", day: "numeric" }).format(new Date(iso));
+}
+
 /** "9:00 AM". */
 export function formatSlotClock(iso: string, locale: string): string {
   return keepTimeTogether(new Intl.DateTimeFormat(tag(locale), { timeZone: "Asia/Manila", hour: "numeric", minute: "2-digit" }).format(new Date(iso)));

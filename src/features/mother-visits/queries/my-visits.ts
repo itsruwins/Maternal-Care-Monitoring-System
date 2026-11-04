@@ -63,12 +63,21 @@ export async function getMyVisit(user: CurrentUser, visitId: number): Promise<My
   const { data } = await supabase
     .from("prenatal_visit")
     .select(
-      "visit_id, visit_datetime, aog_weeks, bp_systolic, bp_diastolic, weight_kg, temperature_c, pulse_rate, fundal_height_cm, fetal_heart_rate, visit_service(dose_or_details, result_notes, activity_type:activity_type_id(name, icon))",
+      "visit_id, pregnancy_id, visit_datetime, aog_weeks, bp_systolic, bp_diastolic, weight_kg, temperature_c, pulse_rate, fundal_height_cm, fetal_heart_rate, visit_service(dose_or_details, result_notes, activity_type:activity_type_id(name, icon))",
     )
     .eq("visit_id", visitId)
     .in("pregnancy_id", ids)
     .maybeSingle();
   if (!data) return null;
+  // Her visit before this one in the same pregnancy, to say what changed.
+  const { data: before } = await supabase
+    .from("prenatal_visit")
+    .select("visit_datetime, bp_systolic, bp_diastolic, weight_kg")
+    .eq("pregnancy_id", data.pregnancy_id)
+    .lt("visit_datetime", data.visit_datetime)
+    .order("visit_datetime", { ascending: false })
+    .limit(1)
+    .maybeSingle();
   return {
     id: data.visit_id,
     at: data.visit_datetime,
@@ -88,5 +97,8 @@ export async function getMyVisit(user: CurrentUser, visitId: number): Promise<My
       details: s.dose_or_details,
       resultNotes: s.result_notes,
     })),
+    previous: before
+      ? { at: before.visit_datetime, bpSystolic: before.bp_systolic, bpDiastolic: before.bp_diastolic, weightKg: Number(before.weight_kg) }
+      : null,
   };
 }

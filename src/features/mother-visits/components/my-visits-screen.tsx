@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { AppointmentIcon, CaretLeftIcon, CaretRightIcon, CheckupIcon, InfoIcon, PlusIcon } from "@/components/icons";
+import { AppointmentIcon, CaretLeftIcon, CaretRightIcon, InfoIcon, PlusIcon, PregnancyIcon, WellbeingIcon, type Icon } from "@/components/icons";
 import { ServiceArt } from "@/components/shared/service-art";
 import { Button } from "@/components/ui/button";
 import { IconCircle } from "@/components/ui/icon-circle";
@@ -8,13 +8,14 @@ import type { Locale } from "@/i18n/config";
 import { format } from "@/i18n/format";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import { getServerI18n } from "@/i18n/server";
-import { formatSlot, formatSlotDate } from "@/lib/appointments/format";
+import { formatMonthDay, formatSlot, formatSlotDate } from "@/lib/appointments/format";
 import { AREA_ROLES } from "@/lib/auth/roles";
 import { requireRole } from "@/lib/auth/session";
+import { cn } from "@/lib/utils/cn";
 import { VisitDateTile } from "@/features/mother-appointments/components/visit-status";
 import { getMyVisit, getMyVisits } from "../queries/my-visits";
 import type { MyVisitDetail, MyVisitRow, MyVisits } from "../types";
-import { NumbersSummary } from "./numbers-summary";
+import { NumbersSummary, weightChange } from "./numbers-summary";
 
 // /mother/visits: her next visit, her latest weight and blood pressure for
 // this pregnancy (with what changed), and her visits. Reads the session: render inside <Suspense>.
@@ -155,14 +156,9 @@ export function MyVisitDetailView({ t, locale, visit }: { t: Dictionary; locale:
   const m = t.myVisits;
   const d = m.detail;
   const v = visit.vitals;
-  const tiles: [string, string | null, string][] = [
-    [m.bp, `${v.bpSystolic}/${v.bpDiastolic}`, "mmHg"],
-    [m.weight, String(v.weightKg), "kg"],
-    [d.temperature, String(v.temperatureC), "°C"],
-    [d.pulse, String(v.pulseRate), "/ min"],
-    [d.fundal, v.fundalHeightCm === null ? null : String(v.fundalHeightCm), "cm"],
-    [d.fhr, v.fetalHeartRate === null ? null : String(v.fetalHeartRate), "/ min"],
-  ];
+  const notes = visit.services.filter((service) => service.resultNotes);
+  const prev = visit.previous;
+  const prevDate = prev ? formatMonthDay(prev.at, locale) : "";
   return (
     <div className="flex flex-col gap-6">
       <Link
@@ -172,56 +168,150 @@ export function MyVisitDetailView({ t, locale, visit }: { t: Dictionary; locale:
         <CaretLeftIcon weight="bold" aria-hidden className="size-4" />
         {d.back}
       </Link>
-      <div className="flex items-center gap-4">
-        <IconCircle icon={CheckupIcon} tone="blush" size="lg" />
-        <div>
-          <h1 className="text-title font-extrabold">{format(d.title, { date: formatSlotDate(visit.at, locale) })}</h1>
-          <p className="mt-1 text-ink-soft">{format(d.week, { weeks: visit.weeks })}</p>
+
+      {/* Date tile and title on the left; what she received on the right from 1024px (under the title below). */}
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
+        <div className="flex min-w-0 items-center gap-4">
+          {/* The date is in the title. */}
+          <div aria-hidden>
+            <VisitDateTile iso={visit.at} locale={locale} status="COMPLETED" />
+          </div>
+          <div className="min-w-0">
+            <h1 className="text-title font-extrabold">{format(d.title, { date: formatSlotDate(visit.at, locale) })}</h1>
+            <p className="mt-1 text-ink-soft">{format(d.week, { weeks: visit.weeks })}</p>
+          </div>
         </div>
+
+        {visit.services.length > 0 && (
+          <section aria-labelledby="my-services" className="lg:max-w-md lg:shrink-0">
+            <h2 id="my-services" className="sr-only">
+              {d.services}
+            </h2>
+            <ul className="flex flex-wrap gap-2 lg:justify-end">
+              {visit.services.map((service, i) => (
+                <li key={i} className="inline-flex max-w-full items-center gap-2 rounded-full bg-white py-1.5 pr-4 pl-1.5 shadow-[var(--shadow-soft)]">
+                  <ServiceArt icon={service.icon} size="sm" className="size-9" />
+                  <span className="min-w-0 font-semibold break-words">
+                    {service.name}
+                    {service.details && <span className="font-normal text-ink-soft"> · {service.details}</span>}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            {notes.length > 0 && (
+              <ul className="mt-2 flex flex-col gap-0.5 text-sm text-ink-soft lg:text-right">
+                {notes.map((service, i) => (
+                  <li key={i} className="break-words">
+                    <span className="font-medium text-ink">{service.name}:</span> {service.resultNotes}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        )}
       </div>
-      <section aria-labelledby="my-vitals" className="rounded-3xl bg-white p-5 shadow-[var(--shadow-soft)] sm:p-7">
-        <h2 id="my-vitals" className="mb-4 text-lg font-bold">
-          {d.vitals}
+
+      {/* Her measurements in two panels: hers (mint) and her baby's (blush), top-aligned, each as tall as its tiles. */}
+      <div className="grid items-start gap-4 md:grid-cols-2">
+        <VitalPanel
+          id="my-vitals-you"
+          icon={WellbeingIcon}
+          tone="you"
+          title={d.you}
+          notRecorded={d.notRecorded}
+          rows={[
+            {
+              label: m.bp,
+              explain: d.explain.bp,
+              value: `${v.bpSystolic}/${v.bpDiastolic}`,
+              unit: "mmHg",
+              change: prev ? [null, format(m.bpBefore, { date: prevDate, bp: `${prev.bpSystolic}/${prev.bpDiastolic}` })] : null,
+            },
+            {
+              label: m.weight,
+              explain: d.explain.weight,
+              value: String(v.weightKg),
+              unit: "kg",
+              change: prev ? weightChange(t, v.weightKg, prev.weightKg, prevDate) : null,
+            },
+            { label: d.temperature, explain: d.explain.temperature, value: String(v.temperatureC), unit: "°C" },
+            { label: d.pulse, explain: d.explain.pulse, value: String(v.pulseRate), unit: "/ min" },
+          ]}
+        />
+        <VitalPanel
+          id="my-vitals-baby"
+          icon={PregnancyIcon}
+          tone="baby"
+          title={d.baby}
+          notRecorded={d.notRecorded}
+          rows={[
+            { label: d.fundal, explain: d.explain.fundal, value: v.fundalHeightCm === null ? null : String(v.fundalHeightCm), unit: "cm" },
+            { label: d.fhr, explain: d.explain.fhr, value: v.fetalHeartRate === null ? null : String(v.fetalHeartRate), unit: "/ min" },
+          ]}
+        />
+      </div>
+    </div>
+  );
+}
+
+type VitalRow = { label: string; explain: string; value: string | null; unit: string; change?: [Icon | null, string] | null };
+
+// One panel of measurements ("You" in mint, "Your baby" in blush): an icon
+// circle and title, then a white tile per measurement with what it is in one
+// plain line, the value on the right and, for weight and blood pressure, what
+// changed since her visit before (neutral words, no good or bad colours).
+function VitalPanel({
+  id,
+  icon: PanelIcon,
+  tone,
+  title,
+  notRecorded,
+  rows,
+}: {
+  id: string;
+  icon: Icon;
+  tone: "you" | "baby";
+  title: string;
+  notRecorded: string;
+  rows: VitalRow[];
+}) {
+  return (
+    <section aria-labelledby={id} className={cn("rounded-3xl p-5 sm:p-7", tone === "you" ? "bg-mint" : "bg-blush")}>
+      <div className="flex items-center gap-3">
+        <IconCircle icon={PanelIcon} tone="white" className={tone === "baby" ? "text-rose-deep" : undefined} />
+        <h2 id={id} className="text-lg font-bold">
+          {title}
         </h2>
-        <dl className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-          {tiles.map(([label, value, unit]) => (
-            <div key={label} className="rounded-md bg-milk px-4 py-3">
-              <dt className="text-sm text-ink-soft">{label}</dt>
-              <dd className={value === null ? "mt-0.5 text-ink-soft" : "tnum mt-0.5 text-lg font-bold"}>
-                {value === null ? (
-                  d.notRecorded
+      </div>
+      <dl className="mt-5 flex flex-col gap-3">
+        {rows.map((row) => {
+          const ChangeIcon = row.change?.[0];
+          return (
+            <div key={row.label} className="flex items-start justify-between gap-4 rounded-md bg-white p-4">
+              <dt className="min-w-0">
+                <span className="block font-semibold break-words">{row.label}</span>
+                <span className="mt-0.5 block text-sm text-ink-soft">{row.explain}</span>
+                {row.change && (
+                  <span className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-milk px-2.5 py-1 text-sm font-semibold text-ink">
+                    {ChangeIcon && <ChangeIcon weight="bold" aria-hidden className="size-3.5 shrink-0 text-leaf" />}
+                    {row.change[1]}
+                  </span>
+                )}
+              </dt>
+              <dd className={row.value === null ? "shrink-0 text-sm text-ink-soft" : "tnum shrink-0 text-right text-xl leading-7 font-extrabold whitespace-nowrap"}>
+                {row.value === null ? (
+                  notRecorded
                 ) : (
                   <>
-                    {value}
-                    <span className="ml-1 text-sm font-medium text-ink-soft">{unit}</span>
+                    {row.value}
+                    <span className="ml-1 text-sm font-medium text-ink-soft">{row.unit}</span>
                   </>
                 )}
               </dd>
             </div>
-          ))}
-        </dl>
-      </section>
-      <section aria-labelledby="my-services" className="rounded-3xl bg-white p-5 shadow-[var(--shadow-soft)] sm:p-7">
-        <h2 id="my-services" className="mb-4 text-lg font-bold">
-          {d.services}
-        </h2>
-        {visit.services.length === 0 ? (
-          <p className="text-ink-soft">{d.noServices}</p>
-        ) : (
-          <ul className="flex flex-col gap-3">
-            {visit.services.map((service, i) => (
-              <li key={i} className="flex items-start gap-3">
-                <ServiceArt icon={service.icon} size="sm" className="size-10" />
-                <div className="min-w-0">
-                  <p className="font-semibold break-words">{service.name}</p>
-                  {service.details && <p className="break-words">{service.details}</p>}
-                  {service.resultNotes && <p className="text-sm break-words text-ink-soft">{service.resultNotes}</p>}
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
-    </div>
+          );
+        })}
+      </dl>
+    </section>
   );
 }

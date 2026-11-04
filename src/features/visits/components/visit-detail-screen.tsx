@@ -147,9 +147,9 @@ export function VisitDetailView({ t, locale, visit }: { t: Dictionary; locale: L
           </h2>
           <dl className="grid grid-cols-2 gap-3">
             {vitals.map(([label, value]) => (
-              <div key={label} className="rounded-md bg-milk px-4 py-3">
+              <div key={label} className="flex flex-col justify-between gap-1 rounded-md bg-milk p-4">
                 <dt className="text-sm text-ink-soft">{label}</dt>
-                <dd className={value === null ? "mt-0.5 text-ink-soft" : "tnum mt-0.5 text-lg font-bold"}>{value ?? d.notRecorded}</dd>
+                <dd className={value === null ? "text-ink-soft" : "tnum text-lg font-bold"}>{value ?? d.notRecorded}</dd>
               </div>
             ))}
           </dl>

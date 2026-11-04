@@ -32,4 +32,6 @@ export type MyVisitDetail = {
     fetalHeartRate: number | null;
   };
   services: { name: string; icon: ServiceIconKey; details: string; resultNotes: string | null }[];
+  /** Her visit before this one in the same pregnancy (null for the first). */
+  previous: { at: string; bpSystolic: number; bpDiastolic: number; weightKg: number } | null;
 };

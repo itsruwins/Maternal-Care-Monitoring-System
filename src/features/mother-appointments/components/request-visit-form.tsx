@@ -133,9 +133,10 @@ export function RequestVisitForm({ data }: { data: BookingData }) {
         />
       </div>
 
-      {/* Summary bar above the bottom navigation */}
+      {/* Summary bar above the bottom navigation (right-scroll-bar-position:
+          it stays put when a dialog or menu hides the page scrollbar) */}
       {ready && (
-        <div className="fixed inset-x-0 bottom-[calc(5.5rem+env(safe-area-inset-bottom))] z-20 px-4">
+        <div className="right-scroll-bar-position fixed inset-x-0 bottom-[calc(5.5rem+env(safe-area-inset-bottom))] z-20 px-4">
           <div className="mx-auto flex max-w-xl flex-col gap-3 rounded-3xl border border-line bg-white p-4 shadow-[var(--shadow-float)]">
             <div className="flex items-center gap-3">
               <ServiceArt icon={service.icon} size="sm" className="size-12" />

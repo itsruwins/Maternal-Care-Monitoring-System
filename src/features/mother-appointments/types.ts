@@ -5,6 +5,8 @@ import type { AppointmentStatus, SmsDeliveryStatus } from "@/types/database";
 export type MyAppointment = {
   id: number;
   service: string;
+  /** The service's picture key (its illustration on the Next visit card). */
+  icon: ServiceIconKey;
   status: AppointmentStatus;
   /** Her preferred time (what she asked for). */
   requestedAt: string;

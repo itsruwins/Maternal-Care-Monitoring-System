@@ -33,7 +33,7 @@ export function MissedVisitNotice({
   const day = (visit: MissedVisit) => formatSlotDate(visit.at, locale, "short");
 
   return (
-    <section aria-labelledby="missed-visits" className={cn("flex flex-col gap-3 rounded-3xl bg-blush/70 p-5 sm:p-7", className)}>
+    <section aria-labelledby="missed-visits" className={cn("flex flex-col gap-3 rounded-3xl bg-blush/70 p-6", className)}>
       <div className="flex items-start gap-3">
         <IconCircle icon={HeartIcon} tone="white" size="sm" className="text-rose-deep" />
         <h2 id="missed-visits" className="mt-1 min-w-0 text-lg font-bold text-pretty break-words">

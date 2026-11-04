@@ -3,10 +3,12 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { CheckIcon, SpinnerIcon } from "@/components/icons";
+import { CheckIcon, CloseIcon, MoreIcon, SpinnerIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useDictionary } from "@/i18n/dictionary-provider";
+import { cn } from "@/lib/utils/cn";
 import { cancelMyAppointment, respondToNewTime } from "../actions/my-appointments";
 import type { ActionResult } from "../types";
 
@@ -30,24 +32,47 @@ function useRun() {
   return { pending, run };
 }
 
-/** "Cancel visit" / "Cancel request" behind a confirmation. */
-export function CancelVisitButton({ appointmentId, isRequest }: { appointmentId: number; isRequest: boolean }) {
+/**
+ * The ⋯ button on a visit: a menu with "Cancel visit" (or "Cancel request"),
+ * behind a confirmation. onDark: drawn for the green Next visit card.
+ */
+export function VisitMenu({ appointmentId, isRequest, onDark = false, className }: { appointmentId: number; isRequest: boolean; onDark?: boolean; className?: string }) {
   const { t } = useDictionary();
   const a = t.myAppointments;
   const [open, setOpen] = useState(false);
   const { pending, run } = useRun();
+  const label = isRequest ? a.cancelRequest : a.cancel;
   return (
     <>
-      <Button type="button" variant="ghost" size="sm" onClick={() => setOpen(true)} className="text-rose-deep">
-        {isRequest ? a.cancelRequest : a.cancel}
-      </Button>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            type="button"
+            variant={onDark ? "outline" : "ghost"}
+            size="icon"
+            aria-label={a.moreActions}
+            className={cn(
+              onDark ? "border-white/45 text-white hover:border-white/80 hover:bg-white/10 aria-expanded:bg-white/10" : "text-ink-soft hover:bg-cream aria-expanded:bg-cream",
+              className,
+            )}
+          >
+            <MoreIcon weight="bold" aria-hidden />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem onSelect={() => setOpen(true)} className="text-rose-deep [&_svg]:text-rose-deep">
+            <CloseIcon weight="bold" aria-hidden />
+            {label}
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
       <ConfirmDialog
         open={open}
         onOpenChange={(next) => !pending && setOpen(next)}
         title={a.cancelTitle}
         body={a.cancelBody}
         keepLabel={a.keep}
-        confirmLabel={isRequest ? a.cancelRequest : a.cancel}
+        confirmLabel={label}
         pending={pending}
         destructive
         onConfirm={() => run(() => cancelMyAppointment(appointmentId), a.cancelled, () => setOpen(false))}

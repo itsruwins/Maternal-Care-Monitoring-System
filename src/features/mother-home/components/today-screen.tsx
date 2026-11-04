@@ -67,7 +67,7 @@ export function TodayView({ t, locale, data, missed, today }: { t: Dictionary; l
         // center, then past pregnancies. On phones: one column, same order.
         <>
           {missed.length > 0 && (
-            <MissedVisitNotice t={t} locale={locale} missed={missed} className="p-6 sm:p-7">
+            <MissedVisitNotice t={t} locale={locale} missed={missed}>
               <Button asChild className="w-full sm:w-auto sm:self-start">
                 <Link href="/mother/appointments/new">
                   <PlusIcon weight="bold" aria-hidden />

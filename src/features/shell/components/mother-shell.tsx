@@ -38,10 +38,13 @@ export function MotherShell({ user, children, previewPath }: { user: ShellUser; 
 
       {/* Floating bottom navigation (all screen sizes): a snug white pill.
           Tabs are icons; the selected one grows into a mint pill with its name.
-          The name slides open by animating its grid column from 0fr to 1fr. */}
+          The name slides open by animating its grid column from 0fr to 1fr.
+          When a menu or dialog hides the page scrollbar, the page makes up for
+          it (--removed-body-scroll-bar-size), so the nav shifts by half of it
+          to stay centred over the page instead of jumping. */}
       <nav
         aria-label={t.shell.mainNav}
-        className="fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] left-1/2 z-30 w-max max-w-[calc(100vw-2rem)] -translate-x-1/2 rounded-full border border-line bg-white/95 p-1.5 shadow-[var(--shadow-float)] backdrop-blur"
+        className="fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] left-[calc(50%-var(--removed-body-scroll-bar-size,0px)/2)] z-30 w-max max-w-[calc(100vw-2rem)] -translate-x-1/2 rounded-full border border-line bg-white/95 p-1.5 shadow-[var(--shadow-float)] backdrop-blur"
       >
         <ul className="flex items-center gap-1">
           {MOTHER_NAV.map((item) => {

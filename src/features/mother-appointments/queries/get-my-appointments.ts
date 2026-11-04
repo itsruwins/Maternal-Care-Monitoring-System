@@ -1,12 +1,15 @@
 import "server-only";
+import { toServiceIcon } from "@/lib/appointments/service-icons";
+import { manilaSlot } from "@/lib/appointments/slots";
 import type { CurrentUser } from "@/lib/auth/session";
 import { createClient } from "@/lib/supabase/server";
+import { manilaTodayISO } from "@/lib/utils/manila-date";
 import type { MyAppointment, MyAppointments, MyReminder } from "../types";
 
 const OPEN = new Set(["REQUESTED", "CONFIRMED", "RESCHEDULED"]);
 
 // The mother's appointments (RLS: only her own), split into upcoming (open and
-// not yet passed, plus requests still waiting for an answer even after their
+// on today or later, plus requests still waiting for an answer even after their
 // time; proposals first, then by time) and past (newest first). Confirmed
 // visits carry their latest reminder text (RLS: she can read her own).
 export async function getMyAppointments(user: CurrentUser): Promise<MyAppointments> {
@@ -21,7 +24,7 @@ export async function getMyAppointments(user: CurrentUser): Promise<MyAppointmen
 
   const { data: rows } = await supabase
     .from("appointment")
-    .select("appointment_id, status, requested_datetime, scheduled_datetime, remarks, activity_type:activity_type_id(name)")
+    .select("appointment_id, status, requested_datetime, scheduled_datetime, remarks, activity_type:activity_type_id(name, icon)")
     .in("pregnancy_id", ids);
 
   const confirmed = (rows ?? []).filter((row) => row.status === "CONFIRMED").map((row) => row.appointment_id);
@@ -45,10 +48,11 @@ export async function getMyAppointments(user: CurrentUser): Promise<MyAppointmen
     });
   }
 
-  const now = Date.now();
+  const today = manilaTodayISO();
   const items: MyAppointment[] = (rows ?? []).map((row) => ({
     id: row.appointment_id,
     service: row.activity_type?.name ?? "",
+    icon: toServiceIcon(row.activity_type?.icon),
     status: row.status,
     requestedAt: row.requested_datetime,
     scheduledAt: row.scheduled_datetime,
@@ -56,7 +60,10 @@ export async function getMyAppointments(user: CurrentUser): Promise<MyAppointmen
     reminder: row.status === "CONFIRMED" ? (latest.get(row.appointment_id) ?? null) : null,
   }));
   const at = (item: MyAppointment) => new Date(item.scheduledAt ?? item.requestedAt).getTime();
-  const isUpcoming = (item: MyAppointment) => item.status === "REQUESTED" || (OPEN.has(item.status) && at(item) > now);
+  // Open visits stay under Upcoming until the end of their day (Manila), so a
+  // confirmed visit from this morning never sits in Past looking unfinished.
+  const isUpcoming = (item: MyAppointment) =>
+    item.status === "REQUESTED" || (OPEN.has(item.status) && manilaSlot(item.scheduledAt ?? item.requestedAt).date >= today);
 
   return {
     pregnancyId: active,

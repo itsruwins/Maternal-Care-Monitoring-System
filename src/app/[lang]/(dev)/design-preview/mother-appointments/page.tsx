@@ -27,7 +27,8 @@ const REMINDERS: Record<string, MyReminder> = {
 // ?missed=1 or 2 adds the missed-visit notice; ?passed=1 adds a request whose
 // time has passed; ?reminder=sent, failed (on our side) or number (her number
 // can't be used) changes the confirmed visit's text reminder line (waiting by
-// default; none hides it).
+// default; none hides it); ?confirmed=none drops the confirmed visit (the
+// Next visit card then shows her soonest request).
 export default function MotherAppointmentsPreview({ searchParams }: PageProps<"/[lang]/design-preview/mother-appointments">) {
   if (process.env.NODE_ENV === "production") notFound();
   return (
@@ -43,10 +44,10 @@ async function Preview({ searchParams }: { searchParams: Promise<Record<string, 
   const missed = MISSED.slice(0, Number(query.missed) || 0);
   const reminder = REMINDERS[String(query.reminder ?? "waiting")] ?? null;
   const passed: MyAppointment[] = query.passed
-    ? [{ id: 8, service: "Prenatal Checkup", status: "REQUESTED", requestedAt: "2026-10-26T01:00:00Z", scheduledAt: null, remarks: null, reminder: null }]
+    ? [{ id: 8, service: "Prenatal Checkup", icon: "checkup" as const, status: "REQUESTED", requestedAt: "2026-10-26T01:00:00Z", scheduledAt: null, remarks: null, reminder: null }]
     : [];
   const missedRows: MyAppointment[] = missed
-    .map((visit) => ({ id: visit.id, service: visit.service, status: "MISSED" as const, requestedAt: visit.at, scheduledAt: visit.at, remarks: null, reminder: null }))
+    .map((visit) => ({ id: visit.id, service: visit.service, icon: "checkup" as const, status: "MISSED" as const, requestedAt: visit.at, scheduledAt: visit.at, remarks: null, reminder: null }))
     .reverse();
 
   return (
@@ -60,15 +61,15 @@ async function Preview({ searchParams }: { searchParams: Promise<Record<string, 
         data={{
           pregnancyId: 1,
           upcoming: [
-            { id: 3, service: "Tetanus Toxoid Vaccination", status: "RESCHEDULED", requestedAt: "2026-11-03T01:00:00Z", scheduledAt: "2026-11-04T05:30:00Z", remarks: "Morning slots are full that week.", reminder: null },
+            { id: 3, service: "Tetanus Toxoid Vaccination", icon: "vaccine" as const, status: "RESCHEDULED", requestedAt: "2026-11-03T01:00:00Z", scheduledAt: "2026-11-04T05:30:00Z", remarks: "Morning slots are full that week.", reminder: null },
             ...passed,
-            { id: 1, service: "Prenatal Checkup", status: "CONFIRMED", requestedAt: "2026-11-05T01:00:00Z", scheduledAt: "2026-11-05T01:00:00Z", remarks: null, reminder },
-            { id: 2, service: "Laboratory Test", status: "REQUESTED", requestedAt: "2026-11-12T02:30:00Z", scheduledAt: null, remarks: "First time for blood test", reminder: null },
+            ...(query.confirmed === "none" ? [] : [{ id: 1, service: "Prenatal Checkup", icon: "checkup" as const, status: "CONFIRMED" as const, requestedAt: "2026-11-05T01:00:00Z", scheduledAt: "2026-11-05T01:00:00Z", remarks: null, reminder }]),
+            { id: 2, service: "Laboratory Test", icon: "lab" as const, status: "REQUESTED", requestedAt: "2026-11-12T02:30:00Z", scheduledAt: null, remarks: "First time for blood test", reminder: null },
           ],
           past: [
             ...missedRows,
-            { id: 4, service: "Prenatal Checkup", status: "COMPLETED", requestedAt: "2026-10-01T01:00:00Z", scheduledAt: "2026-10-01T01:00:00Z", remarks: null, reminder: null },
-            { id: 5, service: "Health Education Session", status: "CANCELLED", requestedAt: "2026-09-15T05:00:00Z", scheduledAt: null, remarks: null, reminder: null },
+            { id: 4, service: "Prenatal Checkup", icon: "checkup" as const, status: "COMPLETED", requestedAt: "2026-10-01T01:00:00Z", scheduledAt: "2026-10-01T01:00:00Z", remarks: null, reminder: null },
+            { id: 5, service: "Health Education Session", icon: "education" as const, status: "CANCELLED", requestedAt: "2026-09-15T05:00:00Z", scheduledAt: null, remarks: null, reminder: null },
           ],
         }}
       />

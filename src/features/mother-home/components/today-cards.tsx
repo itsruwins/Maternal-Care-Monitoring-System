@@ -5,7 +5,6 @@ import {
   BleedingIcon,
   CallIcon,
   CaretRightIcon,
-  CheckCircleIcon,
   CheckupIcon,
   ClockIcon,
   DangerIcon,
@@ -28,10 +27,10 @@ import { isPlaceholder, SITE } from "@/config/site";
 import type { Locale } from "@/i18n/config";
 import { format } from "@/i18n/format";
 import type { Dictionary } from "@/i18n/get-dictionary";
-import { formatSlotClock, formatSlotDate, slotTile } from "@/lib/appointments/format";
+import { VisitDateTile, VisitStatusTag } from "@/features/mother-appointments/components/visit-status";
+import { formatSlotClock, formatSlotDate } from "@/lib/appointments/format";
 import { parseISODate, type Trimester } from "@/lib/utils/pregnancy";
 import { cn } from "@/lib/utils/cn";
-import type { AppointmentStatus } from "@/types/database";
 import { trimesterFill, trimesterRanges } from "../pregnancy-guide";
 import type { MyLastVisit, MyVisit } from "../types";
 
@@ -55,15 +54,6 @@ function CardHeader({ id, icon, tone, title }: { id: string; icon: Icon; tone: "
 // ---------------------------------------------------------------------------
 // Checkups: her next visit (the one thing she can act on), then her last one.
 
-// The status tag (beside the button), and the date tile in the week strip's language: a booked
-// visit is solid green, one still waiting is a dashed outline, a proposed new
-// time is rose.
-const STATUS_STYLE: Partial<Record<AppointmentStatus, { icon: Icon; chip: string; tile: string }>> = {
-  CONFIRMED: { icon: CheckCircleIcon, chip: "bg-mint text-leaf", tile: "bg-leaf text-white" },
-  REQUESTED: { icon: ClockIcon, chip: "bg-cream text-ink", tile: "border-2 border-dashed border-field bg-white text-ink" },
-  RESCHEDULED: { icon: InfoIcon, chip: "bg-blush text-rose-deep", tile: "bg-blush text-rose-deep" },
-};
-
 export function CheckupsCard({
   t,
   locale,
@@ -81,8 +71,6 @@ export function CheckupsCard({
   className?: string;
 }) {
   const v = t.today.visits;
-  const style = next ? STATUS_STYLE[next.status] : undefined;
-  const tile = next ? slotTile(next.at, locale) : null;
   const weekday = next
     ? new Intl.DateTimeFormat(locale === "fil" ? "fil-PH" : "en-PH", { timeZone: "Asia/Manila", weekday: "long" }).format(new Date(next.at))
     : "";
@@ -90,16 +78,8 @@ export function CheckupsCard({
     <section aria-labelledby="next-visit-title" className={cn(CARD, "shadow-[var(--shadow-raised)]", className)}>
       {/* The date tile (or an icon) on the left; everything else lines up in one column beside it */}
       <div className="flex items-stretch gap-4 sm:gap-5">
-        {next && tile ? (
-          <p className={cn("grid min-h-[4.75rem] w-16 shrink-0 place-content-center rounded-md text-center", style?.tile ?? "bg-mint text-leaf")}>
-            <span className="sr-only">{formatSlotDate(next.at, locale)}</span>
-            <span aria-hidden className="text-xs leading-4 font-bold tracking-[0.06em] uppercase">
-              {tile.month.replace(".", "")}
-            </span>
-            <span aria-hidden className="tnum text-[1.75rem] leading-8 font-extrabold tracking-[-0.02em]">
-              {tile.day}
-            </span>
-          </p>
+        {next ? (
+          <VisitDateTile iso={next.at} locale={locale} status={next.status} className="h-auto min-h-[4.75rem]" />
         ) : (
           <IconCircle icon={AppointmentIcon} tone="mint" size="lg" />
         )}
@@ -129,12 +109,7 @@ export function CheckupsCard({
         // Status on the left; the button fills the rest of the row (the whole
         // row when a long status pushes it onto its own line)
         <div className="mt-6 flex flex-wrap items-center gap-3">
-          {style && (
-            <p className={cn("inline-flex h-11 items-center gap-2 rounded-full px-5 text-[0.95rem] font-semibold", style.chip)}>
-              <style.icon weight="fill" aria-hidden className="size-5" />
-              {t.myAppointments.statuses[next.status]}
-            </p>
-          )}
+          <VisitStatusTag t={t} status={next.status} />
           <Button asChild variant="soft" className="grow">
             <Link href="/mother/appointments">
               {t.myVisits.seeAppointments}

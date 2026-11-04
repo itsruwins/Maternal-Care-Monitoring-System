@@ -13,10 +13,10 @@ import { AREA_ROLES } from "@/lib/auth/roles";
 import { requireRole } from "@/lib/auth/session";
 import { getMyVisit, getMyVisits } from "../queries/my-visits";
 import type { MyVisitDetail, MyVisitRow, MyVisits } from "../types";
-import { ChartPair } from "./chart-pair";
+import { NumbersSummary } from "./numbers-summary";
 
-// /mother/visits: her next visit, weight and blood pressure charts for this
-// pregnancy, and her visits. Reads the session: render inside <Suspense>.
+// /mother/visits: her next visit, her latest weight and blood pressure for
+// this pregnancy (with what changed), and her visits. Reads the session: render inside <Suspense>.
 export async function MyVisitsScreen() {
   const user = await requireRole(AREA_ROLES.mother);
   const [{ t, locale }, data] = await Promise.all([getServerI18n(), getMyVisits(user)]);
@@ -38,7 +38,6 @@ export function MyVisitsView({ t, locale, data }: { t: Dictionary; locale: Local
   const m = t.myVisits;
   const current = data.visits.filter((v) => v.currentPregnancy);
   const earlier = data.visits.filter((v) => !v.currentPregnancy);
-  const chartPoints = [...current].reverse();
 
   return (
     <div className="flex flex-col gap-6">
@@ -74,8 +73,8 @@ export function MyVisitsView({ t, locale, data }: { t: Dictionary; locale: Local
         </Button>
       </section>
 
-      {/* Charts (this pregnancy) */}
-      {chartPoints.length > 0 && (
+      {/* Her numbers (this pregnancy) */}
+      {current.length > 0 && (
         <section aria-labelledby="my-numbers" className="rounded-3xl bg-white p-5 shadow-[var(--shadow-soft)] sm:p-7">
           <h2 id="my-numbers" className="text-lg font-bold">
             {m.charts}
@@ -84,15 +83,7 @@ export function MyVisitsView({ t, locale, data }: { t: Dictionary; locale: Local
             <InfoIcon aria-hidden className="mt-0.5 size-4 shrink-0" />
             {m.chartsNote}
           </p>
-          {chartPoints.length < 2 ? (
-            <p className="mt-5 rounded-md bg-milk px-4 py-3 text-ink-soft">{m.needTwo}</p>
-          ) : (
-            <div className="mt-6 grid gap-8 lg:grid-cols-2">
-              <ChartPair
-                points={chartPoints.map((v) => ({ week: v.weeks, at: v.at, weight: v.weightKg, top: v.bpSystolic, bottom: v.bpDiastolic }))}
-              />
-            </div>
-          )}
+          <NumbersSummary t={t} locale={locale} visits={current} />
         </section>
       )}
 

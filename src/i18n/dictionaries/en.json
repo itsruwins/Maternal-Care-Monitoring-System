@@ -1034,32 +1034,64 @@
     "dueOn": "Due date: {date}",
     "countedFromLmp": "Counted from the first day of your last period.",
     "countedFromEdd": "Counted from your due date.",
-    "cards": {
-      "nextVisit": "Next visit",
-      "nextVisitNone": "None booked yet",
-      "nextVisitLine": "Next visit: {when}",
-      "tip": "Tip of the week",
-      "danger": "Danger signs",
-      "dangerBody": "Know when to get help"
+    "visits": {
+      "next": "Next visit",
+      "none": "No visit booked yet",
+      "noneBody": "Pick a day and time that suits you. The health center will confirm it.",
+      "last": "Last checkup",
+      "lastNone": "No checkups recorded yet.",
+      "lastWeek": "Week {weeks}",
+      "bp": "Blood pressure",
+      "weight": "Weight",
+      "seeVisits": "See all visits"
     },
-    "tipTitle": "Tip for week {weeks}",
-    "tips": [
-      "Go to every prenatal checkup, even when you feel well.",
-      "Take your iron and folic acid tablets every day.",
-      "Drink plenty of clean water through the day.",
-      "Eat small, frequent meals with vegetables like malunggay, fish, eggs and beans.",
-      "Rest when you can. Later in pregnancy, sleeping on your left side is best.",
-      "Walk or move gently every day, unless your midwife tells you otherwise.",
-      "Stay away from smoking, second-hand smoke and alcohol.",
-      "Ask the health center before taking any medicine or herbal remedy.",
-      "Keep your mother's booklet safe and bring it to every visit.",
-      "Get your tetanus vaccine on time. Ask the midwife when it's due.",
-      "Plan where you will give birth and how you will get there.",
-      "From the middle of pregnancy, notice your baby's movements every day."
-    ],
+    "progress": {
+      "title": "Your pregnancy",
+      "ofForty": "Week {weeks} of 40",
+      "pastDue": "Past your due date",
+      "now": "You are here",
+      "range": "{from} – {to}"
+    },
+    "tipTitle": "This week's tip",
+    "tips": {
+      "first": [
+        "Go to every prenatal checkup, even when you feel well.",
+        "Take your iron and folic acid tablets every day.",
+        "Drink plenty of clean water through the day.",
+        "Eat small, frequent meals with vegetables like malunggay, fish, eggs and beans.",
+        "Ask the health center before taking any medicine or herbal remedy.",
+        "Stay away from smoking, second-hand smoke and alcohol."
+      ],
+      "second": [
+        "Eat small, frequent meals with vegetables like malunggay, fish, eggs and beans.",
+        "Walk or move gently every day, unless your midwife tells you otherwise.",
+        "Get your tetanus vaccine on time. Ask the midwife when it's due.",
+        "Keep your mother's booklet safe and bring it to every visit.",
+        "Go to every prenatal checkup, even when you feel well.",
+        "Take your iron and folic acid tablets every day."
+      ],
+      "third": [
+        "Rest when you can. Later in pregnancy, sleeping on your left side is best.",
+        "Plan where you will give birth and how you will get there.",
+        "From the middle of pregnancy, notice your baby's movements every day.",
+        "Keep your mother's booklet safe and bring it to every visit.",
+        "Get your tetanus vaccine on time. Ask the midwife when it's due.",
+        "Go to every prenatal checkup, even when you feel well."
+      ]
+    },
+    "tipPastDue": "Your due date has passed. Go to the health center so the midwife can check on you and your baby.",
     "tipNote": "General information only. Always follow your midwife's advice.",
     "dangerTitle": "Get help right away if you have:",
+    "dangerSigns": [
+      "Bleeding from the vagina",
+      "Bad headache or blurry vision",
+      "Swollen face or hands",
+      "High fever",
+      "Baby moving less than usual",
+      "Water breaks or strong pains before your due date"
+    ],
     "dangerAction": "Go to the health center or the nearest hospital, or call for help.",
+    "callCenter": "Call the health center",
     "history": "Your past pregnancies",
     "outcomes": {
       "LIVE_BIRTH": "Delivered",

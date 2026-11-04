@@ -18,7 +18,9 @@ const MISSED: MissedVisit[] = [
 
 // Development only (preview): the mother's Today screen with sample data.
 // ?lmp=YYYY-MM-DD picks the week; ?none=1 shows "no current pregnancy";
-// ?missed=1 or 2 shows the missed-visit notice; ?next=none drops her booked visits.
+// ?missed=1 or 2 shows the missed-visit notice; ?next=none drops her booked visits;
+// ?next=requested or ?next=new shows a waiting request / a proposed new time;
+// ?last=none drops her last checkup.
 export default function MotherTodayPreview({ searchParams }: PageProps<"/[lang]/design-preview/mother-today">) {
   if (process.env.NODE_ENV === "production") notFound();
   return (
@@ -33,6 +35,7 @@ async function Preview({ searchParams }: { searchParams: Promise<Record<string, 
   const query = await searchParams;
   const lmp = typeof query.lmp === "string" ? query.lmp : "2026-06-01";
   const booked = query.next !== "none";
+  const nextStatus = query.next === "requested" ? ("REQUESTED" as const) : query.next === "new" ? ("RESCHEDULED" as const) : ("CONFIRMED" as const);
   const data: MyToday = {
     firstName: "Ana",
     current: query.none ? null : { lmp, edd: dueDateFromLmp(lmp) },
@@ -46,7 +49,8 @@ async function Preview({ searchParams }: { searchParams: Promise<Record<string, 
           ]
         : []),
     ],
-    nextVisit: booked ? { at: "2026-10-29T01:00:00Z", service: "Prenatal Checkup", status: "CONFIRMED" } : null,
+    nextVisit: booked ? { at: "2026-10-29T01:00:00Z", service: "Prenatal Checkup", status: nextStatus } : null,
+    lastVisit: query.last === "none" ? null : { at: "2026-10-26T01:00:00Z", weeks: 21, bpSystolic: 110, bpDiastolic: 70, weightKg: 58.5 },
   };
   const missed = MISSED.slice(0, Number(query.missed) || 0);
   return (

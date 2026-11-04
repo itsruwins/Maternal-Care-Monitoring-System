@@ -21,6 +21,14 @@ export {
   HandHeartIcon as CareIcon,
   FlowerLotusIcon as WellbeingIcon,
 
+  // Danger signs (mother's Today screen)
+  DropIcon as BleedingIcon,
+  SmileyNervousIcon as HeadacheIcon,
+  HandPalmIcon as SwellingIcon,
+  ThermometerHotIcon as FeverIcon,
+  FootprintsIcon as BabyMovesIcon,
+  WavesIcon as WaterBreakIcon,
+
   // Activity types (the 5 services)
   StethoscopeIcon as CheckupIcon,
   SyringeIcon as VaccineIcon,

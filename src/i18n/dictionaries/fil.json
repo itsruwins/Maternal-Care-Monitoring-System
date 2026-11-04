@@ -1034,32 +1034,64 @@
     "dueOn": "Kabuwanan: {date}",
     "countedFromLmp": "Binilang mula sa unang araw ng huli mong regla.",
     "countedFromEdd": "Binilang mula sa kabuwanan mo.",
-    "cards": {
-      "nextVisit": "Susunod na bisita",
-      "nextVisitNone": "Wala pang naka-book",
-      "nextVisitLine": "Susunod na bisita: {when}",
-      "tip": "Payo ng linggo",
-      "danger": "Mga babala",
-      "dangerBody": "Alamin kung kailan hihingi ng tulong"
+    "visits": {
+      "next": "Susunod na bisita",
+      "none": "Wala pang naka-book na bisita",
+      "noneBody": "Pumili ng araw at oras na kaya mo. Kukumpirmahin ito ng health center.",
+      "last": "Huling checkup",
+      "lastNone": "Wala pang naitalang checkup.",
+      "lastWeek": "Ika-{weeks} linggo",
+      "bp": "Blood pressure",
+      "weight": "Timbang",
+      "seeVisits": "Tingnan lahat ng bisita"
     },
-    "tipTitle": "Payo para sa ika-{weeks} linggo",
-    "tips": [
-      "Pumunta sa bawat prenatal checkup, kahit maayos ang pakiramdam mo.",
-      "Inumin araw-araw ang iron at folic acid tablets mo.",
-      "Uminom ng maraming malinis na tubig sa buong araw.",
-      "Kumain nang paunti-unti pero madalas, kasama ang gulay tulad ng malunggay, isda, itlog at munggo.",
-      "Magpahinga kapag kaya. Sa huling bahagi ng pagbubuntis, pinakamainam ang matulog nang nakatagilid sa kaliwa.",
-      "Maglakad o kumilos nang marahan araw-araw, maliban kung iba ang sabi ng midwife mo.",
-      "Umiwas sa paninigarilyo, usok ng sigarilyo ng iba, at alak.",
-      "Magtanong muna sa health center bago uminom ng anumang gamot o halamang-gamot.",
-      "Ingatan ang booklet mo at dalhin ito sa bawat bisita.",
-      "Magpabakuna ng tetanus sa tamang oras. Itanong sa midwife kung kailan.",
-      "Planuhin kung saan ka manganganak at paano ka makakarating doon.",
-      "Mula sa kalagitnaan ng pagbubuntis, pansinin araw-araw ang galaw ng baby mo."
-    ],
+    "progress": {
+      "title": "Ang pagbubuntis mo",
+      "ofForty": "Ika-{weeks} sa 40 linggo",
+      "pastDue": "Lampas na sa kabuwanan",
+      "now": "Narito ka",
+      "range": "{from} – {to}"
+    },
+    "tipTitle": "Payo ngayong linggo",
+    "tips": {
+      "first": [
+        "Pumunta sa bawat prenatal checkup, kahit maayos ang pakiramdam mo.",
+        "Inumin araw-araw ang iron at folic acid tablets mo.",
+        "Uminom ng maraming malinis na tubig sa buong araw.",
+        "Kumain nang paunti-unti pero madalas, kasama ang gulay tulad ng malunggay, isda, itlog at munggo.",
+        "Magtanong muna sa health center bago uminom ng anumang gamot o halamang-gamot.",
+        "Umiwas sa paninigarilyo, usok ng sigarilyo ng iba, at alak."
+      ],
+      "second": [
+        "Kumain nang paunti-unti pero madalas, kasama ang gulay tulad ng malunggay, isda, itlog at munggo.",
+        "Maglakad o kumilos nang marahan araw-araw, maliban kung iba ang sabi ng midwife mo.",
+        "Magpabakuna ng tetanus sa tamang oras. Itanong sa midwife kung kailan.",
+        "Ingatan ang booklet mo at dalhin ito sa bawat bisita.",
+        "Pumunta sa bawat prenatal checkup, kahit maayos ang pakiramdam mo.",
+        "Inumin araw-araw ang iron at folic acid tablets mo."
+      ],
+      "third": [
+        "Magpahinga kapag kaya. Sa huling bahagi ng pagbubuntis, pinakamainam ang matulog nang nakatagilid sa kaliwa.",
+        "Planuhin kung saan ka manganganak at paano ka makakarating doon.",
+        "Mula sa kalagitnaan ng pagbubuntis, pansinin araw-araw ang galaw ng baby mo.",
+        "Ingatan ang booklet mo at dalhin ito sa bawat bisita.",
+        "Magpabakuna ng tetanus sa tamang oras. Itanong sa midwife kung kailan.",
+        "Pumunta sa bawat prenatal checkup, kahit maayos ang pakiramdam mo."
+      ]
+    },
+    "tipPastDue": "Lumampas na ang kabuwanan mo. Pumunta sa health center para matingnan ka at ang baby mo ng midwife.",
     "tipNote": "Pangkalahatang impormasyon lamang. Laging sundin ang payo ng midwife mo.",
     "dangerTitle": "Humingi agad ng tulong kung mayroon kang:",
+    "dangerSigns": [
+      "Pagdurugo mula sa ari",
+      "Matinding sakit ng ulo o malabong paningin",
+      "Namamagang mukha o kamay",
+      "Mataas na lagnat",
+      "Mas kaunting galaw ng baby kaysa dati",
+      "Pumutok ang panubigan o matinding sakit bago ang kabuwanan"
+    ],
     "dangerAction": "Pumunta sa health center o sa pinakamalapit na ospital, o tumawag ng tulong.",
+    "callCenter": "Tawagan ang health center",
     "history": "Mga nakaraan mong pagbubuntis",
     "outcomes": {
       "LIVE_BIRTH": "Nanganak",
@@ -1232,7 +1264,7 @@
     "followUps": "Tingnan ang follow-up",
     "followUpsFor": "Tingnan ang follow-up para kay {name}",
     "reminder": {
-      "PENDING": "Naka-queue ang paalala para\u00a0sa\u00a0{when}",
+      "PENDING": "Naka-queue ang paalala para sa {when}",
       "SENT": "Naipadala ang paalala {when}",
       "DELIVERED": "Natanggap ang paalala {when}",
       "FAILED": "Hindi naipadala ang paalala",

@@ -82,6 +82,13 @@
   /* Hero cards: a slow, gentle float (stops with reduced motion) */
   --animate-float: float 6s ease-in-out infinite;
 
+  /* The pregnancy bar fills once from the left when the page opens */
+  --animate-grow-x: grow-x 900ms var(--ease-out-expo) both;
+
+  @keyframes grow-x {
+    from { transform: scaleX(0); }
+  }
+
   @keyframes float {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-8px); }

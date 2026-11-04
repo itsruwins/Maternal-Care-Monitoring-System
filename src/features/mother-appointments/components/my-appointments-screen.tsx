@@ -223,9 +223,14 @@ function NextVisitCard({ t, locale, item, today, now }: { t: Dictionary; locale:
           </span>
         </p>
 
+        {/* Tablets and up: a stretchy spacer (at least 24px) pushes the
+            buttons and notes to the bottom, level with the picture's panel,
+            so the square picture leaves no gap under them. */}
+        {(confirmed || notes) && <div aria-hidden className="hidden md:block md:min-h-6 md:flex-1" />}
+
         {/* Phones: two equal halves, words only; wider: icons too. */}
         {confirmed && (
-          <div className="mt-6 grid grid-cols-2 gap-3 sm:flex sm:flex-wrap [&_svg]:hidden sm:[&_svg]:block">
+          <div className="mt-6 grid grid-cols-2 gap-3 sm:flex sm:flex-wrap md:mt-0 [&_svg]:hidden sm:[&_svg]:block">
             <Button asChild variant="secondary" className="h-auto min-h-11 px-4 py-2 text-center whitespace-normal text-leaf shadow-none hover:bg-mint sm:px-6">
               <a href={directionsHref(SITE.healthCenter.address)} target="_blank" rel="noopener noreferrer">
                 <LocationIcon aria-hidden />
@@ -246,10 +251,8 @@ function NextVisitCard({ t, locale, item, today, now }: { t: Dictionary; locale:
           </div>
         )}
 
-        {/* Tablets and up: a stretchy spacer (at least 24px) pushes the notes down. */}
-        {notes && <div aria-hidden className="hidden md:block md:min-h-6 md:flex-1" />}
         {notes && (
-          <ul className="mt-6 flex flex-col gap-2 border-t border-white/20 pt-4 text-sm text-white/85 md:mt-0">
+          <ul className={cn("mt-6 flex flex-col gap-2 border-t border-white/20 pt-4 text-sm text-white/85", !confirmed && "md:mt-0")}>
             {datePassed && (
               <Detail icon={ClockIcon} tone="dark">
                 <span className="font-semibold text-white">{a.datePassed}</span> {a.datePassedNote}

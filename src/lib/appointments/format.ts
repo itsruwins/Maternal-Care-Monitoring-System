@@ -29,6 +29,19 @@ export function formatSlotClock(iso: string, locale: string): string {
   return keepTimeTogether(new Intl.DateTimeFormat(tag(locale), { timeZone: "Asia/Manila", hour: "numeric", minute: "2-digit" }).format(new Date(iso)));
 }
 
+/** The clock and the period apart, for a time stub: { clock: "9:30", period: "AM" }. */
+export function slotClockParts(iso: string, locale: string): { clock: string; period: string } {
+  const parts = new Intl.DateTimeFormat(tag(locale), { timeZone: "Asia/Manila", hour: "numeric", minute: "2-digit" }).formatToParts(new Date(iso));
+  return {
+    clock: parts
+      .filter((part) => part.type !== "dayPeriod")
+      .map((part) => part.value)
+      .join("")
+      .trim(),
+    period: parts.find((part) => part.type === "dayPeriod")?.value ?? "",
+  };
+}
+
 /** "Thursday, November 5 · 9:00 AM". */
 export function formatSlot(iso: string, locale: string, style: "long" | "short" = "long"): string {
   return `${formatSlotDate(iso, locale, style)} · ${formatSlotClock(iso, locale)}`;

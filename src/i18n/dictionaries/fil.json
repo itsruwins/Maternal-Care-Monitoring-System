@@ -1563,6 +1563,47 @@
     "servicesCount": "{count} serbisyo",
     "servicesOne": "1 serbisyo",
     "noServices": "Walang serbisyo",
+    "hub": {
+      "label": "Mga bisita sa isang tingin",
+      "booked": "Naka-book ngayon",
+      "toRecord": "Itatala pa",
+      "recorded": "Naitala ngayon",
+      "week": "Bisita ngayong linggo"
+    },
+    "ticket": {
+      "weeks": "{weeks} linggong buntis",
+      "view": "Tingnan",
+      "viewLabel": "Tingnan ang bisita ni {name}"
+    },
+    "list": {
+      "filtersLabel": "I-filter ang mga bisita",
+      "search": "Nanay",
+      "searchPlaceholder": "Pangalan o mobile number niya",
+      "from": "Mula",
+      "to": "Hanggang",
+      "clear": "I-clear",
+      "updating": "Ina-update…",
+      "columns": {
+        "mother": "Nanay",
+        "time": "Oras",
+        "week": "Linggo",
+        "bp": "BP",
+        "weight": "Timbang",
+        "services": "Serbisyo"
+      },
+      "open": "Buksan",
+      "openLabel": "Buksan ang bisita ni {name}",
+      "bpHigh": "Mataas ang blood pressure",
+      "servicesMore": "+{count}",
+      "servicesMoreLabel": "at {count} pa",
+      "showing": "{from}–{to} sa {total}",
+      "page": "Pahina {page} ng {pages}",
+      "prev": "Nakaraan",
+      "next": "Susunod",
+      "today": "Ngayon",
+      "yesterday": "Kahapon",
+      "empty": "Walang bisitang tugma sa mga filter na ito."
+    },
     "form": {
       "title": "Itala ang bisita",
       "back": "Mga bisita",

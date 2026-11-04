@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CaretLeftIcon, CaretRightIcon, PlusIcon } from "@/components/icons";
+import { FilterToolbar } from "@/components/shared/filter-toolbar";
 import { Pager } from "@/components/shared/pager";
 import { Button } from "@/components/ui/button";
 import type { Locale } from "@/i18n/config";
@@ -25,7 +26,6 @@ import {
 } from "../queries/appointments";
 import type { AppointmentFilters, HubCounts as Counts, ListTabCounts, Service, SlotData, StaffAppointment } from "../types";
 import { AppointmentRows } from "./appointment-rows";
-import { AppointmentToolbar } from "./appointment-toolbar";
 import { HubCounts } from "./hub-counts";
 import { ListTabs } from "./list-tabs";
 import { RequestCard } from "./request-card";
@@ -215,15 +215,19 @@ export function ListView({
   return (
     <div className="flex flex-col gap-4">
       <ListTabs t={t} filters={filters} counts={counts} />
-      <AppointmentToolbar
-        values={{ q: filters.q, service: String(filters.service), from: filters.from, to: filters.to }}
+      <FilterToolbar
+        id="appt"
+        values={{ q: filters.q, select: String(filters.service), from: filters.from, to: filters.to }}
         hidden={hidden}
-        services={[{ value: "", label: l.allServices }, ...services.map((service) => ({ value: String(service.id), label: service.name }))]}
+        select={{
+          name: "service",
+          label: l.service,
+          options: [{ value: "", label: l.allServices }, ...services.map((service) => ({ value: String(service.id), label: service.name }))],
+        }}
         labels={{
           form: l.filtersLabel,
           search: l.search,
           placeholder: l.searchPlaceholder,
-          service: l.service,
           from: l.from,
           to: l.to,
           clear: l.clear,
@@ -242,7 +246,7 @@ export function ListView({
             </div>
           </>
         )}
-      </AppointmentToolbar>
+      </FilterToolbar>
     </div>
   );
 }

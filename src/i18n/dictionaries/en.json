@@ -1563,6 +1563,47 @@
     "servicesCount": "{count} services",
     "servicesOne": "1 service",
     "noServices": "No services",
+    "hub": {
+      "label": "Visits at a glance",
+      "booked": "Booked today",
+      "toRecord": "Still to record",
+      "recorded": "Recorded today",
+      "week": "Visits this week"
+    },
+    "ticket": {
+      "weeks": "{weeks} weeks pregnant",
+      "view": "View",
+      "viewLabel": "View {name}'s visit"
+    },
+    "list": {
+      "filtersLabel": "Filter visits",
+      "search": "Mother",
+      "searchPlaceholder": "Her name or mobile number",
+      "from": "From",
+      "to": "To",
+      "clear": "Clear",
+      "updating": "Updating…",
+      "columns": {
+        "mother": "Mother",
+        "time": "Time",
+        "week": "Week",
+        "bp": "BP",
+        "weight": "Weight",
+        "services": "Services"
+      },
+      "open": "Open",
+      "openLabel": "Open {name}'s visit",
+      "bpHigh": "High blood pressure",
+      "servicesMore": "+{count}",
+      "servicesMoreLabel": "and {count} more",
+      "showing": "Showing {from}–{to} of {total}",
+      "page": "Page {page} of {pages}",
+      "prev": "Previous",
+      "next": "Next",
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "empty": "No visits match these filters."
+    },
     "form": {
       "title": "Record a visit",
       "back": "Visits",

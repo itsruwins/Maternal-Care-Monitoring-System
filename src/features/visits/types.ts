@@ -12,22 +12,32 @@ export type TodayAppointment = {
   at: string;
   status: AppointmentStatus;
   service: string;
-  mother: { id: number; name: string };
+  mother: { id: number; name: string; contactNumber: string };
+  /** Weeks pregnant today (from her LMP or due date), when known. */
+  weeks: number | null;
   /** Set once a visit is recorded for it. */
   visitId: number | null;
   /** Completed without a linked visit (the 6 PM check): her visit that day. */
   dayVisitId: number | null;
 };
 
-export type RecentVisit = {
+/** A row on the Visits page's list. */
+export type VisitRow = {
   id: number;
   at: string;
   weeks: number;
-  bp: string;
+  bpSystolic: number;
+  bpDiastolic: number;
   weightKg: number;
-  servicesCount: number;
-  mother: { id: number; name: string };
+  services: string[];
+  mother: { id: number; name: string; contactNumber: string };
 };
+
+/** The Visits list's search, dates (Manila) and page, from the address. */
+export type VisitFilters = { q: string; from: string; to: string; page: number };
+
+/** The counts above the Visits page. */
+export type VisitCounts = { booked: number; toRecord: number; recordedToday: number; week: number };
 
 /** Everything the visit form needs about her. */
 export type VisitContext = {

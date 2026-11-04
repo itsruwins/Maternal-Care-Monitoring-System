@@ -50,10 +50,10 @@ export const SAMPLE_VISITS_BY_DAY: VisitDay[] = (() => {
 })();
 
 export const SAMPLE_TODAY: TodayAppointment[] = [
-  { id: 1, at: "2026-11-02T00:30:00Z", status: "COMPLETED", service: "Prenatal Checkup", mother: { id: 1, name: "Ana Marie Bautista" }, visitId: 7, dayVisitId: null },
-  { id: 2, at: "2026-11-02T01:00:00Z", status: "CONFIRMED", service: "Tetanus Toxoid Vaccination", mother: { id: 2, name: "Carla Dela Cruz" }, visitId: null, dayVisitId: null },
-  { id: 3, at: "2026-11-02T02:30:00Z", status: "CONFIRMED", service: "Iron / Folic Acid Supplementation", mother: { id: 4, name: "Rosalinda Macaraeg-Villanueva" }, visitId: null, dayVisitId: null },
-  { id: 4, at: "2026-11-02T05:30:00Z", status: "RESCHEDULED", service: "Nutrition Counseling", mother: { id: 3, name: "Grace Mendoza" }, visitId: null, dayVisitId: null },
+  { id: 1, at: "2026-11-02T00:30:00Z", status: "COMPLETED", service: "Prenatal Checkup", mother: { id: 1, name: "Ana Marie Bautista", contactNumber: "09171234567" }, weeks: 21, visitId: 7, dayVisitId: null },
+  { id: 2, at: "2026-11-02T01:00:00Z", status: "CONFIRMED", service: "Tetanus Toxoid Vaccination", mother: { id: 2, name: "Carla Dela Cruz", contactNumber: "09181112222" }, weeks: 37, visitId: null, dayVisitId: null },
+  { id: 3, at: "2026-11-02T02:30:00Z", status: "CONFIRMED", service: "Iron / Folic Acid Supplementation", mother: { id: 4, name: "Rosalinda Macaraeg-Villanueva", contactNumber: "09223456789" }, weeks: 28, visitId: null, dayVisitId: null },
+  { id: 4, at: "2026-11-02T05:30:00Z", status: "RESCHEDULED", service: "Nutrition Counseling", mother: { id: 3, name: "Grace Mendoza", contactNumber: "09193334444" }, weeks: 10, visitId: null, dayVisitId: null },
 ];
 
 export const SAMPLE_DUE: DueSoonItem[] = [

@@ -1,8 +1,19 @@
 import "server-only";
 import { toServiceIcon } from "@/lib/appointments/service-icons";
 import { createClient } from "@/lib/supabase/server";
-import { addDays, gestationalAge, PREGNANCY_DAYS } from "@/lib/utils/pregnancy";
-import type { MotherVisit, RecentVisit, TodayAppointment, VisitContext, VisitDetail, VisitService, WalkInMother } from "../types";
+import { addDays, gestationalAge, PREGNANCY_DAYS, weekOf } from "@/lib/utils/pregnancy";
+import type {
+  MotherVisit,
+  TodayAppointment,
+  VisitContext,
+  VisitCounts,
+  VisitDetail,
+  VisitFilters,
+  VisitRow,
+  VisitService,
+  WalkInMother,
+} from "../types";
+import { VISITS_PAGE_SIZE } from "../constants";
 
 // All read as the logged-in staff member (RLS: staff see every record).
 
@@ -23,7 +34,7 @@ export async function listTodayAppointments(today: string): Promise<TodayAppoint
   const { data } = await supabase
     .from("appointment")
     .select(
-      "appointment_id, pregnancy_id, status, scheduled_datetime, activity_type:activity_type_id(name), pregnancy:pregnancy_id(mother:mother_id(mother_id, first_name, middle_name, last_name))",
+      "appointment_id, pregnancy_id, status, scheduled_datetime, activity_type:activity_type_id(name), pregnancy:pregnancy_id(lmp_date, expected_delivery_date, mother:mother_id(mother_id, first_name, middle_name, last_name, contact_number))",
     )
     .in("status", [...OPEN_STATUSES, "COMPLETED"])
     .gte("scheduled_datetime", dayStart(today))
@@ -56,35 +67,94 @@ export async function listTodayAppointments(today: string): Promise<TodayAppoint
       at: row.scheduled_datetime!,
       status: row.status,
       service: row.activity_type?.name ?? "",
-      mother: { id: mother?.mother_id ?? 0, name: mother ? fullName(mother) : "" },
+      mother: { id: mother?.mother_id ?? 0, name: mother ? fullName(mother) : "", contactNumber: mother?.contact_number ?? "" },
+      weeks: row.pregnancy ? weeksOn(row.pregnancy, today) : null,
       visitId: visitOf.get(row.appointment_id) ?? null,
       dayVisitId: row.status === "COMPLETED" ? (dayVisitOf.get(row.pregnancy_id) ?? null) : null,
     };
   });
 }
 
-/** The latest visits across all mothers. */
-export async function listRecentVisits(limit = 20): Promise<RecentVisit[]> {
+/** The Visits list's filters from the address (anything unknown is dropped). */
+export function parseVisitFilters(params: Record<string, string | string[] | undefined>): VisitFilters {
+  const one = (key: string) => {
+    const value = params[key];
+    return (Array.isArray(value) ? value[0] : value) ?? "";
+  };
+  const date = (value: string) => (/^\d{4}-\d{2}-\d{2}$/.test(value) ? value : "");
+  const page = Number.parseInt(one("page"), 10);
+  return {
+    // Keep letters, numbers, spaces, dots, underscores and dashes (safe in filters).
+    q: one("q").replace(/[^\p{L}\p{N} ._-]/gu, "").trim().slice(0, 60),
+    from: date(one("from")),
+    to: date(one("to")),
+    page: Number.isFinite(page) && page > 0 ? page : 1,
+  };
+}
+
+/** Pregnancies of the mothers matching a search (name or mobile), or null for no search. */
+async function searchedPregnancies(supabase: Awaited<ReturnType<typeof createClient>>, q: string): Promise<number[] | null> {
+  if (!q) return null;
+  let query = supabase.from("mother").select("mother_id, pregnancy(pregnancy_id)").limit(200);
+  for (const word of q.split(" ").filter(Boolean)) {
+    const like = `%${word}%`;
+    query = query.or(`first_name.ilike.${like},middle_name.ilike.${like},last_name.ilike.${like},contact_number.ilike.${like}`);
+  }
+  const { data } = await query;
+  return (data ?? []).flatMap((mother) => mother.pregnancy.map((p) => p.pregnancy_id));
+}
+
+/** Visits across all mothers, newest first, 20 a page (search and dates applied). */
+export async function listVisits(filters: VisitFilters): Promise<{ items: VisitRow[]; total: number }> {
   const supabase = await createClient();
-  const { data } = await supabase
+  const pregnancies = await searchedPregnancies(supabase, filters.q);
+  if (pregnancies && !pregnancies.length) return { items: [], total: 0 };
+
+  const first = (filters.page - 1) * VISITS_PAGE_SIZE;
+  let query = supabase
     .from("prenatal_visit")
     .select(
-      "visit_id, visit_datetime, aog_weeks, bp_systolic, bp_diastolic, weight_kg, visit_service(service_id), pregnancy:pregnancy_id(mother:mother_id(mother_id, first_name, middle_name, last_name))",
-    )
+      "visit_id, visit_datetime, aog_weeks, bp_systolic, bp_diastolic, weight_kg, visit_service(activity_type:activity_type_id(name)), pregnancy:pregnancy_id(mother:mother_id(mother_id, first_name, middle_name, last_name, contact_number))",
+      { count: "exact" },
+    );
+  if (pregnancies) query = query.in("pregnancy_id", pregnancies);
+  if (filters.from) query = query.gte("visit_datetime", dayStart(filters.from));
+  if (filters.to) query = query.lt("visit_datetime", dayStart(addDays(filters.to, 1)!));
+  const { data, count } = await query
     .order("visit_datetime", { ascending: false })
-    .limit(limit);
-  return (data ?? []).map((row) => {
+    .order("visit_id", { ascending: false })
+    .range(first, first + VISITS_PAGE_SIZE - 1);
+
+  const items = (data ?? []).map((row) => {
     const mother = row.pregnancy?.mother;
     return {
       id: row.visit_id,
       at: row.visit_datetime,
       weeks: row.aog_weeks,
-      bp: `${row.bp_systolic}/${row.bp_diastolic}`,
+      bpSystolic: row.bp_systolic,
+      bpDiastolic: row.bp_diastolic,
       weightKg: Number(row.weight_kg),
-      servicesCount: row.visit_service.length,
-      mother: { id: mother?.mother_id ?? 0, name: mother ? fullName(mother) : "" },
+      services: row.visit_service.map((s) => s.activity_type?.name ?? "").filter(Boolean),
+      mother: { id: mother?.mother_id ?? 0, name: mother ? fullName(mother) : "", contactNumber: mother?.contact_number ?? "" },
     };
   });
+  return { items, total: count ?? 0 };
+}
+
+/** Visits recorded today and this week (Sunday to Saturday). */
+export async function getRecordedCounts(today: string): Promise<Pick<VisitCounts, "recordedToday" | "week">> {
+  const supabase = await createClient();
+  const week = weekOf(today);
+  const visitsBetween = async (from: string, to: string) => {
+    const { count } = await supabase
+      .from("prenatal_visit")
+      .select("visit_id", { count: "exact", head: true })
+      .gte("visit_datetime", dayStart(from))
+      .lt("visit_datetime", dayStart(addDays(to, 1)!));
+    return count ?? 0;
+  };
+  const [recordedToday, thisWeek] = await Promise.all([visitsBetween(today, today), visitsBetween(week[0], week[6])]);
+  return { recordedToday, week: thisWeek };
 }
 
 export async function listVisitServices(): Promise<VisitService[]> {

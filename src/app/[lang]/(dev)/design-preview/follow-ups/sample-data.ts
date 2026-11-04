@@ -39,6 +39,7 @@ export const SAMPLE_OPEN: FollowUpItem[] = [
     missedDate: "2026-10-27",
     daysAgo: 10,
     entries: [
+      entry(9, { date: "2026-11-05", method: "HOME_VISIT", result: "NOT_REACHED", notes: "Nobody home. Left a note with a neighbor.", closeReason: null }),
       entry(3, { date: "2026-11-02", method: "CALL", result: "NOT_REACHED", notes: "No answer, rang twice.", closeReason: null }),
       entry(2, { date: "2026-10-29", method: "SMS", result: "NOT_REACHED", notes: "Sent a text from the clinic phone. No reply yet.", closeReason: null, loggedBy: "Rose Villanueva" }),
     ],
@@ -64,6 +65,14 @@ export const SAMPLE_OPEN: FollowUpItem[] = [
     ],
   }),
   item(14, { name: "Joy Ramos", purok: "Purok 1", service: "Prenatal Checkup", missedAt: "2026-11-05T00:30:00Z", missedDate: "2026-11-05", daysAgo: 1 }),
+  item(15, {
+    name: "Rosalinda Macaraeg-Villanueva",
+    purok: "Sitio Upper Tico-tico",
+    service: "Iron / Folic Acid Supplementation",
+    missedAt: "2026-11-06T00:00:00Z",
+    missedDate: "2026-11-06",
+    daysAgo: 0,
+  }),
 ];
 
 export const SAMPLE_CLOSED: FollowUpItem[] = [

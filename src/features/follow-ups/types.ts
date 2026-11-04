@@ -15,6 +15,21 @@ export type FollowUpFilters = {
   page: number;
 };
 
+/** How many missed visits each tab holds (search and filters applied). */
+export type FollowUpTabCounts = Record<FollowUpTab, number>;
+
+/** The counts above the Follow-ups page (no filters). */
+export type FollowUpHubCounts = {
+  /** Still to follow up. */
+  open: number;
+  /** Open, with no try logged yet. */
+  notContacted: number;
+  /** Open, missed more than 7 days ago. */
+  overWeek: number;
+  /** Sorted out since Sunday. */
+  sortedThisWeek: number;
+};
+
 /** One logged try to reach her. */
 export type FollowUpEntry = {
   id: number;

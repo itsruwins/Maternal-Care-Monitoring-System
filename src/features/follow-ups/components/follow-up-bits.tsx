@@ -63,6 +63,26 @@ export function TriesSummary({ t, locale, entries }: { t: Dictionary; locale: Lo
   );
 }
 
+/**
+ * One dot per try, oldest first: leaf when she was reached, a hollow ring
+ * when not (older entries without a result too). Up to 6; the words beside it
+ * say the same, so it is hidden from screen readers.
+ */
+export function TryTrail({ entries }: { entries: FollowUpEntry[] }) {
+  if (entries.length === 0) return null;
+  const shown = [...entries].reverse().slice(-6);
+  return (
+    <span aria-hidden className="flex shrink-0 items-center gap-1">
+      {shown.map((entry) => (
+        <span
+          key={entry.id}
+          className={cn("size-2.5 rounded-full", entry.result === "REACHED" ? "bg-leaf" : "border-2 border-sage bg-white")}
+        />
+      ))}
+    </span>
+  );
+}
+
 /** The date or slot never breaks across lines (The Unbroken Time Rule); the line may break before it. */
 const unbroken = (text: string) => text.replace(/ /g, "\u00a0");
 

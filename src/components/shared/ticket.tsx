@@ -1,12 +1,14 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils/cn";
 
-export type TicketTone = "mint" | "blush" | "leaf";
+export type TicketTone = "mint" | "blush" | "leaf" | "rose";
 
 const STUB: Record<TicketTone, string> = {
   mint: "bg-mint text-leaf",
   blush: "bg-blush text-rose-deep",
   leaf: "bg-leaf text-white",
+  /** The exception only (e.g. a follow-up waiting over a week). */
+  rose: "bg-rose-deep text-white",
 };
 
 // A booking ticket: a tinted stub down the left (when), a dashed tear line

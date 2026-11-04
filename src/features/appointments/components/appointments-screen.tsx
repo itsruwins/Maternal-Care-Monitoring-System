@@ -217,13 +217,15 @@ export function ListView({
       <ListTabs t={t} filters={filters} counts={counts} />
       <FilterToolbar
         id="appt"
-        values={{ q: filters.q, select: String(filters.service), from: filters.from, to: filters.to }}
+        values={{ q: filters.q, service: String(filters.service), from: filters.from, to: filters.to }}
         hidden={hidden}
-        select={{
-          name: "service",
-          label: l.service,
-          options: [{ value: "", label: l.allServices }, ...services.map((service) => ({ value: String(service.id), label: service.name }))],
-        }}
+        selects={[
+          {
+            name: "service",
+            label: l.service,
+            options: [{ value: "", label: l.allServices }, ...services.map((service) => ({ value: String(service.id), label: service.name }))],
+          },
+        ]}
         labels={{
           form: l.filtersLabel,
           search: l.search,

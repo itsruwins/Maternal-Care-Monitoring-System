@@ -1781,6 +1781,29 @@
   "followUps": {
     "title": "Mga follow-up",
     "intro": "Mga nanay na hindi nakapunta sa bisita. Kumustahin sila, itala ang nangyari, at mag-book ng bagong oras.",
+    "hub": {
+      "label": "Mga follow-up sa isang tingin",
+      "open": "Ifo-follow up",
+      "notContacted": "Hindi pa nakokontak",
+      "overWeek": "Lampas isang linggo na",
+      "sortedThisWeek": "Natapos ngayong linggo"
+    },
+    "groups": {
+      "overWeek": "Lampas isang linggo na",
+      "recent": "Sa nakaraang 7 araw"
+    },
+    "stub": {
+      "today": "Ngayon",
+      "dayAgo": "araw na",
+      "daysAgo": "araw na"
+    },
+    "list": {
+      "filtersLabel": "I-filter ang mga follow-up",
+      "updating": "Ina-update…",
+      "showing": "{from}–{to} sa {total}",
+      "sortedIn": "Natapos noong {month}",
+      "sortedEarlier": "Natapos noon"
+    },
     "tabsLabel": "Mga listahan ng follow-up",
     "tabs": {
       "open": "Hindi pa tapos",
@@ -1789,7 +1812,6 @@
     "search": {
       "label": "Maghanap ng nanay",
       "placeholder": "Pangalan o mobile number",
-      "filters": "Mga filter",
       "purok": "Purok",
       "allPuroks": "Lahat ng purok",
       "noPurok": "Wala pang purok",
@@ -1799,11 +1821,8 @@
       "anyTried": "Lahat",
       "notTried": "Hindi pa nakokontak",
       "triedAlready": "Nasubukan na",
-      "submit": "Ipakita",
       "clear": "I-clear"
     },
-    "count": "{count} bisitang hindi napuntahan",
-    "countOne": "1 bisitang hindi napuntahan",
     "emptyOpen": "Walang kailangang i-follow up ngayon.",
     "emptyClosed": "Wala pang tapos na follow-up.",
     "empty": "Walang bisitang hindi napuntahan na tugma sa mga filter na ito.",
@@ -1814,8 +1833,7 @@
       "mother": "Nanay",
       "missed": "Bisitang hindi napuntahan",
       "tries": "Mga follow-up",
-      "ending": "Paano natapos",
-      "actions": "Mga aksyon"
+      "ending": "Paano natapos"
     },
     "noPurokYet": "Wala pang purok",
     "call": "Tawagan si {name}",

@@ -1,5 +1,7 @@
 import type { FollowUpFilters } from "./types";
 
+export const NO_FOLLOW_UP_FILTERS: FollowUpFilters = { tab: "open", q: "", purok: "", from: "", to: "", tried: "", page: 1 };
+
 // Addresses inside the follow-ups area (plain functions: usable on the server
 // and in the browser).
 

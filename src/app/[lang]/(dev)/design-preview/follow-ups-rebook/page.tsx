@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { RebookView } from "@/features/follow-ups/components/rebook-screen";
 import { StaffShell } from "@/features/shell/components/staff-shell";
 import { getServerI18n } from "@/i18n/server";
-import { SAMPLE_CLOSED, SAMPLE_OPEN } from "../follow-ups/sample";
+import { SAMPLE_CLOSED, SAMPLE_OPEN } from "../follow-ups/sample-data";
 
 export const metadata = { title: "Rebook preview", robots: { index: false } };
 

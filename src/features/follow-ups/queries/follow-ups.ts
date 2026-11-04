@@ -1,11 +1,10 @@
 import "server-only";
 import { manilaSlot } from "@/lib/appointments/slots";
 import { createClient } from "@/lib/supabase/server";
-import { addDays, daysBetween } from "@/lib/utils/pregnancy";
+import { addDays, daysBetween, weekOf } from "@/lib/utils/pregnancy";
 import type { FollowUpItemRow } from "@/types/database";
-import type { FollowUpEntry, FollowUpFilters, FollowUpItem } from "../types";
-
-export const FOLLOW_UPS_PAGE_SIZE = 20;
+import { FOLLOW_UPS_PAGE_SIZE, OVER_A_WEEK_DAYS } from "../constants";
+import type { FollowUpEntry, FollowUpFilters, FollowUpHubCounts, FollowUpItem, FollowUpTabCounts } from "../types";
 
 type Client = Awaited<ReturnType<typeof createClient>>;
 
@@ -56,6 +55,32 @@ export function parseFollowUpFilters(params: Record<string, string | string[] | 
 
 // All read as the logged-in staff member (follow-ups are staff-only, 0015).
 
+/** The builder methods the filters use (every select's builder has them). */
+type Filterable = {
+  eq(column: string, value: unknown): Filterable;
+  gt(column: string, value: unknown): Filterable;
+  gte(column: string, value: unknown): Filterable;
+  lt(column: string, value: unknown): Filterable;
+  is(column: string, value: null): Filterable;
+  or(filters: string): Filterable;
+};
+
+/** The search, purok, missed dates and tried-or-not on a follow_up_item query. */
+function filtered<Q>(query: Q, filters: FollowUpFilters): Q {
+  let q = query as unknown as Filterable;
+  for (const word of filters.q.split(" ").filter(Boolean)) {
+    const like = `%${word}%`;
+    q = q.or(`first_name.ilike.${like},middle_name.ilike.${like},last_name.ilike.${like},contact_number.ilike.${like}`);
+  }
+  if (filters.purok === "none") q = q.is("purok_id", null);
+  else if (filters.purok) q = q.eq("purok_id", filters.purok);
+  if (filters.from) q = q.gte("missed_at", dayStart(filters.from));
+  if (filters.to) q = q.lt("missed_at", dayStart(addDays(filters.to, 1)!));
+  if (filters.tried === "no") q = q.eq("attempts", 0);
+  else if (filters.tried === "yes") q = q.gt("attempts", 0);
+  return q as unknown as Q;
+}
+
 /**
  * Missed visits on one tab, 20 per page: open ones oldest first, closed ones
  * most recently sorted out first. Search: every word must match a name part
@@ -68,30 +93,56 @@ export async function listFollowUps(
 ): Promise<{ items: FollowUpItem[]; total: number }> {
   const supabase = await createClient();
   const from = (filters.page - 1) * FOLLOW_UPS_PAGE_SIZE;
-  let query = supabase
-    .from("follow_up_item")
-    .select(ITEM_FIELDS, { count: "exact" })
-    .eq("is_open", filters.tab === "open")
-    .range(from, from + FOLLOW_UPS_PAGE_SIZE - 1);
+  let query = filtered(
+    supabase
+      .from("follow_up_item")
+      .select(ITEM_FIELDS, { count: "exact" })
+      .eq("is_open", filters.tab === "open"),
+    filters,
+  );
   query =
     filters.tab === "open"
       ? query.order("missed_at").order("appointment_id")
       : query.order("ended_at", { ascending: false, nullsFirst: false }).order("appointment_id", { ascending: false });
 
-  for (const word of filters.q.split(" ").filter(Boolean)) {
-    const like = `%${word}%`;
-    query = query.or(`first_name.ilike.${like},middle_name.ilike.${like},last_name.ilike.${like},contact_number.ilike.${like}`);
-  }
-  if (filters.purok === "none") query = query.is("purok_id", null);
-  else if (filters.purok) query = query.eq("purok_id", filters.purok);
-  if (filters.from) query = query.gte("missed_at", dayStart(filters.from));
-  if (filters.to) query = query.lt("missed_at", dayStart(addDays(filters.to, 1)!));
-  if (filters.tried === "no") query = query.eq("attempts", 0);
-  else if (filters.tried === "yes") query = query.gt("attempts", 0);
-
-  const { data, count, error } = await query;
+  const { data, count, error } = await query.range(from, from + FOLLOW_UPS_PAGE_SIZE - 1);
   if (error || !data) return { items: [], total: 0 };
   return { items: await withEntries(supabase, data, viewer, today), total: count ?? 0 };
+}
+
+/** Each tab's count, with the search and filters applied. */
+export async function countFollowUpTabs(filters: FollowUpFilters): Promise<FollowUpTabCounts> {
+  const supabase = await createClient();
+  const count = async (open: boolean) => {
+    const { count } = await filtered(
+      supabase.from("follow_up_item").select("appointment_id", { count: "exact", head: true }).eq("is_open", open),
+      filters,
+    );
+    return count ?? 0;
+  };
+  const [open, closed] = await Promise.all([count(true), count(false)]);
+  return { open, closed };
+}
+
+/**
+ * The counts above the page: still to follow up, not contacted yet, missed
+ * over a week ago, and sorted out this week (Sunday to Saturday).
+ */
+export async function getFollowUpHubCounts(today: string): Promise<FollowUpHubCounts> {
+  const supabase = await createClient();
+  const items = () => supabase.from("follow_up_item").select("appointment_id", { count: "exact", head: true });
+  const [open, notContacted, overWeek, sortedThisWeek] = await Promise.all([
+    items().eq("is_open", true),
+    items().eq("is_open", true).eq("attempts", 0),
+    items().eq("is_open", true).lt("missed_at", dayStart(addDays(today, -OVER_A_WEEK_DAYS)!)),
+    items().eq("is_open", false).gte("ended_at", dayStart(weekOf(today)[0])),
+  ]);
+  return {
+    open: open.count ?? 0,
+    notContacted: notContacted.count ?? 0,
+    overWeek: overWeek.count ?? 0,
+    sortedThisWeek: sortedThisWeek.count ?? 0,
+  };
 }
 
 /** How many missed visits still need a follow-up: all (the Open tab's count) or one mother's. */

@@ -1781,6 +1781,29 @@
   "followUps": {
     "title": "Follow-ups",
     "intro": "Mothers who missed a visit. Reach out, note what happened, and book a new time.",
+    "hub": {
+      "label": "Follow-ups at a glance",
+      "open": "To follow up",
+      "notContacted": "Not contacted yet",
+      "overWeek": "Missed over a week ago",
+      "sortedThisWeek": "Sorted out this week"
+    },
+    "groups": {
+      "overWeek": "Over a week ago",
+      "recent": "In the last 7 days"
+    },
+    "stub": {
+      "today": "Today",
+      "dayAgo": "day ago",
+      "daysAgo": "days ago"
+    },
+    "list": {
+      "filtersLabel": "Filter follow-ups",
+      "updating": "Updating…",
+      "showing": "Showing {from}–{to} of {total}",
+      "sortedIn": "Sorted out in {month}",
+      "sortedEarlier": "Sorted out earlier"
+    },
     "tabsLabel": "Follow-up lists",
     "tabs": {
       "open": "Open",
@@ -1789,7 +1812,6 @@
     "search": {
       "label": "Find a mother",
       "placeholder": "Name or mobile number",
-      "filters": "Filters",
       "purok": "Purok",
       "allPuroks": "All puroks",
       "noPurok": "No purok yet",
@@ -1799,11 +1821,8 @@
       "anyTried": "Any",
       "notTried": "Not contacted yet",
       "triedAlready": "Tried already",
-      "submit": "Show",
       "clear": "Clear"
     },
-    "count": "{count} missed visits",
-    "countOne": "1 missed visit",
     "emptyOpen": "No one to follow up right now.",
     "emptyClosed": "No closed follow-ups yet.",
     "empty": "No missed visits match these filters.",
@@ -1814,8 +1833,7 @@
       "mother": "Mother",
       "missed": "Missed visit",
       "tries": "Follow-ups",
-      "ending": "How it ended",
-      "actions": "Actions"
+      "ending": "How it ended"
     },
     "noPurokYet": "No purok yet",
     "call": "Call {name}",

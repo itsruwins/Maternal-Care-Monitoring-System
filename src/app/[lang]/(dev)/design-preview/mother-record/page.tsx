@@ -9,7 +9,7 @@ import { MotherSmsPanelView } from "@/features/sms/components/mother-sms-panel";
 import type { FollowUpItem } from "@/features/follow-ups/types";
 import { MotherVisitsPanelView } from "@/features/visits/components/mother-visits-panel";
 import { getServerI18n } from "@/i18n/server";
-import { SAMPLE_CLOSED, SAMPLE_OPEN, SAMPLE_TODAY } from "../follow-ups/sample";
+import { SAMPLE_CLOSED, SAMPLE_OPEN, SAMPLE_TODAY } from "../follow-ups/sample-data";
 import { SAMPLE_SMS } from "../sms/sample";
 import { SAMPLE_APPOINTMENTS, SAMPLE_SLOTS } from "../staff-appointments/sample";
 import { dueDateFromLmp } from "@/lib/utils/pregnancy";

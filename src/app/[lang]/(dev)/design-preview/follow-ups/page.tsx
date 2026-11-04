@@ -5,7 +5,7 @@ import { parseFollowUpFilters } from "@/features/follow-ups/queries/follow-ups";
 import { StaffShell } from "@/features/shell/components/staff-shell";
 import { getServerI18n } from "@/i18n/server";
 import { PreviewOffer } from "./preview-offer";
-import { SAMPLE_CLOSED, SAMPLE_OPEN, SAMPLE_PUROKS, SAMPLE_TODAY } from "./sample";
+import { SAMPLE_CLOSED, SAMPLE_OPEN, SAMPLE_PUROKS, SAMPLE_TODAY } from "./sample-data";
 
 export const metadata = { title: "Follow-ups preview", robots: { index: false } };
 
@@ -38,8 +38,9 @@ async function Preview({ searchParams }: { searchParams: Promise<Record<string, 
         t={t}
         locale={locale}
         items={items}
-        total={items.length}
-        openCount={SAMPLE_OPEN.length}
+        total={params.empty === "1" ? 0 : filters.tab === "closed" ? 12 : 5}
+        tabCounts={params.empty === "1" ? { open: 0, closed: 0 } : { open: 5, closed: 12 }}
+        counts={params.empty === "1" ? { open: 0, notContacted: 0, overWeek: 0, sortedThisWeek: 0 } : { open: 5, notContacted: 3, overWeek: 1, sortedThisWeek: 4 }}
         filters={filters}
         puroks={SAMPLE_PUROKS}
         today={SAMPLE_TODAY}

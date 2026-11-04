@@ -34,7 +34,7 @@ export function MotherVisitsPanelView({
   const current = visits.filter((v) => v.currentPregnancy);
   const earlier = visits.filter((v) => !v.currentPregnancy);
   const list = (items: MotherVisit[]) => (
-    <ul className="divide-y divide-line rounded-3xl bg-white px-5 shadow-[var(--shadow-soft)] sm:px-6">
+    <ul className="divide-y divide-line rounded-3xl bg-white px-5 py-1 shadow-[var(--shadow-soft)] sm:px-6 sm:py-2">
       {items.map((visit) => (
         <li key={visit.id}>
           <Link href={`/staff/visits/${visit.id}`} className="flex items-center gap-4 py-4 no-underline">

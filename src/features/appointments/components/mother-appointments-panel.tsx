@@ -86,7 +86,7 @@ export function MotherAppointmentsPanelView({
               <h2 id="her-past" className="text-lg font-bold">
                 {r.past}
               </h2>
-              <ul className="divide-y divide-line rounded-3xl bg-white px-5 shadow-[var(--shadow-soft)] sm:px-6">
+              <ul className="divide-y divide-line rounded-3xl bg-white px-5 py-1.5 shadow-[var(--shadow-soft)] sm:px-6 sm:py-2.5">
                 {past.map((item) => (
                   <li key={item.id} className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 py-3.5">
                     <span className="min-w-0">

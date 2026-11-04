@@ -108,7 +108,7 @@ export function RebookView({
         <p className="rounded-2xl bg-white px-6 py-8 text-center text-ink-soft shadow-[var(--shadow-soft)]">{r.noPregnancy}</p>
       ) : (
         <>
-          <section className="flex flex-wrap items-center gap-4 rounded-3xl bg-white p-4 shadow-[var(--shadow-soft)] sm:p-5">
+          <section className="flex flex-wrap items-center gap-4 rounded-3xl bg-white p-5 shadow-[var(--shadow-soft)] sm:p-6">
             <IconCircle icon={PregnancyIcon} tone="blush" />
             <div className="min-w-0 flex-1">
               <p className="font-semibold break-words">{mother.name}</p>

@@ -11,6 +11,7 @@ import { getServerI18n } from "@/i18n/server";
 import { formatSlot, formatSlotDate } from "@/lib/appointments/format";
 import { AREA_ROLES } from "@/lib/auth/roles";
 import { requireRole } from "@/lib/auth/session";
+import { VisitDateTile } from "@/features/mother-appointments/components/visit-status";
 import { getMyVisit, getMyVisits } from "../queries/my-visits";
 import type { MyVisitDetail, MyVisitRow, MyVisits } from "../types";
 import { NumbersSummary } from "./numbers-summary";
@@ -110,24 +111,36 @@ function VisitList({ t, locale, title, visits }: { t: Dictionary; locale: Locale
   return (
     <div className="flex flex-col gap-2">
       {title && <h3 className="text-sm font-semibold text-ink-soft">{title}</h3>}
-      <ul className="divide-y divide-line rounded-3xl bg-white px-5 shadow-[var(--shadow-soft)] sm:px-6">
+      <ul className="divide-y divide-line rounded-3xl bg-white px-5 py-1 shadow-[var(--shadow-soft)] sm:px-6 sm:py-2">
         {visits.map((visit) => (
           <li key={visit.id}>
             <Link href={`/mother/visits/${visit.id}`} className="flex items-center gap-4 py-4 no-underline">
-              <span className="tnum grid size-14 shrink-0 place-items-center rounded-md bg-blush text-center text-sm leading-tight font-bold whitespace-pre-line text-rose-deep">
-                {format(m.week, { weeks: visit.weeks }).replace(" ", "\n")}
-              </span>
-              <span className="min-w-0 flex-1">
-                <span className="block font-semibold text-ink">{formatSlotDate(visit.at, locale)}</span>
-                <span className="tnum mt-0.5 flex flex-wrap gap-x-4 text-sm text-ink-soft">
-                  <span>
-                    {m.bp} {visit.bpSystolic}/{visit.bpDiastolic}
-                  </span>
-                  <span>
-                    {m.weight} {visit.weightKg} kg
+              {/* The date is read out from the text beside it. */}
+              <div aria-hidden className="self-start sm:self-center">
+                <VisitDateTile iso={visit.at} locale={locale} status="COMPLETED" />
+              </div>
+              <span className="flex min-w-0 flex-1 flex-col gap-x-4 gap-y-2 sm:flex-row sm:items-center">
+                <span className="min-w-0 flex-1">
+                  <span className="block font-semibold text-ink">{formatSlotDate(visit.at, locale)}</span>
+                  <span className="mt-0.5 block text-sm break-words text-ink-soft">
+                    {[format(m.week, { weeks: visit.weeks }), ...visit.services].join(" · ")}
                   </span>
                 </span>
-                {visit.services.length > 0 && <span className="mt-1 block text-sm break-words text-ink-soft">{visit.services.join(" · ")}</span>}
+                <span className="tnum flex shrink-0 flex-wrap gap-2 text-sm">
+                  <span className="inline-flex h-8 items-center gap-1.5 rounded-full bg-milk px-3">
+                    <abbr title={m.bp} className="text-ink-soft no-underline">
+                      {m.bpShort}
+                    </abbr>
+                    <span className="font-bold text-ink">
+                      {visit.bpSystolic}/{visit.bpDiastolic}
+                    </span>
+                  </span>
+                  <span className="inline-flex h-8 items-center gap-1 rounded-full bg-milk px-3">
+                    <span className="sr-only">{m.weight}</span>
+                    <span className="font-bold text-ink">{visit.weightKg}</span>
+                    <span className="text-ink-soft">kg</span>
+                  </span>
+                </span>
               </span>
               <CaretRightIcon weight="bold" aria-hidden className="size-5 shrink-0 text-ink-soft" />
             </Link>

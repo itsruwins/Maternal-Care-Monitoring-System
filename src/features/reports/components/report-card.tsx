@@ -23,7 +23,7 @@ export function ReportCard({
   return (
     <section
       aria-labelledby={id}
-      className={cn("min-w-0 rounded-3xl bg-white p-5 shadow-[var(--shadow-soft)] sm:p-6 print:rounded-none print:border print:border-line print:p-4", className)}
+      className={cn("min-w-0 rounded-3xl bg-white p-5 shadow-[var(--shadow-soft)] sm:p-7 print:rounded-none print:border print:border-line print:p-4", className)}
     >
       {/* On paper a long card may break across pages, but its heading always
           travels with its first rows (see [data-print-head] in globals.css). */}

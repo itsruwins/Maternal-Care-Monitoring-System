@@ -342,7 +342,7 @@ export function CalendarView({
 
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:items-start">
-      <section aria-labelledby="calendar-title" className="rounded-3xl bg-white p-4 shadow-[var(--shadow-soft)] sm:p-6">
+      <section aria-labelledby="calendar-title" className="rounded-3xl bg-white p-5 shadow-[var(--shadow-soft)] sm:p-6">
         <div className="mb-4 flex items-center justify-between">
           <Link href={monthHref(addMonths(`${month}-01`, -1).slice(0, 7))} scroll={false} aria-label={c.prevMonth} className="grid size-10 place-items-center rounded-full text-ink hover:bg-cream">
             <CaretLeftIcon weight="bold" aria-hidden className="size-5" />

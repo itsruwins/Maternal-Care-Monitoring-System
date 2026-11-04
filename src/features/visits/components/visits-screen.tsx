@@ -72,7 +72,7 @@ export function VisitsView({
         {recent.length === 0 ? (
           <p className="rounded-2xl bg-white px-6 py-8 text-center text-ink-soft shadow-[var(--shadow-soft)]">{v.recentEmpty}</p>
         ) : (
-          <ul className="divide-y divide-line rounded-3xl bg-white px-5 shadow-[var(--shadow-soft)] sm:px-6">
+          <ul className="divide-y divide-line rounded-3xl bg-white px-5 py-1.5 shadow-[var(--shadow-soft)] sm:px-6 sm:py-2.5">
             {recent.map((visit) => (
               <li key={visit.id} className="flex flex-col gap-1 py-3.5 sm:flex-row sm:items-center sm:gap-4">
                 <span className="min-w-0 flex-1">

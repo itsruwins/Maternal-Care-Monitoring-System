@@ -41,7 +41,7 @@ export function PuroksView({ t, puroks }: { t: Dictionary; puroks: Purok[] }) {
           <p className="text-sm text-ink-soft">{format(p.count, { count: puroks.length })}</p>
           <ul className="divide-y divide-line overflow-hidden rounded-3xl bg-white shadow-[var(--shadow-soft)]">
             {puroks.map((purok) => (
-              <li key={purok.id} className="flex flex-col gap-3 px-5 py-4 sm:flex-row sm:items-center sm:gap-4 sm:px-6">
+              <li key={purok.id} className="flex flex-col gap-3 px-5 py-4 first:pt-5 last:pb-5 sm:flex-row sm:items-center sm:gap-4 sm:px-6 sm:first:pt-6 sm:last:pb-6">
                 {/* Phones: name and badge on one line, the actions below it. */}
                 <div className="flex min-w-0 flex-1 items-center gap-3">
                   <IconCircle icon={LocationIcon} tone={purok.isActive ? "mint" : "beige"} size="sm" />

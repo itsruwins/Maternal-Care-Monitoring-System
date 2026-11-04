@@ -115,7 +115,7 @@ export function BookAppointmentForm({
           />
         </section>
       ) : (
-        <section className="flex items-center gap-4 rounded-3xl bg-white p-4 shadow-[var(--shadow-soft)] sm:p-5">
+        <section className="flex items-center gap-4 rounded-3xl bg-white p-5 shadow-[var(--shadow-soft)] sm:p-6">
           <ServiceArt icon={service.icon} size="sm" />
           <p className="min-w-0 flex-1 font-bold break-words">{service.name}</p>
           <Button

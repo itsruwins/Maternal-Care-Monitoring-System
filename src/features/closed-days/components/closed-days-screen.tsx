@@ -61,7 +61,7 @@ export function ClosedDaysView({
         ) : (
           <ul className="divide-y divide-line overflow-hidden rounded-3xl bg-white shadow-[var(--shadow-soft)]">
             {upcoming.map((day) => (
-              <li key={day.date} className="flex flex-col gap-3 px-5 py-4 sm:flex-row sm:items-center sm:gap-4 sm:px-6">
+              <li key={day.date} className="flex flex-col gap-3 px-5 py-4 first:pt-5 last:pb-5 sm:flex-row sm:items-center sm:gap-4 sm:px-6 sm:first:pt-6 sm:last:pb-6">
                 <div className="flex min-w-0 flex-1 items-start gap-3">
                   <IconCircle icon={ClosedDayIcon} tone="blush" size="sm" />
                   <div className="min-w-0">
@@ -87,7 +87,7 @@ export function ClosedDaysView({
       {past.length > 0 && (
         <section aria-labelledby="closed-past" className="flex flex-col gap-3">
           <h2 id="closed-past" className="text-lg font-bold">{c.past}</h2>
-          <ul className="divide-y divide-line rounded-3xl bg-white/60 px-5 sm:px-6">
+          <ul className="divide-y divide-line rounded-3xl bg-white/60 px-5 py-2 sm:px-6 sm:py-3">
             {past.map((day) => (
               <li key={day.date} className="flex flex-col gap-0.5 py-3 text-[0.95rem] sm:flex-row sm:gap-4">
                 <span className="font-medium text-ink-soft sm:w-72 sm:shrink-0">{label(day.date)}</span>

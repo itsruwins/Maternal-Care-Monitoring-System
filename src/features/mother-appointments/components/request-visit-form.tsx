@@ -87,7 +87,7 @@ export function RequestVisitForm({ data }: { data: BookingData }) {
     <div className={ready ? "pb-44" : undefined}>
       <div className="flex flex-col gap-6">
         {/* The chosen service, folded */}
-        <section className="flex items-center gap-4 rounded-3xl bg-white p-4 shadow-[var(--shadow-soft)] sm:p-5">
+        <section className="flex items-center gap-4 rounded-3xl bg-white p-5 shadow-[var(--shadow-soft)] sm:p-6">
           <ServiceArt icon={service.icon} size="sm" />
           <div className="min-w-0 flex-1">
             <p className="font-bold break-words">{service.name}</p>

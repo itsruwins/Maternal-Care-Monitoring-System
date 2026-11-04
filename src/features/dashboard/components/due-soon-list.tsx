@@ -16,7 +16,7 @@ export function DueSoonList({ t, locale, items, total }: { t: Dictionary; locale
     return <p className="rounded-2xl bg-white px-6 py-8 text-center text-ink-soft shadow-[var(--shadow-soft)]">{d.empty}</p>;
   }
   return (
-    <div className="rounded-3xl bg-white px-5 shadow-[var(--shadow-soft)] sm:px-6">
+    <div className="rounded-3xl bg-white px-5 py-1.5 shadow-[var(--shadow-soft)] sm:px-6 sm:py-2.5">
       <ul className="divide-y divide-line">
         {items.map((item) => (
           <li key={item.pregnancyId} className="flex flex-col gap-1 py-3.5 sm:flex-row sm:items-start sm:justify-between sm:gap-4">

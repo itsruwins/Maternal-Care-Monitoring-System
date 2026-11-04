@@ -1506,6 +1506,7 @@
     "chartsNote": "Para sa kaalaman mo lang. Ipapaliwanag ng midwife mo kung ano ang ibig sabihin nito para sa iyo.",
     "weight": "Timbang",
     "bp": "Blood pressure",
+    "bpShort": "BP",
     "recent": "Mga huling sukat",
     "weightUp": "Nadagdagan ng {kg} kg mula {date}",
     "weightDown": "Nabawasan ng {kg} kg mula {date}",

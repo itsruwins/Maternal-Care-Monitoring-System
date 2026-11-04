@@ -295,8 +295,8 @@ function VisitList({ items, empty, render }: { items: MyAppointment[]; empty: st
 }
 
 /**
- * One visit in the list: the date tile, day and time, service and status, and
- * the ⋯ menu while it can still be cancelled online. Padding 16px (phones) or
+ * One visit in the list: the date tile, then day, time and service, with the
+ * status (and the ⋯ menu while it can still be cancelled online) on the right. Padding 16px (phones) or
  * 20px around 12px tiles, in a 28px or 32px card (corners that share a center).
  */
 function VisitCard({
@@ -318,12 +318,20 @@ function VisitCard({
   const { at, isRequest, canCancel, datePassed, reminder } = visitState(item, today, now);
   const notes = !past && (datePassed || reminder || item.remarks || !canCancel);
   return (
-    <article className="relative flex gap-4 rounded-[1.75rem] bg-white p-4 shadow-[var(--shadow-soft)] sm:rounded-[2rem] sm:p-5">
+    <article className="flex gap-4 rounded-[1.75rem] bg-white p-4 shadow-[var(--shadow-soft)] sm:rounded-[2rem] sm:p-5">
       <VisitDateTile iso={at} locale={locale} status={item.status} className={cn("self-start", item.status === "CONFIRMED" && "bg-mint text-leaf")} />
       <div className="min-w-0 flex-1">
-        <h3 className={cn("tnum text-lg leading-7 font-bold", !past && canCancel && "pr-10")}>{dayAndTime(t, locale, at, today)}</h3>
-        <p className="break-words text-ink-soft">{item.service}</p>
-        <VisitStatusTag t={t} status={item.status} size="sm" className="mt-2 h-auto min-h-8 max-w-full py-1 leading-5 whitespace-normal" />
+        {/* Day, time and service on the left; the status (and ⋯ menu) on the right, level with the tile. */}
+        <div className="flex min-h-16 items-center gap-3">
+          <div className="min-w-0 flex-1">
+            <h3 className="tnum text-lg leading-7 font-bold">{dayAndTime(t, locale, at, today)}</h3>
+            <p className="break-words text-ink-soft">{item.service}</p>
+          </div>
+          <div className="flex shrink-0 items-center gap-1 max-sm:flex-col-reverse max-sm:items-end">
+            <VisitStatusTag t={t} status={item.status} size="sm" className="h-auto min-h-8 max-w-32 py-1 leading-5 whitespace-normal sm:max-w-none sm:whitespace-nowrap" />
+            {!past && canCancel && <VisitMenu appointmentId={item.id} isRequest={isRequest} className="-mr-2 max-sm:-mt-2" />}
+          </div>
+        </div>
         {notes && (
           <ul className="mt-3 flex flex-col gap-2 text-sm">
             {datePassed && (
@@ -345,7 +353,6 @@ function VisitCard({
           </ul>
         )}
       </div>
-      {!past && canCancel && <VisitMenu appointmentId={item.id} isRequest={isRequest} className="absolute top-2 right-2 sm:top-3 sm:right-3" />}
     </article>
   );
 }

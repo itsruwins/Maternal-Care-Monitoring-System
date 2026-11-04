@@ -76,6 +76,7 @@ export {
   // Actions & feedback
   PlusIcon,
   PencilSimpleIcon as PencilIcon,
+  CopyIcon,
   TrashIcon,
   MinusIcon,
   CheckIcon,
@@ -89,6 +90,7 @@ export {
   CaretRightIcon,
   CaretLeftIcon,
   CaretDownIcon,
+  CaretUpDownIcon,
   DotsThreeIcon as MoreIcon,
   InfoIcon,
   SpinnerGapIcon as SpinnerIcon,

@@ -2,13 +2,12 @@ import "server-only";
 import { toServiceIcon } from "@/lib/appointments/service-icons";
 import { addMonths, manilaSlot, slotKey } from "@/lib/appointments/slots";
 import { createClient } from "@/lib/supabase/server";
-import { addDays, gestationalAge, PREGNANCY_DAYS } from "@/lib/utils/pregnancy";
-import type { AppointmentStatus } from "@/types/database";
-import type { AppointmentFilters, BookableMother, Service, SlotData, StaffAppointment } from "../types";
+import { addDays, gestationalAge, PREGNANCY_DAYS, weekOf } from "@/lib/utils/pregnancy";
+import { LIST_TABS } from "../paths";
+import type { AppointmentFilters, BookableMother, HubCounts, ListTab, ListTabCounts, Service, SlotData, StaffAppointment } from "../types";
 import { APPOINTMENT_SELECT, manilaDayStart, slotInRange, toAppointments } from "./shared";
 
 export const APPOINTMENTS_PAGE_SIZE = 20;
-const STATUSES: AppointmentStatus[] = ["REQUESTED", "CONFIRMED", "RESCHEDULED", "COMPLETED", "MISSED", "CANCELLED"];
 const bySlot = (a: StaffAppointment, b: StaffAppointment) => a.at.localeCompare(b.at);
 
 // All read as the logged-in staff member (RLS: staff see every appointment).
@@ -20,13 +19,7 @@ export async function listRequests(): Promise<StaffAppointment[]> {
   return toAppointments(supabase, data ?? []);
 }
 
-export async function countRequests(): Promise<number> {
-  const supabase = await createClient();
-  const { count } = await supabase.from("appointment").select("appointment_id", { count: "exact", head: true }).eq("status", "REQUESTED");
-  return count ?? 0;
-}
-
-/** Reads ?status=&service=&from=&to=&page= into safe values. */
+/** Reads ?status=&q=&service=&from=&to=&page= into safe values (old ?status=CONFIRMED / RESCHEDULED links open Upcoming). */
 export function parseAppointmentFilters(params: Record<string, string | string[] | undefined>): AppointmentFilters {
   const one = (key: string) => {
     const value = params[key];
@@ -34,8 +27,10 @@ export function parseAppointmentFilters(params: Record<string, string | string[]
   };
   const date = (value: string) => (/^\d{4}-\d{2}-\d{2}$/.test(value) ? value : "");
   const page = Number.parseInt(one("page"), 10);
+  const status = one("status");
   return {
-    status: STATUSES.includes(one("status") as AppointmentStatus) ? (one("status") as AppointmentStatus) : "",
+    status: status === "CONFIRMED" || status === "RESCHEDULED" ? "upcoming" : LIST_TABS.includes(status as ListTab) ? (status as ListTab) : "",
+    q: one("q").replace(/[^\p{L}\p{N} ._-]/gu, "").trim().slice(0, 60),
     service: /^[1-9]\d{0,9}$/.test(one("service")) ? Number(one("service")) : "",
     from: date(one("from")),
     to: date(one("to")),
@@ -43,26 +38,99 @@ export function parseAppointmentFilters(params: Record<string, string | string[]
   };
 }
 
-/**
- * Appointments by date, 20 per page. Pages follow the requested time (a
- * rescheduled visit can sit a little out of place across pages; each page is
- * sorted by its actual slot).
- */
-export async function listAppointments(filters: AppointmentFilters): Promise<{ items: StaffAppointment[]; total: number }> {
-  const supabase = await createClient();
-  const from = (filters.page - 1) * APPOINTMENTS_PAGE_SIZE;
-  let query = supabase
-    .from("appointment")
-    .select(APPOINTMENT_SELECT, { count: "exact" })
-    .order("requested_datetime", { ascending: true })
-    .range(from, from + APPOINTMENTS_PAGE_SIZE - 1);
-  if (filters.status) query = query.eq("status", filters.status);
-  if (filters.service) query = query.eq("activity_type_id", filters.service);
-  if (filters.from || filters.to) {
-    query = query.or(slotInRange(manilaDayStart(filters.from || "2000-01-01"), manilaDayStart(addDays(filters.to || "2100-01-01", 1)!)));
+/** The builder methods the List's filters use (every select's builder has them). */
+type Filterable = {
+  eq(column: string, value: unknown): Filterable;
+  neq(column: string, value: unknown): Filterable;
+  in(column: string, values: readonly unknown[]): Filterable;
+  or(filters: string): Filterable;
+};
+
+/** Her pregnancies when searching by her name or number (every word must match); null without a search. */
+async function searchedPregnancies(supabase: Awaited<ReturnType<typeof createClient>>, q: string): Promise<number[] | null> {
+  if (!q) return null;
+  let query = supabase.from("mother").select("mother_id, pregnancy(pregnancy_id)").limit(200);
+  for (const word of q.split(" ").filter(Boolean)) {
+    const like = `%${word}%`;
+    query = query.or(`first_name.ilike.${like},middle_name.ilike.${like},last_name.ilike.${like},contact_number.ilike.${like}`);
   }
-  const { data, count } = await query;
-  return { items: (await toAppointments(supabase, data ?? [])).sort(bySlot), total: count ?? 0 };
+  const { data } = await query;
+  return (data ?? []).flatMap((mother) => mother.pregnancy.map((p) => p.pregnancy_id));
+}
+
+/**
+ * One List tab, 20 per page, with every tab's count (search, service and
+ * dates applied). Upcoming and Requested run soonest first, as does any tab
+ * with dates chosen; the others newest first. Pages follow the requested time
+ * (a moved visit can sit a little out of place across pages; each page is
+ * sorted by its actual slot). `today` is a Manila date.
+ */
+export async function listAppointments(
+  filters: AppointmentFilters,
+  today: string,
+): Promise<{ items: StaffAppointment[]; total: number; counts: ListTabCounts }> {
+  const supabase = await createClient();
+  const pregnancies = await searchedPregnancies(supabase, filters.q);
+  const none = { items: [], total: 0, counts: { all: 0, upcoming: 0, REQUESTED: 0, MISSED: 0, COMPLETED: 0, CANCELLED: 0 } };
+  if (pregnancies && !pregnancies.length) return none;
+
+  const scope = <Q,>(query: Q, tab: ListTab): Q => {
+    let q = query as unknown as Filterable;
+    if (tab === "") q = q.neq("status", "CANCELLED");
+    else if (tab === "upcoming") q = q.in("status", ["CONFIRMED", "RESCHEDULED"]);
+    else q = q.eq("status", tab);
+    if (filters.service) q = q.eq("activity_type_id", filters.service);
+    if (pregnancies) q = q.in("pregnancy_id", pregnancies);
+    // Upcoming starts today at the earliest.
+    const from = tab === "upcoming" && (!filters.from || filters.from < today) ? today : filters.from;
+    if (from || filters.to) {
+      q = q.or(slotInRange(manilaDayStart(from || "2000-01-01"), manilaDayStart(addDays(filters.to || "2100-01-01", 1)!)));
+    }
+    return q as unknown as Q;
+  };
+  const count = async (tab: ListTab) => {
+    const { count } = await scope(supabase.from("appointment").select("appointment_id", { count: "exact", head: true }), tab);
+    return count ?? 0;
+  };
+
+  const ascending = filters.status === "upcoming" || filters.status === "REQUESTED" || Boolean(filters.from || filters.to);
+  const start = (filters.page - 1) * APPOINTMENTS_PAGE_SIZE;
+  const [{ data, count: total }, all, upcoming, requested, missed, completed, cancelled] = await Promise.all([
+    scope(supabase.from("appointment").select(APPOINTMENT_SELECT, { count: "exact" }), filters.status)
+      .order("requested_datetime", { ascending })
+      .range(start, start + APPOINTMENTS_PAGE_SIZE - 1),
+    count(""),
+    count("upcoming"),
+    count("REQUESTED"),
+    count("MISSED"),
+    count("COMPLETED"),
+    count("CANCELLED"),
+  ]);
+  const items = (await toAppointments(supabase, data ?? [])).sort((a, b) => (ascending ? bySlot(a, b) : bySlot(b, a)));
+  return {
+    items,
+    total: total ?? 0,
+    counts: { all, upcoming, REQUESTED: requested, MISSED: missed, COMPLETED: completed, CANCELLED: cancelled },
+  };
+}
+
+/** The counts above the views: waiting requests, today, this week (Sunday to Saturday), missed visits to follow up. */
+export async function getHubCounts(today: string): Promise<HubCounts> {
+  const supabase = await createClient();
+  const week = weekOf(today);
+  const booked = (first: string, last: string) =>
+    supabase
+      .from("appointment")
+      .select("appointment_id", { count: "exact", head: true })
+      .neq("status", "CANCELLED")
+      .or(slotInRange(manilaDayStart(first), manilaDayStart(addDays(last, 1)!)));
+  const [requests, todays, thisWeek, missed] = await Promise.all([
+    supabase.from("appointment").select("appointment_id", { count: "exact", head: true }).eq("status", "REQUESTED"),
+    booked(today, today),
+    booked(week[0], week[6]),
+    supabase.from("follow_up_item").select("appointment_id", { count: "exact", head: true }).eq("is_open", true),
+  ]);
+  return { requests: requests.count ?? 0, today: todays.count ?? 0, week: thisWeek.count ?? 0, missed: missed.count ?? 0 };
 }
 
 /** Everything not cancelled in a month ("YYYY-MM"), grouped by Manila date. */

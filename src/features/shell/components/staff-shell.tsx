@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { MenuIcon } from "@/components/icons";
@@ -8,27 +8,47 @@ import { BrandMark } from "@/components/shared/brand-mark";
 import { LanguageSwitch } from "@/components/shared/language-switch";
 import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useDictionary } from "@/i18n/dictionary-provider";
+import { format } from "@/i18n/format";
 import { cn } from "@/lib/utils/cn";
-import { ADMIN_NAV, isActive, STAFF_NAV, STAFF_PROFILE_HREF, type NavItem } from "../nav";
+import { refreshNavBadges } from "../actions/nav-badges";
+import { ADMIN_NAV, isActive, STAFF_NAV, STAFF_PROFILE_HREF, type NavBadges, type NavItem } from "../nav";
 import type { ShellUser } from "../queries/get-shell-user";
 import { ProfileMenu } from "./profile-menu";
+
+/** A stable empty set (a new {} each render would reset the counts every time). */
+const NO_BADGES: NavBadges = {};
 
 // The staff app (health workers and admins): a sidebar from 1024px, a menu
 // button that opens the same sidebar as a sheet below that, and a top bar with
 // the current section, language switch and profile menu. Admins get an extra
-// "Admin" group in the same sidebar.
-export function StaffShell({ user, children }: { user: ShellUser; children: ReactNode }) {
+// "Admin" group in the same sidebar. Appointments carries a rose count of
+// requests waiting for an answer (and the menu button a rose dot while any
+// wait); with liveBadges it is checked again after every page change.
+export function StaffShell({
+  user,
+  badges: initialBadges = NO_BADGES,
+  liveBadges = false,
+  children,
+}: {
+  user: ShellUser;
+  badges?: NavBadges;
+  /** Check the counts again after each page change (off in previews). */
+  liveBadges?: boolean;
+  children: ReactNode;
+}) {
   const { t } = useDictionary();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const isAdmin = user.role === "ADMIN";
+  const badges = useNavBadges(initialBadges, liveBadges, pathname);
+  const waiting = badges.appointments ?? 0;
 
   const current = [...STAFF_NAV, ...(isAdmin ? ADMIN_NAV : [])].find((item) => isActive(item, pathname));
   const sectionTitle = pathname.startsWith(STAFF_PROFILE_HREF) ? t.shell.nav.profile : current ? t.shell.nav[current.key] : "";
 
   const sidebar = (onNavigate?: () => void) => (
     <nav aria-label={t.shell.mainNav} className="flex flex-col gap-6 px-3 pb-6">
-      <NavGroup items={STAFF_NAV} pathname={pathname} onNavigate={onNavigate} />
+      <NavGroup items={STAFF_NAV} pathname={pathname} onNavigate={onNavigate} badges={badges} />
       {isAdmin && (
         <div>
           <p className="px-3 pb-2 text-caption font-semibold text-ink-soft">
@@ -55,10 +75,11 @@ export function StaffShell({ user, children }: { user: ShellUser; children: Reac
         <header className="sticky top-0 z-30 flex h-16 print:hidden items-center gap-3 border-b border-line bg-white px-4 sm:px-6 lg:px-8">
           <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
             <SheetTrigger
-              aria-label={t.shell.menu}
-              className="grid size-11 place-items-center rounded-full text-ink transition-colors hover:bg-cream focus-visible:outline-2 focus-visible:outline-leaf lg:hidden"
+              aria-label={waiting > 0 ? `${t.shell.menu}, ${badgeLabel(t.shell.badges.appointments, t.shell.badges.appointmentsOne, waiting)}` : t.shell.menu}
+              className="relative grid size-11 place-items-center rounded-full text-ink transition-colors hover:bg-cream focus-visible:outline-2 focus-visible:outline-leaf lg:hidden"
             >
               <MenuIcon weight="bold" aria-hidden className="size-6" />
+              {waiting > 0 && <span aria-hidden className="absolute top-2 right-2 size-2.5 rounded-full bg-rose-deep ring-2 ring-white" />}
             </SheetTrigger>
             <SheetContent closeLabel={t.shell.closeMenu}>
               <SheetTitle className="sr-only">{t.shell.mainNav}</SheetTitle>
@@ -88,10 +109,12 @@ function NavGroup({
   items,
   pathname,
   onNavigate,
+  badges = {},
 }: {
   items: NavItem[];
   pathname: string;
   onNavigate?: () => void;
+  badges?: NavBadges;
 }) {
   const { t } = useDictionary();
   return (
@@ -99,6 +122,7 @@ function NavGroup({
       {items.map((item) => {
         const active = isActive(item, pathname);
         const ItemIcon = item.icon;
+        const count = badges[item.key] ?? 0;
         return (
           <li key={item.href}>
             <Link
@@ -112,10 +136,51 @@ function NavGroup({
             >
               <ItemIcon weight={active ? "fill" : "regular"} aria-hidden className="size-5 shrink-0" />
               {t.shell.nav[item.key]}
+              {count > 0 && item.key === "appointments" && (
+                <span className="tnum ml-auto grid h-6 min-w-6 place-items-center rounded-full bg-rose-deep px-1.5 text-caption font-bold text-white motion-safe:animate-pop">
+                  <span aria-hidden>{count}</span>
+                  <span className="sr-only">{badgeLabel(t.shell.badges.appointments, t.shell.badges.appointmentsOne, count)}</span>
+                </span>
+              )}
             </Link>
           </li>
         );
       })}
     </ul>
   );
+}
+
+const badgeLabel = (many: string, one: string, count: number) => (count === 1 ? one : format(many, { count }));
+
+/**
+ * The sidebar counts: the layout's own (new after any refresh), then, when
+ * live, asked again after each page change (the layout stays put while moving
+ * between pages).
+ */
+function useNavBadges(initial: NavBadges, live: boolean, pathname: string): NavBadges {
+  const [badges, setBadges] = useState(initial);
+  const [seen, setSeen] = useState(initial);
+  // A refresh brought new counts from the layout: take them.
+  if (seen !== initial) {
+    setSeen(initial);
+    setBadges(initial);
+  }
+  const first = useRef(true);
+  useEffect(() => {
+    if (!live) return;
+    if (first.current) {
+      first.current = false;
+      return;
+    }
+    let current = true;
+    refreshNavBadges()
+      .then((next) => {
+        if (current && next) setBadges(next);
+      })
+      .catch(() => {});
+    return () => {
+      current = false;
+    };
+  }, [live, pathname]);
+  return badges;
 }

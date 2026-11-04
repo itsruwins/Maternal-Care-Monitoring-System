@@ -366,6 +366,10 @@
       "smsLog": "SMS log",
       "profile": "Profile"
     },
+    "badges": {
+      "appointments": "{count} requests waiting",
+      "appointmentsOne": "1 request waiting"
+    },
     "roles": {
       "ADMIN": "Admin",
       "HEALTH_WORKER": "Health worker",
@@ -871,6 +875,15 @@
   "mothers": {
     "title": "Mothers",
     "intro": "Every mother registered at the health center or through the website.",
+    "tabs": {
+      "label": "Which mothers",
+      "all": "All",
+      "pregnant": "Pregnant",
+      "dueSoon": "Due within 30 days",
+      "notPregnant": "Not pregnant"
+    },
+    "toolbarLabel": "Filter mothers",
+    "updating": "Updating the list…",
     "search": {
       "label": "Search",
       "placeholder": "Name or mobile number",
@@ -880,6 +893,8 @@
       "noPurok": "No purok yet",
       "due": "Due month",
       "anyMonth": "Any month",
+      "anyDueMonth": "Any due month",
+      "dueIn": "Due {month}",
       "dueSoon": "Within 30 days",
       "status": "Pregnancy",
       "all": "All",
@@ -890,6 +905,8 @@
     },
     "results": "{count} mothers",
     "resultsOne": "1 mother",
+    "showing": "Showing {from}–{to} of {total}",
+    "sortBy": "Sort by {column}",
     "empty": "No mothers match these filters.",
     "emptyAll": "No mothers registered yet.",
     "columns": {
@@ -900,6 +917,8 @@
       "login": "Login"
     },
     "week": "Week {weeks}",
+    "pastDue": "Past due",
+    "progress": "Week {weeks} of 40",
     "trimesters": [
       "1st trimester",
       "2nd trimester",
@@ -916,6 +935,12 @@
     "noPurokYet": "No purok yet",
     "hasLogin": "Can log in",
     "noLogin": "No login",
+    "rowActions": {
+      "menu": "Actions for {name}",
+      "open": "Open record",
+      "book": "Book appointment",
+      "visit": "Record visit"
+    },
     "page": "Page {page} of {pages}",
     "prev": "Previous",
     "next": "Next",
@@ -991,6 +1016,65 @@
       "registeredBy": "Registered by {name} on {date}",
       "registeredOn": "Registered at the health center on {date}",
       "selfSignup": "Signed up on the website on {date}",
+      "actions": {
+        "label": "Actions for her record",
+        "book": "Book appointment",
+        "visit": "Record visit",
+        "call": "Call {name}",
+        "copy": "Copy her number",
+        "copied": "Number copied",
+        "copyFailed": "Couldn't copy. Select the number and copy it."
+      },
+      "facts": {
+        "label": "At a glance",
+        "pregnancy": "Pregnancy",
+        "due": "Due date",
+        "next": "Next visit",
+        "last": "Last visit",
+        "notPregnant": "Not pregnant",
+        "noDue": "No due date",
+        "noneBooked": "None booked",
+        "noVisits": "No visits yet",
+        "atWeek": "At week {weeks}"
+      },
+      "detailsView": {
+        "edit": "Edit details",
+        "cancel": "Cancel",
+        "about": "About her",
+        "address": "Address and emergency contact",
+        "fullName": "Full name",
+        "birthday": "Birthday",
+        "birthdayAge": "{date} ({age} years old)",
+        "mobile": "Mobile number",
+        "purok": "Purok",
+        "street": "House number and street",
+        "emergency": "Emergency contact",
+        "registered": "Registered",
+        "notGiven": "Not given",
+        "callNumber": "Call {number}"
+      },
+      "followUpNotice": {
+        "one": "1 missed visit still needs a follow-up",
+        "other": "{count} missed visits still need a follow-up",
+        "body": "Call or visit her, then log what happened.",
+        "open": "Open follow-ups"
+      },
+      "activity": {
+        "title": "Recent activity",
+        "empty": "Nothing on her record yet. Her visits, appointments and texts will show here.",
+        "visit": "Visit recorded at week {weeks}",
+        "requested": "Asked for {service}",
+        "booked": "{service} booked",
+        "newTime": "New time sent for {service}",
+        "missed": "Missed {service}",
+        "cancelled": "{service} cancelled",
+        "forVisit": "For {when}",
+        "text": "Text sent: {type}",
+        "textFailed": "Text failed: {type}",
+        "followUp": "Follow-up ({method}): {result}",
+        "followUpPlain": "Follow-up ({method})",
+        "open": "Open"
+      },
       "details": {
         "title": "Her details",
         "save": "Save details",
@@ -1312,6 +1396,13 @@
       "calendar": "Calendar"
     },
     "viewsLabel": "Appointment views",
+    "hub": {
+      "label": "Appointments at a glance",
+      "requests": "Waiting requests",
+      "today": "Today",
+      "week": "This week",
+      "missed": "Missed, to follow up"
+    },
     "statuses": {
       "REQUESTED": "Requested",
       "CONFIRMED": "Confirmed",
@@ -1322,6 +1413,19 @@
     },
     "queueEmpty": "No requests waiting. Nice work.",
     "queueIntro": "Oldest first. Confirm the time she asked for, offer another time, or cancel.",
+    "queue": {
+      "count": "{count} waiting",
+      "countOne": "1 waiting",
+      "askedToday": "Asked today",
+      "askedYesterday": "Asked yesterday",
+      "askedDaysAgo": "Asked {days} days ago",
+      "for": "For {service}"
+    },
+    "menu": {
+      "label": "More for {name}'s appointment",
+      "cancel": "Cancel appointment",
+      "openRecord": "Open her record"
+    },
     "asked": "Asked for",
     "waitingSince": "Requested {date}",
     "noteLabel": "Her note",
@@ -1370,16 +1474,11 @@
       "done": "Appointment cancelled."
     },
     "list": {
-      "status": "Status",
-      "allStatuses": "All statuses",
       "service": "Service",
       "allServices": "All services",
       "from": "From",
       "to": "To",
-      "submit": "Show",
       "clear": "Clear",
-      "results": "{count} appointments",
-      "resultsOne": "1 appointment",
       "empty": "No appointments match these filters.",
       "columns": {
         "when": "Date and time",
@@ -1390,7 +1489,26 @@
       },
       "page": "Page {page} of {pages}",
       "prev": "Previous",
-      "next": "Next"
+      "next": "Next",
+      "tabs": {
+        "label": "Appointment status",
+        "all": "All",
+        "upcoming": "Upcoming",
+        "REQUESTED": "Requested",
+        "MISSED": "Missed",
+        "COMPLETED": "Completed",
+        "CANCELLED": "Cancelled"
+      },
+      "filtersLabel": "Filter appointments",
+      "search": "Mother",
+      "searchPlaceholder": "Her name or mobile number",
+      "updating": "Updating…",
+      "showing": "Showing {from}–{to} of {total}",
+      "today": "Today",
+      "tomorrow": "Tomorrow",
+      "yesterday": "Yesterday",
+      "emptyTab": "No appointments here yet.",
+      "time": "Time"
     },
     "calendar": {
       "booked": "{count} booked",

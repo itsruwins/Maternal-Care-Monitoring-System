@@ -4,10 +4,11 @@ import { useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { CheckIcon, CheckupIcon, DangerIcon, SpinnerIcon } from "@/components/icons";
+import { CallIcon, CheckIcon, CheckupIcon, CloseIcon, DangerIcon, MoreIcon, RecordsIcon, RetryIcon, SpinnerIcon } from "@/components/icons";
 import { SlotPicker } from "@/components/shared/slot-picker";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useDictionary } from "@/i18n/dictionary-provider";
@@ -68,12 +69,112 @@ export function AppointmentActions({
           {a.confirm}
         </Button>
       )}
-      <Button type="button" size="sm" variant="secondary" onClick={() => setDialog("propose")}>
+      {/* Soft, not white: the actions sit on white cards. */}
+      <Button type="button" size="sm" variant="soft" onClick={() => setDialog("propose")}>
         {a.otherTime}
       </Button>
       <Button type="button" size="sm" variant="ghost" onClick={() => setDialog("cancel")} className="text-rose-deep">
         {a.cancel}
       </Button>
+      {dialog === "propose" && <ProposeDialog appointment={appointment} slots={slots} onClose={() => setDialog(null)} />}
+      {dialog === "cancel" && <CancelDialog appointmentId={appointment.id} onClose={() => setDialog(null)} />}
+    </div>
+  );
+}
+
+type MenuTarget = Target & { motherName: string; recordHref: string; followUpsHref: string };
+
+// A table row's actions: the one next step as a small button (Confirm for a
+// request, Record visit for today's visit, See follow-ups for a missed one),
+// then a ⋯ menu with Other time, Cancel appointment and her record. The
+// dialogs are the same as on the cards.
+export function AppointmentRowActions({
+  appointment,
+  slots,
+  recordVisitHref,
+  datePassed = false,
+  part = "all",
+  className,
+}: {
+  appointment: MenuTarget;
+  slots: SlotData;
+  /** Today's confirmed visit: "Record visit". */
+  recordVisitHref?: string;
+  datePassed?: boolean;
+  /** Only the next-step button, only the ⋯ menu, or both (stacked rows split them). */
+  part?: "all" | "primary" | "menu";
+  className?: string;
+}) {
+  const { t } = useDictionary();
+  const a = t.appointments;
+  const router = useRouter();
+  const [dialog, setDialog] = useState<"propose" | "cancel" | null>(null);
+  const [confirming, startConfirm] = useTransition();
+  const primary = part !== "menu";
+  const open = ["REQUESTED", "CONFIRMED", "RESCHEDULED"].includes(appointment.status);
+
+  const confirm = () =>
+    startConfirm(async () => {
+      const result = await confirmRequest(appointment.id);
+      if (result.ok) toast.success(a.confirmed);
+      else toast.error(t.appointmentErrors[result.error]);
+      router.refresh();
+    });
+
+  return (
+    <div className={cn("flex items-center justify-end gap-1.5", className)}>
+      {primary && appointment.status === "REQUESTED" && !datePassed && (
+        <Button type="button" size="sm" onClick={confirm} disabled={confirming} aria-busy={confirming}>
+          {confirming ? <SpinnerIcon className="animate-spin" aria-hidden /> : <CheckIcon weight="bold" aria-hidden />}
+          {a.confirm}
+        </Button>
+      )}
+      {primary && recordVisitHref && (
+        <Button asChild size="sm">
+          <Link href={recordVisitHref} className="no-underline">
+            <CheckupIcon weight="bold" aria-hidden />
+            {t.visits.record}
+          </Link>
+        </Button>
+      )}
+      {primary && appointment.status === "MISSED" && (
+        <Button asChild size="sm" variant="soft">
+          <Link href={appointment.followUpsHref} aria-label={format(a.followUpsFor, { name: appointment.motherName })} className="no-underline">
+            <CallIcon weight="bold" aria-hidden />
+            {a.followUps}
+          </Link>
+        </Button>
+      )}
+      {part !== "primary" && (
+        <DropdownMenu modal={false}>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon-sm" aria-label={format(a.menu.label, { name: appointment.motherName })} className="text-ink-soft hover:text-ink">
+              <MoreIcon weight="bold" aria-hidden className="size-5" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="origin-(--radix-dropdown-menu-content-transform-origin)">
+            {open && (
+              <>
+                <DropdownMenuItem onSelect={() => setDialog("propose")}>
+                  <RetryIcon weight="bold" aria-hidden />
+                  {a.otherTime}
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => setDialog("cancel")} className="text-rose-deep focus:text-rose-deep [&_svg]:text-rose-deep">
+                  <CloseIcon weight="bold" aria-hidden />
+                  {a.menu.cancel}
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+              </>
+            )}
+            <DropdownMenuItem asChild>
+              <Link href={appointment.recordHref} className="no-underline">
+                <RecordsIcon weight="bold" aria-hidden />
+                {a.menu.openRecord}
+              </Link>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
       {dialog === "propose" && <ProposeDialog appointment={appointment} slots={slots} onClose={() => setDialog(null)} />}
       {dialog === "cancel" && <CancelDialog appointmentId={appointment.id} onClose={() => setDialog(null)} />}
     </div>

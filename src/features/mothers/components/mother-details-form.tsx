@@ -18,8 +18,21 @@ import { updateMotherDetails } from "../actions/update-mother";
 import type { MotherDetailsField } from "../schemas";
 import type { FormState, MotherRecord } from "../types";
 
-// Her details, editable by any health worker or admin.
-export function MotherDetailsForm({ mother, puroks, today }: { mother: MotherRecord; puroks: PurokOption[]; today: string }) {
+// Her details, editable by any health worker or admin. onSaved runs after a
+// save; onCancel adds a Cancel button beside Save.
+export function MotherDetailsForm({
+  mother,
+  puroks,
+  today,
+  onSaved,
+  onCancel,
+}: {
+  mother: MotherRecord;
+  puroks: PurokOption[];
+  today: string;
+  onSaved?: () => void;
+  onCancel?: () => void;
+}) {
   const { t } = useDictionary();
   const f = t.register.fields;
   const d = t.mothers.record.details;
@@ -29,6 +42,7 @@ export function MotherDetailsForm({ mother, puroks, today }: { mother: MotherRec
     if (result.ok) {
       toast.success(d.saved);
       router.refresh();
+      onSaved?.();
     }
     return result;
   }, {});
@@ -92,11 +106,16 @@ export function MotherDetailsForm({ mother, puroks, today }: { mother: MotherRec
           {t.mothers.errors[state.error]}
         </p>
       )}
-      <div>
+      <div className="flex flex-col gap-2 sm:flex-row">
         <Button type="submit" disabled={pending} aria-busy={pending} className="w-full sm:w-auto">
           {pending && <SpinnerIcon className="animate-spin" aria-hidden />}
           {pending ? d.saving : d.save}
         </Button>
+        {onCancel && (
+          <Button type="button" variant="ghost" onClick={onCancel} disabled={pending} className="w-full sm:w-auto">
+            {t.mothers.record.detailsView.cancel}
+          </Button>
+        )}
       </div>
     </form>
   );

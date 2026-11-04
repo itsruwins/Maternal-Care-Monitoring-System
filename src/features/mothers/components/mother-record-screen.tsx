@@ -2,15 +2,14 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
+  CallIcon,
   CaretLeftIcon,
-  LocationIcon,
-  PhoneIcon,
-  PregnancyIcon,
+  CaretRightIcon,
   UserIcon,
 } from "@/components/icons";
 import { ScrollActiveIntoView } from "@/components/shared/scroll-active-into-view";
+import { Button } from "@/components/ui/button";
 import { IconCircle } from "@/components/ui/icon-circle";
-import { StatusBadge } from "@/features/accounts/components/badges";
 import { MotherAppointmentsPanel } from "@/features/appointments/components/mother-appointments-panel";
 import { MotherFollowUpsPanel } from "@/features/follow-ups/components/mother-follow-ups-panel";
 import { MotherSmsPanel } from "@/features/sms/components/mother-sms-panel";
@@ -29,11 +28,14 @@ import { daysBetween, formatDate } from "@/lib/utils/pregnancy";
 import { cn } from "@/lib/utils/cn";
 import { summarizeRecords } from "../pregnancy-summary";
 import { getMother } from "../queries/get-mother";
-import type { MotherRecord } from "../types";
-import { MotherDetailsForm } from "./mother-details-form";
+import { getMotherActivity } from "../queries/get-mother-activity";
+import type { MotherActivity, MotherRecord } from "../types";
+import { MotherDetailsCard } from "./mother-details-card";
+import { MotherDetailsView } from "./mother-details-view";
 import { MotherLoginCard } from "./mother-login-card";
-import { PregnancyChip } from "./pregnancy-chip";
 import { PregnancyTab } from "./pregnancy-tab";
+import { RecentActivity } from "./recent-activity";
+import { RecordHeader } from "./record-header";
 
 export const RECORD_TABS = [
   "overview",
@@ -64,10 +66,14 @@ export async function MotherRecordScreen({
   const tab = RECORD_TABS.includes(tabParam as RecordTab)
     ? (tabParam as RecordTab)
     : "overview";
-  const [{ t, locale }, puroks, openFollowUps] = await Promise.all([
+  const [{ t, locale }, puroks, openFollowUps, activity] = await Promise.all([
     getServerI18n(),
     getShownPuroks(),
     countOpenFollowUps(mother.id),
+    getMotherActivity(
+      [...(mother.current ? [mother.current.id] : []), ...mother.past.map((p) => p.id)],
+      new Date().toISOString(),
+    ),
   ]);
   return (
     <MotherRecordView
@@ -78,6 +84,7 @@ export async function MotherRecordScreen({
       puroks={puroks}
       today={manilaTodayISO()}
       openFollowUps={openFollowUps}
+      activity={activity}
       appointments={
         tab === "appointments" ? (
           <MotherAppointmentsPanel
@@ -121,6 +128,7 @@ export function MotherRecordView({
   puroks,
   today,
   openFollowUps = 0,
+  activity,
   appointments,
   visits,
   followUps,
@@ -134,6 +142,8 @@ export function MotherRecordView({
   today: string;
   /** Her missed visits still to follow up (the count on the tab). */
   openFollowUps?: number;
+  /** Next and last visit, and her latest events. */
+  activity: MotherActivity;
   /** The Appointments tab's content (from the appointments feature). */
   appointments?: ReactNode;
   /** The Visits tab's content (from the visits feature). */
@@ -170,34 +180,17 @@ export function MotherRecordView({
         {r.back}
       </Link>
 
-      {/* Who she is */}
-      <section className="flex flex-col gap-4 rounded-3xl bg-white p-6 shadow-[var(--shadow-soft)] sm:flex-row sm:items-center sm:p-8">
-        <IconCircle icon={PregnancyIcon} tone="blush" size="lg" />
-        <div className="flex min-w-0 flex-1 flex-col gap-2">
-          <h1 className="text-title font-extrabold break-words">{name}</h1>
-          <p className="flex flex-wrap gap-x-4 gap-y-1 text-[0.95rem] text-ink-soft">
-            {age !== null && <span>{format(r.age, { age })}</span>}
-            <span className="tnum inline-flex items-center gap-1.5">
-              <PhoneIcon aria-hidden className="size-4" />
-              {mother.contactNumber}
-            </span>
-            <span className="inline-flex items-center gap-1.5">
-              <LocationIcon aria-hidden className="size-4" />
-              {mother.purokName ?? t.mothers.noPurokYet}
-            </span>
-          </p>
-          <div className="flex flex-wrap items-center gap-2">
-            <PregnancyChip t={t} locale={locale} pregnancy={pregnancy} />
-            {mother.login && (
-              <StatusBadge
-                status={mother.login.status}
-                label={`${t.mothers.columns.login}: ${mother.login.status === "ACTIVE" ? r.login.active : r.login.inactive}`}
-              />
-            )}
-          </div>
-          <p className="text-sm text-ink-soft">{origin}</p>
-        </div>
-      </section>
+      <RecordHeader
+        t={t}
+        locale={locale}
+        mother={mother}
+        name={name}
+        age={age}
+        origin={origin}
+        pregnancy={pregnancy}
+        activity={activity}
+        today={today}
+      />
 
       {/* Tabs: plain links, so each tab has its own address. */}
       <nav aria-label={r.tabsLabel}>
@@ -233,36 +226,31 @@ export function MotherRecordView({
       </nav>
 
       {tab === "overview" && (
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:items-start">
-          <section
-            aria-labelledby="her-details"
-            className="rounded-3xl bg-white p-6 shadow-[var(--shadow-soft)] sm:p-8"
-          >
-            <div className="mb-5 flex items-center gap-3">
-              <IconCircle icon={UserIcon} tone="blush" size="sm" />
-              <h2 id="her-details" className="text-xl font-bold">
-                {r.details.title}
-              </h2>
+        <div className="flex flex-col gap-6">
+          {openFollowUps > 0 && <FollowUpNotice t={t} count={openFollowUps} />}
+          {/* Wide screens: details over login on the left, activity on the right. */}
+          <div className="grid gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:items-start">
+            <div className="lg:col-start-1 lg:row-start-1">
+              <MotherDetailsCard mother={mother} puroks={puroks} today={today}>
+                <MotherDetailsView t={t} locale={locale} mother={mother} name={name} age={age} origin={origin} />
+              </MotherDetailsCard>
             </div>
-            <MotherDetailsForm
-              key={mother.id}
-              mother={mother}
-              puroks={puroks}
-              today={today}
-            />
-          </section>
-          <section
-            aria-labelledby="her-login"
-            className="rounded-3xl bg-white p-6 shadow-[var(--shadow-soft)] sm:p-8"
-          >
-            <div className="mb-5 flex items-center gap-3">
-              <IconCircle icon={UserIcon} tone="mint" size="sm" />
-              <h2 id="her-login" className="text-xl font-bold">
-                {r.login.title}
-              </h2>
+            <div className="lg:col-start-2 lg:row-span-2 lg:row-start-1">
+              <RecentActivity t={t} locale={locale} events={activity.events} />
             </div>
-            <MotherLoginCard motherId={mother.id} login={mother.login} />
-          </section>
+            <section
+              aria-labelledby="her-login"
+              className="rounded-3xl bg-white p-5 shadow-[var(--shadow-soft)] sm:p-8 lg:col-start-1 lg:row-start-2"
+            >
+              <div className="mb-5 flex items-center gap-3">
+                <IconCircle icon={UserIcon} tone="mint" size="sm" />
+                <h2 id="her-login" className="text-xl font-bold">
+                  {r.login.title}
+                </h2>
+              </div>
+              <MotherLoginCard motherId={mother.id} login={mother.login} />
+            </section>
+          </div>
         </div>
       )}
 
@@ -278,5 +266,32 @@ export function MotherRecordView({
 
       {tab === "sms" && sms}
     </div>
+  );
+}
+
+/** Above the Overview while missed visits wait for a follow-up: blush, with the way to the Follow-ups tab. */
+function FollowUpNotice({ t, count }: { t: Dictionary; count: number }) {
+  const n = t.mothers.record.followUpNotice;
+  return (
+    <section
+      aria-labelledby="follow-up-notice"
+      className="flex flex-col gap-4 rounded-2xl bg-blush/70 p-5 sm:flex-row sm:items-center sm:gap-5 sm:px-6"
+    >
+      <div className="flex min-w-0 flex-1 items-start gap-4">
+        <IconCircle icon={CallIcon} tone="white" size="sm" className="text-rose-deep" />
+        <div className="flex min-w-0 flex-col gap-0.5 pt-0.5">
+          <h2 id="follow-up-notice" className="font-bold text-rose-deep">
+            {count === 1 ? n.one : format(n.other, { count })}
+          </h2>
+          <p className="text-[0.95rem] text-ink-soft">{n.body}</p>
+        </div>
+      </div>
+      <Button asChild variant="secondary" size="sm" className="self-start sm:self-auto">
+        <Link href="?tab=followUps" scroll={false} className="no-underline">
+          {n.open}
+          <CaretRightIcon weight="bold" aria-hidden className="size-4" />
+        </Link>
+      </Button>
+    </section>
   );
 }

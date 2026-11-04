@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { requireRole } from "@/lib/auth/session";
 import type { UserRole } from "@/types/database";
 import { getShellUser } from "../queries/get-shell-user";
+import { getNavBadges } from "../queries/nav-badges";
 import { MotherShell } from "./mother-shell";
 import { StaffShell } from "./staff-shell";
 
@@ -10,8 +11,12 @@ import { StaffShell } from "./staff-shell";
 
 export async function StaffShellLoader({ roles, children }: { roles: readonly UserRole[]; children: ReactNode }) {
   const user = await requireRole(roles);
-  const shellUser = await getShellUser(user);
-  return <StaffShell user={shellUser}>{children}</StaffShell>;
+  const [shellUser, badges] = await Promise.all([getShellUser(user), getNavBadges()]);
+  return (
+    <StaffShell user={shellUser} badges={badges} liveBadges>
+      {children}
+    </StaffShell>
+  );
 }
 
 export async function MotherShellLoader({ children }: { children: ReactNode }) {

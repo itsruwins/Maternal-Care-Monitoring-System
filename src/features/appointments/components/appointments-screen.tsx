@@ -2,24 +2,20 @@ import Link from "next/link";
 import { CaretLeftIcon, CaretRightIcon, PlusIcon } from "@/components/icons";
 import { Pager } from "@/components/shared/pager";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { NativeSelect } from "@/components/ui/native-select";
 import type { Locale } from "@/i18n/config";
 import { format } from "@/i18n/format";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import { getServerI18n } from "@/i18n/server";
-import { formatSlot } from "@/lib/appointments/format";
-import { addMonths, isWeekday, manilaSlot } from "@/lib/appointments/slots";
+import { addMonths, isWeekday } from "@/lib/appointments/slots";
 import { AREA_ROLES } from "@/lib/auth/roles";
 import { requireRole } from "@/lib/auth/session";
 import { manilaTodayISO } from "@/lib/utils/manila-date";
 import { formatDate, parseISODate, toISODate } from "@/lib/utils/pregnancy";
 import { cn } from "@/lib/utils/cn";
-import type { AppointmentStatus } from "@/types/database";
+import { appointmentsListHref } from "../paths";
 import {
   APPOINTMENTS_PAGE_SIZE,
-  countRequests,
+  getHubCounts,
   getStaffSlotData,
   listAppointments,
   listMonth,
@@ -27,14 +23,15 @@ import {
   listServices,
   parseAppointmentFilters,
 } from "../queries/appointments";
-import type { AppointmentFilters, Service, SlotData, StaffAppointment } from "../types";
-import { AppointmentActions } from "./appointment-actions";
-import { DatePassedLine, FollowUpsLink, ReminderLine, StatusChip, requestPassed } from "./appointment-bits";
-import { AppointmentCard } from "./appointment-card";
+import type { AppointmentFilters, HubCounts as Counts, ListTabCounts, Service, SlotData, StaffAppointment } from "../types";
+import { AppointmentRows } from "./appointment-rows";
+import { AppointmentToolbar } from "./appointment-toolbar";
+import { HubCounts } from "./hub-counts";
+import { ListTabs } from "./list-tabs";
+import { RequestCard } from "./request-card";
 
 const VIEWS = ["queue", "list", "calendar"] as const;
 type View = (typeof VIEWS)[number];
-const STATUSES: AppointmentStatus[] = ["REQUESTED", "CONFIRMED", "RESCHEDULED", "COMPLETED", "MISSED", "CANCELLED"];
 
 type Params = Record<string, string | string[] | undefined>;
 const one = (params: Params, key: string) => {
@@ -51,16 +48,28 @@ export async function AppointmentsScreen({ searchParams }: { searchParams: Promi
   const view: View = VIEWS.includes(one(params, "view") as View) ? (one(params, "view") as View) : "queue";
   const today = manilaTodayISO();
   const now = new Date().toISOString();
-  const [{ t, locale }, slots, requestCount] = await Promise.all([getServerI18n(), getStaffSlotData(today), countRequests()]);
+  const [{ t, locale }, slots, counts] = await Promise.all([getServerI18n(), getStaffSlotData(today), getHubCounts(today)]);
 
   let body;
   if (view === "queue") {
-    body = <QueueView t={t} locale={locale} items={await listRequests()} slots={slots} now={now} />;
+    body = <QueueView t={t} locale={locale} items={await listRequests()} slots={slots} today={today} now={now} />;
   } else if (view === "list") {
     const filters = parseAppointmentFilters(params);
-    const [{ items, total }, services] = await Promise.all([listAppointments(filters), listServices()]);
+    const [{ items, total, counts: tabCounts }, services] = await Promise.all([listAppointments(filters, today), listServices()]);
     body = (
-      <ListView t={t} locale={locale} items={items} total={total} filters={filters} services={services} slots={slots} today={today} now={now} isAdmin={isAdmin} />
+      <ListView
+        t={t}
+        locale={locale}
+        items={items}
+        total={total}
+        counts={tabCounts}
+        filters={filters}
+        services={services}
+        slots={slots}
+        today={today}
+        now={now}
+        isAdmin={isAdmin}
+      />
     );
   } else {
     const month = /^\d{4}-(0[1-9]|1[0-2])$/.test(one(params, "month")) ? one(params, "month") : today.slice(0, 7);
@@ -71,11 +80,17 @@ export async function AppointmentsScreen({ searchParams }: { searchParams: Promi
     );
   }
 
-  return <AppointmentsView t={t} view={view} requestCount={requestCount}>{body}</AppointmentsView>;
+  return (
+    <AppointmentsView t={t} view={view} counts={counts} today={today}>
+      {body}
+    </AppointmentsView>
+  );
 }
 
-// Header, Book button and the view tabs around the chosen view.
-export function AppointmentsView({ t, view, requestCount, children }: { t: Dictionary; view: View; requestCount: number; children: React.ReactNode }) {
+// The page frame around the chosen view: title, intro and Book appointment,
+// the four counts, then the Requests / List / Calendar tabs (Requests with
+// its rose count while any wait).
+export function AppointmentsView({ t, view, counts, today, children }: { t: Dictionary; view: View; counts: Counts; today: string; children: React.ReactNode }) {
   const a = t.appointments;
   return (
     <div className="flex flex-col gap-6">
@@ -85,12 +100,13 @@ export function AppointmentsView({ t, view, requestCount, children }: { t: Dicti
           <p className="mt-2 text-ink-soft">{a.intro}</p>
         </div>
         <Button asChild className="w-full sm:w-auto">
-          <Link href="/staff/appointments/new">
+          <Link href="/staff/appointments/new" className="no-underline">
             <PlusIcon weight="bold" aria-hidden />
             {a.book}
           </Link>
         </Button>
       </div>
+      <HubCounts t={t} counts={counts} today={today} />
       <nav aria-label={a.viewsLabel} className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
         <ul className="flex w-max gap-1 rounded-full bg-white p-1.5 shadow-[var(--shadow-soft)]">
           {VIEWS.map((key) => {
@@ -102,13 +118,13 @@ export function AppointmentsView({ t, view, requestCount, children }: { t: Dicti
                   scroll={false}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "flex h-10 items-center gap-2 rounded-full px-4 text-[0.95rem] whitespace-nowrap no-underline transition-colors",
+                    "flex h-10 items-center gap-2 rounded-full px-4 text-[0.95rem] whitespace-nowrap no-underline transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-leaf focus-visible:outline-solid",
                     active ? "bg-mint font-semibold text-leaf" : "font-medium text-ink-soft hover:bg-cream hover:text-ink",
                   )}
                 >
                   {a.views[key]}
-                  {key === "queue" && requestCount > 0 && (
-                    <span className="tnum grid h-6 min-w-6 place-items-center rounded-full bg-rose-deep px-1.5 text-caption font-bold text-white">{requestCount}</span>
+                  {key === "queue" && counts.requests > 0 && (
+                    <span className="tnum grid h-6 min-w-6 place-items-center rounded-full bg-rose-deep px-1.5 text-caption font-bold text-white">{counts.requests}</span>
                   )}
                 </Link>
               </li>
@@ -121,30 +137,52 @@ export function AppointmentsView({ t, view, requestCount, children }: { t: Dicti
   );
 }
 
-export function QueueView({ t, locale, items, slots, now }: { t: Dictionary; locale: Locale; items: StaffAppointment[]; slots: SlotData; now: string }) {
+/** Waiting requests, oldest first, as booking tickets (two across from 1280px). */
+export function QueueView({
+  t,
+  locale,
+  items,
+  slots,
+  today,
+  now,
+}: {
+  t: Dictionary;
+  locale: Locale;
+  items: StaffAppointment[];
+  slots: SlotData;
+  today: string;
+  now: string;
+}) {
   const a = t.appointments;
   if (items.length === 0) {
     return <p className="rounded-2xl bg-white px-6 py-10 text-center text-ink-soft shadow-[var(--shadow-soft)]">{a.queueEmpty}</p>;
   }
   return (
-    <div className="flex flex-col gap-3">
-      <p className="text-sm text-ink-soft">{a.queueIntro}</p>
-      <ul className="grid gap-3 lg:grid-cols-2">
+    <section aria-labelledby="queue-title" className="flex flex-col gap-3">
+      <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
+        <h2 id="queue-title" className="text-lg font-bold">
+          {items.length === 1 ? a.queue.countOne : format(a.queue.count, { count: items.length })}
+        </h2>
+        <p className="text-sm text-ink-soft">{a.queueIntro}</p>
+      </div>
+      <ul className="grid gap-4 xl:grid-cols-2">
         {items.map((item) => (
           <li key={item.id}>
-            <AppointmentCard t={t} locale={locale} appointment={item} slots={slots} now={now} />
+            <RequestCard t={t} locale={locale} appointment={item} slots={slots} today={today} now={now} />
           </li>
         ))}
       </ul>
-    </div>
+    </section>
   );
 }
 
+/** The status tabs, then one card: the toolbar, the rows by day, and the pager. */
 export function ListView({
   t,
   locale,
   items,
   total,
+  counts,
   filters,
   services,
   slots,
@@ -156,146 +194,55 @@ export function ListView({
   locale: Locale;
   items: StaffAppointment[];
   total: number;
+  counts: ListTabCounts;
   filters: AppointmentFilters;
   services: Service[];
   slots: SlotData;
-  today?: string;
+  /** Manila date. */
+  today: string;
   /** The current instant (ISO), for "Date passed" on requests. */
   now: string;
   /** Admins: failed reminders link to the SMS log. */
   isAdmin?: boolean;
 }) {
   const l = t.appointments.list;
-  const hasFilters = Boolean(filters.status || filters.service || filters.from || filters.to);
+  const hasFilters = Boolean(filters.q || filters.service || filters.from || filters.to);
   const pages = Math.max(1, Math.ceil(total / APPOINTMENTS_PAGE_SIZE));
-  const pageHref = (page: number) => {
-    const params = new URLSearchParams({ view: "list" });
-    if (filters.status) params.set("status", filters.status);
-    if (filters.service) params.set("service", String(filters.service));
-    if (filters.from) params.set("from", filters.from);
-    if (filters.to) params.set("to", filters.to);
-    if (page > 1) params.set("page", String(page));
-    return `?${params.toString()}`;
-  };
+  const hidden: Record<string, string> = { view: "list" };
+  if (filters.status) hidden.status = filters.status;
+  const first = (filters.page - 1) * APPOINTMENTS_PAGE_SIZE + 1;
 
   return (
     <div className="flex flex-col gap-4">
-      <form method="get" className="grid gap-3 rounded-2xl bg-white p-4 shadow-[var(--shadow-soft)] sm:grid-cols-2 sm:p-5 xl:grid-cols-[repeat(4,minmax(0,1fr))_auto] xl:items-end">
-        <input type="hidden" name="view" value="list" />
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="appt-status">{l.status}</Label>
-          <NativeSelect id="appt-status" name="status" defaultValue={filters.status}>
-            <option value="">{l.allStatuses}</option>
-            {STATUSES.map((status) => (
-              <option key={status} value={status}>
-                {t.appointments.statuses[status]}
-              </option>
-            ))}
-          </NativeSelect>
-        </div>
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="appt-service">{l.service}</Label>
-          <NativeSelect id="appt-service" name="service" defaultValue={String(filters.service)}>
-            <option value="">{l.allServices}</option>
-            {services.map((service) => (
-              <option key={service.id} value={service.id}>
-                {service.name}
-              </option>
-            ))}
-          </NativeSelect>
-        </div>
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="appt-from">{l.from}</Label>
-          <Input id="appt-from" name="from" type="date" defaultValue={filters.from} />
-        </div>
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="appt-to">{l.to}</Label>
-          <Input id="appt-to" name="to" type="date" defaultValue={filters.to} />
-        </div>
-        <div className="flex gap-2 sm:col-span-2 xl:col-span-1">
-          <Button type="submit" className="h-12 flex-1 xl:flex-none">
-            {l.submit}
-          </Button>
-          {hasFilters && (
-            <Button asChild variant="ghost" className="h-12">
-              <a href="?view=list">{l.clear}</a>
-            </Button>
-          )}
-        </div>
-      </form>
-
-      {items.length === 0 ? (
-        <p className="rounded-2xl bg-white px-6 py-10 text-center text-ink-soft shadow-[var(--shadow-soft)]">{l.empty}</p>
-      ) : (
-        <>
-          <p className="text-sm text-ink-soft">{total === 1 ? l.resultsOne : format(l.results, { count: total })}</p>
-          {/* Table from 1280px (room for the actions beside the sidebar) */}
-          <div className="hidden overflow-hidden rounded-2xl bg-white shadow-[var(--shadow-soft)] xl:block">
-            <table className="w-full text-left text-[0.95rem]">
-              <thead className="border-b border-line text-caption font-semibold text-ink-soft">
-                <tr>
-                  <th scope="col" className="px-5 py-3.5 font-semibold">{l.columns.when}</th>
-                  <th scope="col" className="px-3 py-3.5 font-semibold">{l.columns.mother}</th>
-                  <th scope="col" className="px-3 py-3.5 font-semibold">{l.columns.service}</th>
-                  <th scope="col" className="px-3 py-3.5 font-semibold">{l.columns.status}</th>
-                  <th scope="col" className="px-5 py-3.5 font-semibold"><span className="sr-only">{t.appointments.cancel}</span></th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-line">
-                {items.map((item) => {
-                  const passed = requestPassed(item, now);
-                  return (
-                    <tr key={item.id} className="align-top">
-                      <td className="tnum px-5 py-3 whitespace-nowrap">{formatSlot(item.at, locale, "short")}</td>
-                      <td className="px-3 py-3">
-                        <Link href={`/staff/mothers/${item.mother.id}?tab=appointments`} className="font-semibold text-ink no-underline hover:text-leaf hover:underline">
-                          {item.mother.name}
-                        </Link>
-                      </td>
-                      <td className="px-3 py-3">{item.service}</td>
-                      <td className="px-3 py-3">
-                        <div className="flex flex-col items-start gap-1.5">
-                          <StatusChip t={t} status={item.status} />
-                          {passed && <DatePassedLine t={t} />}
-                          <ReminderLine t={t} locale={locale} appointment={item} isAdmin={isAdmin} />
-                        </div>
-                      </td>
-                      <td className="w-px px-5 py-3">
-                        {item.status === "MISSED" ? (
-                          <div className="flex justify-end">
-                            <FollowUpsLink t={t} mother={item.mother} />
-                          </div>
-                        ) : (
-                          <AppointmentActions
-                            appointment={{ id: item.id, status: item.status, at: item.at, hasLogin: item.mother.hasLogin }}
-                            slots={slots}
-                            className="flex-nowrap justify-end"
-                            recordHref={
-                              today && ["CONFIRMED", "RESCHEDULED"].includes(item.status) && manilaSlot(item.at).date === today
-                                ? `/staff/visits/new?appointment=${item.id}`
-                                : undefined
-                            }
-                            datePassed={passed}
-                          />
-                        )}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-          {/* Cards below 1280px */}
-          <ul className="flex flex-col gap-3 xl:hidden">
-            {items.map((item) => (
-              <li key={item.id}>
-                <AppointmentCard t={t} locale={locale} appointment={item} slots={slots} today={today} now={now} isAdmin={isAdmin} />
-              </li>
-            ))}
-          </ul>
-          <Pager page={filters.page} pages={pages} hrefFor={pageHref} labels={{ prev: l.prev, next: l.next, page: l.page }} />
-        </>
-      )}
+      <ListTabs t={t} filters={filters} counts={counts} />
+      <AppointmentToolbar
+        values={{ q: filters.q, service: String(filters.service), from: filters.from, to: filters.to }}
+        hidden={hidden}
+        services={[{ value: "", label: l.allServices }, ...services.map((service) => ({ value: String(service.id), label: service.name }))]}
+        labels={{
+          form: l.filtersLabel,
+          search: l.search,
+          placeholder: l.searchPlaceholder,
+          service: l.service,
+          from: l.from,
+          to: l.to,
+          clear: l.clear,
+          updating: l.updating,
+        }}
+        clearHref={hasFilters ? appointmentsListHref(filters, { q: "", service: "", from: "", to: "" }) : null}
+      >
+        {items.length === 0 ? (
+          <p className="px-6 py-12 text-center text-ink-soft">{hasFilters ? l.empty : l.emptyTab}</p>
+        ) : (
+          <>
+            <AppointmentRows t={t} locale={locale} items={items} slots={slots} today={today} now={now} isAdmin={isAdmin} />
+            <div className="flex flex-col gap-3 border-t border-line bg-milk px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+              <p className="tnum text-sm text-ink-soft">{format(l.showing, { from: first, to: first + items.length - 1, total })}</p>
+              <Pager page={filters.page} pages={pages} hrefFor={(page) => appointmentsListHref(filters, { page })} labels={{ prev: l.prev, next: l.next, page: l.page }} />
+            </div>
+          </>
+        )}
+      </AppointmentToolbar>
     </div>
   );
 }
@@ -402,13 +349,9 @@ export function CalendarView({
         {dayItems.length === 0 ? (
           <p className="rounded-2xl bg-white px-6 py-8 text-center text-ink-soft shadow-[var(--shadow-soft)]">{c.dayEmpty}</p>
         ) : (
-          <ul className="flex flex-col gap-3">
-            {dayItems.map((item) => (
-              <li key={item.id}>
-                <AppointmentCard t={t} locale={locale} appointment={item} slots={slots} showDate={false} today={today} now={now} isAdmin={isAdmin} />
-              </li>
-            ))}
-          </ul>
+          <div className="overflow-hidden rounded-2xl bg-white shadow-[var(--shadow-soft)]">
+            <AppointmentRows t={t} locale={locale} items={dayItems} slots={slots} today={today} now={now} isAdmin={isAdmin} grouped={false} stacked />
+          </div>
         )}
       </section>
     </div>

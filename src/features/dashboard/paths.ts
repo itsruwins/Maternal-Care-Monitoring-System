@@ -7,7 +7,7 @@ export const DASHBOARD_LINKS: Record<keyof DashboardCounts, string> = {
   requests: "/staff/appointments",
   followUps: "/staff/follow-ups",
   pregnant: "/staff/mothers?status=pregnant",
-  dueSoon: "/staff/mothers?due=soon",
+  dueSoon: "/staff/mothers?status=dueSoon",
 };
 
 export const ACCOUNT_LINKS = {

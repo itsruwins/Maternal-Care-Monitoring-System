@@ -14,6 +14,11 @@ export function formatSlotDate(iso: string, locale: string, style: "long" | "sho
   }).format(new Date(iso));
 }
 
+/** "Thursday" (style "long") or "Thu". */
+export function formatSlotWeekday(iso: string, locale: string, style: "long" | "short" = "long"): string {
+  return new Intl.DateTimeFormat(tag(locale), { timeZone: "Asia/Manila", weekday: style }).format(new Date(iso));
+}
+
 /** "Nov 4" (month and day only). */
 export function formatMonthDay(iso: string, locale: string): string {
   return new Intl.DateTimeFormat(tag(locale), { timeZone: "Asia/Manila", month: "short", day: "numeric" }).format(new Date(iso));

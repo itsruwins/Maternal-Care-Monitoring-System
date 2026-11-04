@@ -19,12 +19,35 @@ export type StaffAppointment = {
   reminder: { status: SmsDeliveryStatus; at: string; sentAt: string | null; retryAt: string | null; reason: string | null } | null;
 };
 
+/**
+ * The List's status tabs: "" is everything but cancelled; "upcoming" is
+ * confirmed or new time sent, from today on; the rest are one status each.
+ */
+export type ListTab = "" | "upcoming" | "REQUESTED" | "MISSED" | "COMPLETED" | "CANCELLED";
+
 export type AppointmentFilters = {
-  status: AppointmentStatus | "";
+  status: ListTab;
+  /** Her name or number. */
+  q: string;
   service: number | "";
   from: string;
   to: string;
   page: number;
+};
+
+/** How many appointments each List tab holds, with the search, service and dates applied. */
+export type ListTabCounts = Record<"all" | "upcoming" | "REQUESTED" | "MISSED" | "COMPLETED" | "CANCELLED", number>;
+
+/** The four counts above the views. */
+export type HubCounts = {
+  /** Requests waiting for an answer. */
+  requests: number;
+  /** Not cancelled, today (Manila). */
+  today: number;
+  /** Not cancelled, Monday to Sunday of this week. */
+  week: number;
+  /** Missed visits still to follow up. */
+  missed: number;
 };
 
 /** Days and taken times for picking a slot (staff: today up to 6 months). */

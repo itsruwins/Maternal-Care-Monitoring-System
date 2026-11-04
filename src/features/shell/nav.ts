@@ -18,6 +18,9 @@ import type { Dictionary } from "@/i18n/get-dictionary";
 
 export type NavKey = keyof Dictionary["shell"]["nav"];
 
+/** Counts shown at the end of sidebar items (a rose badge above zero). */
+export type NavBadges = Partial<Record<NavKey, number>>;
+
 export type NavItem = {
   key: NavKey;
   href: string;

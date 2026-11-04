@@ -366,6 +366,10 @@
       "smsLog": "SMS log",
       "profile": "Profile"
     },
+    "badges": {
+      "appointments": "{count} hiling na naghihintay",
+      "appointmentsOne": "1 hiling na naghihintay"
+    },
     "roles": {
       "ADMIN": "Admin",
       "HEALTH_WORKER": "Health worker",
@@ -871,6 +875,15 @@
   "mothers": {
     "title": "Mga nanay",
     "intro": "Lahat ng nanay na nakarehistro sa health center o sa website.",
+    "tabs": {
+      "label": "Aling mga nanay",
+      "all": "Lahat",
+      "pregnant": "Buntis",
+      "dueSoon": "Kabuwanan sa loob ng 30 araw",
+      "notPregnant": "Hindi buntis"
+    },
+    "toolbarLabel": "I-filter ang mga nanay",
+    "updating": "Ina-update ang listahan…",
     "search": {
       "label": "Maghanap",
       "placeholder": "Pangalan o mobile number",
@@ -880,6 +893,8 @@
       "noPurok": "Wala pang purok",
       "due": "Buwan ng kabuwanan",
       "anyMonth": "Kahit anong buwan",
+      "anyDueMonth": "Kahit anong buwan",
+      "dueIn": "Kabuwanan: {month}",
       "dueSoon": "Sa loob ng 30 araw",
       "status": "Pagbubuntis",
       "all": "Lahat",
@@ -890,6 +905,8 @@
     },
     "results": "{count} nanay",
     "resultsOne": "1 nanay",
+    "showing": "Ipinapakita ang {from}–{to} sa {total}",
+    "sortBy": "Ayusin ayon sa {column}",
     "empty": "Walang nanay na tugma sa mga filter na ito.",
     "emptyAll": "Wala pang nakarehistrong nanay.",
     "columns": {
@@ -900,6 +917,8 @@
       "login": "Login"
     },
     "week": "Ika-{weeks} linggo",
+    "pastDue": "Lampas na",
+    "progress": "Ika-{weeks} linggo sa 40",
     "trimesters": [
       "Unang trimester",
       "Ikalawang trimester",
@@ -916,6 +935,12 @@
     "noPurokYet": "Wala pang purok",
     "hasLogin": "May login",
     "noLogin": "Walang login",
+    "rowActions": {
+      "menu": "Mga gagawin para kay {name}",
+      "open": "Buksan ang record",
+      "book": "Mag-book ng appointment",
+      "visit": "Itala ang bisita"
+    },
     "page": "Pahina {page} ng {pages}",
     "prev": "Nakaraan",
     "next": "Susunod",
@@ -991,6 +1016,65 @@
       "registeredBy": "Ipinarehistro ni {name} noong {date}",
       "registeredOn": "Ipinarehistro sa health center noong {date}",
       "selfSignup": "Nag-sign up sa website noong {date}",
+      "actions": {
+        "label": "Mga gagawin sa record niya",
+        "book": "Mag-book ng appointment",
+        "visit": "Itala ang bisita",
+        "call": "Tawagan si {name}",
+        "copy": "Kopyahin ang numero niya",
+        "copied": "Nakopya ang numero",
+        "copyFailed": "Hindi nakopya. Piliin ang numero at kopyahin."
+      },
+      "facts": {
+        "label": "Sa isang tingin",
+        "pregnancy": "Pagbubuntis",
+        "due": "Kabuwanan",
+        "next": "Susunod na bisita",
+        "last": "Huling bisita",
+        "notPregnant": "Hindi buntis",
+        "noDue": "Walang kabuwanan",
+        "noneBooked": "Wala pang naka-book",
+        "noVisits": "Wala pang bisita",
+        "atWeek": "Sa ika-{weeks} linggo"
+      },
+      "detailsView": {
+        "edit": "I-edit ang detalye",
+        "cancel": "Kanselahin",
+        "about": "Tungkol sa kanya",
+        "address": "Tirahan at emergency contact",
+        "fullName": "Buong pangalan",
+        "birthday": "Kaarawan",
+        "birthdayAge": "{date} ({age} taong gulang)",
+        "mobile": "Numero ng cellphone",
+        "purok": "Purok",
+        "street": "Numero ng bahay at kalye",
+        "emergency": "Emergency contact",
+        "registered": "Nairehistro",
+        "notGiven": "Hindi ibinigay",
+        "callNumber": "Tawagan ang {number}"
+      },
+      "followUpNotice": {
+        "one": "1 bisitang hindi niya napuntahan ang kailangang i-follow-up",
+        "other": "{count} bisitang hindi niya napuntahan ang kailangang i-follow-up",
+        "body": "Tawagan o bisitahin siya, saka itala ang nangyari.",
+        "open": "Buksan ang mga follow-up"
+      },
+      "activity": {
+        "title": "Mga huling nangyari",
+        "empty": "Wala pang nakatala sa record niya. Lalabas dito ang mga bisita, appointment at text niya.",
+        "visit": "Naitala ang bisita sa ika-{weeks} linggo",
+        "requested": "Humiling ng {service}",
+        "booked": "Na-book ang {service}",
+        "newTime": "Nagpadala ng bagong oras para sa {service}",
+        "missed": "Hindi nakapunta sa {service}",
+        "cancelled": "Kinansela ang {service}",
+        "forVisit": "Para sa {when}",
+        "text": "Naipadala ang text: {type}",
+        "textFailed": "Hindi naipadala ang text: {type}",
+        "followUp": "Follow-up ({method}): {result}",
+        "followUpPlain": "Follow-up ({method})",
+        "open": "Buksan"
+      },
       "details": {
         "title": "Mga detalye niya",
         "save": "I-save ang detalye",
@@ -1312,6 +1396,13 @@
       "calendar": "Kalendaryo"
     },
     "viewsLabel": "Mga view ng appointment",
+    "hub": {
+      "label": "Mga appointment sa isang tingin",
+      "requests": "Naghihintay na hiling",
+      "today": "Ngayon",
+      "week": "Ngayong linggo",
+      "missed": "Hindi nakapunta, ifo-follow up"
+    },
     "statuses": {
       "REQUESTED": "Hiniling",
       "CONFIRMED": "Kumpirmado",
@@ -1322,6 +1413,19 @@
     },
     "queueEmpty": "Walang naghihintay na hiling. Magaling!",
     "queueIntro": "Pinakaluma muna. Kumpirmahin ang hiniling na oras, mag-alok ng ibang oras, o kanselahin.",
+    "queue": {
+      "count": "{count} naghihintay",
+      "countOne": "1 naghihintay",
+      "askedToday": "Humiling ngayon",
+      "askedYesterday": "Humiling kahapon",
+      "askedDaysAgo": "Humiling {days} araw na ang nakaraan",
+      "for": "Para sa {service}"
+    },
+    "menu": {
+      "label": "Iba pa para sa appointment ni {name}",
+      "cancel": "Kanselahin ang appointment",
+      "openRecord": "Buksan ang record niya"
+    },
     "asked": "Hiniling na oras",
     "waitingSince": "Hiniling noong {date}",
     "noteLabel": "Tala niya",
@@ -1370,16 +1474,11 @@
       "done": "Nakansela ang appointment."
     },
     "list": {
-      "status": "Status",
-      "allStatuses": "Lahat ng status",
       "service": "Serbisyo",
       "allServices": "Lahat ng serbisyo",
       "from": "Mula",
       "to": "Hanggang",
-      "submit": "Ipakita",
       "clear": "I-clear",
-      "results": "{count} appointment",
-      "resultsOne": "1 appointment",
       "empty": "Walang appointment na tugma sa mga filter na ito.",
       "columns": {
         "when": "Petsa at oras",
@@ -1390,7 +1489,26 @@
       },
       "page": "Pahina {page} ng {pages}",
       "prev": "Nakaraan",
-      "next": "Susunod"
+      "next": "Susunod",
+      "tabs": {
+        "label": "Status ng appointment",
+        "all": "Lahat",
+        "upcoming": "Paparating",
+        "REQUESTED": "Hiniling",
+        "MISSED": "Hindi nakapunta",
+        "COMPLETED": "Tapos na",
+        "CANCELLED": "Kinansela"
+      },
+      "filtersLabel": "I-filter ang mga appointment",
+      "search": "Nanay",
+      "searchPlaceholder": "Pangalan o mobile number niya",
+      "updating": "Ina-update…",
+      "showing": "{from}–{to} sa {total}",
+      "today": "Ngayon",
+      "tomorrow": "Bukas",
+      "yesterday": "Kahapon",
+      "emptyTab": "Wala pang appointment dito.",
+      "time": "Oras"
     },
     "calendar": {
       "booked": "{count} naka-book",

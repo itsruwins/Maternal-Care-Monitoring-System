@@ -96,6 +96,13 @@
     from { transform: scaleY(0); }
   }
 
+  /* A swapped glyph (copy → check) settles in from slightly smaller. */
+  --animate-pop: pop 240ms var(--ease-out-expo) both;
+
+  @keyframes pop {
+    from { transform: scale(0.6); opacity: 0; }
+  }
+
   @keyframes float {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-8px); }

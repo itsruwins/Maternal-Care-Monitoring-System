@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { MotherRecordView, RECORD_TABS, type RecordTab } from "@/features/mothers/components/mother-record-screen";
-import type { MotherRecord } from "@/features/mothers/types";
+import type { MotherActivity, MotherRecord } from "@/features/mothers/types";
 import { StaffShell } from "@/features/shell/components/staff-shell";
 import { MotherAppointmentsPanelView } from "@/features/appointments/components/mother-appointments-panel";
 import { MotherFollowUpsPanelView } from "@/features/follow-ups/components/mother-follow-ups-panel";
@@ -41,6 +41,19 @@ const SAMPLE: MotherRecord = {
   login: { userId: "x", username: "ana.bautista", status: "ACTIVE", lastLoginAt: "2026-10-20T01:30:00Z", mustChangePassword: true, email: null },
 };
 
+// Her next request, last visit and five latest events (the preview's today is Oct 27).
+const ACTIVITY: MotherActivity = {
+  next: { at: "2026-11-03T01:00:00Z", service: "Prenatal Checkup", status: "REQUESTED" },
+  last: { at: "2026-10-20T00:41:00Z", weeks: 20, services: ["Prenatal Checkup", "Tetanus Toxoid Vaccination"] },
+  events: [
+    { kind: "appointment", id: "a1", at: "2026-10-25T03:10:00Z", status: "REQUESTED", service: "Prenatal Checkup", visitAt: "2026-11-03T01:00:00Z" },
+    { kind: "followUp", id: "f1", at: "2026-10-24T06:00:00Z", method: "CALL", result: "REACHED" },
+    { kind: "appointment", id: "a6", at: "2026-10-23T02:00:00Z", status: "MISSED", service: "Tetanus Toxoid Vaccination", visitAt: "2026-10-23T02:00:00Z" },
+    { kind: "text", id: "t1", at: "2026-10-22T00:00:05Z", type: "UPCOMING", status: "DELIVERED" },
+    { kind: "visit", id: "v7", at: "2026-10-20T00:41:00Z", weeks: 20, services: ["Prenatal Checkup", "Tetanus Toxoid Vaccination"] },
+  ],
+};
+
 // Ana's missed visits, newest first (two still open).
 const HER_FOLLOW_UPS: FollowUpItem[] = [SAMPLE_OPEN[2], SAMPLE_OPEN[0], SAMPLE_CLOSED[0], SAMPLE_CLOSED[1]].map((item) => ({
   ...item,
@@ -48,7 +61,8 @@ const HER_FOLLOW_UPS: FollowUpItem[] = [SAMPLE_OPEN[2], SAMPLE_OPEN[0], SAMPLE_C
 }));
 
 // Development only (preview): a mother's record with sample data (?tab=, ?login=none, ?current=none, ?lmp=YYYY-MM-DD,
-// ?admin=1 (Delete on follow-ups, Retry on texts), ?followUps=none, ?sms=none).
+// ?admin=1 (Delete on follow-ups, Retry on texts), ?followUps=none, ?sms=none,
+// ?activity=none (nothing booked, no visits, no events), ?next=confirmed).
 export default function MotherRecordPreview({ searchParams }: PageProps<"/[lang]/design-preview/mother-record">) {
   if (process.env.NODE_ENV === "production") notFound();
   return (
@@ -90,6 +104,13 @@ async function Preview({ searchParams }: { searchParams: Promise<Record<string, 
         puroks={Array.from({ length: 10 }, (_, i) => ({ id: i + 1, name: `Purok ${i + 1}` }))}
         today="2026-10-27"
         openFollowUps={followUps.filter((item) => item.isOpen).length}
+        activity={
+          query.activity === "none"
+            ? { next: null, last: null, events: [] }
+            : query.next === "confirmed" && ACTIVITY.next
+              ? { ...ACTIVITY, next: { ...ACTIVITY.next, status: "CONFIRMED" } }
+              : ACTIVITY
+        }
         followUps={
           <MotherFollowUpsPanelView
             t={t}
@@ -108,7 +129,7 @@ async function Preview({ searchParams }: { searchParams: Promise<Record<string, 
             motherId={1}
             canRecord
             visits={[
-              { id: 7, at: "2026-10-30T00:41:00Z", weeks: 21, bp: "110/70", weightKg: 58.5, services: ["Prenatal Checkup", "Tetanus Toxoid Vaccination"], currentPregnancy: true },
+              { id: 7, at: "2026-10-20T00:41:00Z", weeks: 20, bp: "110/70", weightKg: 58.5, services: ["Prenatal Checkup", "Tetanus Toxoid Vaccination"], currentPregnancy: true },
               { id: 4, at: "2026-10-02T01:10:00Z", weeks: 17, bp: "108/68", weightKg: 57.4, services: ["Prenatal Checkup"], currentPregnancy: true },
               { id: 1, at: "2023-09-01T01:00:00Z", weeks: 38, bp: "112/72", weightKg: 63, services: [], currentPregnancy: false },
             ]}

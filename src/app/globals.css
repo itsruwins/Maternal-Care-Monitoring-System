@@ -89,6 +89,13 @@
     from { transform: scaleX(0); }
   }
 
+  /* Dashboard chart columns rise once from the baseline when the page opens. */
+  --animate-rise: rise 700ms var(--ease-out-expo) both;
+
+  @keyframes rise {
+    from { transform: scaleY(0); }
+  }
+
   @keyframes float {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-8px); }

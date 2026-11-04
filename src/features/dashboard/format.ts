@@ -26,3 +26,16 @@ export function formatShortDay(iso: string, locale: Locale): string {
 
 /** "November 2026" for the month a "YYYY-MM-DD" day falls in. */
 export const formatMonthOf = (iso: string, locale: Locale) => formatMonth(iso.slice(0, 7), locale);
+
+/** The greeting's part of the day, by the hour in Manila. */
+export function dayPartOf(now: Date = new Date()): "morning" | "afternoon" | "evening" {
+  const hour = Number(new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Manila", hour: "numeric", hourCycle: "h23" }).format(now));
+  return hour < 12 ? "morning" : hour < 18 ? "afternoon" : "evening";
+}
+
+/** "Mon" for a "YYYY-MM-DD" day. */
+export function formatWeekday(iso: string, locale: Locale): string {
+  const date = parseISODate(iso);
+  if (!date) return iso;
+  return new Intl.DateTimeFormat(intlLocale(locale), { timeZone: "UTC", weekday: "short" }).format(date);
+}

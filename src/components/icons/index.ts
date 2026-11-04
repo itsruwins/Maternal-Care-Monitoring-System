@@ -66,6 +66,7 @@ export {
 
   // Account
   UserIcon,
+  UserPlusIcon,
   LockIcon,
   EnvelopeSimpleIcon as EmailIcon,
   IdentificationCardIcon as IdIcon,

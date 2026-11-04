@@ -4,29 +4,18 @@ import { Button } from "@/components/ui/button";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import { formatSlotClock } from "@/lib/appointments/format";
-import { cn } from "@/lib/utils/cn";
 import type { TodayAppointment } from "../types";
 
-// Today's appointments as cards: time tile, mother, service, and Record visit
-// (or a link to the visit once recorded). Two per row from 768px on the Visits
-// page; one per row on the staff dashboard, where it sits in a half column.
-export function TodayAppointmentsList({
-  t,
-  locale,
-  items,
-  columns = 2,
-}: {
-  t: Dictionary;
-  locale: Locale;
-  items: TodayAppointment[];
-  columns?: 1 | 2;
-}) {
+// Today's appointments on the Visits page as cards, two per row from 768px:
+// time tile, mother, service, and Record visit (or a link to the visit once
+// recorded). The staff dashboard shows them as a table (TodayScheduleTable).
+export function TodayAppointmentsList({ t, locale, items }: { t: Dictionary; locale: Locale; items: TodayAppointment[] }) {
   const v = t.visits;
   if (items.length === 0) {
     return <p className="rounded-2xl bg-white px-6 py-8 text-center text-ink-soft shadow-[var(--shadow-soft)]">{v.todayEmpty}</p>;
   }
   return (
-    <ul className={cn("grid gap-3", columns === 2 && "md:grid-cols-2")}>
+    <ul className="grid gap-3 md:grid-cols-2">
       {items.map((item) => (
         <li key={item.id} className="flex flex-wrap items-center gap-x-4 gap-y-3 rounded-2xl bg-white p-4 shadow-[var(--shadow-soft)]">
           <span className="tnum grid h-14 w-20 shrink-0 place-items-center rounded-2xl bg-mint text-[0.95rem] font-bold text-leaf">

@@ -1,10 +1,53 @@
-import type { AdminDashboard, DashboardCounts, DueSoonItem } from "@/features/dashboard/types";
+import type {
+  AdminDashboard,
+  DashboardContext,
+  DashboardCounts,
+  DueSoonItem,
+  FollowUpItem,
+  RequestItem,
+  VisitDay,
+} from "@/features/dashboard/types";
 import type { TodayAppointment } from "@/features/visits/types";
 
 // Sample data for the staff dashboard preview (Mon, Nov 2, 2026).
 export const SAMPLE_TODAY_DATE = "2026-11-02";
 
 export const SAMPLE_COUNTS: Omit<DashboardCounts, "dueSoon"> = { today: 4, requests: 2, followUps: 3, pregnant: 41 };
+
+export const SAMPLE_CONTEXT: DashboardContext = {
+  todayDone: 1,
+  todayMissed: 0,
+  oldestRequestAt: "2026-10-30T02:15:00Z",
+  oldestMissedAt: "2026-10-26T01:00:00Z",
+  thirdTrimester: 14,
+  pastDue: 2,
+};
+
+export const SAMPLE_REQUESTS: RequestItem[] = [
+  { appointmentId: 21, motherId: 12, name: "Jennilyn Altura Dugan", service: "Prenatal Checkup", at: "2026-11-04T00:00:00Z" },
+  { appointmentId: 22, motherId: 13, name: "Precious Joy Mabini", service: "Birth Plan Counseling", at: "2026-11-05T05:30:00Z" },
+];
+
+export const SAMPLE_FOLLOW_UPS: FollowUpItem[] = [
+  { appointmentId: 31, motherId: 14, name: "Rowena Cabral", service: "Prenatal Checkup", missedAt: "2026-10-26T01:00:00Z" },
+  { appointmentId: 32, motherId: 15, name: "Sheila Mae Ocampo", service: "Tetanus Toxoid Vaccination", missedAt: "2026-10-29T02:30:00Z" },
+  { appointmentId: 33, motherId: 16, name: "Lorna Fajardo", service: "Nutrition Counseling", missedAt: "2026-10-30T06:00:00Z" },
+];
+
+/** Oct 4 to Nov 2, 2026: weekdays, plus one Saturday with a visit. */
+export const SAMPLE_VISITS_BY_DAY: VisitDay[] = (() => {
+  const counts = [3, 5, 2, 4, 6, 0, 4, 3, 5, 2, 1, 7, 4, 3, 6, 2, 5, 0, 4, 6, 3, 2];
+  const days: VisitDay[] = [];
+  let i = 0;
+  for (let d = new Date(Date.UTC(2026, 9, 4)); d <= new Date(Date.UTC(2026, 10, 2)); d.setUTCDate(d.getUTCDate() + 1)) {
+    const date = d.toISOString().slice(0, 10);
+    const weekday = d.getUTCDay();
+    if (date === "2026-10-24") days.push({ date, count: 2 });
+    else if (weekday !== 0 && weekday !== 6) days.push({ date, count: counts[i++ % counts.length] });
+  }
+  days[days.length - 1].count = 1; // today so far
+  return days;
+})();
 
 export const SAMPLE_TODAY: TodayAppointment[] = [
   { id: 1, at: "2026-11-02T00:30:00Z", status: "COMPLETED", service: "Prenatal Checkup", mother: { id: 1, name: "Ana Marie Bautista" }, visitId: 7, dayVisitId: null },

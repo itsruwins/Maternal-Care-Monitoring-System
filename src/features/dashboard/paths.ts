@@ -19,8 +19,22 @@ export const ACCOUNT_LINKS = {
 } as const;
 
 export const SMS_LINKS = {
+  page: SMS_LOG_PATH,
   waiting: `${SMS_LOG_PATH}?status=waiting`,
   failed: `${SMS_LOG_PATH}?status=failed`,
 } as const;
+
+/** The header's everyday actions. */
+export const QUICK_ACTIONS = {
+  walkIn: "/staff/visits/new",
+  book: "/staff/appointments/new",
+  register: "/staff/mothers/new",
+} as const;
+
+export const ACCOUNTS_PATH = "/admin/accounts";
+export const REPORTS_PATH = "/staff/reports";
+
+/** Her record, on the Appointments tab (a waiting request). */
+export const motherAppointmentsHref = (motherId: number) => `/staff/mothers/${motherId}?tab=appointments`;
 
 export const motherPregnancyHref = (motherId: number) => `/staff/mothers/${motherId}?tab=pregnancy`;

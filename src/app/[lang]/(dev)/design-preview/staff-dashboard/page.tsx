@@ -2,16 +2,27 @@ import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { DashboardView } from "@/features/dashboard/components/dashboard-screen";
 import { StaffShell } from "@/features/shell/components/staff-shell";
-import { TodayAppointmentsList } from "@/features/visits/components/today-appointments-list";
+import { TodayScheduleTable } from "@/features/visits/components/today-schedule-table";
 import { getServerI18n } from "@/i18n/server";
-import { SAMPLE_ADMIN, SAMPLE_COUNTS, SAMPLE_DUE, SAMPLE_TODAY, SAMPLE_TODAY_DATE } from "./sample";
+import {
+  SAMPLE_ADMIN,
+  SAMPLE_CONTEXT,
+  SAMPLE_COUNTS,
+  SAMPLE_DUE,
+  SAMPLE_FOLLOW_UPS,
+  SAMPLE_REQUESTS,
+  SAMPLE_TODAY,
+  SAMPLE_TODAY_DATE,
+  SAMPLE_VISITS_BY_DAY,
+} from "./sample";
 
 export const metadata = { title: "Staff dashboard preview", robots: { index: false } };
 
 // Development only (preview): the staff dashboard with sample data.
 // ?admin=1 adds the Admin section (?phone=online|offline, ?limit=1 for the
 // monthly-limit notice, ?full=1 for a plan at its limit); ?empty=1 shows
-// zero counts and the empty lists; ?more=1 gives the due list a "See all".
+// zero counts and the empty lists; ?more=1 gives the due list a "See all";
+// ?part=afternoon|evening changes the greeting.
 export default function StaffDashboardPreview({ searchParams }: PageProps<"/[lang]/design-preview/staff-dashboard">) {
   if (process.env.NODE_ENV === "production") notFound();
   return (
@@ -43,9 +54,18 @@ async function Preview({ searchParams }: { searchParams: PageProps<"/[lang]/desi
         locale={locale}
         firstName={admin ? "Maria" : "Joy"}
         today={SAMPLE_TODAY_DATE}
+        dayPart={params.part === "afternoon" || params.part === "evening" ? params.part : "morning"}
         counts={counts}
+        context={
+          empty
+            ? { todayDone: 0, todayMissed: 0, oldestRequestAt: null, oldestMissedAt: null, thirdTrimester: 0, pastDue: 0 }
+            : SAMPLE_CONTEXT
+        }
         due={empty ? [] : SAMPLE_DUE}
-        todayList={<TodayAppointmentsList t={t} locale={locale} items={empty ? [] : SAMPLE_TODAY} columns={1} />}
+        requests={empty ? [] : SAMPLE_REQUESTS}
+        followUps={empty ? [] : SAMPLE_FOLLOW_UPS}
+        visitsByDay={empty ? SAMPLE_VISITS_BY_DAY.map((day) => ({ ...day, count: 0 })) : SAMPLE_VISITS_BY_DAY}
+        todayList={<TodayScheduleTable t={t} locale={locale} items={empty ? [] : SAMPLE_TODAY} />}
         admin={
           admin
             ? {

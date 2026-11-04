@@ -373,7 +373,17 @@
     }
   },
   "dashboard": {
-    "greeting": "Hello, {name}",
+    "greeting": {
+      "morning": "Good morning, {name}",
+      "afternoon": "Good afternoon, {name}",
+      "evening": "Good evening, {name}"
+    },
+    "actionsLabel": "Quick actions",
+    "actions": {
+      "walkIn": "Walk-in visit",
+      "book": "Book appointment",
+      "register": "Register mother"
+    },
     "countsLabel": "At a glance",
     "counts": {
       "today": "Today's appointments",
@@ -382,7 +392,51 @@
       "pregnant": "Pregnant now",
       "dueSoon": "Due within 30 days"
     },
-    "todayTitle": "Today's appointments",
+    "context": {
+      "today": "{done} done · {left} to go",
+      "todayMissed": "{done} done · {left} to go · {missed} missed",
+      "todayNone": "Nothing booked today",
+      "requests": "Oldest sent {date}",
+      "requestsNone": "All answered",
+      "followUps": "Oldest missed {date}",
+      "followUpsNone": "None open",
+      "pregnant": "{count} in the third trimester",
+      "pregnantNone": "None in the third trimester",
+      "pastDue": "{count} past due",
+      "pastDueNone": "None past due"
+    },
+    "schedule": {
+      "title": "Today's schedule",
+      "seeAll": "Open Visits",
+      "time": "Time",
+      "mother": "Mother",
+      "service": "Service",
+      "visit": "Visit"
+    },
+    "chart": {
+      "title": "Visits, last 30 days",
+      "total": "{count} visits",
+      "totalOne": "1 visit",
+      "note": "Clinic days, Monday to Friday",
+      "reports": "See reports",
+      "today": "Today",
+      "showTable": "Show as table",
+      "colDay": "Day",
+      "colVisits": "Visits"
+    },
+    "attention": {
+      "title": "Needs attention",
+      "seeAll": "See all {count}",
+      "open": "Open",
+      "requestFor": "For {date}",
+      "missedOn": "Missed {date}",
+      "sms": "Text messages",
+      "failed": "{count} texts failed",
+      "failedOne": "1 text failed",
+      "phoneOffline": "The SMS phone is offline",
+      "clear": "All caught up",
+      "clearBody": "No requests or missed visits are waiting."
+    },
     "due": {
       "title": "Due within 30 days",
       "empty": "No one is due in the next 30 days.",
@@ -416,6 +470,16 @@
         "planNote": "The HTTPSMS plan allows {limit} texts a month, and her replies count too.",
         "waiting": "Waiting now",
         "failed": "Failed texts"
+      },
+      "accountsStrip": {
+        "motherSplit": "{with} with a login · {without} without",
+        "signedUp": "Website sign-ups",
+        "signedUpIn": "In {month}",
+        "staff": "Health workers",
+        "admins": "Plus {count} admins",
+        "adminsOne": "Plus 1 admin",
+        "inactive": "Inactive logins",
+        "inactiveLine": "Switched off"
       }
     }
   },

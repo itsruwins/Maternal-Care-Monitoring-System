@@ -373,7 +373,17 @@
     }
   },
   "dashboard": {
-    "greeting": "Kumusta, {name}",
+    "greeting": {
+      "morning": "Magandang umaga, {name}",
+      "afternoon": "Magandang hapon, {name}",
+      "evening": "Magandang gabi, {name}"
+    },
+    "actionsLabel": "Mabilisang gawain",
+    "actions": {
+      "walkIn": "Walk-in na bisita",
+      "book": "Mag-book ng appointment",
+      "register": "Iparehistro ang nanay"
+    },
     "countsLabel": "Buod ngayon",
     "counts": {
       "today": "Mga appointment ngayon",
@@ -382,7 +392,51 @@
       "pregnant": "Buntis ngayon",
       "dueSoon": "Kabuwanan sa loob ng 30 araw"
     },
-    "todayTitle": "Mga appointment ngayon",
+    "context": {
+      "today": "{done} tapos · {left} pa",
+      "todayMissed": "{done} tapos · {left} pa · {missed} hindi dumating",
+      "todayNone": "Walang naka-book ngayon",
+      "requests": "Pinakaluma: {date}",
+      "requestsNone": "Nasagot na lahat",
+      "followUps": "Pinakaluma: {date}",
+      "followUpsNone": "Wala nang bukas",
+      "pregnant": "{count} nasa ikatlong trimester",
+      "pregnantNone": "Wala sa ikatlong trimester",
+      "pastDue": "{count} lampas na sa kabuwanan",
+      "pastDueNone": "Walang lampas sa kabuwanan"
+    },
+    "schedule": {
+      "title": "Iskedyul ngayon",
+      "seeAll": "Buksan ang Bisita",
+      "time": "Oras",
+      "mother": "Nanay",
+      "service": "Serbisyo",
+      "visit": "Bisita"
+    },
+    "chart": {
+      "title": "Mga bisita, nakaraang 30 araw",
+      "total": "{count} bisita",
+      "totalOne": "1 bisita",
+      "note": "Mga araw ng klinika, Lunes hanggang Biyernes",
+      "reports": "Tingnan ang mga ulat",
+      "today": "Ngayon",
+      "showTable": "Ipakita bilang talaan",
+      "colDay": "Araw",
+      "colVisits": "Bisita"
+    },
+    "attention": {
+      "title": "Kailangang asikasuhin",
+      "seeAll": "Tingnan lahat ({count})",
+      "open": "Buksan",
+      "requestFor": "Para sa {date}",
+      "missedOn": "Hindi dumating: {date}",
+      "sms": "Mga text",
+      "failed": "{count} text ang pumalya",
+      "failedOne": "1 text ang pumalya",
+      "phoneOffline": "Offline ang SMS phone",
+      "clear": "Walang naghihintay",
+      "clearBody": "Walang hiling o hindi nakarating na kailangang asikasuhin."
+    },
     "due": {
       "title": "Kabuwanan sa loob ng 30 araw",
       "empty": "Walang kabuwanan sa susunod na 30 araw.",
@@ -416,6 +470,16 @@
         "planNote": "{limit} text kada buwan ang pinapayagan ng HTTPSMS plan, at kasama rito ang mga sagot niya.",
         "waiting": "Naghihintay ngayon",
         "failed": "Mga pumalya"
+      },
+      "accountsStrip": {
+        "motherSplit": "{with} may login · {without} wala",
+        "signedUp": "Nag-sign up sa website",
+        "signedUpIn": "Noong {month}",
+        "staff": "Mga health worker",
+        "admins": "Kasama ang {count} admin",
+        "adminsOne": "Kasama ang 1 admin",
+        "inactive": "Mga hindi aktibong login",
+        "inactiveLine": "Naka-off"
       }
     }
   },

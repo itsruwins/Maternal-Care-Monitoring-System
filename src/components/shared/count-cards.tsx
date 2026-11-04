@@ -7,19 +7,20 @@ export type CountCard = { key: string; label: string; count: number; href: strin
 
 // A strip of four counts above a page's lists, each opening the list behind
 // it (or the section below that shows it): the count in large tabular numerals over its label with a caret, a
-// small icon circle on the right. A count that needs someone (alert) turns
+// small icon circle on the right (not from 1024px to 1280px). A count that needs someone (alert) turns
 // rose-deep with a blush circle. Two per row on phones, four from 1024px.
+// On paper (Reports), plain bordered boxes without the icon and caret.
 export function CountCards({ label, cards }: { label: string; cards: CountCard[] }) {
   return (
     <nav aria-label={label}>
-      <ul className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+      <ul className="grid grid-cols-2 gap-3 lg:grid-cols-4 print:grid-cols-4">
         {cards.map(({ key, label: name, count, href, icon, alert = false }) => (
           <li key={key} className="min-w-0">
             <Link
               href={href}
               // A link to a section further down (#today) scrolls to it; a filter stays put.
               scroll={href.includes("#") ? undefined : false}
-              className="group flex h-full items-start justify-between gap-3 rounded-2xl border-2 border-transparent bg-white p-4 no-underline shadow-[var(--shadow-soft)] transition-[border-color,transform] duration-200 ease-[var(--ease-out-expo)] hover:border-line focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-leaf focus-visible:outline-solid active:scale-[0.98] sm:p-5"
+              className="group flex h-full items-start justify-between gap-3 rounded-2xl border-2 border-transparent bg-white p-4 no-underline shadow-[var(--shadow-soft)] transition-[border-color,transform] duration-200 ease-[var(--ease-out-expo)] hover:border-line focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-leaf focus-visible:outline-solid active:scale-[0.98] sm:p-5 print:rounded-none print:border print:border-line print:p-3"
             >
               <span className="flex min-w-0 flex-col gap-1.5">
                 <span className={cn("tnum text-[1.75rem] leading-none font-extrabold tracking-[-0.02em]", alert ? "text-rose-deep" : "text-ink")}>{count}</span>
@@ -31,12 +32,15 @@ export function CountCards({ label, cards }: { label: string; cards: CountCard[]
                     <CaretRightIcon
                       weight="bold"
                       aria-hidden
-                      className="ml-1 inline size-3.5 align-[-0.125em] text-leaf transition-transform duration-200 ease-[var(--ease-out-expo)] group-hover:translate-x-0.5"
+                      className="ml-1 inline size-3.5 align-[-0.125em] text-leaf print:hidden transition-transform duration-200 ease-[var(--ease-out-expo)] group-hover:translate-x-0.5"
                     />
                   </span>
                 </span>
               </span>
-              <IconCircle icon={icon} tone={alert ? "blush" : "mint"} size="sm" />
+              {/* From 1024px to 1280px the sidebar leaves four narrow cards: the label gets the room. */}
+              <span className="lg:max-xl:hidden print:hidden">
+                <IconCircle icon={icon} tone={alert ? "blush" : "mint"} size="sm" />
+              </span>
             </Link>
           </li>
         ))}

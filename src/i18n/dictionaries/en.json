@@ -489,7 +489,6 @@
   },
   "reports": {
     "title": "Reports",
-    "intro": "Counts and lists for a period, to read here, print or download.",
     "tabsLabel": "Reports",
     "tabs": {
       "summary": "Summary",
@@ -514,7 +513,6 @@
       "noPurok": "No purok yet",
       "service": "Service",
       "allServices": "All services",
-      "submit": "Show",
       "clear": "Clear",
       "show": "Which pregnancies",
       "allShows": "All in the period",
@@ -526,9 +524,10 @@
       "status": "Status",
       "allStatuses": "All statuses",
       "type": "Kind of text",
-      "allTypes": "All kinds"
+      "allTypes": "All kinds",
+      "form": "Report filters",
+      "updating": "Updating…"
     },
-    "showing": "Showing {period}",
     "summary": {
       "tilesLabel": "Totals for the period",
       "tiles": {
@@ -537,8 +536,17 @@
         "missed": "Missed appointments",
         "services": "Services given"
       },
+      "totals": {
+        "pregnancies": "pregnant in the period",
+        "visits": "completed visits",
+        "appointments": "appointments",
+        "services": "services given",
+        "sms": "texts"
+      },
+      "viewList": "View the list",
       "pregnancies": {
         "title": "Pregnancies",
+        "note": "Every pregnancy open at any time in the period.",
         "active": "Pregnant at any time in the period",
         "added": "Newly registered",
         "closed": "Closed in the period"

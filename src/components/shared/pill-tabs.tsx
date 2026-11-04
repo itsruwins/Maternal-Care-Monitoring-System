@@ -2,9 +2,9 @@ import Link from "next/link";
 import { ScrollActiveIntoView } from "@/components/shared/scroll-active-into-view";
 import { cn } from "@/lib/utils/cn";
 
-export type PillTab = { key: string; label: string; count: number; href: string; active: boolean };
+export type PillTab = { key: string; label: string; count?: number; href: string; active: boolean };
 
-// A row of outlined pills above a list card, each with its count; the
+// A row of outlined pills above a list card, each with its count (when given); the
 // current one is solid leaf. On phones the row scrolls sideways and keeps the
 // current tab in view.
 export function PillTabs({ label, tabs }: { label: string; tabs: PillTab[] }) {
@@ -24,7 +24,9 @@ export function PillTabs({ label, tabs }: { label: string; tabs: PillTab[] }) {
                 )}
               >
                 {tab.label}
-                <span className={cn("tnum text-caption font-bold", tab.active ? "text-white/85" : "text-ink-soft")}>{tab.count}</span>
+                {tab.count !== undefined && (
+                  <span className={cn("tnum text-caption font-bold", tab.active ? "text-white/85" : "text-ink-soft")}>{tab.count}</span>
+                )}
               </Link>
             </li>
           ))}

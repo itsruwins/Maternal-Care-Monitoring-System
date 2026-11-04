@@ -489,7 +489,6 @@
   },
   "reports": {
     "title": "Mga ulat",
-    "intro": "Mga bilang at listahan para sa isang panahon, na mababasa rito, maipi-print o mada-download.",
     "tabsLabel": "Mga ulat",
     "tabs": {
       "summary": "Buod",
@@ -514,7 +513,6 @@
       "noPurok": "Wala pang purok",
       "service": "Serbisyo",
       "allServices": "Lahat ng serbisyo",
-      "submit": "Ipakita",
       "clear": "I-clear",
       "show": "Aling pagbubuntis",
       "allShows": "Lahat sa panahong ito",
@@ -526,9 +524,10 @@
       "status": "Status",
       "allStatuses": "Lahat ng status",
       "type": "Uri ng text",
-      "allTypes": "Lahat ng uri"
+      "allTypes": "Lahat ng uri",
+      "form": "Mga filter ng ulat",
+      "updating": "Ina-update…"
     },
-    "showing": "Ipinapakita: {period}",
     "summary": {
       "tilesLabel": "Kabuuan sa panahong ito",
       "tiles": {
@@ -537,8 +536,17 @@
         "missed": "Hindi napuntahang appointment",
         "services": "Naibigay na serbisyo"
       },
+      "totals": {
+        "pregnancies": "buntis sa panahong ito",
+        "visits": "natapos na bisita",
+        "appointments": "appointment",
+        "services": "naibigay na serbisyo",
+        "sms": "text"
+      },
+      "viewList": "Tingnan ang listahan",
       "pregnancies": {
         "title": "Pagbubuntis",
+        "note": "Bawat pagbubuntis na bukas anumang oras sa panahong ito.",
         "active": "Buntis sa anumang oras sa panahong ito",
         "added": "Bagong nairehistro",
         "closed": "Isinara sa panahong ito"

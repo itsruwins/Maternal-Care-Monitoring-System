@@ -1,6 +1,7 @@
 import { CaretRightIcon } from "@/components/icons";
 import type { Locale } from "@/i18n/config";
 import { format } from "@/i18n/format";
+import { cn } from "@/lib/utils/cn";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import { bucketLabel, bucketName } from "../format";
 import type { VisitBucket } from "../types";
@@ -21,11 +22,13 @@ export function VisitsChart({
   locale,
   grouping,
   buckets,
+  className,
 }: {
   t: Dictionary;
   locale: Locale;
   grouping: "week" | "month";
   buckets: VisitBucket[];
+  className?: string;
 }) {
   const v = t.reports.summary.visits;
   const max = Math.max(1, ...buckets.map((bucket) => bucket.count));
@@ -56,7 +59,7 @@ export function VisitsChart({
   );
 
   return (
-    <figure className="mt-4 border-t border-line pt-4">
+    <figure className={cn("min-w-0", className)}>
       <figcaption data-print-head>
         <span className="block font-semibold text-ink">{grouping === "week" ? v.chartWeek : v.chartMonth}</span>
         {grouping === "week" && <span className="block text-sm text-ink-soft">{v.chartNote}</span>}

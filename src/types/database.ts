@@ -1,5 +1,5 @@
 // Database types, written from the confirmed schema (inspect-schema.sql, 2026-10-26)
-// plus migrations 0001-0019. Update this file whenever a migration changes a table.
+// plus migrations 0001-0026. Update this file whenever a migration changes a table.
 
 type NullableKeys<T> = { [K in keyof T]: null extends T[K] ? K : never }[keyof T];
 
@@ -279,6 +279,50 @@ export type RateLimitHitRow = {
   hit_at: string;
 };
 
+/** Kinds of in-app notification (enum notification_type, 0026). */
+export type NotificationTypeEnum =
+  | "REQUEST_CONFIRMED"
+  | "REQUEST_NEW_TIME"
+  | "REQUEST_DECLINED"
+  | "VISIT_BOOKED"
+  | "VISIT_REBOOKED"
+  | "VISIT_MOVED"
+  | "VISIT_CANCELLED"
+  | "VISIT_REMINDER"
+  | "VISIT_MISSED"
+  | "CHECKUP_RECORDED"
+  | "PREGNANCY_CLOSED"
+  | "PASSWORD_RESET"
+  | "NEW_REQUEST"
+  | "MOTHER_CANCELLED"
+  | "NEW_TIME_ACCEPTED"
+  | "NEW_TIME_DECLINED"
+  | "MOTHER_SIGNED_UP"
+  | "MISSED_SUMMARY"
+  | "SMS_FAILED"
+  | "SMS_PHONE_OFFLINE"
+  | "SMS_LIMIT_REACHED"
+  | "ACCOUNT_LOCKED"
+  | "STAFF_ACCOUNT_CREATED"
+  | "ACCOUNT_DEACTIVATED"
+  | "ACCOUNT_REACTIVATED";
+
+/** One notification for one person (0026). Written only by the database; each user reads their own. */
+export type NotificationRow = {
+  notification_id: number;
+  user_id: string;
+  notification_type: NotificationTypeEnum;
+  appointment_id: number | null;
+  mother_id: number | null;
+  visit_id: number | null;
+  /** What the sentence needs, as it was at the time (service, at, mother_name, count…). */
+  details: Record<string, unknown>;
+  /** Set on job-made ones so a re-run adds no second copy. */
+  dedupe_key: string | null;
+  created_at: string;
+  read_at: string | null;
+};
+
 /** One service given at a visit, as record_visit / update_visit take it. */
 export type VisitServiceInput = { activity_type_id: number; dose_or_details: string; result_notes: string | null };
 
@@ -336,6 +380,7 @@ export type Database = {
       purok: TableDef<PurokRow, "purok_id" | "sort_order" | "is_active" | "created_at">;
       closed_day: TableDef<ClosedDayRow, "created_at">;
       sms_setting: TableDef<SmsSettingRow, "setting_id">;
+      notification: TableDef<NotificationRow, "notification_id" | "details" | "created_at">;
     };
     Views: {
       follow_up_item: { Row: FollowUpItemRow; Relationships: [] };
@@ -386,6 +431,14 @@ export type Database = {
       /** Server sender only (service_role): takes up to 20 due texts. */
       claim_due_sms: { Args: never; Returns: SmsReminderRow[] };
       retry_sms: { Args: { p_reminder_id: number }; Returns: undefined };
+      /** Marks one of the reader's own notifications read. */
+      mark_notification_read: { Args: { p_notification_id: number }; Returns: undefined };
+      /** Marks all the reader's unread notifications read; returns how many. */
+      mark_all_notifications_read: { Args: never; Returns: number };
+      /** Server only (service_role): tell the other admins about an admin's account change. */
+      notify_account_change: { Args: { p_type: NotificationTypeEnum; p_user_id: string; p_by: string }; Returns: undefined };
+      /** Server only (service_role): tell an account's owner that staff reset its password. */
+      notify_password_reset: { Args: { p_user_id: string }; Returns: undefined };
     };
     Enums: {
       user_role: UserRole;
@@ -398,6 +451,7 @@ export type Database = {
       follow_up_method: FollowUpMethod;
       follow_up_result: FollowUpResult;
       follow_up_close_reason: FollowUpCloseReason;
+      notification_type: NotificationTypeEnum;
     };
     CompositeTypes: { [_ in never]: never };
   };

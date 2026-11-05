@@ -69,18 +69,31 @@ export async function resetMotherPassword(motherId: number): Promise<MotherActio
 
 /** Activate or deactivate her login (her records stay either way). */
 export async function setMotherLoginStatus(motherId: number, status: AccountStatus): Promise<MotherActionResult> {
-  await requireRole(AREA_ROLES.staff);
+  const me = await requireRole(AREA_ROLES.staff);
   if (status !== "ACTIVE" && status !== "INACTIVE") return { ok: false, error: "generic" };
   const userId = await linkedUserId(motherId);
   if (!userId) return { ok: false, error: "generic" };
 
   // Health workers can't update login accounts (RLS), so this uses the secret
   // key, limited to the MOTHER login linked to this record.
-  const { data, error } = await createAdminClient()
+  const admin = createAdminClient();
+  const { data: before } = await admin.from("user_account").select("account_status").eq("user_id", userId).maybeSingle();
+  const { data, error } = await admin
     .from("user_account")
     .update({ account_status: status })
     .eq("user_id", userId)
     .eq("role", "MOTHER")
     .select("user_id");
-  return error || !data?.length ? { ok: false, error: "generic" } : { ok: true };
+  if (error || !data?.length) return { ok: false, error: "generic" };
+
+  // An admin's change goes to the other admins' bells (the database ignores
+  // a health worker's). Best effort.
+  if (before && before.account_status !== status) {
+    await admin.rpc("notify_account_change", {
+      p_type: status === "ACTIVE" ? "ACCOUNT_REACTIVATED" : "ACCOUNT_DEACTIVATED",
+      p_user_id: userId,
+      p_by: me.id,
+    });
+  }
+  return { ok: true };
 }

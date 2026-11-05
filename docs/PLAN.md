@@ -2,7 +2,7 @@
 
 Barangay Taysan, Legazpi City · Next.js 16 + Supabase · Hosted on Vercel
 
-Status: **Phases 0–9 done (Phase 9 signed off 2026-11-03). Phase 10 — Notification bell (added 2026-11-05): step 1 (migration `0026`) done (run and checked by you); step 2 (design preview) built, waiting for your OK. Remaining: the rest of Phase 10 and the Open items below.** Each phase ends with a demo and your sign-off before the next starts.
+Status: **Phases 0–9 done (Phase 9 signed off 2026-11-03). Phase 10 — Notification bell (added 2026-11-05): step 1 (migration `0026`) done (run and checked by you); step 2 (design preview) approved; step 3 (the real bell) built, waiting for your testing. Remaining: the rest of Phase 10 and the Open items below.** Each phase ends with a demo and your sign-off before the next starts.
 
 ---
 
@@ -1218,6 +1218,14 @@ A bell in the staff and mother headers listing each person's updates, from its o
 - **Built to be reused in step 3:** `features/notifications` (types, the icon and page for each kind, the wording in EN/FIL, the `NotificationBell` that takes load / mark-read / mark-all functions), `components/ui/popover.tsx`, `NotificationIcon` (Phosphor Bell) in the icon index, and a `notifications` slot in both headers.
 - **Header fix:** with the bell, the mother header ran off the screen below 400px. The name now wraps on two lines, below 390px only the seal shows (the name stays for screen readers), and the header actions never shrink (staff too).
 - **Checked:** axe on every role, EN/FIL, desktop and phone: clean, and no sideways scroll at 320px. The keyboard path (Enter opens, Tab, Escape back to the bell) works. Types, lint and the 75 unit tests pass.
+
+**Step 3 built (2026-11-05):** the bell on every staff, admin and mother page. No migration and no package.
+- **Loading:** the shell loaders read the unread count with the user's name, so the badge is right on first paint. The list loads when the panel opens (20 at a time, newest first; "Show older" continues just before the last one shown).
+- **Server actions** (`features/notifications/actions`): load a page, the unread count, mark one read, mark all read. Each needs a logged-in, active account; the database limits each to the reader's own rows. "Show older" checks its cursor (a numeric id and a timestamp) before it's used.
+- **The 60-second check:** while the tab is visible, every 60 seconds, when the tab comes back into view and after each page change, the bell asks for the unread count (the list too, while the panel is open). Nothing runs in a hidden tab.
+- **Server calls for what the database can't see:** a password reset (Accounts or her record) tells the owner; a new staff account tells the other admins; turning her login off or on from her record tells the other admins when an admin did it and the status really changed. Each is best effort: a failed notification never undoes the action.
+- **App types:** `notification`, its enum and the four functions in `types/database.ts`.
+- **Checked:** types, lint, the 75 unit tests and the production build pass; pages still redirect to login when logged out. The logged-in bell needs your testing on the live data (below).
 
 ---
 

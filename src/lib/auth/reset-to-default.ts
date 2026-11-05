@@ -7,7 +7,8 @@ export type ResetToDefaultResult = { ok: true; username: string } | { ok: false;
 
 /**
  * Puts a login's password back to the default (its username) and forces a
- * change at the next login. Also clears any login lockout for that username.
+ * change at the next login. Also clears any login lockout for that username,
+ * and adds a "Your password was reset" notification for the owner.
  * Uses the secret key: callers MUST check the caller's role first
  * (admins: any account; health workers: mothers only). Pass `onlyRole` when
  * the target must be that kind of login (a mother's record resets only a
@@ -32,5 +33,7 @@ export async function resetPasswordToDefault(userId: string, onlyRole?: UserRole
   if (updateError) return { ok: false, error: "generic" };
 
   await admin.from("login_attempt").delete().eq("username", account.username);
+  // Tell the owner in their notification bell (a failure here never undoes the reset).
+  await admin.rpc("notify_password_reset", { p_user_id: userId });
   return { ok: true, username: account.username };
 }

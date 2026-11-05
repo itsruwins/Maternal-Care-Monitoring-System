@@ -26,7 +26,7 @@ export async function createStaffAccount(
   _previous: FormState<CreateStaffField>,
   formData: FormData,
 ): Promise<FormState<CreateStaffField>> {
-  await requireRole(["ADMIN"]);
+  const me = await requireRole(["ADMIN"]);
 
   const raw = Object.fromEntries(FIELDS.map((field) => [field, String(formData.get(field) ?? "")]));
   const parsed = createStaffSchema.safeParse(raw);
@@ -81,6 +81,9 @@ export async function createStaffAccount(
     await admin.auth.admin.deleteUser(userId);
     return { error: "generic" };
   }
+
+  // The other admins' notification bells (best effort).
+  await admin.rpc("notify_account_change", { p_type: "STAFF_ACCOUNT_CREATED", p_user_id: userId, p_by: me.id });
 
   return { ok: true, username: data.username };
 }

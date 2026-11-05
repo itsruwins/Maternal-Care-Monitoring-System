@@ -64,6 +64,9 @@ export type NotificationItem = {
   visitId: number | null;
 };
 
+/** Where the next "Show older" starts: just before the oldest one shown. */
+export type NotificationCursor = { createdAt: string; id: number };
+
 /** One load of the bell's list: newest first, 20 at a time. */
 export type NotificationPage = {
   items: NotificationItem[];

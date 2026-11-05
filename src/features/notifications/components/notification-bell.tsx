@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { NotificationIcon, SpinnerIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { IconCircle } from "@/components/ui/icon-circle";
@@ -12,25 +13,30 @@ import { cn } from "@/lib/utils/cn";
 import type { UserRole } from "@/types/database";
 import { badgeText, describeNotification, groupByDay, notificationTime } from "../describe";
 import { NOTIFICATION_KINDS, notificationHref } from "../kinds";
-import type { NotificationItem, NotificationPage } from "../types";
+import type { NotificationCursor, NotificationItem, NotificationPage } from "../types";
 
-/** Where the next "Show older" starts: just before the oldest one shown. */
-export type NotificationCursor = { createdAt: string; id: number };
+export type { NotificationCursor };
+
+/** How often the count is checked while the tab is open and visible. */
+const CHECK_EVERY_MS = 60_000;
 
 type Status = "idle" | "loading" | "ready" | "error";
 
 // The bell in the top bar (staff and mother shells): the unread count on a
 // rose badge, and a panel with the newest 20 grouped under Today and Earlier,
 // "Show older" for 20 more, and "Mark all as read". Clicking one marks it read
-// and opens its page. The list loads each time the panel opens. The data
-// comes through the three functions passed in (server actions in the app,
-// sample data in the design preview).
+// and opens its page. The list loads each time the panel opens. With
+// refreshUnread, the count is checked every 60 seconds while the tab is
+// visible, when the tab comes back into view and after each page change (the
+// list too, while the panel is open). The data comes through the functions
+// passed in (server actions in the app, sample data in the design preview).
 export function NotificationBell({
   readerRole,
   unread: initialUnread,
   load,
   markRead,
   markAll,
+  refreshUnread,
   now: fixedNow,
   defaultOpen = false,
 }: {
@@ -40,6 +46,8 @@ export function NotificationBell({
   load: (before: NotificationCursor | null) => Promise<NotificationPage>;
   markRead: (id: number) => Promise<void>;
   markAll: () => Promise<void>;
+  /** The current unread count (null when logged out); off in previews. */
+  refreshUnread?: () => Promise<number | null>;
   /** Previews: a fixed "now" for the times shown. */
   now?: string;
   /** Previews: open on first render. */
@@ -50,6 +58,12 @@ export function NotificationBell({
   const headingId = useId();
   const [open, setOpen] = useState(defaultOpen);
   const [unread, setUnread] = useState(initialUnread);
+  // The layout built a new count (e.g. after a refresh): take it.
+  const [seenUnread, setSeenUnread] = useState(initialUnread);
+  if (seenUnread !== initialUnread) {
+    setSeenUnread(initialUnread);
+    setUnread(initialUnread);
+  }
   const [items, setItems] = useState<NotificationItem[] | null>(null);
   const [hasMore, setHasMore] = useState(false);
   const [status, setStatus] = useState<Status>(defaultOpen ? "loading" : "idle");
@@ -80,6 +94,39 @@ export function NotificationBell({
     startedOpen.current = false;
     void refresh();
   }, [refresh]);
+
+  // The 60-second check, and again when the tab comes back into view.
+  const check = useCallback(() => {
+    if (!refreshUnread || document.visibilityState !== "visible") return;
+    if (open) {
+      void refresh();
+      return;
+    }
+    refreshUnread()
+      .then((count) => {
+        if (count !== null) setUnread(count);
+      })
+      .catch(() => {});
+  }, [refreshUnread, refresh, open]);
+
+  useEffect(() => {
+    if (!refreshUnread) return;
+    const timer = setInterval(check, CHECK_EVERY_MS);
+    document.addEventListener("visibilitychange", check);
+    return () => {
+      clearInterval(timer);
+      document.removeEventListener("visibilitychange", check);
+    };
+  }, [refreshUnread, check]);
+
+  // After each page change (the shell stays put while moving between pages).
+  const pathname = usePathname();
+  const firstPath = useRef(pathname);
+  useEffect(() => {
+    if (firstPath.current === pathname) return;
+    firstPath.current = pathname;
+    check();
+  }, [pathname, check]);
 
   function onOpenChange(next: boolean) {
     setOpen(next);

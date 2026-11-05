@@ -30,6 +30,13 @@ export type AccountListItem = {
 export type AccountFilters = {
   q: string;
   role: UserRole | "";
-  status: AccountStatus | "";
+  /** An account status, or NEVER: never logged in (any status). */
+  status: AccountStatus | "NEVER" | "";
   page: number;
 };
+
+/** The four counts over the list (every account, no filters). */
+export type AccountCounts = { active: number; mothers: number; never: number; inactive: number };
+
+/** The role tabs' counts (with the search and status applied). */
+export type AccountTabCounts = Record<UserRole | "all", number>;

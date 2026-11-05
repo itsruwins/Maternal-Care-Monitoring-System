@@ -680,14 +680,28 @@
     "title": "Accounts",
     "intro": "Everyone who can log in: health workers, admins and mothers.",
     "newStaff": "New staff account",
+    "hub": {
+      "label": "Accounts at a glance",
+      "active": "Active accounts",
+      "mothers": "Mothers with a login",
+      "never": "Never logged in",
+      "inactive": "Inactive accounts"
+    },
+    "tabs": {
+      "label": "Accounts by role",
+      "all": "All",
+      "HEALTH_WORKER": "Health workers",
+      "ADMIN": "Admins",
+      "MOTHER": "Mothers"
+    },
     "search": {
       "label": "Search",
       "placeholder": "Name or username",
-      "role": "Role",
       "status": "Status",
       "all": "All",
-      "submit": "Search",
-      "clear": "Clear"
+      "clear": "Clear",
+      "form": "Search accounts",
+      "updating": "Updating…"
     },
     "statuses": {
       "ACTIVE": "Active",
@@ -700,9 +714,13 @@
       "status": "Status",
       "lastLogin": "Last login"
     },
-    "never": "Never",
+    "login": {
+      "today": "Today, {time}",
+      "yesterday": "Yesterday, {time}",
+      "daysAgo": "{count} days ago",
+      "never": "Never logged in"
+    },
     "empty": "No accounts match your search.",
-    "results": "{count} accounts",
     "page": "Page {page} of {pages}",
     "prev": "Previous",
     "next": "Next",
@@ -742,8 +760,8 @@
       "created": "Created",
       "lastLogin": "Last login",
       "email": "Recovery email",
-      "noEmail": "None. A health worker or admin resets the password.",
-      "security": "Login and security",
+      "emailNone": "None",
+      "emailNoneNote": "A health worker or admin resets the password.",
       "reset": "Reset password",
       "resetTitle": "Reset this password?",
       "resetBody": "The password goes back to the username ({username}). They must choose a new one at their next login.",
@@ -761,7 +779,15 @@
       "saving": "Saving…",
       "saved": "Profile saved.",
       "motherNote": "Her details and pregnancies are on her record under Mothers.",
-      "pendingPassword": "Waiting for first password change"
+      "pendingPassword": "Waiting for first password change",
+      "actions": "Account actions",
+      "facts": "Account details",
+      "purok": "Purok",
+      "herRecord": "Her record",
+      "openRecord": "Open her record",
+      "access": "Account access",
+      "accessOn": "Deactivating stops them from logging in. Their records stay, and you can activate the account again anytime.",
+      "accessOff": "This account is deactivated, so they can't log in. Activate it to let them log in again with their current password."
     },
     "errors": {
       "required": "This is required.",
@@ -774,7 +800,8 @@
       "usernameTooShort": "This older username is shorter than 8 characters, so it can't be the temporary password.",
       "self": "You can't change your own account here.",
       "generic": "Something went wrong. Please try again."
-    }
+    },
+    "showing": "Showing {from}–{to} of {total}"
   },
   "activityTypes": {
     "title": "Activity types",

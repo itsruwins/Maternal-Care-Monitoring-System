@@ -14,7 +14,7 @@ const SEARCH_PAUSE_MS = 350;
 
 const LABEL = "text-caption font-semibold text-ink-soft";
 
-type Values = { q: string; from: string; to: string } & Record<string, string>;
+type Values = { q: string; from?: string; to?: string } & Record<string, string | undefined>;
 export type ToolbarSelect = {
   name: string;
   label: string;
@@ -44,9 +44,17 @@ const LAYOUT = {
   },
 } as const;
 
+// No dates (a list without them, like Accounts): the search, then one select
+// beside it from 640px.
+const NO_DATES = {
+  grid: "sm:grid-cols-[minmax(0,1fr)_minmax(0,15rem)_auto]",
+  search: "sm:col-span-1",
+  select: "col-span-2 sm:col-span-1",
+};
+
 // A list card with its filter toolbar on top and the rows (children) under
 // it (or, detached, the toolbar card alone with the children below it, for
-// cards): a search by mother, up to two selects, and a date range. Filters apply
+// cards): a search, up to two selects, and a date range (or none). Filters apply
 // at once: the select and dates on change, the search after a short pause in
 // typing or on Enter. It stays a GET form (next/form), so the filters live in
 // the address and it works before the page's script loads. While the new
@@ -59,6 +67,7 @@ export function FilterToolbar({
   labels,
   clearHref,
   detached = false,
+  dates = true,
   children,
 }: {
   /** Prefix for the fields' ids (unique on the page). */
@@ -71,8 +80,9 @@ export function FilterToolbar({
     form: string;
     search: string;
     placeholder: string;
-    from: string;
-    to: string;
+    /** Needed with the dates. */
+    from?: string;
+    to?: string;
     clear: string;
     updating: string;
   };
@@ -80,9 +90,11 @@ export function FilterToolbar({
   clearHref: string | null;
   /** The toolbar in its own card, the children below it (not inside). */
   detached?: boolean;
+  /** Show the From / To fields (false: a list without dates, at most one select). */
+  dates?: boolean;
   children: ReactNode;
 }) {
-  const layout = LAYOUT[Math.min(selects.length, 2) as 0 | 1 | 2];
+  const layout = dates ? LAYOUT[Math.min(selects.length, 2) as 0 | 1 | 2] : NO_DATES;
   const form = useRef<HTMLFormElement>(null);
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const [pending, setPending] = useState(false);
@@ -98,11 +110,11 @@ export function FilterToolbar({
   useEffect(() => {
     const box = form.current;
     if (!box) return;
-    for (const name of ["q", "from", "to", ...selects.map((select) => select.name)]) {
+    for (const name of ["q", ...(dates ? ["from", "to"] : []), ...selects.map((select) => select.name)]) {
       const field = box.elements.namedItem(name) as HTMLInputElement | HTMLSelectElement | null;
       if (field && document.activeElement !== field) field.value = values[name] ?? "";
     }
-  }, [values, selects]);
+  }, [values, selects, dates]);
   useEffect(() => () => clearTimeout(timer.current), []);
 
   const submit = () => {
@@ -161,23 +173,27 @@ export function FilterToolbar({
           </NativeSelect>
         </div>
       ))}
-      <div className="flex min-w-0 flex-col gap-1.5">
-        <label htmlFor={`${id}-from`} className={LABEL}>
-          {labels.from}
-        </label>
-        <Input id={`${id}-from`} name="from" type="date" defaultValue={values.from} onChange={submit} className="tnum" />
-      </div>
-      <div className="flex min-w-0 flex-col gap-1.5">
-        <label htmlFor={`${id}-to`} className={LABEL}>
-          {labels.to}
-        </label>
-        <Input id={`${id}-to`} name="to" type="date" defaultValue={values.to} onChange={submit} className="tnum" />
-      </div>
+      {dates && (
+        <>
+          <div className="flex min-w-0 flex-col gap-1.5">
+            <label htmlFor={`${id}-from`} className={LABEL}>
+              {labels.from}
+            </label>
+            <Input id={`${id}-from`} name="from" type="date" defaultValue={values.from} onChange={submit} className="tnum" />
+          </div>
+          <div className="flex min-w-0 flex-col gap-1.5">
+            <label htmlFor={`${id}-to`} className={LABEL}>
+              {labels.to}
+            </label>
+            <Input id={`${id}-to`} name="to" type="date" defaultValue={values.to} onChange={submit} className="tnum" />
+          </div>
+        </>
+      )}
       <div
         className={cn(
           "col-span-2 flex min-h-12 items-center justify-between gap-3 sm:justify-end",
-          selects.length < 2 ? "sm:col-span-1" : "xl:col-span-1",
-          !pending && !clearHref && (selects.length < 2 ? "max-sm:hidden" : "max-xl:hidden"),
+          selects.length < 2 || !dates ? "sm:col-span-1" : "xl:col-span-1",
+          !pending && !clearHref && (selects.length < 2 || !dates ? "max-sm:hidden" : "max-xl:hidden"),
         )}
       >
         <span role="status" className="inline-flex items-center gap-2 text-sm text-ink-soft">

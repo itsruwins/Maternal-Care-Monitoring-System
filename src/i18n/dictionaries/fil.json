@@ -680,14 +680,28 @@
     "title": "Mga account",
     "intro": "Lahat ng puwedeng mag-log in: mga health worker, admin at nanay.",
     "newStaff": "Bagong staff account",
+    "hub": {
+      "label": "Buod ng mga account",
+      "active": "Aktibong account",
+      "mothers": "Nanay na may login",
+      "never": "Wala pang log in",
+      "inactive": "Hindi aktibong account"
+    },
+    "tabs": {
+      "label": "Mga account ayon sa tungkulin",
+      "all": "Lahat",
+      "HEALTH_WORKER": "Mga health worker",
+      "ADMIN": "Mga admin",
+      "MOTHER": "Mga nanay"
+    },
     "search": {
       "label": "Maghanap",
       "placeholder": "Pangalan o username",
-      "role": "Tungkulin",
       "status": "Status",
       "all": "Lahat",
-      "submit": "Maghanap",
-      "clear": "I-clear"
+      "clear": "I-clear",
+      "form": "Maghanap ng account",
+      "updating": "Ina-update…"
     },
     "statuses": {
       "ACTIVE": "Aktibo",
@@ -700,9 +714,13 @@
       "status": "Status",
       "lastLogin": "Huling log in"
     },
-    "never": "Hindi pa",
+    "login": {
+      "today": "Ngayong araw, {time}",
+      "yesterday": "Kahapon, {time}",
+      "daysAgo": "{count} araw na ang nakalipas",
+      "never": "Wala pang log in"
+    },
     "empty": "Walang account na tumugma sa hinahanap mo.",
-    "results": "{count} account",
     "page": "Pahina {page} ng {pages}",
     "prev": "Nakaraan",
     "next": "Susunod",
@@ -742,8 +760,8 @@
       "created": "Ginawa noong",
       "lastLogin": "Huling log in",
       "email": "Recovery email",
-      "noEmail": "Wala. Health worker o admin ang magre-reset ng password.",
-      "security": "Log in at seguridad",
+      "emailNone": "Wala",
+      "emailNoneNote": "Health worker o admin ang magre-reset ng password.",
       "reset": "I-reset ang password",
       "resetTitle": "I-reset ang password na ito?",
       "resetBody": "Babalik ang password sa username ({username}). Kailangan nilang pumili ng bago sa susunod na log in.",
@@ -761,7 +779,15 @@
       "saving": "Sine-save…",
       "saved": "Na-save ang profile.",
       "motherNote": "Nasa kanyang record sa Mga nanay ang kanyang detalye at pagbubuntis.",
-      "pendingPassword": "Hinihintay ang unang pagpalit ng password"
+      "pendingPassword": "Hinihintay ang unang pagpalit ng password",
+      "actions": "Mga aksyon sa account",
+      "facts": "Detalye ng account",
+      "purok": "Purok",
+      "herRecord": "Ang kanyang record",
+      "openRecord": "Buksan ang kanyang record",
+      "access": "Access sa account",
+      "accessOn": "Kapag na-deactivate, hindi na sila makakapag-log in. Mananatili ang kanilang records, at puwede mo itong i-activate muli anumang oras.",
+      "accessOff": "Naka-deactivate ang account na ito kaya hindi sila makakapag-log in. I-activate ito para makapag-log in ulit sila gamit ang kasalukuyan nilang password."
     },
     "errors": {
       "required": "Kailangan ito.",
@@ -774,7 +800,8 @@
       "usernameTooShort": "Kulang sa 8 character ang lumang username na ito, kaya hindi ito puwedeng pansamantalang password.",
       "self": "Hindi mo puwedeng baguhin dito ang sarili mong account.",
       "generic": "May nangyaring mali. Pakisubukang muli."
-    }
+    },
+    "showing": "Ipinapakita ang {from}–{to} sa {total}"
   },
   "activityTypes": {
     "title": "Mga serbisyo",

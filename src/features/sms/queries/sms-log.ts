@@ -2,7 +2,7 @@ import "server-only";
 import { createClient } from "@/lib/supabase/server";
 import { addDays } from "@/lib/utils/pregnancy";
 import type { ReminderType, SmsDeliveryStatus, SmsLogItemRow } from "@/types/database";
-import type { SmsCounts, SmsLogFilters, SmsLogItem, SmsLogStatus, SmsLogType, SmsStatusReason } from "../types";
+import type { SmsCounts, SmsLogFilters, SmsLogItem, SmsLogStatus, SmsLogType, SmsStatusReason, SmsTypeCounts } from "../types";
 
 export const SMS_LOG_PAGE_SIZE = 20;
 
@@ -29,6 +29,8 @@ type ItemRow = Pick<
 
 const STATUSES: Record<SmsLogStatus, SmsDeliveryStatus[]> = {
   waiting: ["PENDING"],
+  // Waiting too, with a retry due (next_attempt_at set): see filtered().
+  retrying: ["PENDING"],
   sent: ["SENT", "DELIVERED"],
   delivered: ["DELIVERED"],
   failed: ["FAILED"],
@@ -40,6 +42,7 @@ const TYPES: Record<SmsLogType, ReminderType[]> = {
   missed: ["MISSED_NOTICE"],
   answer: ["REQUEST_CONFIRMED", "REQUEST_NEW_TIME", "REQUEST_DECLINED", "VISIT_BOOKED", "VISIT_MOVED", "VISIT_CANCELLED"],
 };
+const TYPE_KEYS = Object.keys(TYPES) as SmsLogType[];
 
 const dayStart = (date: string) => `${date}T00:00:00+08:00`;
 
@@ -64,52 +67,75 @@ export function parseSmsLogFilters(params: Record<string, string | string[] | un
   };
 }
 
-// All read as the logged-in staff member (the database lets staff read every text).
+type Filterable = {
+  or(filters: string): Filterable;
+  in(column: string, values: string[]): Filterable;
+  not(column: string, operator: string, value: null): Filterable;
+  gte(column: string, value: string): Filterable;
+  lt(column: string, value: string): Filterable;
+};
 
 /**
- * Texts newest first, 20 per page. Search: every word must match a part of
- * her name, or the number the text goes or went to.
+ * The search, status and dates (and the type, unless left out) on a
+ * sms_log_item query. Search: every word must match a part of her name, or
+ * the number the text goes or went to.
  */
+function filtered<Q>(query: Q, filters: SmsLogFilters, { type = true }: { type?: boolean } = {}): Q {
+  let q = query as unknown as Filterable;
+  for (const word of filters.q.split(" ").filter(Boolean)) {
+    const like = `%${word}%`;
+    q = q.or(`first_name.ilike.${like},middle_name.ilike.${like},last_name.ilike.${like},recipient_number.ilike.${like},sent_to.ilike.${like}`);
+  }
+  if (filters.status) q = q.in("delivery_status", STATUSES[filters.status]);
+  if (filters.status === "retrying") q = q.not("next_attempt_at", "is", null);
+  if (type && filters.type) q = q.in("reminder_type", TYPES[filters.type]);
+  if (filters.from) q = q.gte("shown_at", dayStart(filters.from));
+  if (filters.to) q = q.lt("shown_at", dayStart(addDays(filters.to, 1)!));
+  return q as unknown as Q;
+}
+
+// All read as the logged-in staff member (the database lets staff read every text).
+
+/** Texts newest first, 20 per page, and how many match. */
 export async function listSmsLog(filters: SmsLogFilters): Promise<{ items: SmsLogItem[]; total: number }> {
   const supabase = await createClient();
   const from = (filters.page - 1) * SMS_LOG_PAGE_SIZE;
-  let query = supabase
-    .from("sms_log_item")
-    .select(ITEM_FIELDS, { count: "exact" })
+  const query = filtered(supabase.from("sms_log_item").select(ITEM_FIELDS, { count: "exact" }), filters)
     .order("shown_at", { ascending: false })
     .order("reminder_id", { ascending: false })
     .range(from, from + SMS_LOG_PAGE_SIZE - 1);
-
-  for (const word of filters.q.split(" ").filter(Boolean)) {
-    const like = `%${word}%`;
-    query = query.or(
-      `first_name.ilike.${like},middle_name.ilike.${like},last_name.ilike.${like},recipient_number.ilike.${like},sent_to.ilike.${like}`,
-    );
-  }
-  if (filters.status) query = query.in("delivery_status", STATUSES[filters.status]);
-  if (filters.type) query = query.in("reminder_type", TYPES[filters.type]);
-  if (filters.from) query = query.gte("shown_at", dayStart(filters.from));
-  if (filters.to) query = query.lt("shown_at", dayStart(addDays(filters.to, 1)!));
 
   const { data, count, error } = await query;
   if (error || !data) return { items: [], total: 0 };
   return { items: data.map(toItem), total: count ?? 0 };
 }
 
-/** Waiting, sent today (Manila) and failed: the counts at the top of the log. */
+/** The type tabs' counts: every type, and each one, with the search, status and dates applied. */
+export async function countSmsTypes(filters: SmsLogFilters): Promise<SmsTypeCounts> {
+  const supabase = await createClient();
+  const count = (types?: ReminderType[]) => {
+    const query = filtered(supabase.from("sms_log_item").select("reminder_id", { count: "exact", head: true }), filters, { type: false });
+    return types ? query.in("reminder_type", types) : query;
+  };
+  const [all, ...each] = await Promise.all([count(), ...TYPE_KEYS.map((key) => count(TYPES[key]))]);
+  return {
+    all: all.count ?? 0,
+    ...(Object.fromEntries(TYPE_KEYS.map((key, index) => [key, each[index].count ?? 0])) as Record<SmsLogType, number>),
+  };
+}
+
+/** Waiting, sent today (Manila), trying again and failed: the counts at the top of the log. */
 export async function countSmsLog(today: string): Promise<SmsCounts> {
   const supabase = await createClient();
-  const count = (statuses: SmsDeliveryStatus[], sentSince?: string) => {
-    let query = supabase.from("sms_reminder").select("reminder_id", { count: "exact", head: true }).in("delivery_status", statuses);
-    if (sentSince) query = query.gte("sent_at", sentSince);
-    return query;
-  };
-  const [waiting, sentToday, failed] = await Promise.all([
+  const count = (statuses: SmsDeliveryStatus[]) =>
+    supabase.from("sms_reminder").select("reminder_id", { count: "exact", head: true }).in("delivery_status", statuses);
+  const [waiting, sentToday, retrying, failed] = await Promise.all([
     count(STATUSES.waiting),
-    count(STATUSES.sent, dayStart(today)),
+    count(STATUSES.sent).gte("sent_at", dayStart(today)),
+    count(STATUSES.retrying).not("next_attempt_at", "is", null),
     count(STATUSES.failed),
   ]);
-  return { waiting: waiting.count ?? 0, sentToday: sentToday.count ?? 0, failed: failed.count ?? 0 };
+  return { waiting: waiting.count ?? 0, sentToday: sentToday.count ?? 0, retrying: retrying.count ?? 0, failed: failed.count ?? 0 };
 }
 
 /** One mother's texts, newest first (her record's SMS log tab). */

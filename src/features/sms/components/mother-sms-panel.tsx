@@ -25,7 +25,7 @@ export function MotherSmsPanelView({ t, locale, items, canRetry }: { t: Dictiona
       <ul className="grid gap-3 xl:grid-cols-2">
         {items.map((item) => (
           <li key={item.id}>
-            <SmsCard t={t} locale={locale} canRetry={canRetry} item={item} showMother={false} />
+            <SmsCard t={t} locale={locale} canRetry={canRetry} item={item} />
           </li>
         ))}
       </ul>

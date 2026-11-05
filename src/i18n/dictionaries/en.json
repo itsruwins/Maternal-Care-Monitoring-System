@@ -2026,10 +2026,10 @@
   },
   "sms": {
     "title": "SMS log",
-    "intro": "Visit reminders, missed-visit notices, answers to requests, and notices when a visit is booked, moved or cancelled, sent to mothers through HTTPSMS.",
+    "intro": "Every text sent to mothers through HTTPSMS: visit reminders, missed-visit notices, and answers and changes to their visits.",
     "send": {
       "title": "Automatic sending",
-      "intro": "Answers and visit changes go out right away. Reminders and missed-visit notices go out every 5 minutes, day and night; Send now runs them right away.",
+      "schedule": "Answers and visit changes go out right away; reminders and missed-visit notices every 5 minutes, day and night.",
       "now": "Send now",
       "sending": "Sending…",
       "phoneUnknown": "SMS phone: no status yet",
@@ -2051,26 +2051,30 @@
     },
     "log": {
       "countsLabel": "Texts at a glance",
+      "tabs": {
+        "label": "Kinds of text",
+        "all": "All texts"
+      },
       "counts": {
         "waiting": "Waiting",
         "sentToday": "Sent today",
+        "retrying": "Trying again",
         "failed": "Failed"
       },
       "search": {
         "label": "Find a mother",
         "placeholder": "Name or mobile number",
-        "filters": "Filters",
         "status": "Status",
         "anyStatus": "Any status",
-        "type": "Type",
-        "anyType": "Any type",
         "from": "From",
         "to": "To",
-        "submit": "Search",
-        "clear": "Clear"
+        "clear": "Clear",
+        "form": "Filter the texts",
+        "updating": "Updating…"
       },
       "statusFilter": {
         "waiting": "Waiting",
+        "retrying": "Trying again",
         "sent": "Sent or delivered",
         "delivered": "Delivered",
         "failed": "Failed",
@@ -2126,17 +2130,15 @@
         "actions": "Actions"
       },
       "about": "{service} · {when}",
-      "showText": "Show text",
       "to": "To {number}",
       "retry": "Retry",
       "retryFor": "Retry the text to {name}",
       "retried": "Queued again. It goes out within 5 minutes.",
       "tooLate": "Too late to send: the visit time has passed or the appointment changed.",
       "notFailed": "This text isn't failed anymore.",
-      "count": "{count} texts",
-      "countOne": "1 text",
       "empty": "No texts match these filters.",
       "emptyAll": "No texts yet. Reminders and answers to requests will show here.",
+      "showing": "Showing {from}–{to} of {total}",
       "prev": "Previous",
       "next": "Next",
       "page": "Page {page} of {pages}"

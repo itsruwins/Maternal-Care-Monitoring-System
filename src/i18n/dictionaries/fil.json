@@ -2026,10 +2026,10 @@
   },
   "sms": {
     "title": "SMS log",
-    "intro": "Mga paalala sa bisita, abiso sa hindi nakarating, sagot sa hiling, at abiso kapag na-book, inilipat o kinansela ang bisita, ipinapadala sa mga nanay sa HTTPSMS.",
+    "intro": "Lahat ng text na ipinadala sa mga nanay sa HTTPSMS: paalala sa bisita, abiso sa hindi nakarating, at mga sagot at pagbabago sa kanilang bisita.",
     "send": {
       "title": "Awtomatikong pagpapadala",
-      "intro": "Agad ipinapadala ang mga sagot at pagbabago sa bisita. Ang mga paalala at abiso sa hindi nakarating ay ipinapadala kada 5 minuto, araw at gabi; pinatatakbo ito agad ng Ipadala ngayon.",
+      "schedule": "Agad ipinapadala ang mga sagot at pagbabago sa bisita; ang mga paalala at abiso sa hindi nakarating, kada 5 minuto, araw at gabi.",
       "now": "Ipadala ngayon",
       "sending": "Ipinapadala…",
       "phoneUnknown": "SMS phone: wala pang status",
@@ -2051,26 +2051,30 @@
     },
     "log": {
       "countsLabel": "Buod ng mga text",
+      "tabs": {
+        "label": "Mga uri ng text",
+        "all": "Lahat ng text"
+      },
       "counts": {
         "waiting": "Naghihintay",
         "sentToday": "Naipadala ngayon",
+        "retrying": "Susubukan ulit",
         "failed": "Pumalya"
       },
       "search": {
         "label": "Hanapin ang nanay",
         "placeholder": "Pangalan o mobile number",
-        "filters": "Mga filter",
         "status": "Status",
         "anyStatus": "Kahit anong status",
-        "type": "Uri",
-        "anyType": "Kahit anong uri",
         "from": "Mula",
         "to": "Hanggang",
-        "submit": "Hanapin",
-        "clear": "I-clear"
+        "clear": "I-clear",
+        "form": "I-filter ang mga text",
+        "updating": "Ina-update…"
       },
       "statusFilter": {
         "waiting": "Naghihintay",
+        "retrying": "Susubukan ulit",
         "sent": "Naipadala o natanggap",
         "delivered": "Natanggap",
         "failed": "Pumalya",
@@ -2126,17 +2130,15 @@
         "actions": "Mga aksyon"
       },
       "about": "{service} · {when}",
-      "showText": "Ipakita ang text",
       "to": "Para sa {number}",
       "retry": "Subukan ulit",
       "retryFor": "Subukan ulit ang text para kay {name}",
       "retried": "Naka-queue ulit. Ipapadala ito sa loob ng 5 minuto.",
       "tooLate": "Huli na para ipadala: lumipas na ang oras ng bisita o nagbago ang appointment.",
       "notFailed": "Hindi na ito bigong text.",
-      "count": "{count} text",
-      "countOne": "1 text",
       "empty": "Walang text na tugma sa mga filter na ito.",
       "emptyAll": "Wala pang text. Dito lalabas ang mga paalala at sagot sa mga hiling.",
+      "showing": "Ipinapakita ang {from}–{to} sa {total}",
       "prev": "Nakaraan",
       "next": "Susunod",
       "page": "Pahina {page} ng {pages}"

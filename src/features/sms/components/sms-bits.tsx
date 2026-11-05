@@ -72,15 +72,20 @@ const SMS_DATE = /\b(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun), (?:Jan|Feb|Mar|Apr|May|Jun|
 const keepSmsTextTogether = (text: string) =>
   text.replace(SMS_DATE, (date) => date.replace(/ /g, "\u00a0")).replace(/(\p{L})-(?=\p{L})/gu, "$1-\u2060");
 
-/** "Show text": the full message, folded (plain <details>, works without JavaScript). */
-export function SmsText({ t, text }: { t: Dictionary; text: string }) {
+/**
+ * The message itself: one line of it (its line breaks read as spaces) on a
+ * cream note with a caret; tapping unfolds the whole text with its line
+ * breaks (a plain <details>, works without JavaScript).
+ */
+export function SmsText({ text, className }: { text: string; className?: string }) {
+  const shown = keepSmsTextTogether(text);
   return (
-    <details className="group">
-      <summary className="inline-flex min-h-11 cursor-pointer list-none items-center gap-1 rounded-sm text-sm font-semibold text-leaf underline decoration-1 underline-offset-4 hover:decoration-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-leaf focus-visible:outline-solid [&::-webkit-details-marker]:hidden">
-        {t.sms.log.showText}
-        <CaretDownIcon weight="bold" aria-hidden className="size-3.5 transition-transform group-open:rotate-180" />
+    <details className={cn("group", className)}>
+      <summary className="flex min-h-11 cursor-pointer list-none items-start gap-2 rounded-xl bg-cream/70 px-3.5 py-2.5 text-sm leading-6 transition-colors hover:bg-cream focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-leaf focus-visible:outline-solid [&::-webkit-details-marker]:hidden">
+        <span className="line-clamp-1 min-w-0 flex-1 break-words group-open:hidden">{shown.replace(/\s+/g, " ")}</span>
+        <span className="hidden min-w-0 flex-1 break-words whitespace-pre-wrap group-open:block">{shown}</span>
+        <CaretDownIcon weight="bold" aria-hidden className="mt-1.5 size-3.5 shrink-0 text-leaf transition-transform group-open:rotate-180" />
       </summary>
-      <p className="mt-2 rounded-xl bg-cream px-3.5 py-2.5 text-sm leading-6 break-words whitespace-pre-wrap">{keepSmsTextTogether(text)}</p>
     </details>
   );
 }

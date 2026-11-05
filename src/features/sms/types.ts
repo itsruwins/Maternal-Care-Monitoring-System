@@ -43,8 +43,12 @@ export type SendingPanel = {
   limitReachedAt: string | null;
 };
 
-/** The SMS log's status filter. "sent": went out (Sent or Delivered). */
-export type SmsLogStatus = "waiting" | "sent" | "delivered" | "failed" | "skipped";
+/**
+ * The SMS log's status filter. "sent": went out (Sent or Delivered);
+ * "waiting": not sent yet (trying again included); "retrying": waiting for an
+ * automatic retry after a failed try.
+ */
+export type SmsLogStatus = "waiting" | "retrying" | "sent" | "delivered" | "failed" | "skipped";
 
 /** The SMS log's type filter. "answer": staff answers to her requests and staff moving or cancelling a visit. */
 export type SmsLogType = "reminder" | "missed" | "answer";
@@ -60,7 +64,10 @@ export type SmsLogFilters = {
 };
 
 /** The counts at the top of the SMS log (each one filters the list). */
-export type SmsCounts = { waiting: number; sentToday: number; failed: number };
+export type SmsCounts = { waiting: number; sentToday: number; retrying: number; failed: number };
+
+/** How many texts each type tab holds (search, status and dates applied). */
+export type SmsTypeCounts = Record<SmsLogType | "all", number>;
 
 /** One text on the SMS log or her record's SMS log tab. */
 export type SmsLogItem = {

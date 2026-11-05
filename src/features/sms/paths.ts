@@ -19,6 +19,12 @@ export function smsLogHref(filters: SmsLogFilters, changes: Partial<SmsLogFilter
   return query ? `${SMS_LOG_PATH}?${query}` : SMS_LOG_PATH;
 }
 
+/** The same, relative to the page ("?status=failed"): for links inside the log itself. */
+export function smsLogQuery(filters: SmsLogFilters, changes: Partial<SmsLogFilters> = {}): string {
+  const query = smsLogHref(filters, changes).slice(SMS_LOG_PATH.length);
+  return query || "?";
+}
+
 export const NO_SMS_FILTERS: SmsLogFilters = { q: "", status: "", type: "", from: "", to: "", page: 1 };
 
 /** Her record, on the SMS log tab. */

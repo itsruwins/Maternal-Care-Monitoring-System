@@ -28,12 +28,15 @@ export function StaffShell({
   user,
   badges: initialBadges = NO_BADGES,
   liveBadges = false,
+  notifications,
   children,
 }: {
   user: ShellUser;
   badges?: NavBadges;
   /** Check the counts again after each page change (off in previews). */
   liveBadges?: boolean;
+  /** The notification bell, beside the profile menu. */
+  notifications?: ReactNode;
   children: ReactNode;
 }) {
   const { t } = useDictionary();
@@ -93,8 +96,9 @@ export function StaffShell({
 
           <p className="truncate text-lg font-bold tracking-[-0.01em]">{sectionTitle}</p>
 
-          <div className="ml-auto flex items-center gap-2 sm:gap-3">
+          <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-3">
             <LanguageSwitch />
+            {notifications}
             <ProfileMenu user={user} profileHref={STAFF_PROFILE_HREF} />
           </div>
         </header>

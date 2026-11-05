@@ -2,7 +2,7 @@
 
 Barangay Taysan, Legazpi City · Next.js 16 + Supabase · Hosted on Vercel
 
-Status: **Phases 0–9 done (Phase 9 signed off 2026-11-03). Phase 9 — Hardening & launch: steps 1–9 (security review and fixes, abuse limits, RLS test script, unit tests, accessibility pass, performance pass, live settings and docs, real-phone testing, review) done. Remaining: the Open items below.** Each phase ends with a demo and your sign-off before the next starts.
+Status: **Phases 0–9 done (Phase 9 signed off 2026-11-03). Phase 10 — Notification bell (added 2026-11-05): step 1 (migration `0026`) done (run and checked by you); step 2 (design preview) built, waiting for your OK. Remaining: the rest of Phase 10 and the Open items below.** Each phase ends with a demo and your sign-off before the next starts.
 
 ---
 
@@ -1167,6 +1167,57 @@ Sample request answers (one SMS each with this service name; a longer name may m
 - Types, lint and the 67 tests pass.
 
 **Phase 9 signed off (2026-11-03):** you ran `0025` (checks passed) and approved the review fixes.
+
+---
+
+## Phase 10 — Notification bell
+
+A bell in the staff and mother headers listing each person's updates, from its own `notification` table. Added after launch at your request (2026-11-05).
+
+**Decisions (asked 2026-11-05):**
+
+| Topic | Decision |
+|---|---|
+| Her (mother) | Answers to her requests (confirmed, new time, declined); staff changes (booked, **rebooked** after a missed visit, moved, cancelled); the visit reminder (8:00 AM, on the SMS reminder's day) and a missed visit; her records (checkup recorded, pregnancy closed, password reset by staff). Only for a record with a login. |
+| Health workers | Her new request, or her cancelling a request or visit; her accepting or declining a new time; a website sign-up; **one summary a day** of the visits marked missed. |
+| Admins | Everything health workers get, plus: SMS problems (failed texts, phone offline, monthly limit), a username locked after 5 failed logins, and account changes by another admin (staff account created, account deactivated / reactivated). |
+| Who | One row per person, so each has their own read state. Nobody is told about their own action. |
+| How rows are made | By the database itself (triggers and a job, like the SMS queue), so staff screens, her own actions and the nightly jobs are all covered. The server adds the two it does with the secret key (password resets, new staff accounts, a login turned off from her record) through server-only functions. |
+| Language | Only the type and a few details are stored; the website writes the sentence in English or Filipino when it shows it. |
+| Freshness | Checked every **60 seconds** while the tab is open and visible, on every page change, and when the bell is opened. No Realtime. |
+| The bell | **Dropdown only** (no separate page): the newest 20, then **Show older** (20 more each time, within the 90 days). Full width on phones. Unread count on the bell (9+ above 9). |
+| Read | Clicking one marks it read and opens its page; **Mark all as read**. Opening the bell alone doesn't. |
+| Handled ones | A request's "New request" is marked read **for all staff** once it's answered or she cancels it. |
+| Kept | **90 days**, then deleted by a nightly job. |
+| Start | **Empty**: no notifications for past events. |
+
+**Build, in steps (each ends with a note for your OK):**
+1. **Database (migration `0026_notifications.sql`, run by you):** the table, read rules, the triggers and jobs, the server-only functions and the two mark-read functions; check queries in `docs/database-setup.md`.
+2. **Design preview** of the bell (EN/FIL, desktop/phone), for your OK. Rows (your choice, 2026-11-05): an icon per kind in the brand colours, a bold title, one detail line (service, date), the time ("5 min ago", "Nov 3") and an unread dot, grouped under Today and Earlier.
+3. **Build:** the bell in both headers, the 60-second check, the sentences in both languages and the links; the server calls for password resets and account changes; app types.
+4. **Tests:** new checks in `supabase/tests/rls-by-role.sql` (each person sees only their own) and unit tests for the wording.
+5. **Review:** screenshots, accessibility checks, the independent design review, `DESIGN.md`. Then your testing and sign-off.
+
+**Needs from you:** ~~run `0026` and its check query~~ (done 2026-11-05). A backup before each migration is still advised (`docs/backup.md`; Open item 5).
+
+**Step 1 done (2026-11-05):** migration `0026_notifications.sql`, run and checked by you (11 checks as expected; no notifications yet). Changes no existing data and leaves the SMS functions as they are.
+- **Table `notification`:** who it's for, the type (25 kinds), what it's about (appointment, mother or visit, for the link; removed with the record), details as they were at the time (service, time, her name, a count…), created and read times. Each person reads only their own, and nothing while their account is inactive. Nobody adds, changes or deletes rows from the website; `mark_notification_read()` and `mark_all_notifications_read()` mark them read.
+- **Made by triggers** on appointments (the same cases as her texts; her own actions tell staff), visits, pregnancies, mother records (a website sign-up is the one added with nobody logged in), texts, the SMS settings, failed logins and account status.
+- **Choices made while building (approved by you 2026-11-05):**
+  - **Failed texts** make one notice per admin that **counts up** ("3 texts failed") until it's read, so a phone outage doesn't flood the bell. The missed-visit summary counts up the same way, one per day.
+  - **Fixed by themselves:** "Phone offline" is marked read when the phone is back online, "Monthly limit" when texts go through again, and her "New time" once she answers it or staff change it.
+  - **No "Visit cancelled"** when closing her pregnancy cancels her visits: "Pregnancy closed" says it. That notice keeps only Delivered / Ended, **never the outcome**.
+  - **Declining or cancelling a new time** both reach staff as "declined the new time".
+  - **Reminders:** a visit booked after 8:00 AM on its reminder day gets no separate reminder (its Booked / Confirmed / Moved notice already gives the time). Unlike the SMS, there's no catch-up.
+  - **Clean-up:** its own job `clean-notifications` at 3:00 AM, next to `clean-rate-limits`, instead of changing that job.
+- **Tested before hand-over** on a copy of the tables in a local Postgres (PGlite, in a scratch folder, not added to the project): 60 checks passed, including running the file twice.
+
+**Step 2 built (2026-11-05):** the design preview `/design-preview/notifications`, on sample data in the real staff and mother headers. No migration, no package, and no real page shows the bell yet.
+- **Preview controls:** `?role=admin` (default), `health` or `mother`; `?state=many` (all unread, "9+"), `empty`, `loading` or `error`; `?open=0` starts closed. "Every kind" lists each notification the role can get, as its row reads.
+- **The bell:** a bell beside the profile menu, with a rose count (9+ above 9). The panel is a popover: the heading with **Mark all as read**, then **Today** and **Earlier**. Each row shows the kind's icon in a soft circle (blush only for what needs someone), a bold title while unread, one detail line, the time ("5 min ago", "Today, 9:12 AM", "Yesterday, 2:15 PM", "Nov 3") and a leaf dot. The last row is **Show older** (20 more), or "That's everything from the last 90 days." Plus loading, error (Try again) and empty ("You're all caught up") states. Clicking a row marks it read and opens its page; Escape returns focus to the bell.
+- **Built to be reused in step 3:** `features/notifications` (types, the icon and page for each kind, the wording in EN/FIL, the `NotificationBell` that takes load / mark-read / mark-all functions), `components/ui/popover.tsx`, `NotificationIcon` (Phosphor Bell) in the icon index, and a `notifications` slot in both headers.
+- **Header fix:** with the bell, the mother header ran off the screen below 400px. The name now wraps on two lines, below 390px only the seal shows (the name stays for screen readers), and the header actions never shrink (staff too).
+- **Checked:** axe on every role, EN/FIL, desktop and phone: clean, and no sideways scroll at 320px. The keyboard path (Enter opens, Tab, Escape back to the bell) works. Types, lint and the 75 unit tests pass.
 
 ---
 

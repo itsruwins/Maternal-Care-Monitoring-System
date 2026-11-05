@@ -41,6 +41,7 @@ export {
   // SMS & contact
   ChatCircleTextIcon as SmsIcon,
   BellRingingIcon as ReminderIcon,
+  BellIcon as NotificationIcon,
   DeviceMobileIcon as PhoneIcon,
   PhoneCallIcon as CallIcon,
   PaperPlaneTiltIcon as SendIcon,

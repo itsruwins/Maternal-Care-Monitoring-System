@@ -2147,5 +2147,136 @@
       "empty": "No texts for her yet.",
       "title": "Her texts"
     }
+  },
+  "notifications": {
+    "bell": "Notifications",
+    "bellUnread": "Notifications, {count} unread",
+    "bellUnreadOne": "Notifications, 1 unread",
+    "title": "Notifications",
+    "markAll": "Mark all as read",
+    "today": "Today",
+    "earlier": "Earlier",
+    "unread": "Unread",
+    "showOlder": "Show older",
+    "loadingOlder": "Loading…",
+    "loading": "Loading notifications…",
+    "emptyTitle": "You're all caught up",
+    "emptyMother": "News about your visits and checkups will show here.",
+    "emptyStaff": "Requests, missed visits and other updates will show here.",
+    "error": "We couldn't load your notifications.",
+    "retry": "Try again",
+    "end": "That's everything from the last 90 days.",
+    "time": {
+      "justNow": "Just now",
+      "minutes": "{count} min ago",
+      "today": "Today, {time}",
+      "yesterday": "Yesterday, {time}"
+    },
+    "items": {
+      "REQUEST_CONFIRMED": {
+        "title": "Your request is confirmed",
+        "detail": "{service} · {when}"
+      },
+      "REQUEST_NEW_TIME": {
+        "title": "New time proposed",
+        "detail": "{service} · {when}. Please accept or decline it."
+      },
+      "REQUEST_DECLINED": {
+        "title": "Your request wasn't approved",
+        "detail": "{service} · {when}. Call or visit the health center."
+      },
+      "VISIT_BOOKED": {
+        "title": "Visit booked for you",
+        "detail": "{service} · {when}"
+      },
+      "VISIT_REBOOKED": {
+        "title": "Your missed visit is rebooked",
+        "detail": "{service} · {when}"
+      },
+      "VISIT_MOVED": {
+        "title": "Your visit was moved",
+        "detail": "{service} · now {when}"
+      },
+      "VISIT_CANCELLED": {
+        "title": "Your visit was cancelled",
+        "detail": "{service} · {when}. Call or visit the health center for a new schedule."
+      },
+      "VISIT_REMINDER": {
+        "title": "Visit reminder",
+        "detail": "{service} · {when}. Bring your booklet."
+      },
+      "VISIT_MISSED": {
+        "title": "We missed you at your visit",
+        "detail": "{service} · {when}. Request a new visit or contact the health center."
+      },
+      "CHECKUP_RECORDED": {
+        "title": "Checkup recorded",
+        "detail": "Your results from {when} are ready to see."
+      },
+      "PREGNANCY_CLOSED": {
+        "title": "Your pregnancy record was updated",
+        "detail": "The health center closed your current pregnancy record."
+      },
+      "PASSWORD_RESET": {
+        "title": "Your password was reset",
+        "detail": "The health center reset it. If you didn't ask for this, please let them know.",
+        "detailStaff": "An admin reset it. If you didn't ask for this, tell an admin."
+      },
+      "NEW_REQUEST": {
+        "title": "New request from {mother}",
+        "detail": "{service} · {when}"
+      },
+      "MOTHER_CANCELLED": {
+        "title": "{mother} cancelled her request",
+        "titleVisit": "{mother} cancelled her visit",
+        "detail": "{service} · {when}"
+      },
+      "NEW_TIME_ACCEPTED": {
+        "title": "{mother} accepted the new time",
+        "detail": "{service} · {when}"
+      },
+      "NEW_TIME_DECLINED": {
+        "title": "{mother} declined the new time",
+        "detail": "{service} · {when}"
+      },
+      "MOTHER_SIGNED_UP": {
+        "title": "{mother} signed up on the website",
+        "detail": "Check her record."
+      },
+      "MISSED_SUMMARY": {
+        "title": "{count} visits marked missed",
+        "titleOne": "1 visit marked missed",
+        "detail": "Follow-ups needed."
+      },
+      "SMS_FAILED": {
+        "title": "{count} texts failed",
+        "titleOne": "1 text failed",
+        "detail": "Open the SMS log to retry."
+      },
+      "SMS_PHONE_OFFLINE": {
+        "title": "The SMS phone is offline",
+        "detail": "Since {when}. Texts wait until it's back online."
+      },
+      "SMS_LIMIT_REACHED": {
+        "title": "Monthly SMS limit reached",
+        "detail": "HTTPSMS is refusing texts, so they're waiting in the queue."
+      },
+      "ACCOUNT_LOCKED": {
+        "title": "@{username} is locked",
+        "detail": "5 failed logins. It unlocks in 15 minutes."
+      },
+      "STAFF_ACCOUNT_CREATED": {
+        "title": "New staff account: @{username}",
+        "detail": "{role} · added by another admin"
+      },
+      "ACCOUNT_DEACTIVATED": {
+        "title": "@{username} was deactivated",
+        "detail": "{role} · by another admin"
+      },
+      "ACCOUNT_REACTIVATED": {
+        "title": "@{username} was reactivated",
+        "detail": "{role} · by another admin"
+      }
+    }
   }
 }

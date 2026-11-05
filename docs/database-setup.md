@@ -29,6 +29,7 @@ Run these in **Supabase Dashboard → SQL Editor**, in order. Each file is safe 
 | 23 | `supabase/migrations/0023_rate_limits.sql` | Phase 9: the server-only `rate_limit_hit` log for abuse limits per network address (login 20 failed tries in 15 minutes, sign-up 20 an hour, forgot password 10 an hour; only a keyed hash of the address is stored); the `clean-rate-limits` job deletes rows older than a day here and in `login_attempt`, every day at 3:00 AM Manila |
 | 24 | `supabase/migrations/0024_sms_visit_booked.sql` | Phase 9: new text type Visit booked, sent right away when staff (admins or health workers) book a visit, including a rebook after a missed visit; the usual reminder is Skipped when it would go the same day. Every text now starts "Hi, {name}!" (with a comma), texts still waiting too |
 | 25 | `supabase/migrations/0025_sms_website_wording.sql` | Phase 9 review: the "New time proposed" text says "Mag-log in sa website para tanggapin o tanggihan." instead of "Buksan ang app…" (it's a website, nothing to install); texts still waiting get the new wording too |
+| 26 | `supabase/migrations/0026_notifications.sql` | Phase 10: the notification bell. New `notification` table (one row per person, own read state; each person reads only their own, nobody writes from the website) filled by the database itself: her request answers, staff bookings / rebooks / moves / cancels, missed visits, checkups recorded, pregnancy closed; staff hear about her requests, cancels, answers to new times, website sign-ups and a daily missed-visit summary; admins also about failed texts, the SMS phone offline, the monthly limit, locked usernames and account changes. Jobs `notify-visit-reminders` (8:00 AM Manila) and `clean-notifications` (3:00 AM, deletes after 90 days). Starts empty; changes no data; the SMS functions are untouched |
 | — | `supabase/seed/first-admin.sql` | First admin (follow the steps at the top of the file) |
 
 ## Rules
@@ -440,6 +441,69 @@ select 3, 'app can call the queuing function',
        has_function_privilege('authenticated', 'public.sync_appointment_reminder()', 'execute')::text, 'false'
 order by n;
 ```
+
+## 0026 check query (after running it)
+
+Read-only. Every `result` should match `expected`. The notification rules themselves were tested before hand-over on a copy of the tables (60 checks: who gets each notification, handled ones read, counts, the reminder job, the read rules); the live behaviour is tested from the website in Phase 10 step 3.
+
+```sql
+select 1 as n, 'notification kinds' as check_name,
+       (select count(*) from unnest(enum_range(null::public.notification_type)))::text as result,
+       '25' as expected
+union all
+select 2, 'table has RLS on',
+       (select relrowsecurity from pg_class where oid = 'public.notification'::regclass)::text, 'true'
+union all
+select 3, 'app users: read / add / change / delete',
+       has_table_privilege('authenticated', 'public.notification', 'select')::text || ' / '
+         || has_table_privilege('authenticated', 'public.notification', 'insert')::text || ' / '
+         || has_table_privilege('authenticated', 'public.notification', 'update')::text || ' / '
+         || has_table_privilege('authenticated', 'public.notification', 'delete')::text,
+       'true / false / false / false'
+union all
+select 4, 'logged-out visitors can read',
+       has_table_privilege('anon', 'public.notification', 'select')::text, 'false'
+union all
+select 5, 'read rule (own rows, active accounts)',
+       (select count(*) from pg_policies where tablename = 'notification' and policyname = 'notification_select_own')::text, '1'
+union all
+select 6, 'triggers installed',
+       (select count(*) from pg_trigger
+        where tgname in ('trg_appointment_notify', 'trg_prenatal_visit_notify', 'trg_pregnancy_notify',
+                         'trg_mother_notify_signup', 'trg_sms_reminder_notify_failed', 'trg_sms_setting_notify',
+                         'trg_login_attempt_notify', 'trg_user_account_notify_status')
+          and tgenabled = 'O')::text, '8'
+union all
+select 7, 'app users can run database-only functions',
+       (has_function_privilege('authenticated', 'public.add_notification(uuid, public.notification_type, jsonb, bigint, bigint, bigint)', 'execute')
+        or has_function_privilege('authenticated', 'public.notify_staff(public.notification_type, jsonb, boolean, bigint, bigint, uuid)', 'execute')
+        or has_function_privilege('authenticated', 'public.count_up_staff_notice(public.notification_type, boolean, date)', 'execute')
+        or has_function_privilege('authenticated', 'public.notify_account_change(public.notification_type, uuid, uuid)', 'execute')
+        or has_function_privilege('authenticated', 'public.notify_password_reset(uuid)', 'execute')
+        or has_function_privilege('authenticated', 'public.notify_visit_reminders()', 'execute')
+        or has_function_privilege('authenticated', 'public.clean_notifications()', 'execute')
+        or has_function_privilege('anon', 'public.mark_all_notifications_read()', 'execute'))::text, 'false'
+union all
+select 8, 'app users can mark read',
+       (has_function_privilege('authenticated', 'public.mark_notification_read(bigint)', 'execute')
+        and has_function_privilege('authenticated', 'public.mark_all_notifications_read()', 'execute'))::text, 'true'
+union all
+select 9, 'server can call its two functions',
+       (has_function_privilege('service_role', 'public.notify_account_change(public.notification_type, uuid, uuid)', 'execute')
+        and has_function_privilege('service_role', 'public.notify_password_reset(uuid)', 'execute'))::text, 'true'
+union all
+select 10, 'jobs',
+       (select string_agg(jobname || ' ' || schedule || case when active then '' else ' (off)' end, ', ' order by jobname)
+        from cron.job where jobname in ('notify-visit-reminders', 'clean-notifications')),
+       'clean-notifications 0 19 * * *, notify-visit-reminders 0 0 * * *'
+union all
+select 11, 'notifications so far',
+       (select count(*) from public.notification)::text, '0 (or a few, if something happened since)'
+order by n;
+```
+
+- Run the reminder job now, e.g. to test: `select public.notify_visit_reminders();` (returns how many it added; running it again adds none).
+- See the newest notifications: `select notification_id, user_id, notification_type, details, created_at, read_at from public.notification order by notification_id desc limit 20;`
 
 ## Environment variables (`.env.local`, never committed)
 

@@ -7,16 +7,20 @@ import { cn } from "@/lib/utils/cn"
 // `compact` is for crowded top bars: a smaller wordmark at phone width and
 // the location line only from 640px. `wrap` lets the name sit on two lines
 // from 360px to 419px instead of being cut off (the landing header).
+// `sealOnlyNarrow` shows only the seal below 390px (the name stays for screen
+// readers), for a top bar whose actions leave no room for it.
 export function BrandMark({
   className,
   href = "/",
   compact = false,
   wrap = false,
+  sealOnlyNarrow = false,
 }: {
   className?: string
   href?: string
   compact?: boolean
   wrap?: boolean
+  sealOnlyNarrow?: boolean
 }) {
   return (
     <Link
@@ -26,7 +30,7 @@ export function BrandMark({
       <span className="grid size-10 shrink-0 place-items-center rounded-full bg-white shadow-[var(--shadow-soft)]">
         <Image src="/brand/seal-96.png" alt="" width={32} height={32} className="size-8 rounded-full" loading="eager" />
       </span>
-      <span className="flex min-w-0 flex-col leading-none">
+      <span className={cn("flex min-w-0 flex-col leading-none", sealOnlyNarrow && "max-[389px]:sr-only")}>
         <span
           className={cn(
             "truncate font-bold tracking-[-0.015em]",

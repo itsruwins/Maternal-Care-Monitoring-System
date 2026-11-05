@@ -16,7 +16,19 @@ const PROFILE_HREF = "/mother/profile";
 // The mother portal: a slim top bar (brand, language, profile menu) and a
 // floating bottom navigation on every screen size (icons; the selected tab
 // opens into a mint pill with its name).
-export function MotherShell({ user, children, previewPath }: { user: ShellUser; children: ReactNode; /** Dev previews: which tab is current. */ previewPath?: string }) {
+export function MotherShell({
+  user,
+  notifications,
+  children,
+  previewPath,
+}: {
+  user: ShellUser;
+  /** The notification bell, beside the profile menu. */
+  notifications?: ReactNode;
+  children: ReactNode;
+  /** Dev previews: which tab is current. */
+  previewPath?: string;
+}) {
   const { t } = useDictionary();
   const routePath = usePathname();
   const pathname = previewPath ?? routePath;
@@ -24,11 +36,13 @@ export function MotherShell({ user, children, previewPath }: { user: ShellUser; 
   return (
     <div className="flex min-h-dvh flex-col bg-milk">
       <header className="sticky top-0 z-30 border-b border-line bg-white">
-        <div className="mx-auto flex h-16 max-w-5xl items-center gap-4 px-4 sm:px-6">
-          <BrandMark href="/mother" compact />
+        <div className="mx-auto flex h-16 max-w-5xl items-center gap-3 px-4 sm:gap-4 sm:px-6">
+          {/* The name wraps, or below 390px only the seal shows; the actions never shrink. */}
+          <BrandMark href="/mother" compact wrap sealOnlyNarrow className="min-w-0" />
 
-          <div className="ml-auto flex items-center gap-2 sm:gap-3">
+          <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-3">
             <LanguageSwitch />
+            {notifications}
             <ProfileMenu user={user} profileHref={PROFILE_HREF} />
           </div>
         </div>

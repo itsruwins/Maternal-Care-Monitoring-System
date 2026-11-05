@@ -2147,5 +2147,136 @@
       "empty": "Wala pang text para sa kanya.",
       "title": "Mga text niya"
     }
+  },
+  "notifications": {
+    "bell": "Mga notification",
+    "bellUnread": "Mga notification, {count} hindi pa nababasa",
+    "bellUnreadOne": "Mga notification, 1 hindi pa nababasa",
+    "title": "Mga notification",
+    "markAll": "Markahang nabasa lahat",
+    "today": "Ngayong araw",
+    "earlier": "Nakaraan",
+    "unread": "Hindi pa nababasa",
+    "showOlder": "Ipakita ang mas luma",
+    "loadingOlder": "Naglo-load…",
+    "loading": "Naglo-load ang mga notification…",
+    "emptyTitle": "Wala ka nang hindi nababasa",
+    "emptyMother": "Makikita rito ang balita tungkol sa mga bisita at checkup mo.",
+    "emptyStaff": "Makikita rito ang mga hiling, hindi napuntahang bisita at iba pang update.",
+    "error": "Hindi namin ma-load ang mga notification mo.",
+    "retry": "Subukan ulit",
+    "end": "Iyan na lahat mula sa nakaraang 90 araw.",
+    "time": {
+      "justNow": "Ngayon lang",
+      "minutes": "{count} min na ang nakalipas",
+      "today": "Ngayong araw, {time}",
+      "yesterday": "Kahapon, {time}"
+    },
+    "items": {
+      "REQUEST_CONFIRMED": {
+        "title": "Kumpirmado na ang hiling mo",
+        "detail": "{service} · {when}"
+      },
+      "REQUEST_NEW_TIME": {
+        "title": "May bagong oras na iminungkahi",
+        "detail": "{service} · {when}. Tanggapin o tanggihan ito."
+      },
+      "REQUEST_DECLINED": {
+        "title": "Hindi naaprubahan ang hiling mo",
+        "detail": "{service} · {when}. Tumawag o pumunta sa health center."
+      },
+      "VISIT_BOOKED": {
+        "title": "Naka-schedule na ang bisita mo",
+        "detail": "{service} · {when}"
+      },
+      "VISIT_REBOOKED": {
+        "title": "Naka-schedule na ulit ang hindi mo napuntahang bisita",
+        "detail": "{service} · {when}"
+      },
+      "VISIT_MOVED": {
+        "title": "Inilipat ang bisita mo",
+        "detail": "{service} · ngayon ay {when}"
+      },
+      "VISIT_CANCELLED": {
+        "title": "Kinansela ang bisita mo",
+        "detail": "{service} · {when}. Tumawag o pumunta sa health center para sa bagong schedule."
+      },
+      "VISIT_REMINDER": {
+        "title": "Paalala sa bisita",
+        "detail": "{service} · {when}. Dalhin ang booklet mo."
+      },
+      "VISIT_MISSED": {
+        "title": "Na-miss ka namin sa bisita mo",
+        "detail": "{service} · {when}. Humiling ng bagong bisita o makipag-⁠ugnayan sa health center."
+      },
+      "CHECKUP_RECORDED": {
+        "title": "Naitala na ang checkup mo",
+        "detail": "Puwede mo nang makita ang resulta mo mula {when}."
+      },
+      "PREGNANCY_CLOSED": {
+        "title": "Na-update ang record ng pagbubuntis mo",
+        "detail": "Isinara ng health center ang record ng kasalukuyan mong pagbubuntis."
+      },
+      "PASSWORD_RESET": {
+        "title": "Na-reset ang password mo",
+        "detail": "Ni-reset ito ng health center. Kung hindi ikaw ang humiling nito, sabihan sila.",
+        "detailStaff": "Ni-reset ito ng isang admin. Kung hindi ikaw ang humiling nito, sabihan ang isang admin."
+      },
+      "NEW_REQUEST": {
+        "title": "Bagong hiling mula kay {mother}",
+        "detail": "{service} · {when}"
+      },
+      "MOTHER_CANCELLED": {
+        "title": "Kinansela ni {mother} ang hiling niya",
+        "titleVisit": "Kinansela ni {mother} ang bisita niya",
+        "detail": "{service} · {when}"
+      },
+      "NEW_TIME_ACCEPTED": {
+        "title": "Tinanggap ni {mother} ang bagong oras",
+        "detail": "{service} · {when}"
+      },
+      "NEW_TIME_DECLINED": {
+        "title": "Tinanggihan ni {mother} ang bagong oras",
+        "detail": "{service} · {when}"
+      },
+      "MOTHER_SIGNED_UP": {
+        "title": "Nag-sign up si {mother} sa website",
+        "detail": "Tingnan ang kanyang record."
+      },
+      "MISSED_SUMMARY": {
+        "title": "{count} bisita ang hindi napuntahan",
+        "titleOne": "1 bisita ang hindi napuntahan",
+        "detail": "Kailangan ng follow-up."
+      },
+      "SMS_FAILED": {
+        "title": "{count} text ang hindi naipadala",
+        "titleOne": "1 text ang hindi naipadala",
+        "detail": "Buksan ang SMS log para subukan ulit."
+      },
+      "SMS_PHONE_OFFLINE": {
+        "title": "Offline ang SMS phone",
+        "detail": "Mula {when}. Maghihintay ang mga text hanggang mag-online ito ulit."
+      },
+      "SMS_LIMIT_REACHED": {
+        "title": "Naabot na ang buwanang SMS limit",
+        "detail": "Tinatanggihan ng HTTPSMS ang mga text, kaya naghihintay muna ang mga ito."
+      },
+      "ACCOUNT_LOCKED": {
+        "title": "Naka-lock ang @{username}",
+        "detail": "5 maling login. Mabubuksan ulit ito sa loob ng 15 minuto."
+      },
+      "STAFF_ACCOUNT_CREATED": {
+        "title": "Bagong staff account: @{username}",
+        "detail": "{role} · idinagdag ng ibang admin"
+      },
+      "ACCOUNT_DEACTIVATED": {
+        "title": "Na-deactivate ang @{username}",
+        "detail": "{role} · ng ibang admin"
+      },
+      "ACCOUNT_REACTIVATED": {
+        "title": "Na-reactivate ang @{username}",
+        "detail": "{role} · ng ibang admin"
+      }
+    }
   }
 }

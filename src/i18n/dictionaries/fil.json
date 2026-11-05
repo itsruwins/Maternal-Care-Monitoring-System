@@ -2153,7 +2153,7 @@
     "bellUnread": "Mga notification, {count} hindi pa nababasa",
     "bellUnreadOne": "Mga notification, 1 hindi pa nababasa",
     "title": "Mga notification",
-    "markAll": "Markahang nabasa lahat",
+    "markAll": "Markahan lahat bilang nabasa",
     "today": "Ngayong araw",
     "earlier": "Nakaraan",
     "unread": "Hindi pa nababasa",
@@ -2164,12 +2164,13 @@
     "emptyMother": "Makikita rito ang balita tungkol sa mga bisita at checkup mo.",
     "emptyStaff": "Makikita rito ang mga hiling, hindi napuntahang bisita at iba pang update.",
     "error": "Hindi namin ma-load ang mga notification mo.",
+    "errorOlder": "Hindi ma-load ang mas luma.",
     "retry": "Subukan ulit",
     "end": "Iyan na lahat mula sa nakaraang 90 araw.",
     "time": {
       "justNow": "Ngayon lang",
       "minutes": "{count} min na ang nakalipas",
-      "today": "Ngayong araw, {time}",
+      "today": "{time}",
       "yesterday": "Kahapon, {time}"
     },
     "items": {

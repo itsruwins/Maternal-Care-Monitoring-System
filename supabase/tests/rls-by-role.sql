@@ -1,15 +1,19 @@
--- supabase/tests/rls-by-role.sql  (Phase 9 step 3: access rules per role)
+-- supabase/tests/rls-by-role.sql  (Phase 9 step 3: access rules per role;
+-- Phase 10 step 4: notifications)
 -- Run in the Supabase SQL editor whenever you want; it is NOT a migration.
 -- Nothing is saved: every change it makes is undone before it finishes, and
 -- no text message can go out (texts are only sent by the server, and the
--- queued ones are undone too).
+-- queued ones are undone too). The made-up records also make notifications
+-- (for example "a mother signed up" for every staff member); those are undone
+-- too, so no one ever sees them.
 --
 -- What it does:
 -- 1. Makes made-up logins and records (an admin, a health worker, an inactive
 --    health worker, a mother with a login and a mother without one, each
 --    mother with a current pregnancy and a confirmed visit 6+ weeks away;
 --    the first mother also has a recorded visit, and a missed visit from
---    yesterday with a follow-up logged today).
+--    yesterday with a follow-up logged today). Each login also gets a
+--    notification of its own.
 --    The database refuses visits in the past, so that check is switched off
 --    for the one missed visit and straight back on; this is undone with the
 --    rest, so the check is never off outside this run.
@@ -21,8 +25,9 @@
 --
 -- Reading the result column: "rows: N" (rows it could see), "rows: N of M"
 -- (M = all rows that exist), "changed: N" (rows a change touched; 0 means the
--- access rules silently hid them), "ok" (a function call worked), or
--- "error: …" (refused).
+-- access rules silently hid them), "ok" (a function call worked), "rows
+-- after: N" (what a function call left behind, counted as the script's owner),
+-- or "error: …" (refused).
 
 create temp table if not exists rls_results (
   n int, actor text, check_name text, result text, expected text, verdict text
@@ -38,6 +43,8 @@ truncate rls_results;
 --   allowed     works (a change touches at least one row)
 --   blocked     refused, or the change touches no row
 --   error:<x>   refused with an error mentioning <x>
+--   after:N:<sql>  works, and afterwards <sql> finds N rows (counted as the
+--               script's owner, so what the access rules hide still counts)
 --   info        just shown
 create or replace function pg_temp.rls_case(p_actor text, p_name text, p_kind text, p_sql text, p_expect text)
 returns jsonb
@@ -55,6 +62,7 @@ declare
   u_m1 uuid := gen_random_uuid();
   hw_admin bigint; hw_id bigint; hw_off_id bigint;
   m1 bigint; m2 bigint; p1 bigint; p2 bigint; a1 bigint; a2 bigint; a3 bigint; v1 bigint;
+  n_m1 bigint; n_hw bigint;
   svc bigint; purok bigint;
   slots timestamptz[];
   free_day date;
@@ -152,6 +160,15 @@ begin
     alter table public.appointment enable trigger trg_appointment_check_slot;
     insert into public.follow_up (appointment_id, health_worker_id, follow_up_date, method, outcome_notes, result)
     values (a3, hw_id, (now() at time zone 'Asia/Manila')::date, 'CALL', 'RLS test', 'REACHED');
+
+    -- One unread notification each (the records above already made some:
+    -- the staff got her sign-up notice, she got her checkup notice).
+    perform public.add_notification(u_m1, 'VISIT_REMINDER', jsonb_build_object('service', 'Test'), a1, m1);
+    perform public.add_notification(u_hw, 'NEW_REQUEST', jsonb_build_object('mother_name', 'Test MotherOne'), a1, m1);
+    perform public.add_notification(u_admin, 'SMS_FAILED', jsonb_build_object('count', 1));
+    perform public.add_notification(u_hw_off, 'NEW_REQUEST', jsonb_build_object('mother_name', 'Test MotherOne'), a1, m1);
+    select max(notification_id) into n_m1 from public.notification where user_id = u_m1;
+    select max(notification_id) into n_hw from public.notification where user_id = u_hw;
 
     ----------------------------------------------------------------------------------------
     -- 2. The tests
@@ -346,6 +363,69 @@ begin
            format('update public.sms_reminder set recipient_number = ''09170000000'' where appointment_id = %s', a1), 'blocked')
       || pg_temp.rls_case('admin', 'Take texts to send (server only)', 'call', 'public.claim_due_sms()', 'blocked');
 
+    -- Notifications (Phase 10): each person sees and marks only their own; no
+    -- one adds, changes or deletes them directly (the database makes them).
+    -- "now()" is when this run started, so "read_at = now()" means "marked
+    -- read during this test".
+    tests := tests
+      || pg_temp.rls_case('visitor', 'Notifications', 'count', 'select 1 from public.notification', 'none')
+      || pg_temp.rls_case('visitor', 'Mark all notifications read', 'call', 'public.mark_all_notifications_read()', 'blocked')
+      || pg_temp.rls_case('visitor', 'Mark a notification read', 'call', format('public.mark_notification_read(%s)', n_m1), 'blocked')
+
+      || pg_temp.rls_case('mother', 'Notifications (only her own)', 'count', 'select 1 from public.notification',
+           format('same:select 1 from public.notification where user_id = %L', u_m1))
+      || pg_temp.rls_case('mother', 'A health worker''s notifications', 'count',
+           format('select 1 from public.notification where user_id = %L', u_hw), 'none')
+      || pg_temp.rls_case('mother', 'Add a notification', 'write',
+           format('insert into public.notification (user_id, notification_type) values (%L, ''VISIT_BOOKED'')', u_m1), 'blocked')
+      || pg_temp.rls_case('mother', 'Mark her notification read directly', 'write',
+           format('update public.notification set read_at = now() where notification_id = %s', n_m1), 'blocked')
+      || pg_temp.rls_case('mother', 'Delete her notifications', 'write', 'delete from public.notification', 'blocked')
+      || pg_temp.rls_case('mother', 'Mark her own notification read (function)', 'call', format('public.mark_notification_read(%s)', n_m1),
+           format('after:1:select 1 from public.notification where notification_id = %s and read_at = now()', n_m1))
+      || pg_temp.rls_case('mother', 'Mark a health worker''s notification read', 'call', format('public.mark_notification_read(%s)', n_hw),
+           format('after:0:select 1 from public.notification where notification_id = %s and read_at is not null', n_hw))
+      || pg_temp.rls_case('mother', 'Mark all read: every one of hers', 'call', 'public.mark_all_notifications_read()',
+           format('after:0:select 1 from public.notification where user_id = %L and read_at is null', u_m1))
+      || pg_temp.rls_case('mother', 'Mark all read: no one else''s', 'call', 'public.mark_all_notifications_read()',
+           format('after:0:select 1 from public.notification where user_id <> %L and read_at = now()', u_m1))
+      || pg_temp.rls_case('mother', 'Add a notification (database only)', 'call',
+           format('public.add_notification(%L, ''VISIT_BOOKED'')', u_m1), 'blocked')
+
+      || pg_temp.rls_case('health worker', 'Notifications (only her own)', 'count', 'select 1 from public.notification',
+           format('same:select 1 from public.notification where user_id = %L', u_hw))
+      || pg_temp.rls_case('health worker', 'A mother''s notifications', 'count',
+           format('select 1 from public.notification where user_id = %L', u_m1), 'none')
+      || pg_temp.rls_case('health worker', 'Mark her notification read directly', 'write',
+           format('update public.notification set read_at = now() where notification_id = %s', n_hw), 'blocked')
+      || pg_temp.rls_case('health worker', 'Mark a mother''s notification read', 'call', format('public.mark_notification_read(%s)', n_m1),
+           format('after:0:select 1 from public.notification where notification_id = %s and read_at is not null', n_m1))
+      || pg_temp.rls_case('health worker', 'Mark all read: no one else''s', 'call', 'public.mark_all_notifications_read()',
+           format('after:0:select 1 from public.notification where user_id <> %L and read_at = now()', u_hw))
+      || pg_temp.rls_case('health worker', 'Notify all staff (database only)', 'call', 'public.notify_staff(''NEW_REQUEST'')', 'blocked')
+      || pg_temp.rls_case('health worker', 'Count up a staff notice (database only)', 'call',
+           'public.count_up_staff_notice(''SMS_FAILED'', true)', 'blocked')
+      || pg_temp.rls_case('health worker', 'Notify admins of an account change (server only)', 'call',
+           format('public.notify_account_change(''ACCOUNT_DEACTIVATED'', %L, %L)', u_m1, u_admin), 'blocked')
+      || pg_temp.rls_case('health worker', 'Notify of a password reset (server only)', 'call',
+           format('public.notify_password_reset(%L)', u_m1), 'blocked')
+      || pg_temp.rls_case('health worker', 'Make the visit reminders (server only)', 'call', 'public.notify_visit_reminders()', 'blocked')
+      || pg_temp.rls_case('health worker', 'Clear old notifications (server only)', 'call', 'public.clean_notifications()', 'blocked')
+
+      || pg_temp.rls_case('inactive worker', 'Her notifications (none while inactive)', 'count', 'select 1 from public.notification', 'none')
+      || pg_temp.rls_case('inactive worker', 'Mark all read (nothing while inactive)', 'call', 'public.mark_all_notifications_read()',
+           'after:0:select 1 from public.notification where read_at = now()')
+
+      || pg_temp.rls_case('admin', 'Notifications (only her own)', 'count', 'select 1 from public.notification',
+           format('same:select 1 from public.notification where user_id = %L', u_admin))
+      || pg_temp.rls_case('admin', 'A health worker''s notifications', 'count',
+           format('select 1 from public.notification where user_id = %L', u_hw), 'none')
+      || pg_temp.rls_case('admin', 'Mark a health worker''s notification read', 'call', format('public.mark_notification_read(%s)', n_hw),
+           format('after:0:select 1 from public.notification where notification_id = %s and read_at is not null', n_hw))
+      || pg_temp.rls_case('admin', 'Delete notifications', 'write', 'delete from public.notification', 'blocked')
+      || pg_temp.rls_case('admin', 'Notify admins of an account change (server only)', 'call',
+           format('public.notify_account_change(''ACCOUNT_DEACTIVATED'', %L, %L)', u_hw, u_admin), 'blocked');
+
     ----------------------------------------------------------------------------------------
     -- 3. Run each test in its own undone step
     ----------------------------------------------------------------------------------------
@@ -379,6 +459,11 @@ begin
         else
           execute 'select ' || (t ->> 'sql');
         end if;
+        -- What the change left behind, counted as the script's owner.
+        if expect like 'after:%' then
+          execute 'reset role';
+          execute 'select count(*) from (' || substring(expect from '^after:[0-9]+:(.*)$') || ') as s' into got_rows;
+        end if;
         raise exception 'rls_test_step_undo';
       exception when others then
         if sqlerrm <> 'rls_test_step_undo' then
@@ -389,6 +474,7 @@ begin
 
       result := case
         when failed is not null then 'error: ' || left(failed, 80)
+        when expect like 'after:%' then 'rows after: ' || got_rows
         when t ->> 'kind' = 'count' and ref_rows is not null then 'rows: ' || got_rows || ' of ' || ref_rows
         when t ->> 'kind' = 'count' then 'rows: ' || got_rows
         when t ->> 'kind' = 'write' then 'changed: ' || got_rows
@@ -404,11 +490,14 @@ begin
         when expect = 'allowed' then case when failed is null and (t ->> 'kind' = 'call' or got_rows >= 1) then 'PASS' else 'FAIL' end
         when expect = 'blocked' then case when failed is not null or got_rows = 0 then 'PASS' else 'FAIL' end
         when expect like 'error:%' then case when failed like '%' || substr(expect, 7) || '%' then 'PASS' else 'FAIL' end
+        when expect like 'after:%' then case when failed is null and got_rows = split_part(expect, ':', 2)::bigint then 'PASS' else 'FAIL' end
         else 'FAIL' end;
 
       results := results || jsonb_build_array(jsonb_build_object(
         'n', i, 'actor', t ->> 'actor', 'name', t ->> 'name', 'result', result,
-        'expected', case when expect like 'same:%' then 'same as hers' else expect end, 'verdict', verdict));
+        'expected', case when expect like 'same:%' then 'same as hers'
+                         when expect like 'after:%' then 'rows after: ' || split_part(expect, ':', 2)
+                         else expect end, 'verdict', verdict));
     end loop;
 
     raise exception 'rls_test_undo';
@@ -443,7 +532,12 @@ union all
 select 902, 'database', 'Server-only functions the website''s login can run',
        coalesce((select string_agg(f, ', ') from unnest(array[
                    'public.claim_due_sms()', 'public.mark_missed_appointments()', 'public.clean_rate_limits()',
-                   'public.call_sms_sender()']) as f
+                   'public.call_sms_sender()', 'public.notify_visit_reminders()', 'public.clean_notifications()',
+                   'public.add_notification(uuid, public.notification_type, jsonb, bigint, bigint, bigint)',
+                   'public.notify_staff(public.notification_type, jsonb, boolean, bigint, bigint, uuid)',
+                   'public.count_up_staff_notice(public.notification_type, boolean, date)',
+                   'public.notify_account_change(public.notification_type, uuid, uuid)',
+                   'public.notify_password_reset(uuid)']) as f
                  where has_function_privilege('authenticated', f, 'execute')
                     or has_function_privilege('anon', f, 'execute')), 'none'),
        'none', null
@@ -454,10 +548,16 @@ select 903, 'database', 'Functions a logged-out visitor can run (owner rights)',
                  where ns.nspname = 'public' and p.prosecdef
                    and p.prorettype not in ('trigger'::regtype, 'event_trigger'::regtype)
                    and has_function_privilege('anon', p.oid, 'execute')), 'none'),
-       'info', 'INFO';
+       'info', 'INFO'
+union all
+select 904, 'database', 'Notification changes the website''s login can make directly',
+       coalesce((select string_agg(r || ' ' || lower(p), ', ')
+                 from unnest(array['anon', 'authenticated']) as r, unnest(array['INSERT', 'UPDATE', 'DELETE', 'TRUNCATE']) as p
+                 where has_table_privilege(r, 'public.notification', p)), 'none'),
+       'none', null;
 
 update rls_results set verdict = case when result = expected then 'PASS' else 'FAIL' end
-where n between 900 and 902;
+where n between 900 and 902 or n = 904;
 
 -- Every check, problems first ("same verdict" = how many checks got that verdict).
 select verdict, count(*) over (partition by verdict) as same_verdict, actor, check_name, result, expected

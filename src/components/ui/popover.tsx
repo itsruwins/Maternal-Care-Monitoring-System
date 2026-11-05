@@ -5,7 +5,7 @@ import { Popover as PopoverPrimitive } from "radix-ui"
 import { cn } from "@/lib/utils/cn"
 
 // A floating panel anchored to a button (e.g. the notification bell): the
-// same white rounded card and soft shadow as the dropdown menu, for content
+// white rounded card as the dropdown menu, with the float shadow, for content
 // that holds its own links and buttons. Esc and an outside click close it;
 // focus returns to the button.
 

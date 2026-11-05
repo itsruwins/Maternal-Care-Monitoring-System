@@ -49,7 +49,7 @@ export function describeNotification(
   return { title: format(title, values), detail: format(detail, values) };
 }
 
-/** "Just now", "12 min ago", "Today, 9:41 AM", "Yesterday, 4:05 PM", then "Nov 3". */
+/** "Just now", "12 min ago", "9:41 AM" (today, under the Today heading), "Yesterday, 4:05 PM", then "Nov 3". */
 export function notificationTime(createdAt: string, now: Date, t: Texts, locale: string): string {
   const at = new Date(createdAt);
   const minutes = Math.floor((now.getTime() - at.getTime()) / 60_000);

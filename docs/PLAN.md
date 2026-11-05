@@ -2,7 +2,7 @@
 
 Barangay Taysan, Legazpi City · Next.js 16 + Supabase · Hosted on Vercel
 
-Status: **Phases 0–9 done (Phase 9 signed off 2026-11-03). Phase 10 — Notification bell (added 2026-11-05): step 1 (migration `0026`) done (run and checked by you); step 2 (design preview) approved; step 3 (the real bell) built, waiting for your testing. Remaining: the rest of Phase 10 and the Open items below.** Each phase ends with a demo and your sign-off before the next starts.
+Status: **Phases 0–9 done (Phase 9 signed off 2026-11-03). Phase 10 — Notification bell (added 2026-11-05): step 1 (migration `0026`) done (run and checked by you); step 2 (design preview) approved; steps 3 (the real bell) and 4 (tests; RLS script run by you: 150 PASS, 0 FAIL) signed off by you; step 5 (review) built, waiting for your testing and the Phase 10 sign-off. Remaining: the rest of Phase 10 and the Open items below.** Each phase ends with a demo and your sign-off before the next starts.
 
 ---
 
@@ -1226,6 +1226,50 @@ A bell in the staff and mother headers listing each person's updates, from its o
 - **Server calls for what the database can't see:** a password reset (Accounts or her record) tells the owner; a new staff account tells the other admins; turning her login off or on from her record tells the other admins when an admin did it and the status really changed. Each is best effort: a failed notification never undoes the action.
 - **App types:** `notification`, its enum and the four functions in `types/database.ts`.
 - **Checked:** types, lint, the 75 unit tests and the production build pass; pages still redirect to login when logged out. The logged-in bell needs your testing on the live data (below).
+
+**Step 4 built (2026-11-05):** the tests. No migration and no package.
+- **RLS script** (`supabase/tests/rls-by-role.sql`): each made-up login also gets a notification of its own. 34 new checks:
+  - each person (mother, health worker, admin) sees only their own;
+  - an inactive health worker sees none and can't mark any read;
+  - a logged-out visitor sees none and can't mark any read;
+  - no one adds, changes or deletes one directly;
+  - "mark read" works on your own and leaves anyone else's unread;
+  - "mark all" marks all of yours and no one else's;
+  - the database-only and server-only notification functions can't be run from the website;
+  - two database-wide checks: no notification change grants for the website, and the notification functions added to the server-only list.
+  The script can now also check what a function call left behind ("rows after: N"). Every change is still undone at the end, including the notifications the made-up records create.
+- **Unit tests** (`tests/unit/features/notifications/`, 31 new):
+  - the words for every kind, reader and language, with no `{placeholder}` left;
+  - dates kept whole;
+  - request vs visit for a cancel, the wording for exactly one, staff vs mother after a password reset;
+  - the pregnancy outcome never named;
+  - "nanay", never "ina";
+  - EN/FIL with the same keys and placeholders;
+  - "Just now", minutes, Today and Yesterday by the Manila day;
+  - Today/Earlier, the "9+" badge;
+  - the list of kinds matching the database's;
+  - the page each kind opens.
+- **Checked:** the new RLS checks were run against a scratch copy of the migration: all pass, nothing is left behind, and a deliberately broken copy fails 13 of them. All 106 unit tests, types and lint pass. Your testing of step 3 is still to come.
+
+**Step 4 done (2026-11-05):** you ran the RLS script on the live database: 150 PASS, 5 INFO, no FAIL or SKIP. All 34 notification checks pass. The INFO rows are the same kinds as before; the two functions a logged-out visitor can run are `current_user_role` (returns nothing when logged out) and `is_username_available` (the sign-up check).
+
+**Steps 3 and 4 signed off by you (2026-11-05).**
+
+**Step 5 built (2026-11-05):** review of the bell.
+- **Screenshots:** every role and state (sample list, all unread, empty, loading, error), EN/FIL, desktop, tablet and phone (390 and 320px), from the design preview (not kept in the repo).
+- **Accessibility:** axe, plus checks for 44px targets, cut-off text, the panel staying on screen, sideways scroll and console errors, in 120 combinations (2 languages × 3 roles × 5 states × 1280/768/390/320): clean before and after the fixes. Keyboard: Enter opens, Tab moves through, Escape returns to the bell ("Notifications, 7 unread").
+- **Independent design review:** 2 passes; no code fixes left after the second. Fixed (your OK):
+  - Her missed visit shows a heart, never the warning sign.
+  - Colours: "Pregnancy record updated" is cream (it may follow a loss); "New time proposed" and staff "New request" are rose (they need someone).
+  - Errors follow the Danger Rule: "Couldn't load" has the filled warning icon and rose text; a failed "Show older" says "Couldn't load older ones." / "Hindi ma-load ang mas luma."
+  - "Mark all as read" stays on one line and drops under the title when it doesn't fit; Filipino is now "Markahan lahat bilang nabasa".
+  - The badge is 24px, like every count badge.
+  - Rows under "Today" show only the time ("9:58 AM"); "Yesterday, …" keeps its word.
+  - A failed mark-read reloads the list, so nothing looks read that isn't.
+  - Declined and cancelled rows use a new slashed-calendar icon (the crossed-out one stays Closed days).
+- **Kept as is (your choice):** the slashed calendar in the filled style like every icon circle; read rows keep their colour (the bold title and the dot show unread).
+- **Docs:** `DESIGN.md` + sidecar updated by the documenter (a Notification Bell section with the colour and icon for each kind, the header rules, and new Do's and Don'ts).
+- Types, lint and the 107 unit tests pass.
 
 ---
 

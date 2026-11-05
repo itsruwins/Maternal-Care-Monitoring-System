@@ -3,11 +3,11 @@ import {
   AppointmentIcon,
   CalendarPlusIcon,
   CallIcon,
+  CancelledIcon,
   CheckCircleIcon,
   CheckupIcon,
   ClockIcon,
-  ClosedDayIcon,
-  DangerIcon,
+  HeartIcon,
   LockIcon,
   PhoneIcon,
   PregnancyIcon,
@@ -23,26 +23,28 @@ type Tone = "mint" | "beige" | "cream" | "blush";
 /**
  * Each kind's icon (inside a soft circle) and the page it opens. The same
  * icon always means the same thing: a check for a yes, the clock for a
- * changed time, the crossed-out calendar for a cancel, blush only for what
- * needs someone (a missed visit, a failed text, a locked login).
+ * changed time, the slashed calendar for a cancel or a no (the crossed-out
+ * one is Closed days), a heart for her missed visit (gentle, never the
+ * warning sign). Blush only for what needs someone: a new time to answer, a
+ * new request, a missed visit, failed texts or an SMS phone problem, a locked login.
  */
 export const NOTIFICATION_KINDS: Record<NotificationType, { icon: Icon; tone: Tone }> = {
   REQUEST_CONFIRMED: { icon: CheckCircleIcon, tone: "mint" },
-  REQUEST_NEW_TIME: { icon: ClockIcon, tone: "beige" },
-  REQUEST_DECLINED: { icon: ClosedDayIcon, tone: "cream" },
+  REQUEST_NEW_TIME: { icon: ClockIcon, tone: "blush" },
+  REQUEST_DECLINED: { icon: CancelledIcon, tone: "cream" },
   VISIT_BOOKED: { icon: CalendarPlusIcon, tone: "mint" },
   VISIT_REBOOKED: { icon: CalendarPlusIcon, tone: "mint" },
   VISIT_MOVED: { icon: ClockIcon, tone: "beige" },
-  VISIT_CANCELLED: { icon: ClosedDayIcon, tone: "cream" },
+  VISIT_CANCELLED: { icon: CancelledIcon, tone: "cream" },
   VISIT_REMINDER: { icon: ReminderIcon, tone: "mint" },
-  VISIT_MISSED: { icon: DangerIcon, tone: "blush" },
+  VISIT_MISSED: { icon: HeartIcon, tone: "blush" },
   CHECKUP_RECORDED: { icon: CheckupIcon, tone: "mint" },
-  PREGNANCY_CLOSED: { icon: PregnancyIcon, tone: "blush" },
+  PREGNANCY_CLOSED: { icon: PregnancyIcon, tone: "cream" },
   PASSWORD_RESET: { icon: LockIcon, tone: "cream" },
-  NEW_REQUEST: { icon: AppointmentIcon, tone: "mint" },
-  MOTHER_CANCELLED: { icon: ClosedDayIcon, tone: "cream" },
+  NEW_REQUEST: { icon: AppointmentIcon, tone: "blush" },
+  MOTHER_CANCELLED: { icon: CancelledIcon, tone: "cream" },
   NEW_TIME_ACCEPTED: { icon: CheckCircleIcon, tone: "mint" },
-  NEW_TIME_DECLINED: { icon: ClosedDayIcon, tone: "cream" },
+  NEW_TIME_DECLINED: { icon: CancelledIcon, tone: "cream" },
   MOTHER_SIGNED_UP: { icon: UserPlusIcon, tone: "mint" },
   MISSED_SUMMARY: { icon: CallIcon, tone: "blush" },
   SMS_FAILED: { icon: SmsIcon, tone: "blush" },

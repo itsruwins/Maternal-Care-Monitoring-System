@@ -16,6 +16,7 @@ export {
   CalendarHeartIcon as AppointmentIcon,
   CalendarDotsIcon as CalendarIcon,
   CalendarXIcon as ClosedDayIcon,
+  CalendarSlashIcon as CancelledIcon,
   CalendarPlusIcon,
   ClockIcon,
   NoteIcon,

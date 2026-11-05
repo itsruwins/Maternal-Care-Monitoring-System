@@ -2164,12 +2164,13 @@
     "emptyMother": "News about your visits and checkups will show here.",
     "emptyStaff": "Requests, missed visits and other updates will show here.",
     "error": "We couldn't load your notifications.",
+    "errorOlder": "Couldn't load older ones.",
     "retry": "Try again",
     "end": "That's everything from the last 90 days.",
     "time": {
       "justNow": "Just now",
       "minutes": "{count} min ago",
-      "today": "Today, {time}",
+      "today": "{time}",
       "yesterday": "Yesterday, {time}"
     },
     "items": {

@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { NotificationIcon, SpinnerIcon } from "@/components/icons";
+import { DangerIcon, NotificationIcon, SpinnerIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { IconCircle } from "@/components/ui/icon-circle";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -156,13 +156,14 @@ export function NotificationBell({
     if (item.read) return;
     setItems((current) => current?.map((each) => (each.id === item.id ? { ...each, read: true } : each)) ?? current);
     setUnread((count) => Math.max(0, count - 1));
-    void markRead(item.id).catch(() => {});
+    // It didn't save (e.g. no signal): show what's really unread again.
+    markRead(item.id).catch(() => void refresh());
   }
 
   function readAll() {
     setItems((current) => current?.map((each) => ({ ...each, read: true })) ?? current);
     setUnread(0);
-    void markAll().catch(() => {});
+    markAll().catch(() => void refresh());
   }
 
   const now = fixedNow ? new Date(fixedNow) : new Date();
@@ -198,7 +199,7 @@ export function NotificationBell({
         {unread > 0 && (
           <span
             aria-hidden
-            className="tnum absolute top-0.5 right-0 grid h-5 min-w-5 place-items-center rounded-full bg-rose-deep px-1 text-[0.6875rem] leading-none font-bold text-white ring-2 ring-white motion-safe:animate-pop"
+            className="tnum absolute -top-0.5 -right-1 grid h-6 min-w-6 place-items-center rounded-full bg-rose-deep px-1 text-caption leading-none font-bold text-white ring-2 ring-white motion-safe:animate-pop"
           >
             {badgeText(unread)}
           </span>
@@ -209,7 +210,8 @@ export function NotificationBell({
         aria-labelledby={headingId}
         className="flex max-h-[min(40rem,calc(100dvh-5.5rem))] w-[calc(100vw-2rem)] max-w-[26rem] flex-col"
       >
-        <div className="flex min-h-14 shrink-0 items-center justify-between gap-3 border-b border-line py-1.5 pr-2 pl-4">
+        {/* "Mark all as read" stays on one line; when it doesn't fit beside the title it drops under it, its text in line with the title. */}
+        <div className="flex min-h-14 shrink-0 flex-wrap items-center justify-between gap-x-3 border-b border-line py-1.5 pr-2 pl-4">
           <h2 id={headingId} className="text-lg font-extrabold tracking-[-0.01em] whitespace-nowrap">
             {texts.title}
           </h2>
@@ -217,7 +219,7 @@ export function NotificationBell({
             <Button
               variant="ghost"
               size="sm"
-              className="h-auto min-h-11 shrink px-3 py-1 text-right leading-tight whitespace-normal text-leaf hover:text-leaf-deep"
+              className="-ml-3 min-h-11 px-3 whitespace-nowrap text-leaf hover:text-leaf-deep"
               onClick={readAll}
             >
               {texts.markAll}
@@ -229,9 +231,12 @@ export function NotificationBell({
           {status === "loading" && !items && <LoadingRows label={texts.loading} />}
 
           {status === "error" && !items && (
-            <div className="flex flex-col items-center gap-3 px-6 py-10 text-center">
-              <p className="text-[0.95rem] text-ink-soft">{texts.error}</p>
-              <Button variant="soft" onClick={() => void refresh()}>
+            <div className="flex flex-col items-center px-6 py-10 text-center">
+              <IconCircle icon={DangerIcon} tone="blush" size="lg" />
+              <p role="alert" className="mt-4 max-w-[30ch] text-[0.95rem] font-semibold text-rose-deep">
+                {texts.error}
+              </p>
+              <Button variant="soft" className="mt-4" onClick={() => void refresh()}>
                 {texts.retry}
               </Button>
             </div>
@@ -254,6 +259,14 @@ export function NotificationBell({
 
           {items && items.length > 0 && (
             <div className="px-1.5 pt-2 pb-1.5">
+              <div role="status">
+                {olderStatus === "error" && (
+                  <p className="flex items-center justify-center gap-1.5 px-3 pb-2 text-sm font-semibold text-rose-deep">
+                    <DangerIcon weight="fill" aria-hidden className="size-4 shrink-0" />
+                    {texts.errorOlder}
+                  </p>
+                )}
+              </div>
               {hasMore ? (
                 <Button
                   variant="soft"

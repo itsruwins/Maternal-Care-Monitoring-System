@@ -11,8 +11,8 @@ export const SITE = {
       en: "Mon–Fri, 8:00\u00a0AM\u00a0–\u2060\u00a03:00\u00a0PM",
       fil: "Lunes–Biyernes, 8:00\u00a0AM\u00a0–\u2060\u00a03:00\u00a0PM",
     },
-    // PLACEHOLDER: replace with the real number (open item in docs/PLAN.md).
-    contactNumber: "PLACEHOLDER: contact number",
+    //   keeps the number on one line.
+    contactNumber: "0927 168 3301",
   },
 } as const;
 
